@@ -5,6 +5,8 @@
 #include "ofxBackground.h"
 #include "ofxBlobTracker.h"
 #include "ofxUI.h"
+#include "ofxSyphon.h"
+
 #define _USE_LIVE_VIDEO		// uncomment this to use a live camera
 
 class testApp : public ofBaseApp{
@@ -48,5 +50,6 @@ class testApp : public ofBaseApp{
     	ofxUITextArea *msgArea;
 	    void cleanBackgrounds();
     string textString;
-		
+    	ofxSyphonServer individualTextureSyphonServer;
+		ofTexture tex;
 };
