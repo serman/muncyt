@@ -5,12 +5,13 @@ void testApp::setup() {
 //    ofDisableAntiAliasing();
 	ofSetVerticalSync(true);
 	ofBackgroundHex(0xfdefc2);
-	ofSetLogLevel(OF_LOG_NOTICE);
+//	ofSetLogLevel(OF_LOG_NOTICE);
+	ofSetLogLevel(OF_LOG_VERBOSE);
 
 	// Cargar Textura de particulas
 	// load the texure
 	ofDisableArbTex();
-	ofLoadImage(texPartic, "dot.png");
+	ofLoadImage(texPartic, "media/images/dot.png");
 	
 
 	// BOX2D
@@ -39,21 +40,38 @@ void testApp::setup() {
 	
 	swFuerza = false;
 	
-	ofLogVerbose("POPOPOP");
-	// add some circles y boxes
-	int nCircs = 30 + floor(  ofRandom(20) );
+	// radios
+	rNucleo	= 14;
+	rNeutron = 5;
+	
+	
+	ofLogVerbose("Add nucleos");
+	// add some nucleos y boxes
+	int nCircs = 40 + floor(  ofRandom(20) );
 	for(int i =0; i<nCircs; i++) {
-		addCircle(centro.x, centro.y);
+		addNucleo(centro.x, centro.y, rNucleo);
 	}
 	
-	int nBoxes = 20 + floor(  ofRandom(20) );
-	for(int i =0; i<nBoxes; i++) {
-		addBox(centro.x, centro.y);
+//	int nBoxes = 10 + floor(  ofRandom(10) );
+//	for(int i =0; i<nBoxes; i++) {
+//		addBox(centro.x, centro.y);
+//	}
+	
+	cargaSounds();
+	
+	
+}
+
+void testApp::cargaSounds() {
+	// load the 8 sfx soundfile
+	ofLogVerbose("XXXXXXXXXXXXXXXXXXXXXXX");
+	for (int i=0; i<N_SOUNDS; i++) {
+		ofLogVerbose("media/sound/"+ofToString(i,0,2,'0')+".mp3");
+		sounds[i].loadSound("media/sound/"+ofToString(i,0,2,'0')+".mp3");
+		sounds[i].setMultiPlay(true);
+		sounds[i].setLoop(false);
+		sounds[i].stop();
 	}
-	
-	
-	
-	
 }
 
 //--------------------------------------------------------------
@@ -68,22 +86,52 @@ void testApp::update() {
 		box2d.setGravity(fuerza.x, fuerza.y);
 	}
 	else box2d.setGravity(0,0); 
+	
 }
 
 
 //--------------------------------------------------------------
-void testApp::addCircle(int xx, int yy){
+void testApp::addNucleo(int xx, int yy){
 	float r = ofRandom(10, 20);
-	addCircle(xx,yy,r);
+	addNucleo(xx,yy,r);
 }
 
-void testApp::addCircle(int xx, int yy, float r){
-	circles.push_back(ofPtr<Particula>(new Particula));
-	circles.back().get()->setPhysics(50.5, 0.53, 0.1);
-	circles.back().get()->setup(box2d.getWorld(), xx, yy, r);	
-	circles.back().get()->setRotation(ofRandom(360));
+void testApp::addNucleo(int xx, int yy, float r){
+	nucleos.push_back(ofPtr<Particula>(new Particula));
+	nucleos.back().get()->setPhysics(50.5, 0.53, 0.1); //setPhysics(float density, float bounce, float friction);
+	nucleos.back().get()->setup(box2d.getWorld(), xx, yy, r);		// pos, rr
+	nucleos.back().get()->setRotation(ofRandom(360));
 	
-	circles.back().get()->setTexture(texPartic);
+	nucleos.back().get()->setTexture(texPartic);
+	
+	if(ofRandom(1)<0.5)	nucleos.back().get()->setExcitado(true);
+	else				nucleos.back().get()->setExcitado(false);
+	
+	nucleos.back().get()->setData(nucleos.back().get());	
+}
+
+void testApp::addNeutron(int xx, int yy){
+	neutrones.push_back(ofPtr<Particula>(new Particula));
+	neutrones.back().get()->setPhysics(50.5, 0.53, 0.1); // setPhysics(float density, float bounce, float friction);
+	neutrones.back().get()->setup(box2d.getWorld(), xx, yy, rNeutron);		// pos, rr
+	neutrones.back().get()->setRotation(ofRandom(360));
+	neutrones.back().get()->setTexture(texPartic);
+	neutrones.back().get()->setColor(ofColor(0x5231c9));
+	
+	// * * * * * * *
+	// A corregir:
+	// http://forum.openframeworks.cc/t/box2d-contact-listening-and-userdata/3441/3
+	//
+	neutrones.back().get()->setData(neutrones.back().get());
+	// * * * * * * *
+	
+	// Lanzarla con velocidad
+	float vVal = 100.0;
+	float vAng = ofRandom(TWO_PI);
+	neutrones.back().get()->setVelocity(vVal*cos(vAng),vVal*sin(vAng));
+	
+	neutrones.back().get()->setExcitado(true);
+	
 }
 
 void testApp::addBox(int xx, int yy){
@@ -102,10 +150,15 @@ void testApp::draw() {
 	// dibuja lineas selector fuerza
 	drawFuerzaSelector();
 	
-	for(int i=0; i<circles.size(); i++) {
+	for(int i=0; i<nucleos.size(); i++) {
 		ofFill();
 		ofSetHexColor(0xf6c738);
-		circles[i].get()->draw();
+		nucleos[i].get()->draw();
+	}
+	for(int i=0; i<neutrones.size(); i++) {
+//		ofFill();
+//		ofSetHexColor(0xf6c738);
+		neutrones[i].get()->draw();
 	}
 	
 	for(int i=0; i<boxes.size(); i++) {
@@ -129,7 +182,7 @@ void testApp::draw() {
 	
 	// Info
 	string info = "";
-	info += "Press [c] for circles\n";
+	info += "Press [c] for nucleos\n";
 	info += "Press [b] for blocks\n";
 	info += "Total Bodies: "+ofToString(box2d.getBodyCount())+"\n";
 	info += "Total Joints: "+ofToString(box2d.getJointCount())+"\n\n";
@@ -182,11 +235,15 @@ void testApp::drawFuerzaSelector() {
 void testApp::keyPressed(int key) {
 	
 	if(key == 'c') {
-		addCircle(mouseX, mouseY);
+		addNucleo(mouseX, mouseY, rNucleo);
 	}
 	
 	if(key == 'b') {
 		addBox(mouseX, mouseY);
+	}
+
+	if(key == 'n') {
+		addNeutron(mouseX, mouseY);
 	}
 	
 	if(key == 't') ofToggleFullscreen();
@@ -205,14 +262,18 @@ void testApp::mouseMoved(int x, int y ) {
 
 //--------------------------------------------------------------
 void testApp::mouseDragged(int x, int y, int button) {
-	fuerzaWAng = ofDegToRad( ofMap(x, 0, ofGetWidth(), 30, 360*6) );
-	fuerzaVal = ( ofMap(y, 0, ofGetHeight(), 0, 200) );
+	if(swFuerza) {
+	   fuerzaWAng = ofDegToRad( ofMap(x, 0, ofGetWidth(), 30, 360*6) );
+	   fuerzaVal = ( ofMap(y, 0, ofGetHeight(), 0, 200) );
+	}
 }
 
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button) {
-	fuerzaWAng = ofDegToRad( ofMap(x, 0, ofGetWidth(), 30, 360*6) );
-	fuerzaVal = ( ofMap(y, 0, ofGetHeight(), 0, 200) );
+	if(swFuerza) {
+		fuerzaWAng = ofDegToRad( ofMap(x, 0, ofGetWidth(), 30, 360*6) );
+		fuerzaVal = ( ofMap(y, 0, ofGetHeight(), 0, 200) );
+	}
 }
 
 //--------------------------------------------------------------

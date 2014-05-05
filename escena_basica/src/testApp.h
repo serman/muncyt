@@ -6,6 +6,15 @@
 
 // -------------------------------------------------
 
+#define COLOR_VERDE 0x5dca31
+const int tipoNucleo  = 0;
+const int tipoNeutron = 1;
+
+
+#define N_SOUNDS 6
+
+// 
+
 class testApp : public ofBaseApp {
 	
 public:
@@ -32,14 +41,17 @@ public:
 	ofxBox2dEdge			borde;
 	ofPolyline              bordeLine;
 	
-//	vector    <ofPtr<ofxBox2dCircle> >	circles;		  //	default box2d circles
-	vector    <ofPtr<Particula> >	circles;		  //	default box2d circles
-	vector	  <ofPtr<ofxBox2dRect> >	boxes;			  //	defalut box2d rects
-	
-	void addCircle(int xx, int yy);
-	void addCircle(int xx, int yy, float r);
+//	vector    <ofPtr<ofxBox2dCircle> >	circles;  //	default box2d circles
+	vector    <ofPtr<Particula> >	nucleos;	//	
+	vector    <ofPtr<Particula> >	neutrones;  //	
+	vector	  <ofPtr<ofxBox2dRect> >	boxes;	//	defalut box2d rects
+
+	void addNucleo(int xx, int yy);
+	void addNucleo(int xx, int yy, float r);
 	void addBox(int xx, int yy);
-	
+
+	void addNeutron(int xx, int yy);
+
 	// Fuerza
 	float		fuerzaVal;
 	float		fuerzaAng;
@@ -52,8 +64,20 @@ public:
 	
 	// TUT en https://www.iforce2d.net/b2dtut/fixtures
 	
-	
 	// Textura de particulas
 	ofTexture	texPartic;
+	
+	// Color Radioactivo
+	// #5dca31 = RGB(93,202,49)  = HSB(103,76,79)
+	// Ver mas en: http://rgb.to/hex/5dca31
+	ofColor colorVerde;
+	
+	float rNucleo;
+	float rNeutron;
+	
+	// when the ball hits we play this sound
+	ofSoundPlayer  sounds[N_SOUNDS];
+	void cargaSounds();
+	
 };
 
