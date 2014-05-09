@@ -1,0 +1,8 @@
+ofxGui
+ofxNetwork
+ofxOpenCv
+ofxOsc
+ofxBackground
+ofxBlobTracker
+ofxCv
+ofxTldTracker

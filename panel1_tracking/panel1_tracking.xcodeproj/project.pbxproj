@@ -127,6 +127,7 @@
 		F7B27EC41915E4E10022B207 /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7B27EBD1915E4E10022B207 /* Syphon.framework */; };
 		F7B27EC51915E4E10022B207 /* SyphonNameboundClient.m in Sources */ = {isa = PBXBuildFile; fileRef = F7B27EC01915E4E10022B207 /* SyphonNameboundClient.m */; };
 		F7B27EC61915E6440022B207 /* Syphon.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = F7B27EBD1915E4E10022B207 /* Syphon.framework */; };
+		F7F0BE90191A6F680095B0B9 /* cheapComm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7F0BE8E191A6F680095B0B9 /* cheapComm.cpp */; };
 		FB09C6B2A1DA0EA217240CB8 /* ofxCvGrayscaleImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 057122A817D12571F8C0C7A4 /* ofxCvGrayscaleImage.cpp */; };
 /* End PBXBuildFile section */
 
@@ -480,6 +481,8 @@
 		F7B27EBD1915E4E10022B207 /* Syphon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Syphon.framework; sourceTree = "<group>"; };
 		F7B27EBF1915E4E10022B207 /* SyphonNameboundClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SyphonNameboundClient.h; sourceTree = "<group>"; };
 		F7B27EC01915E4E10022B207 /* SyphonNameboundClient.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SyphonNameboundClient.m; sourceTree = "<group>"; };
+		F7F0BE8E191A6F680095B0B9 /* cheapComm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cheapComm.cpp; sourceTree = "<group>"; };
+		F7F0BE8F191A6F680095B0B9 /* cheapComm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cheapComm.h; sourceTree = "<group>"; };
 		F7FBC56859535E597B24BB91 /* NetworkingUtils.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = NetworkingUtils.h; path = ../../../addons/ofxOsc/libs/oscpack/src/ip/NetworkingUtils.h; sourceTree = SOURCE_ROOT; };
 		F886EBA3F8F05C7F74633933 /* devmem2d.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = devmem2d.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/gpu/devmem2d.hpp; sourceTree = SOURCE_ROOT; };
 		F9EC3DDC0E9F85C34B21C760 /* object_factory.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = object_factory.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/object_factory.h; sourceTree = SOURCE_ROOT; };
@@ -1143,6 +1146,8 @@
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* testApp.h */,
+				F7F0BE8E191A6F680095B0B9 /* cheapComm.cpp */,
+				F7F0BE8F191A6F680095B0B9 /* cheapComm.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -1597,6 +1602,7 @@
 				A6668C5B1272D7FCD5B5A16F /* Utilities.cpp in Sources */,
 				DBCB84A37F9AECC254870D79 /* Wrappers.cpp in Sources */,
 				6C8C2CA4F480BFDDEFD3CC03 /* ofxTldTracker.cpp in Sources */,
+				F7F0BE90191A6F680095B0B9 /* cheapComm.cpp in Sources */,
 				2EFC5439A2DEA88A35FB949D /* Ferns.cpp in Sources */,
 				F7B27DBD191333760022B207 /* ofxUILabelButton.cpp in Sources */,
 				91AA60F0FA676009C596E54A /* MFTracker.cpp in Sources */,
@@ -1702,7 +1708,7 @@
 					"$(OF_CORE_LIBS)",
 					../../../addons/ofxOpenCv/libs/opencv/lib/osx/opencv.a,
 				);
-				SDKROOT = macosx;
+				SDKROOT = macosx10.8;
 			};
 			name = Debug;
 		};
@@ -1791,7 +1797,7 @@
 					"$(OF_CORE_LIBS)",
 					../../../addons/ofxOpenCv/libs/opencv/lib/osx/opencv.a,
 				);
-				SDKROOT = macosx;
+				SDKROOT = macosx10.8;
 			};
 			name = Release;
 		};
