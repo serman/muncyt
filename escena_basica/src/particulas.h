@@ -7,6 +7,9 @@
  *
  */
 
+#ifndef PARTICULAS
+#define PARTICULAS
+
 #include "ofxBox2d.h"
 
 class Particula : public ofxBox2dCircle {
@@ -19,6 +22,7 @@ class Particula : public ofxBox2dCircle {
 	bool  swExcitado;
 	ofTexture tex;
 	ofColor	color;
+	int tipo;
 	
 	float scale;
 	
@@ -28,8 +32,12 @@ class Particula : public ofxBox2dCircle {
 	void setTexture(ofTexture & _tex);
 	void setColor(ofColor _color);
 	void setExcitado(bool _swEx);
-	
+	void setTipo(int _tipo);
+
+	bool isExcitado() {return this->swExcitado;}
+
 	void draw();
 	
 };
 
+#endif

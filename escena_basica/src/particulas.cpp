@@ -31,11 +31,17 @@ void Particula::setExcitado(bool _swEx) {
 	swExcitado = _swEx;
 }
 
+void Particula::setTipo(int _tipo) {
+	tipo = _tipo;
+}
+
 void Particula::draw() {
-	ofxBox2dCircle::draw();
+	ofSetColor(100,0,0);	// cambia bastante con esto
+//	ofxBox2dCircle::draw();
 	
 	ofPushStyle();
-	ofSetColor(0,100,100, 100);
+	ofEnableAlphaBlending();
+//	ofSetColor(0,100,100, 100);
 //	ofLine(this->getPosition().x, this->getPosition().y,ofGetWidth()/2.0, ofGetHeight()/2.0);
 	ofPushMatrix();
 		ofTranslate(this->getPosition().x, this->getPosition().y);
@@ -51,11 +57,20 @@ void Particula::draw() {
 		ofPushMatrix();
 	
 //			ofSetColor(93,202,49, 250);
-			float alfa = (this->swExcitado)? 255 : 100;
-			ofSetColor(color, alfa);
+//			float alfa = (this->swExcitado)? 255 : 100;
+//			ofSetColor(color, alfa);
+			if(this->swExcitado) 			ofSetColor(color);
+			else ofSetColor(ofColor::fromHsb(60,255,255) );
 	
 			ofScale(scale,scale, 0);
 			tex.draw(-radio,-radio,2*radio,2*radio);
+	
+			if(this->swExcitado) {
+				ofSetColor(255,0,0);
+				ofLine(-20,0,20,0);
+			}
+				
+				
 		ofPopMatrix();
 	ofPopMatrix();
 	ofPopStyle();

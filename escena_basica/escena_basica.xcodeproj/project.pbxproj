@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7F93F38C19186382004761F3 /* Efectos.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7F93F38B19186382004761F3 /* Efectos.cpp */; };
 		7FFD07A21913A0450022FA53 /* b2BroadPhase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7FFD07231913A0450022FA53 /* b2BroadPhase.cpp */; };
 		7FFD07A31913A0450022FA53 /* b2CollideCircle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7FFD07251913A0450022FA53 /* b2CollideCircle.cpp */; };
 		7FFD07A41913A0450022FA53 /* b2CollideEdge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7FFD07261913A0450022FA53 /* b2CollideEdge.cpp */; };
@@ -115,6 +116,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		7F93F38A19186382004761F3 /* Efectos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Efectos.h; sourceTree = "<group>"; };
+		7F93F38B19186382004761F3 /* Efectos.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Efectos.cpp; sourceTree = "<group>"; };
 		7FFD07211913A0450022FA53 /* Box2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Box2D.h; sourceTree = "<group>"; };
 		7FFD07231913A0450022FA53 /* b2BroadPhase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = b2BroadPhase.cpp; sourceTree = "<group>"; };
 		7FFD07241913A0450022FA53 /* b2BroadPhase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2BroadPhase.h; sourceTree = "<group>"; };
@@ -577,6 +580,8 @@
 				E4B69E1F0A3A1BDC003C02F2 /* testApp.h */,
 				7FFD0B76191434000022FA53 /* particulas.h */,
 				7FFD0B77191434000022FA53 /* particulas.cpp */,
+				7F93F38A19186382004761F3 /* Efectos.h */,
+				7F93F38B19186382004761F3 /* Efectos.cpp */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -734,6 +739,7 @@
 				7FFD07D61913A0450022FA53 /* ofxBox2dPolygon.cpp in Sources */,
 				7FFD07D71913A0450022FA53 /* ofxBox2dRect.cpp in Sources */,
 				7FFD0B78191434000022FA53 /* particulas.cpp in Sources */,
+				7F93F38C19186382004761F3 /* Efectos.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
