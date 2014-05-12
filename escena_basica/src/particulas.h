@@ -22,6 +22,7 @@ class Particula : public ofxBox2dCircle {
 	bool  swExcitado;
 	ofTexture tex;
 	ofColor	color;
+	ofColor	colorExcitado;
 	int tipo;
 	
 	float scale;
@@ -31,6 +32,7 @@ class Particula : public ofxBox2dCircle {
 	void setCarga(float _q);
 	void setTexture(ofTexture & _tex);
 	void setColor(ofColor _color);
+	void setColorExcitado(ofColor _color);
 	void setExcitado(bool _swEx);
 	void setTipo(int _tipo);
 

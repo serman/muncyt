@@ -4,6 +4,7 @@
 
 #include "Efectos.h"
 #include "particulas.h"
+#include "Anillo.h"
 
 // -------------------------------------------------
 
@@ -23,11 +24,16 @@ struct EnergyData {
 	EnergyData() {energTotal=0; numCollisions=0;}
 };
 
+// Estructura para crear nuevas particulas
+// Con esto se hace una lista de particulas a crear
+// en el nuevo frame al salir de una colisi—n
+//
 struct CineticData {
 	float x;
 	float y;
 	float vVal;
 	float vAng;
+	int tipoPart;
 };
 
 class testApp : public ofBaseApp {
@@ -116,6 +122,10 @@ public:
 	
 	vector <ofPtr<Destello> >	destellos;	//	
 	void addDestello(float px, float py);
+	
+	
+	// Anillo de aceleraci—n
+	Anillo	anillo;
 	
 };
 

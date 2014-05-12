@@ -12,6 +12,7 @@
 Particula::Particula() {
 	ofxBox2dCircle::ofxBox2dCircle();
 	color = ofColor(93,202,49);
+	colorExcitado = ofColor(193,242,149);
 	scale = 3.0;
 }
 
@@ -21,6 +22,10 @@ void Particula::setCarga(float _q) {
 
 void Particula::setColor(ofColor _color) {
 	color = _color;
+}
+
+void Particula::setColorExcitado(ofColor _color) {
+	colorExcitado = _color;
 }
 
 void Particula::setTexture(ofTexture & _tex) {
@@ -59,8 +64,9 @@ void Particula::draw() {
 //			ofSetColor(93,202,49, 250);
 //			float alfa = (this->swExcitado)? 255 : 100;
 //			ofSetColor(color, alfa);
-			if(this->swExcitado) 			ofSetColor(color);
-			else ofSetColor(ofColor::fromHsb(60,255,255) );
+			if(this->swExcitado) 			ofSetColor(colorExcitado);
+			else							ofSetColor(color);
+//			else ofSetColor(ofColor::fromHsb(60,255,255) );
 	
 			ofScale(scale,scale, 0);
 			tex.draw(-radio,-radio,2*radio,2*radio);

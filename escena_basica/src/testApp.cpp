@@ -1,5 +1,12 @@
 #include "testApp.h"
 
+//
+// HINTS para colisiones y para construccion de objetos con box2d:
+// https://www.iforce2d.net/b2dtut/collision-anatomy
+// http://forum.openframeworks.cc/t/box2d-contact-listening-and-userdata/3441/3
+// 
+
+
 //--------------------------------------------------------------
 void testApp::setup() {
 //    ofDisableAntiAliasing();
@@ -51,6 +58,8 @@ void testApp::setup() {
 	// Paredes camara
 //	circuloInt.arc(centro, radioMuro, radioMuro, 0.0, 360.0, true, resol);
 	circuloExt.arc(centro, radioExt, radioExt, 0.0, 360.0, true, resol);
+
+	
 	
 	// Fuerza que afecta a todas las particulas
 	fuerzaVal = 100.0;
@@ -66,7 +75,7 @@ void testApp::setup() {
 	rNucleo	= 14;
 	rNeutron = 5;
 	
-	velocNeutronLim = 80;
+	velocNeutronLim = 60;
 	velocNeutronLanz = 120;
 	
 	
@@ -87,12 +96,20 @@ void testApp::setup() {
 	
 	//GUI Fuerza
 	float ladoMarco = 90;
-	float margenMarco = 20;
+	float margenMarco = 10;
 	marco = ofRectangle(ofGetWidth()-ladoMarco-margenMarco,margenMarco,ladoMarco,ladoMarco);
 	
 	
 	// Efecto
 	chispa = Destello(0,0, 80, 0.3);
+	
+
+	// Acelerador Exterior
+	// Anillo(ofVec2f _pos, float rInt, float rExt);
+	anillo = Anillo(ofVec2f(centro.x,centro.y), radioInt, radioExt);
+	
+	
+	
 	
 	
 }
@@ -105,6 +122,7 @@ void testApp::cargaSounds() {
 		sounds[i].loadSound("media/sound/"+ofToString(i,0,2,'0')+".mp3");
 		sounds[i].setMultiPlay(true);
 		sounds[i].setLoop(false);
+		sounds[i].setVolume(0.5);
 		sounds[i].stop();
 	}
 }
@@ -187,6 +205,7 @@ void testApp::contactEnd(ofxBox2dContactArgs &e) {
 						posNeutron2 = posNucleo + distPBA;
 						
 						// Da error al crear el objeto
+						// porque esta en proceso de choque ==> world's blocked
 						// Hay que a–adirlo a una lista de creacion de neutrones
 //						addNeutron(posNeutron2.x, posNeutron2.y, 
 //								   velocNeutronLanz*0.95, 
@@ -258,12 +277,17 @@ void testApp::update() {
 	}
 	else box2d.setGravity(0,0); 
 	
+	// Anillo Aceleracion
+	anillo.update();
 	
 }
 
 //--------------------------------------------------------------
 void testApp::draw() {
 
+//	ofBackground(0);
+	ofBackgroundGradient(ofColor::gray, ofColor::black, OF_GRADIENT_CIRCULAR);
+	
 	// Selector Fuerza: 
 	// caja fuera de los dos circulos
 	drawFuerzaSelector();
@@ -283,6 +307,7 @@ void testApp::draw() {
 		bordeLine.draw();
 	ofPopStyle();
 	
+//	ofEnableBlendMode(OF_BLENDMODE_ADD);
 	for(int i=0; i<nucleos.size(); i++) {
 		ofFill();
 		ofSetHexColor(0xf6c738);
@@ -291,19 +316,11 @@ void testApp::draw() {
 	for(int i=0; i<neutrones.size(); i++) {
 //		ofFill();
 		float veloc = neutrones[i].get()->getVelocity().length();
-		if(veloc>velocNeutronLim) neutrones[i].get()->setColor(ofColor(255,0,0));
-		else neutrones[i].get()->setColor(ofColor(200,200,200));
+		neutrones[i].get()->setExcitado(veloc>velocNeutronLim);
 //		ofSetHexColor(0xf6c738);
 		neutrones[i].get()->draw();
 		ofDrawBitmapString(ofToString(veloc), neutrones[i].get()->getPosition().x, neutrones[i].get()->getPosition().y);
 	}
-	
-	for(int i=0; i<boxes.size(); i++) {
-		ofFill();
-		ofSetHexColor(0xBF2545);
-		boxes[i].get()->draw();
-	}
-
 
 	// dibuja valor fuerza
 //	drawFuerza(bordeLine.getCentroid2D(), fuerza);
@@ -315,10 +332,22 @@ void testApp::draw() {
 	}
 	chispa.draw();
 	
+//	ofDisableBlendMode();
 	
 	// Mascara exterior
 	// ...Con algun Shape...
-
+	anillo.draw();
+	
+	// GUI ANILLO
+	ofPushStyle();
+	ofEnableAlphaBlending();
+	ofFill();
+//	ofSetColor(200);
+	ofSetColor(anillo.color);
+	ofRect(0, ofGetHeight()-40, 40,40);
+	ofRect(ofGetWidth()-40, ofGetHeight()-40, 40,40);
+	ofPopStyle();
+	
 	
 	// Info
 	string info = "";
@@ -332,7 +361,9 @@ void testApp::draw() {
 	info += "Aplica Fuerza [f]: "+ofToString(swFuerza)+"\n";
 	info += "valor Fuerza [mouseY+Click+f]: "+ofToString(fuerzaVal)+" \n";
 	info += "w Giro Fuerza [mouseX+Click+f]: "+ofToString(ofRadToDeg(fuerzaWAng)/360)+" Hz\n\n";
-	ofSetHexColor(0x444342);
+	info += "aceleracion [click en esquinas inferiores - +] w/a: "+ofToString(anillo.wAng)+"/"+ofToString(anillo.accAng)+" \n\n";
+//	ofSetHexColor(0x444342);
+	ofSetHexColor(0xCCCCCC);
 	ofDrawBitmapString(info, 30, 30);
 }
 
@@ -420,6 +451,9 @@ void testApp::addNucleo(int xx, int yy, float r){
 	
 	nucleos.back().get()->setTipo(tipoNucleo);
 	
+	nucleos.back().get()->setColorExcitado(ofColor::fromHsb(60,250,250));
+	nucleos.back().get()->setColor(ofColor::fromHsb(60,250,100));
+	
 	// * * * * * * *
 	// A corregir:
 	// http://forum.openframeworks.cc/t/box2d-contact-listening-and-userdata/3441/3
@@ -445,6 +479,7 @@ void testApp::addNeutron(int xx, int yy, float vVal, float vAng){
 	neutrones.back().get()->setup(box2d.getWorld(), xx, yy, rNeutron);		// pos, rr
 	neutrones.back().get()->setRotation(ofRandom(360));
 	neutrones.back().get()->setTexture(texPartic);
+	neutrones.back().get()->setColorExcitado(ofColor::fromHsb(0,250,250));
 	neutrones.back().get()->setColor(ofColor(0x5231c9));
 
 	neutrones.back().get()->setVelocity(vVal*cos(vAng),vVal*sin(vAng));
@@ -539,6 +574,15 @@ void testApp::mousePressed(int x, int y, int button) {
 //		fuerzaWAng = ofDegToRad( ofMap(x, 0, ofGetWidth(), 30, 360*6) );
 //		fuerzaVal = ( ofMap(y, 0, ofGetHeight(), 0, 200) );
 //	}
+	
+	if((x>ofGetWidth()-40) && (y>ofGetHeight()-40)) {
+		anillo.acelera(-0.05);
+		ofLogVerbose("Acc ++: " + ofToString(anillo.accAng));
+	}
+	if((x<40) && (y>ofGetHeight()-40)) {
+		anillo.acelera(0.05);
+		ofLogVerbose("Acc --: " + ofToString(anillo.accAng));
+	}
 }
 
 //--------------------------------------------------------------
