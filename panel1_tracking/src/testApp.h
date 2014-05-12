@@ -6,8 +6,13 @@
 #include "ofxBlobTracker.h"
 #include "ofxUI.h"
 #include "ofxSyphon.h"
+#include "ofxCv.h"
+#include "cheapComm.h"
 
-#define _USE_LIVE_VIDEO		// uncomment this to use a live camera
+//#define _USE_LIVE_VIDEO		// uncomment this to use a live camera
+#define VIDEOWITH 640
+#define VIDEOHEIGHT 480
+#define CAMERA_EXPOSURE_TIME  2200.0f
 
 class testApp : public ofBaseApp{
     private:
@@ -18,17 +23,36 @@ class testApp : public ofBaseApp{
             ofVideoPlayer 		vidPlayer;
         #endif
         bool isNewFrame;
-        ofxCvColorImage		colorImg;			//a place to save the live video frame
-    ofxCvGrayscaleImage grayImage;
-        ofxBackground		backgroundAddon;	//the addon that allows you to use a variety of methods for background/foreground segmentation
+/*** ADDONS **/
+    	ofxBackground		backgroundAddon;	//the addon that allows you to use a variety of methods for background/foreground segmentation
 		ofxBlobTracker          blobTracker;
-        bool bLearnBackground;	//a boolean to indicate whether to instruct the addon to learn the background again, defaults to true
-    	ofTrueTypeFont consoleFont;
+    
     
     	ofxUICanvas *gui1;
         ofxUICanvas *gui2;
     
-    	int blobThreshold;
+        ofTrueTypeFont consoleFont;
+    	/** intermediate images for tracking ***/
+	    ofxCvColorImage		sourceColorImg;			//a place to save the live video frame
+    	ofxCvGrayscaleImage grayImage;
+        ofxCvShortImage		floatBgImg;
+	    ofxCvGrayscaleImage grayBg;
+	    bool adminMode;
+	    long exposureStartTime;
+    
+	    ofFbo fbo;
+    /*** tracking parameters ***/
+    	int minBlobSize=150;
+	    int maxBlobSize=3000;
+    	int blobThreshold=11;
+	    int amplify=10;
+    	int smooth=1;
+        bool refreshBackground=false;
+	    bool adaptativeBackground=true;
+	    float fLearnRate= 0.005f;
+        bool bLearnBackground=true;	//a boolean to indicate whether to instruct the addon to learn the background again, defaults to true
+    	cheapComm myComm;
+    
     
 	public:
 		void setup();
@@ -49,7 +73,7 @@ class testApp : public ofBaseApp{
         void blobDeleted(ofxBlob &_blob);
     	ofxUITextArea *msgArea;
 	    void cleanBackgrounds();
-    string textString;
+        string textString;
     	ofxSyphonServer individualTextureSyphonServer;
 		ofTexture tex;
 };
