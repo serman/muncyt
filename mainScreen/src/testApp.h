@@ -4,6 +4,7 @@
 #include "cheapComm.h"
 #include "ofxSyphon.h"
 #include "ofxCv.h"
+#include "mosaicPlayer.h"
 class testApp : public ofBaseApp{
 
 	public:
@@ -27,4 +28,5 @@ class testApp : public ofBaseApp{
     	ofFbo fbo; // with alpha
     ofPixels cameraPixels;
     ofImage cameraImg;
+    mosaicPlayer mPlayer;
 };

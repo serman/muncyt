@@ -8,7 +8,7 @@
 #include "ofxSyphon.h"
 #include "ofxCv.h"
 #include "cheapComm.h"
-
+#include "mosaicRecorder.h"
 //#define _USE_LIVE_VIDEO		// uncomment this to use a live camera
 #define VIDEOWITH 640
 #define VIDEOHEIGHT 480
@@ -37,6 +37,8 @@ class testApp : public ofBaseApp{
     	ofxCvGrayscaleImage grayImage;
         ofxCvShortImage		floatBgImg;
 	    ofxCvGrayscaleImage grayBg;
+        ofImage blobImgOF;
+        ofImage blobImgOF_min;
 	    bool adminMode;
 	    long exposureStartTime;
     
@@ -48,11 +50,11 @@ class testApp : public ofBaseApp{
 	    int amplify=10;
     	int smooth=1;
         bool refreshBackground=false;
-	    bool adaptativeBackground=true;
+	    bool adaptativeBackground=false;
 	    float fLearnRate= 0.005f;
         bool bLearnBackground=true;	//a boolean to indicate whether to instruct the addon to learn the background again, defaults to true
     	cheapComm myComm;
-    
+    	mosaicRecorder mRecorder;
     
 	public:
 		void setup();

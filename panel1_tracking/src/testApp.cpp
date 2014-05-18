@@ -2,6 +2,7 @@
 
 //--------------------------------------------------------------
 void testApp::setup(){
+    ofSetFrameRate(25);
     adminMode=true;
     bg.loadImage("bg.png");
     ofSetBackgroundAuto(false);
@@ -22,6 +23,7 @@ void testApp::setup(){
     grayBg.allocate(VIDEOWITH,VIDEOHEIGHT);
 
     exposureStartTime = ofGetElapsedTimeMillis();
+	fbo.allocate(VIDEOWITH,VIDEOHEIGHT, GL_RGB);
     
     gui1 = new ofxUICanvas(186,627,336,218);
     textString = "";
@@ -42,7 +44,8 @@ void testApp::setup(){
     tex.allocate(VIDEOWITH,VIDEOHEIGHT, GL_RGB);
     
     myComm.setup();
-    fbo.allocate(VIDEOWITH,VIDEOHEIGHT, GL_RGB);
+    mRecorder.setup();
+
 }
 
 //--------------------------------------------------------------
@@ -72,13 +75,13 @@ void testApp::update(){
 			//grayBg = floatBgImg;  // not yet implemented
             //cv::Mat weightedMat = ofxCv::toCv(floatBgImg);
             //cv::Mat greyBgMat = ofxCv::toCv(grayBg); //current img
-        	//greyBgMat.convertTo(greyBgMat, 255.0f/65535.0f, 0 ) ; // (bgmag  , greyimg, 255.0f/65535.0f, 0 );
+        	//greyBgMat.convertTo(greyBgMat, 255.0f/65535.0f, 0 ) ; // (bgmag  , greyimg, 255.0f/65535.0f, 0 ); esto no hace falta hacerlo pq la conversion es automatica
             //cvConvertScale( floatBgImg.getCvImage(), grayBg.getCvImage(), 255.0f/65535.0f, 0 );
             grayBg=floatBgImg;
             grayBg.flagImageChanged();
         }
         //recapature the background until image/camera is fully exposed
-        if((ofGetElapsedTimeMillis() - exposureStartTime) < CAMERA_EXPOSURE_TIME) adaptativeBackground = true;
+        if((ofGetElapsedTimeMillis() - exposureStartTime) < CAMERA_EXPOSURE_TIME) bLearnBackground = true;
         
         if (bLearnBackground == true){
             floatBgImg = sourceColorImg;
@@ -96,26 +99,49 @@ void testApp::update(){
 		bLearnBackground = false;
 	}
     myComm.sendBlobs( blobTracker.trackedBlobs);
-    
+
 }
 
 //--------------------------------------------------------------
 void testApp::draw(){
     // intentando enviar solo blobs por syphon
-    cv::Mat fullimageMat;
-    ofImage blobImg;
-    fbo.begin();
-    ofRect(0,0,640,480);
-    for (int i=0; i< blobTracker.size(); i++){
-        cv::Rect blob1Roi = ofxCv::toCv(blobTracker.trackedBlobs[i].angleBoundingRect);
-        cout << "entro " << blob1Roi.width;
+    cv::Mat fullimageCV;
+    fullimageCV=ofxCv::toCv(sourceColorImg);
+    cv::Mat grayimageCV;
+    grayimageCV=ofxCv::toCv(grayImage);
+
+    //blobImgOF.allocate(640, 480, OF_IMAGE_COLOR);
+    
+    //ofImage maskImage;
+    //maskImage.allocate(640,480,OF_I)
+    //cout << "tamanio"<< blobTracker.size()<<"\n";
+    //grayImage
+    //convierto imagen en escala de grises a imagen binaria
+
+    cv::Mat contourMaskCV(640,480,CV_8U);
+    cv::threshold(grayimageCV, contourMaskCV, 128, 255, cv::THRESH_BINARY);
+    //cv::Mat contourMaskCV;
+    //contourMaskCV = ofxCv::toCv(grayImage);
+    //2¼ aplico la mascara
+    
+    cv::Mat maskedImage;
+    fullimageCV.copyTo(maskedImage, contourMaskCV);
+	ofxCv::toOf(maskedImage, blobImgOF);
+    /**
+     fbo.begin();
+     ofRect(0,0,640,480);
+     for (int i=0; i< blobTracker.size(); i++){
+        cv::Rect blob1Roi = ofxCv::toCv(blobTracker.trackedBlobs[i].angleBoundingRect);  //roi de la zona del blob
+        cout << "entro " << i << " --- widt"<< blobTracker.trackedBlobs[i].angleBoundingRect.getWidth() << "\n";
         fullimageMat=ofxCv::toCv(sourceColorImg);
         cv::Mat mat1( fullimageMat,blob1Roi);
         ofxCv::toOf(mat1, blobImg);
         blobImg.draw(blobTracker[i].angleBoundingRect.x,blobTracker[i].angleBoundingRect.y);
-    }
+    } 
     fbo.end();
     //fin intentando enviar solo blobs por syphon
+    **/
+    
     
     if(ofGetFrameNum() ==0 || (ofGetFrameNum() % 100 == 0)){
      bg.draw(0,0,1920,1080);
@@ -123,7 +149,10 @@ void testApp::draw(){
     cleanBackgrounds();
     sourceColorImg.draw(194,139,320,240);
     //backgroundAddon.draw(800,139);
-    grayBg.draw(800,139,320,240);
+    blobImgOF.update();
+    blobImgOF.draw(800,139,320,240);
+    blobImgOF_min=blobImgOF;
+    blobImgOF_min.resize(320, 240);
     //backgroundAddon.backgroundCodeBookConnectedComponents.draw(800,139,320,240);
     // or, instead we can draw each blob individually,
 	// this is how to get access to them:
@@ -135,8 +164,10 @@ void testApp::draw(){
         tex.loadData(vidPlayer.getPixels(), VIDEOWITH,VIDEOHEIGHT, GL_RGB);
 	    //tex=fbo.getTextureReference();
     #endif
+    tex.loadData(blobImgOF.getPixels(),VIDEOWITH,VIDEOHEIGHT, GL_RGB);
     //fbo.draw(0,0);
 	individualTextureSyphonServer.publishTexture(&tex);
+    mRecorder.update();
 }
 
 void testApp::blobAdded(ofxBlob &_blob){
@@ -174,6 +205,10 @@ void testApp::keyPressed(int key){
     }
     else if(key==' '){
         bLearnBackground=true;
+    }
+    else if(key=='r'){
+        blobImgOF_min.resize(320,240);
+        mRecorder.start(3000, 25, &blobImgOF_min);
     }
 }
 

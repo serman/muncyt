@@ -15,21 +15,23 @@ void testApp::setup(){
     fbo.allocate(640, 480, GL_RGB);
     cameraPixels.allocate(640,480,OF_PIXELS_RGB);
     cameraImg.allocate(640, 480,OF_IMAGE_COLOR );
+    mPlayer.setup();
 }
 
 //--------------------------------------------------------------
 void testApp::update(){
-
+    mPlayer.update();
 }
 
 //--------------------------------------------------------------
 void testApp::draw(){
-    fbo.begin();
+    //fbo.begin();
     mSyphonClient.draw(0, 0,640,480);
-    fbo.end();
-    fbo.readToPixels(cameraPixels);
-    cameraImg.setFromPixels(cameraPixels);
-    cv::Mat imgMat = ofxCv::toCv(cameraPixels);
+    //fbo.end();
+    //fbo.readToPixels(cameraPixels);
+    //cameraImg.setFromPixels(cameraPixels);
+    //cv::Mat imgMat = ofxCv::toCv(cameraPixels);
+    mPlayer.drawAll(0,0);
 	
 }
 
