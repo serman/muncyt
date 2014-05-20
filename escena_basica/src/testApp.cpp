@@ -5,7 +5,16 @@
 // https://www.iforce2d.net/b2dtut/collision-anatomy
 // http://forum.openframeworks.cc/t/box2d-contact-listening-and-userdata/3441/3
 // 
+// Filtrado: 
+// http://www.amasso.info/?p=221
+//
 
+//
+// Colores:
+// https://kuler.adobe.com/nuclear-art-colors/
+// http://colors-hex.com/
+// http://www.workwithcolor.com/
+// 
 
 //--------------------------------------------------------------
 void testApp::setup() {
@@ -75,9 +84,11 @@ void testApp::setup() {
 	rNucleo	= 14;
 	rNeutron = 5;
 	
-	velocNeutronLim = 60;
+	velocNeutronLim = 80;
+	velocNeutronDestroy = velocNeutronLim*0.7;
 	velocNeutronLanz = 120;
-	
+
+	modoDrawParticulas = MODO_PARTIC;	
 	
 	ofLogVerbose("Add nucleos");
 	// add some nucleos y boxes
@@ -85,11 +96,6 @@ void testApp::setup() {
 	for(int i =0; i<nCircs; i++) {
 		addNucleo(centro.x+ofRandom(-1,1), centro.y+ofRandom(-1,1), rNucleo);
 	}
-	
-//	int nBoxes = 10 + floor(  ofRandom(10) );
-//	for(int i =0; i<nBoxes; i++) {
-//		addBox(centro.x, centro.y);
-//	}
 	
 	cargaSounds();
 	
@@ -108,8 +114,14 @@ void testApp::setup() {
 	// Anillo(ofVec2f _pos, float rInt, float rExt);
 	anillo = Anillo(ofVec2f(centro.x,centro.y), radioInt, radioExt);
 	
+	// Control del anillo
+	anilloUI_L = ofRectangle(0,ofGetHeight()-40, 40,40);
+	anilloUI_R = ofRectangle(ofGetWidth()-40,ofGetHeight()-40, 40,40);
+	
+	swBlendModeADD = false;
 	
 	
+	frecFondo = 4.0;
 	
 	
 }
@@ -129,123 +141,9 @@ void testApp::cargaSounds() {
 
 
 //--------------------------------------------------------------
-void testApp::contactStart(ofxBox2dContactArgs &e) {
-	if(e.a != NULL && e.b != NULL) { 
-		// Si chocan dos objetos Circle (dos particulas) suena un tipo de sonido
-		// Se puede hacer dependiente de 
-		if(e.a->GetType() == b2Shape::e_circle && e.b->GetType() == b2Shape::e_circle) {
-			sounds[0].play();
-			
-//			ofLogVerbose("Choque cirle-circle");
-
-//			SoundData * aData = (SoundData*)e.a->GetBody()->GetUserData();
-//			SoundData * bData = (SoundData*)e.b->GetBody()->GetUserData();
-			
-//			if(aData) {
-//				aData->bHit = true;
-//				sound[aData->soundID].play();
-//			}
-//			
-//			if(bData) {
-//				bData->bHit = true;
-//				sound[bData->soundID].play();
-//			}
-		}
-		else {
-			// Si el choque no es entre dos particulas (circles), suena otra cosa.
-			// Por ejemplo el choque con la pared de la c‡mara
-			sounds[1].play();
-//			ofLogVerbose("Choque xx-xx");
-		}
-	}
-}
-
-//--------------------------------------------------------------
-void testApp::contactEnd(ofxBox2dContactArgs &e) {
-	if(e.a != NULL && e.b != NULL) { 
-		// si chocan dos particulas
-		if(e.a->GetType() == b2Shape::e_circle && e.b->GetType() == b2Shape::e_circle) {
-			Particula * pA = (Particula*)e.a->GetBody()->GetUserData();
-			Particula * pB = (Particula*)e.b->GetBody()->GetUserData();
-			
-			// Aqu’ indica como recoger el punto de contacto en box2D:
-			// https://www.iforce2d.net/b2dtut/collision-anatomy
-			//
-			
-			if((pA->tipo == tipoNeutron && pB->tipo == tipoNucleo) ||
-			   (pA->tipo == tipoNucleo  && pB->tipo == tipoNeutron)) {
-				
-				//ofLogVerbose("Fin choque. pa-pb: " + ofToString(pA->tipo) + "-" + ofToString(pB->tipo));
-				// add un destello en el punto de colision
-				
-				ofVec2f ptChoque = (pA->getPosition() + pB->getPosition())/2.0;
-							
-				// desexcitar el nucleo
-				if(pA->tipo == tipoNucleo) {
-					if(pA->swExcitado) {
-						pA->setExcitado(false);
-
-						addDestello(ptChoque.x, ptChoque.y);
-						
-						// add un nuevo neutron, y tal vez duplicar el nucleo
-						// Calcular el punto para que no choque con el nucleo
-						ofVec2f dirNucleo = pA->getVelocity();
-						ofVec2f posNucleo = pA->getPosition();
-						ofVec2f dirNeutron = pB->getVelocity();
-						ofVec2f posNeutron = pB->getPosition();
-						
-						ofVec2f posNeutron2 = pB->getPosition();
-						ofVec2f dirNeutron2 = pB->getVelocity();
-						dirNeutron2.rotate( -2.0 * dirNeutron2.angle(dirNucleo) );
-						
-						ofVec2f distPBA = posNeutron - posNucleo;
-						float angPBA_dirNucleo = distPBA.angle(dirNucleo);
-						distPBA.rotate(-2*angPBA_dirNucleo);
-						
-						posNeutron2 = posNucleo + distPBA;
-						
-						// Da error al crear el objeto
-						// porque esta en proceso de choque ==> world's blocked
-						// Hay que a–adirlo a una lista de creacion de neutrones
-//						addNeutron(posNeutron2.x, posNeutron2.y, 
-//								   velocNeutronLanz*0.95, 
-//								   atan2(dirNeutron2.y, dirNeutron2.x));
-						
-						addDestello(posNeutron2.x, posNeutron2.y);
-						
-					}
-				} 
-				else {
-					if(pB->swExcitado) {
-						pB->setExcitado(false);
-
-						addDestello(ptChoque.x, ptChoque.y);
-						// add un nuevo neutron, y tal vez duplicar el nucleo
-						
-					}
-					
-				}
-			}
-		}
-		
-//		
-//		SoundData * aData = (SoundData*)e.a->GetBody()->GetUserData();
-//		SoundData * bData = (SoundData*)e.b->GetBody()->GetUserData();
-//		
-//		if(aData) {
-//			aData->bHit = false;
-//		}
-//		
-//		if(bData) {
-//			bData->bHit = false;
-//		}
-	}
-}
-
-
-
-//--------------------------------------------------------------
 void testApp::update() {
+	
+	// 
 	box2d.update();	
 
 	// Revisar si hay que eliminar particulas
@@ -254,6 +152,17 @@ void testApp::update() {
 	// - check algo y borrar si toca
 	//
 	
+	// revisar si hay que add nuevas particulas
+	for(int i=0; i<nuevasPartics.size(); i++) {
+		CineticData cd = nuevasPartics[i];
+		if(cd.tipoPart==tipoNeutron) {
+			addNeutron(cd.x, cd.y, velocNeutronLanz, cd.vAng);
+			ofLogVerbose("addNeutron en escena************************** n n n ********");
+		}
+	}
+	nuevasPartics.clear();	// **** BORRADO ****
+
+
 	// Update Destellos
 	for(int i=destellos.size()-1; i>0; i--) {
 		
@@ -266,7 +175,20 @@ void testApp::update() {
 		}
 	}
 	chispa.update();
-	
+
+//	// Actualizar estado de neutrones y eliminar si procede
+	for(int i=0; i<neutrones.size(); i++) {
+		//		ofFill();
+		float veloc = neutrones[i].get()->getVelocity().length();
+		if(veloc>velocNeutronDestroy) {
+			neutrones[i].get()->setExcitado(veloc>velocNeutronLim);
+		}
+		else {
+			// destroy
+			neutrones[i].get()->destroy();
+			neutrones.erase(neutrones.begin()+i);
+		}
+	}
 	
 	// Aplica fuerzas
 	if(ofGetFrameRate()>0) 	fuerzaAng += fuerzaWAng/ofGetFrameRate();
@@ -280,13 +202,25 @@ void testApp::update() {
 	// Anillo Aceleracion
 	anillo.update();
 	
+	
+	// Update Particulas
+	for(int i=0; i<neutrones.size(); i++) {
+		neutrones[i].get()->update();		
+	}
+	for(int i=0; i<nucleos.size(); i++) {
+		nucleos[i].get()->update();
+	}
+	
+	
 }
 
 //--------------------------------------------------------------
 void testApp::draw() {
 
 //	ofBackground(0);
-	ofBackgroundGradient(ofColor::gray, ofColor::black, OF_GRADIENT_CIRCULAR);
+	ofColor colorCentro = ofColor::fromHsb(60, 50+50*sin(ofGetElapsedTimef()/frecFondo*TWO_PI), 255);
+	ofBackgroundGradient(colorCentro, ofColor::black, OF_GRADIENT_CIRCULAR);
+//	ofBackgroundGradient(ofColor::gray, ofColor::black, OF_GRADIENT_CIRCULAR);
 	
 	// Selector Fuerza: 
 	// caja fuera de los dos circulos
@@ -307,19 +241,27 @@ void testApp::draw() {
 		bordeLine.draw();
 	ofPopStyle();
 	
-//	ofEnableBlendMode(OF_BLENDMODE_ADD);
+	if(swBlendModeADD) ofEnableBlendMode(OF_BLENDMODE_ADD);
 	for(int i=0; i<nucleos.size(); i++) {
 		ofFill();
 		ofSetHexColor(0xf6c738);
 		nucleos[i].get()->draw();
 	}
+	
 	for(int i=0; i<neutrones.size(); i++) {
 //		ofFill();
 		float veloc = neutrones[i].get()->getVelocity().length();
 		neutrones[i].get()->setExcitado(veloc>velocNeutronLim);
 //		ofSetHexColor(0xf6c738);
-		neutrones[i].get()->draw();
-		ofDrawBitmapString(ofToString(veloc), neutrones[i].get()->getPosition().x, neutrones[i].get()->getPosition().y);
+		// Eliminar particulas
+		if(veloc<velocNeutronLim*0.6) {
+			neutrones[i].get()->destroy();
+			neutrones.erase(neutrones.begin()+i);
+		}
+		else {
+			neutrones[i].get()->draw();
+			ofDrawBitmapString(ofToString(veloc), neutrones[i].get()->getPosition().x, neutrones[i].get()->getPosition().y);
+		}
 	}
 
 	// dibuja valor fuerza
@@ -332,7 +274,7 @@ void testApp::draw() {
 	}
 	chispa.draw();
 	
-//	ofDisableBlendMode();
+	if(swBlendModeADD) ofDisableBlendMode();
 	
 	// Mascara exterior
 	// ...Con algun Shape...
@@ -359,10 +301,11 @@ void testApp::draw() {
 	info += "Total Joints: "+ofToString(box2d.getJointCount())+"\n\n";
 	info += "FPS: "+ofToString(ofGetFrameRate(), 1)+"\n\n";
 	info += "Aplica Fuerza [f]: "+ofToString(swFuerza)+"\n";
-	info += "valor Fuerza [mouseY+Click+f]: "+ofToString(fuerzaVal)+" \n";
-	info += "w Giro Fuerza [mouseX+Click+f]: "+ofToString(ofRadToDeg(fuerzaWAng)/360)+" Hz\n\n";
+	info += "BlendMode ADD [b]: "+ofToString(swBlendModeADD)+" \n";
 	info += "aceleracion [click en esquinas inferiores - +] w/a: "+ofToString(anillo.wAng)+"/"+ofToString(anillo.accAng)+" \n\n";
-//	ofSetHexColor(0x444342);
+
+	info += "nuevasPartics: " + ofToString(nuevasPartics.size()) + "\n";
+	//	ofSetHexColor(0x444342);
 	ofSetHexColor(0xCCCCCC);
 	ofDrawBitmapString(info, 30, 30);
 }
@@ -388,7 +331,6 @@ void testApp::drawFuerzaSelector() {
 	// valor de la veloc de rotacion de la fuerza
 	float posX = ofMap(ofRadToDeg(fuerzaWAng), 30, 360*6, 0, marco.width);
 	ofLine(posX, 0, posX, marco.height);
-	
 	
 	
 	//marco.getCenter();
@@ -449,11 +391,14 @@ void testApp::addNucleo(int xx, int yy, float r){
 //	if(ofRandom(1)<0.5)	nucleos.back().get()->setExcitado(true);
 //	else				nucleos.back().get()->setExcitado(false);
 	
+	
+	nucleos.back().get()->setEscala(4.0);
 	nucleos.back().get()->setTipo(tipoNucleo);
 	
 	nucleos.back().get()->setColorExcitado(ofColor::fromHsb(60,250,250));
 	nucleos.back().get()->setColor(ofColor::fromHsb(60,250,100));
 	
+	nucleos.back().get()->setModoDraw(modoDrawParticulas);
 	// * * * * * * *
 	// A corregir:
 	// http://forum.openframeworks.cc/t/box2d-contact-listening-and-userdata/3441/3
@@ -474,6 +419,7 @@ void testApp::addNeutron(int xx, int yy){
 
 void testApp::addNeutron(int xx, int yy, float vVal, float vAng){
 
+//	ofLogVerbose("Nuevo Neutron. INI. #neutrones: "+ofToString(neutrones));
 	neutrones.push_back(ofPtr<Particula>(new Particula));
 	neutrones.back().get()->setPhysics(50.5, 0.85, 0.1); // setPhysics(float density, float bounce, float friction);
 	neutrones.back().get()->setup(box2d.getWorld(), xx, yy, rNeutron);		// pos, rr
@@ -482,10 +428,12 @@ void testApp::addNeutron(int xx, int yy, float vVal, float vAng){
 	neutrones.back().get()->setColorExcitado(ofColor::fromHsb(0,250,250));
 	neutrones.back().get()->setColor(ofColor(0x5231c9));
 
+	neutrones.back().get()->setModoDraw(modoDrawParticulas);
+
 	neutrones.back().get()->setVelocity(vVal*cos(vAng),vVal*sin(vAng));
 	
 	neutrones.back().get()->setExcitado(true);
-	
+	neutrones.back().get()->setEscala(0.7f);
 	neutrones.back().get()->setTipo(tipoNeutron);
 	
 	// * * * * * * *
@@ -494,6 +442,7 @@ void testApp::addNeutron(int xx, int yy, float vVal, float vAng){
 	//
 	neutrones.back().get()->setData(neutrones.back().get());
 	// * * * * * * *
+//	ofLogVerbose("Nuevo Neutron. FIN. #neutrones: "+ofToString(neutrones));
 	
 }
 
@@ -505,18 +454,11 @@ void testApp::addDestello(float px, float py) {
 	
 }
 
-void testApp::addBox(int xx, int yy){
-	float w = ofRandom(10, 20);
-	float h = ofRandom(10, 20);
-	boxes.push_back(ofPtr<ofxBox2dRect>(new ofxBox2dRect));
-	boxes.back().get()->setPhysics(3.0, 0.53, 0.1);
-	boxes.back().get()->setup(box2d.getWorld(), xx, yy, w, h);	
-	boxes.back().get()->setRotation(ofRandom(360));
-}
 
 
 //--------------------------------------------------------------
 void testApp::keyPressed(int key) {
+	ofLogVerbose("keyPressed");
 	
 	if(key == 'c') {
 //		addNucleo(mouseX, mouseY, rNucleo);
@@ -529,7 +471,13 @@ void testApp::keyPressed(int key) {
 	
 	if(key=='q') {
 		// Quitar particulas
+		for(int i=0; i<nucleos.size(); i++) {
+			nucleos[i].get()->destroy();
+		}
 		nucleos.clear();
+		for(int i=0; i<neutrones.size(); i++) {
+			neutrones[i].get()->destroy();
+		}
 		neutrones.clear();
 	}
 	
@@ -541,10 +489,40 @@ void testApp::keyPressed(int key) {
 	}
 	
 	if(key == 's') ofToggleFullscreen();
+	
+	if(key=='b') swBlendModeADD=!swBlendModeADD;
+	
+	if(key=='1'){
+		// cambiar particulas a modo PARTIC
+		setModoParticulas(MODO_PARTIC);
+	}
+	else if(key=='2') {
+		// cambiar particulas a modo PATH
+		setModoParticulas(MODO_PATH);
+	}
+	else if(key=='3') {
+		// cambiar particulas a modo BOX2D
+		setModoParticulas(MODO_BOX2D);
+	}
+	
+}
+
+void testApp::setModoParticulas(int _modo) {
+	modoDrawParticulas = _modo;
+	ofLogVerbose("setModoParticulas modo Draw: " + ofToString(_modo));
+	for(int i=0; i<neutrones.size(); i++) {
+		ofLogVerbose("neutron: " + ofToString(i));
+		neutrones[i].get()->setModoDraw(_modo);
+	}
+	for(int i=0; i<nucleos.size(); i++) {
+		nucleos[i].get()->setModoDraw(_modo);
+	}
 }
 
 //--------------------------------------------------------------
 void testApp::keyReleased(int key) {
+	ofLogVerbose("keyReleased");
+
 }
 
 //--------------------------------------------------------------
@@ -575,13 +553,15 @@ void testApp::mousePressed(int x, int y, int button) {
 //		fuerzaVal = ( ofMap(y, 0, ofGetHeight(), 0, 200) );
 //	}
 	
-	if((x>ofGetWidth()-40) && (y>ofGetHeight()-40)) {
-		anillo.acelera(-0.05);
-		ofLogVerbose("Acc ++: " + ofToString(anillo.accAng));
-	}
-	if((x<40) && (y>ofGetHeight()-40)) {
-		anillo.acelera(0.05);
+//	if((x>ofGetWidth()-40) && (y>ofGetHeight()-40)) {
+	if(anilloUI_L.inside(x,y)) {
+		anillo.acelera(0.03);
 		ofLogVerbose("Acc --: " + ofToString(anillo.accAng));
+	}
+//	if((x<40) && (y>ofGetHeight()-40)) {
+	if(anilloUI_R.inside(x,y)) {
+		anillo.acelera(-0.03);
+		ofLogVerbose("Acc ++: " + ofToString(anillo.accAng));
 	}
 }
 

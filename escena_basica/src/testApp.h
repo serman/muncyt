@@ -34,6 +34,12 @@ struct CineticData {
 	float vVal;
 	float vAng;
 	int tipoPart;
+	CineticData (float _x, float _y, float _vVal, float _vAng, int _tipoPart) {
+		x=_x;
+		y=_y;
+		vVal=_vVal;
+		tipoPart=_tipoPart;
+	}
 };
 
 class testApp : public ofBaseApp {
@@ -59,6 +65,8 @@ public:
 	// this is the function for contacts
 	void contactStart(ofxBox2dContactArgs &e);
 	void contactEnd(ofxBox2dContactArgs &e);
+
+	void colisiona_N_n (Particula * pN, Particula * pn);
 	
 	// Borde circular
 	ofxBox2dEdge			borde;
@@ -80,8 +88,10 @@ public:
 	void addNeutron(int xx, int yy);
 	void addNeutron(int xx, int yy, float vVal, float vAng);
 	
-	
-	vector <CineticData>	nuevosNeutrones;
+	void setModoParticulas(int _modo);
+	int modoDrawParticulas;
+		
+	vector <CineticData>	nuevasPartics;
 	
 	// Fuerza
 	float		fuerzaVal;
@@ -98,7 +108,7 @@ public:
 	
 	// Textura de particulas
 	ofTexture	texPartic;
-	
+
 	// Color Radioactivo
 	// #5dca31 = RGB(93,202,49)  = HSB(103,76,79)
 	// Ver mas en: http://rgb.to/hex/5dca31
@@ -107,7 +117,7 @@ public:
 	float rNucleo;
 	float rNeutron;
 	
-	float velocNeutronLim, velocNeutronLanz;
+	float velocNeutronLim, velocNeutronDestroy, velocNeutronLanz;
 	
 	// when the ball hits we play this sound
 	ofSoundPlayer  sounds[N_SOUNDS];
@@ -126,6 +136,15 @@ public:
 	
 	// Anillo de aceleraci—n
 	Anillo	anillo;
+	ofRectangle anilloUI_L, anilloUI_R;
 	
+	bool swBlendModeADD;
+	
+	float frecFondo;	// frecuencia de cambio del 
+	
+	
+	// XML
+	void GrabaConfig();
+	void cargaConfig();
 };
 
