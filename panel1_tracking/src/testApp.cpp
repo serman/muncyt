@@ -4,8 +4,8 @@
 void testApp::setup(){
     ofSetFrameRate(25);
     adminMode=true;
-    bg.loadImage("bg.png");
-    ofSetBackgroundAuto(false);
+    bg.loadImage("bg2.png");
+    //ofSetBackgroundAuto(false);
     #ifdef _USE_LIVE_VIDEO
         //cam.setVerbose(true);
         cam.initGrabber(VIDEOWITH,VIDEOHEIGHT);
@@ -45,7 +45,25 @@ void testApp::setup(){
     
     myComm.setup();
     mRecorder.setup();
+    
+    int a=600;
+    int b=231;
+    for (int i=0; i<5; i++){ //
+        positions.push_back(ofPoint(550+i*36,231));
+    }
 
+    for (int i=0; i<5; i++){ //
+        positions.push_back(ofPoint(1155+i*37,231));
+    }
+	    positions.push_back(ofPoint(278,400));
+    for (int i=0; i<32; i++){ //
+        positions.push_back(ofPoint(278+i*37,450));
+    }
+    	    positions.push_back(ofPoint(1425,400));
+            positions.push_back(ofPoint(1425,500));
+            positions.push_back(ofPoint(2000,2000)); //–apa para que el bucle aguante un par de segundos mas
+		    positions.push_back(ofPoint(2000,2000)); //–apa para que el bucle aguante un par de segundos mas
+        	positions.push_back(ofPoint(2000,2000)); //–apa para que el bucle aguante un par de segundos mas
 }
 
 //--------------------------------------------------------------
@@ -85,21 +103,47 @@ void testApp::update(){
         
         if (bLearnBackground == true){
             floatBgImg = sourceColorImg;
-			cvConvertScale( floatBgImg.getCvImage(), grayBg.getCvImage(), 255.0f/65535.0f, 0 );
-			grayBg.flagImageChanged();
+			//cvConvertScale( floatBgImg.getCvImage(), grayBg.getCvImage(), 255.0f/65535.0f, 0 ); //conversion from float to gray
+			//grayBg.flagImageChanged();
+            blobTracker.setBg(grayBg); // poner el BG a 0
             bLearnBackground = false;
         }
-        blobTracker.setBg(grayBg);
+        //blobTracker.setBg(grayBg);
         blobTracker.update(grayImage, blobThreshold,minBlobSize,maxBlobSize);
-        //grayImage.flagImageChanged();
-//        void    update( ofxCvGrayscaleImage& input, int _threshold = -1,  int minArea = 20 ,int maxArea = 40*240)/3, int nConsidered = 10, double hullPress = 20, bool bFindHoles = false, bool bUseApproximation = true);
+        //  grayImage.flagImageChanged();
+        //  void    update( ofxCvGrayscaleImage& input, int _threshold = -1,  int minArea = 20 ,int maxArea = 40*240)/3, int nConsidered = 10, double hullPress = 20, bool bFindHoles = false, bool bUseApproximation = true);
 	}    
-	if(bLearnBackground){
-		backgroundAddon.startLearning();
-		bLearnBackground = false;
-	}
+
     myComm.sendBlobs( blobTracker.trackedBlobs);
 
+}
+
+void testApp::drawCoolGui(){
+    ofEnableAlphaBlending();
+    if( ofGetFrameNum() % 5 ==0){
+        rectCounter++;
+    	alphaCounter=0;
+    }
+    if(rectCounter>positions.size()) rectCounter=0;
+    ofImage rect;
+    rect.loadImage("rect.png");
+    ofSetColor(255,255,255,255);
+    for (int i=0; i<rectCounter-1; i++){ //
+        //if(i==10)	{ofRotate(90); rect.draw( positions[i].x, positions[i].y); ;ofRotate(-90);}
+        //if(i>41) 	   rect.draw(	positions[i].x, positions[i].y, 54, 54);
+        //else
+        rect.draw( positions[i].x, positions[i].y);
+        
+    }
+        //rect.draw(positions[i].x,positions[i].y,40,24);
+    ofSetColor(255,255,255,alphaCounter);
+    alphaCounter+=40; if(alphaCounter>255) alphaCounter=255;
+    rect.draw(positions[rectCounter-1].x,positions[rectCounter-1].y);
+    
+    ofPushStyle();
+    ofPopStyle();
+    ofDisableAlphaBlending();
+    
 }
 
 //--------------------------------------------------------------
@@ -143,16 +187,18 @@ void testApp::draw(){
     **/
     
     
-    if(ofGetFrameNum() ==0 || (ofGetFrameNum() % 100 == 0)){
-     bg.draw(0,0,1920,1080);
-    }
-    cleanBackgrounds();
+    //if(ofGetFrameNum() == 3 || (ofGetFrameNum() % 50 == 0)){
+     //bg.draw(0,0,1920,1080);
+   // }
+    //cleanBackgrounds();
+       // drawCoolGui();
     sourceColorImg.draw(194,139,320,240);
     //backgroundAddon.draw(800,139);
     blobImgOF.update();
-    blobImgOF.draw(800,139,320,240);
+    blobImgOF.draw(800,139,320,240); //REAL IMAGE WITH ONLY THE BLOBS
     blobImgOF_min=blobImgOF;
     blobImgOF_min.resize(320, 240);
+    
     //backgroundAddon.backgroundCodeBookConnectedComponents.draw(800,139,320,240);
     // or, instead we can draw each blob individually,
 	// this is how to get access to them:
@@ -168,7 +214,16 @@ void testApp::draw(){
     //fbo.draw(0,0);
 	individualTextureSyphonServer.publishTexture(&tex);
     mRecorder.update();
+	
+    if(debug) showDebug();
 }
+
+void testApp::showDebug(){
+    ofDrawBitmapString("Framerate " + ofToString(ofGetFrameRate()), 20, 20);
+
+    
+}
+
 
 void testApp::blobAdded(ofxBlob &_blob){
     ofLog(OF_LOG_NOTICE, "Blob ID " + ofToString(_blob.id) + " added" );
@@ -193,7 +248,10 @@ void testApp::cleanBackgrounds(){
     ofRect(634, 586, 375, 280);
     ofRect(166, 586, 375, 280);
     ofRect(1363, 586, 375, 280);
-    
+    //cuadraditos que se mueven
+    ofRect(557,175,199,140);
+    ofRect(1159,202,187,120);
+    ofRect(261,414,1202,88);
     ofPopStyle();
     
 }

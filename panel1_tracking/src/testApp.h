@@ -2,7 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxOpenCv.h"
-#include "ofxBackground.h"
+//#include "ofxBackground.h"
 #include "ofxBlobTracker.h"
 #include "ofxUI.h"
 #include "ofxSyphon.h"
@@ -24,7 +24,7 @@ class testApp : public ofBaseApp{
         #endif
         bool isNewFrame;
 /*** ADDONS **/
-    	ofxBackground		backgroundAddon;	//the addon that allows you to use a variety of methods for background/foreground segmentation
+    	//ofxBackground		backgroundAddon;	//the addon that allows you to use a variety of methods for background/foreground segmentation
 		ofxBlobTracker          blobTracker;
     
     
@@ -55,12 +55,16 @@ class testApp : public ofBaseApp{
         bool bLearnBackground=true;	//a boolean to indicate whether to instruct the addon to learn the background again, defaults to true
     	cheapComm myComm;
     	mosaicRecorder mRecorder;
-    
+	    vector <ofPoint> positions;
+    	int rectCounter=0;
+    int alphaCounter=0;
+    bool debug = true;
 	public:
 		void setup();
 		void update();
 		void draw();
-
+	    void drawCoolGui();
+    void showDebug();
 		void keyPressed(int key);
 		void keyReleased(int key);
 		void mouseMoved(int x, int y );

@@ -46,10 +46,18 @@ void testApp::setup() {
     
     low=0.25;
     zMin = 200;
-    zMax = 1800;
+    zMax = 1500;
     
     incrDistance=0;
 	setupParticles();
+    
+    gui1 = new ofxUICanvas(0,100,400,500);
+   
+    
+    gui1->addSlider("speed", 0.4, 5, &speed);
+    gui1->addIntSlider("stopUmbral", 10, 10000, &stopUmbral) ;
+    gui1->addSpacer();
+	gui1->addButton("reset",true);
 
 }
 
@@ -62,70 +70,73 @@ void testApp::update() {
 	
 	// there is a new frame and we are connected
 	if(kinect.isFrameNew()) {
-		// load grayscale depth image from the kinect source
-		grayImage.setFromPixels(kinect.getDepthPixels(), kinect.width, kinect.height);
-		
-		// we do two thresholds - one for the far plane and one for the near plane
-		// we then do a cvAnd to get the pixels which are a union of the two thresholds
-		if(bThreshWithOpenCV) {
-			grayThreshNear = grayImage;
-			grayThreshFar = grayImage;
-			grayThreshNear.threshold(nearThreshold, true);
-			grayThreshFar.threshold(farThreshold);
-			cvAnd(grayThreshNear.getCvImage(), grayThreshFar.getCvImage(), grayImage.getCvImage(), NULL);
-		} else {
-			// or we do it ourselves - show people how they can work with the pixels
-			unsigned char * pix = grayImage.getPixels();
-			
-			int numPixels = grayImage.getWidth() * grayImage.getHeight();
-			for(int i = 0; i < numPixels; i++) {
-				if(pix[i] < nearThreshold && pix[i] > farThreshold) {
-					pix[i] = 255;
-				} else {
-					pix[i] = 0;
-				}
-			}
-		}
-        updateParticles();
+
+        if(pulso==true)
+	        updateParticles();
 	}
     
+    /**if(ofGetElapsedTimeMillis() % 10000 > 2000){
+        particleMode=ESPEJO;
+    }
+    else{
+            particleMode=NUBE; //NUBE
+    } **/
+
 }
 void testApp::updateParticles() {
     meshParticles.clear();
     std::vector<Particle>::iterator p ;
-    int counter=0;
+    ofVec3f mdestPoint;
+    ofVec3f diff ;
     for ( p = particles.begin() ; p != particles.end() ; p++ )
     {
-        if(kinect.getDistanceAt(p->_x, p->_y) > 200
-           && kinect.getDistanceAt(p->_x, p->_y) < zMax) {
-            ofVec3f mdestPoint;
-            if(explosion==false){
-             mdestPoint= kinect.getWorldCoordinateAt(p->_x, p->_y);// ofVec3f(ofRandom(900,1000),ofRandom(900,1000),ofRandom(900,1000));//
-            }
-            else {
-                mdestPoint= kinect.getWorldCoordinateAt(320, 240);// ofVec3f(ofRandom(900,1000),ofRandom(900,1000),ofRandom(900,1000));//
-            }            
-                ofVec3f diff = mdestPoint- p->position;
-                if(diff.length()>30){
-                    diff *= 0.005;
+        if(kinect.getDistanceAt(p->_x, p->_y) > 200 && kinect.getDistanceAt(p->_x, p->_y) < zMax) {
+            if(particleMode==ESPEJO){
+                p->stopAcc();
+             	mdestPoint= kinect.getWorldCoordinateAt(p->_x, p->_y);//getWorldCoordinateAt() returns the position in millimeters with kinect at the origin.
+                diff = mdestPoint- p->position;
+                if(diff.lengthSquared()>stopUmbral){
+                    diff.normalize();
+                    //diff *= 0.05;
+                    diff *= (speed / diff.lengthSquared());
                     p->addForce( diff );
-                    p->velocity +=p->acceleration;
-                    p->position +=p->velocity;
+                    p->update();
+                }//espejo
+                else{
+                    p->stopAcc();
+                    p->velocity = ofVec3f(0,0,0);
                 }
-            
+            }
+            else if(particleMode==NUBE) {
+                mdestPoint= ofVec3f(p->position.x + ofRandom(-ofGetFrameNum()%300,ofGetFrameNum()%300),p->position.y + ofRandom(-ofGetFrameNum()%300,ofGetFrameNum()%300),p->position.z +
+                                    ofRandom(-ofGetFrameNum()%300,ofGetFrameNum()%300)); //kinect.getWorldCoordinateAt(ofRandom(0,400), ofRandom(200,400));// ofVec3f(ofRandom(900,1000),ofRandom(900,1000),ofRandom(900,1000));//
+                 	diff = mdestPoint- p->position;
+                    diff *= 0.00001;
+                    p->addForce( diff );
+	                p->update();
+               // p->position+=ofNoise( p->position.x,p->position.y,p->position.z)*30;
+            }
             //if(counter%300==0)
             //cout << "counter: " << p->position << " ===...........=== "<< mvect << " x: " << x << " y " << y <<"\n";
-        	p->color=ofColor(255,255,255,255);
+        	//p->color=ofColor(255,255,255,255);
+            p->color=ofColor::fromHsb(ofMap(kinect.getDistanceAt(p->_x, p->_y), zMin, zMax, 4, 255) , 255, 255, 50);
+           // p->color=ofColor( kinect.getColorAt(p->_x, p->_y) );
+            if((p->_x+p->_x)%400==0 ){ //820
+                        	//p->color=ofColor(0,255,0,255);
+                //if( ofGetFrameNum()%1==0) cout <<  " ::: "	<< diff.lengthSquared() <<  " .... "<< p->velocity <<" ... " << p->acceleration;
+                
+            }
             meshParticles.addVertex(p->position);
-            meshParticles.addColor(ofColor::fromHsb(ofMap(p->_x, p->_y, zMin, zMax, 0, 360) , 255, 255, 50));
-//            meshParticles.addColor(p->color);
+           // meshParticles.addColor(ofColor::fromHsb(ofMap(p->_x, p->_y, zMin, zMax, 1, 360) , 255, 255, 50));
+            meshParticles.addColor(p->color);
+        }else{
+           // meshParticles.addVertex(p->position);
+            p->color=ofColor(255,0,0,40);
+            //meshParticles.addColor(ofColor(255,0,0,40));
         }
-        else{
-            p->color=ofColor(255,255,255,0);
-        }
-
-        counter++;
-    }
+    }//end for all points within vector
+    //if((ofGetFrameNum()%1==0))
+    //cout << " \n ----------------------------------------------- \n";
 
     
 }
@@ -136,61 +147,26 @@ void testApp::draw() {
 
 	ofSetColor(255, 255, 255);
 	
-	if(bDrawPointCloud) {
+
 		easyCam.begin();
         ofPushMatrix();
-        // ofRotateZ(90);
-        ofPushMatrix();
-            // the projected points are 'upside down' and 'backwards'
-        	ofScale(1, -1, -1);
-            ofTranslate(0, 0, -1000); // center the points a bit
-            if(pulso==true)
-                //drawPointCloud();
-                drawParticles();
-            else
-                drawPointCloud();
-//                drawLines();
+            // ofRotateZ(90);
+            ofPushMatrix();
+                // the projected points are 'upside down' and 'backwards'
+                ofScale(1, -1, -1);
+                ofTranslate(0, 0, -1000); // center the points a bit
+                if(pulso==true)
+                    //drawPointCloud();
+                    drawParticles();
+                else
+    //                drawPointCloud();
+                    drawLines();
             ofPopMatrix();
         ofPopMatrix();
 		easyCam.end();
-	} else {
-		// draw from the live kinect
-		kinect.drawDepth(10, 10, 400, 300);
-		kinect.draw(420, 10, 400, 300);
-		
-		grayImage.draw(10, 320, 400, 300);
-		contourFinder.draw(10, 320, 400, 300);
-		
-	}
-	
-	// draw instructions
-	ofSetColor(255, 255, 255);
-    //kinect.setDepthClipping(500,1000);
-	stringstream reportStream;
-        
-    if(kinect.hasAccelControl()) {
-        reportStream << "accel is: " << ofToString(kinect.getMksAccel().x, 2) << " / "
-        << ofToString(kinect.getMksAccel().y, 2) << " / "
-        << ofToString(kinect.getMksAccel().z, 2) << endl;
-    } else {
-        reportStream << "Note: this is a newer Xbox Kinect or Kinect For Windows device," << endl
-		<< "motor / led / accel controls are not currently supported" << endl << endl;
-    }
-    
-	reportStream << "press p to switch between images and point cloud, rotate the point cloud with the mouse" << endl
-    << "zMax= "<<zMax << endl
-    
-	<< "using opencv threshold = " << bThreshWithOpenCV <<" (press spacebar)" << endl
-	<< "set near threshold " << nearThreshold << " (press: + -)" << endl
-	<< "set far threshold " << farThreshold << " (press: < >) num blobs found " << contourFinder.nBlobs
-	<< ", fps: " << ofGetFrameRate() << endl
-	<< "press c to close the connection and o to open it again, connection is: " << kinect.isConnected() << endl;
 
-    if(kinect.hasCamTiltControl()) {
-    	reportStream << "press UP and DOWN to change the tilt angle: " << angle << " degrees" << endl
-        << "press 1-5 & 0 to change the led mode" << endl;
-    }
-	//ofDrawBitmapString(reportStream.str(), 20, 640);
+	
+    if(debug) showDebug();
 }
 
 void testApp::drawPointCloud() {
@@ -206,9 +182,9 @@ void testApp::drawPointCloud() {
 			if(kinect.getDistanceAt(x, y) > 200
                && kinect.getDistanceAt(x, y) < zMax) {
                 	ofVec2f p2= ofVec2f(x,y);
-                    mesh.addColor(kinect.getColorAt(x,y));
-                    mesh.addColor(ofColor::fromHsb(ofMap(kinect.getDistanceAt(x, y), zMin, zMax, 0, 360) , 255, 255, 50));
-                    //mesh.addColor(ofColor::yellowGreen );
+                    //mesh.addColor(kinect.getColorAt(x,y));
+                    //mesh.addColor(ofColor::fromHsb(ofMap(kinect.getDistanceAt(x, y), zMin, zMax, 0, 360) , 255, 255, 50));
+                    mesh.addColor(ofColor::yellowGreen );
                     //				mesh.addVertex(kinect.getWorldCoordinateAt(x, y));
                     ofVec3f vtmp = kinect.getWorldCoordinateAt(x , y);
                     mesh.addVertex(vtmp);
@@ -221,11 +197,8 @@ void testApp::drawPointCloud() {
             
         } //for interior
         // cout << p1.distance(vtmp) << "\n";
-
                 //vtmp.x +=20*sin(vtmp.y/10.0*PI+ofGetElapsedTimeMillis())*sin(ofGetElapsedTimeMillis()/1000.0*TWO_PI);
-        
 	}
-    
 	glPointSize(2);
 	ofEnableDepthTest();
 	mesh.draw();	
@@ -240,10 +213,8 @@ void testApp::setupParticles(){
     //Loop through all the rows
 
     //Loop through all the columns
-    for ( int y = 0 ; y < h ; y+=sampling )
-    {
-        for ( int x = 0 ; x < w ; x+=sampling )
-        {
+    for ( int y = 0 ; y < h ; y+=sampling ){
+        for ( int x = 0 ; x < w ; x+=sampling ){
         particles.push_back(Particle(ofVec3f( 0,0,0),ofColor(255,255,255) ,x,y));
         numParticles++ ;
         }
@@ -252,44 +223,33 @@ void testApp::setupParticles(){
     cout<<"particulas"<<numParticles;
 }
 
+void testApp::resetParticles(){
+    particles.clear();
+    setupParticles();
+}
+
 void testApp::drawParticles(){
     meshParticles.setMode(OF_PRIMITIVE_POINTS);
-    glPointSize(2);
+    glPointSize(3);
 	ofEnableDepthTest();
 	meshParticles.draw();
 	ofDisableDepthTest();
-    /*return
-    glBegin(GL_POINTS);
-    //glBegin(GL_LINES);
-    //glBegin(GL_TRIANGLES);
+}
+
+void testApp::showDebug(){
+    ofDrawBitmapString("Framerate " + ofToString(ofGetFrameRate()), 20, 20);
+    if(particleMode==NUBE)
+	    ofDrawBitmapString("MODO NUBE " , 20, 50);
+    else
+    	ofDrawBitmapString("MODO ESPEJO " , 20, 50);
     
-    ofEnableAlphaBlending() ;
-    
-    //Create an iterator to cycle through the vector
-    std::vector<Particle>::iterator p ;
-    
-    for ( p = particles.begin() ; p != particles.end() ; p++ )
-    {
-    	ofSetColor ( p->color ) ;
-        glVertex3f(p->position.x , p->position.y , p->position.z );
-    }
-    
-    //ofPopMatrix() ;
-    glEnd();
-    
-    ofEnableAlphaBlending() ;
-*/
 }
 
 void testApp::drawLines(){
 	int w = 640;
 	int h = 480;
     incrDistance+=1;
-    int step;
-    if(pulso==false)
-        step = 3;
-    else
-        step=5;
+    int step=5;
     std::vector<ofPolyline> lineMesh;
     ofColor col ;
     float _time = ofGetElapsedTimef() ;
@@ -351,41 +311,7 @@ void testApp::exit() {
 //--------------------------------------------------------------
 void testApp::keyPressed (int key) {
 	switch (key) {
-		case ' ':
-			bThreshWithOpenCV = !bThreshWithOpenCV;
-			break;
-			
-		case'p':
-			bDrawPointCloud = !bDrawPointCloud;
-			break;
-			
-		case '>':
-		case '.':
-			farThreshold ++;
-			if (farThreshold > 255) farThreshold = 255;
-			break;
-			
-		case '<':
-		case ',':
-			farThreshold --;
-			if (farThreshold < 0) farThreshold = 0;
-			break;
-			
-		case '+':
-		case '=':
-			nearThreshold ++;
-			if (nearThreshold > 255) nearThreshold = 255;
-			break;
-			
-		case '-':
-			nearThreshold --;
-			if (nearThreshold < 0) nearThreshold = 0;
-			break;
-			
-		case 'w':
-			kinect.enableDepthNearValueWhite(!kinect.isDepthNearValueWhite());
-			break;
-			
+
 		case 'o':
 			kinect.setCameraTiltAngle(angle); // go back to prev tilt
 			kinect.open();
@@ -394,26 +320,6 @@ void testApp::keyPressed (int key) {
 		case 'c':
 			kinect.setCameraTiltAngle(0); // zero the tilt
 			kinect.close();
-			break;
-			
-		case '1':
-			kinect.setLed(ofxKinect::LED_GREEN);
-			break;
-			
-		case '2':
-			kinect.setLed(ofxKinect::LED_YELLOW);
-			break;
-			
-		case '3':
-			kinect.setLed(ofxKinect::LED_RED);
-			break;
-			
-		case '4':
-			kinect.setLed(ofxKinect::LED_BLINK_GREEN);
-			break;
-			
-		case '5':
-			kinect.setLed(ofxKinect::LED_BLINK_YELLOW_RED);
 			break;
 			
 		case '0':
@@ -425,7 +331,14 @@ void testApp::keyPressed (int key) {
 		case 'n':
 			explosion=!explosion;
 			break;
-			
+        case 'g':
+            debug=!debug;
+            			break;
+        case 'p':
+            if(particleMode==NUBE)
+                particleMode=ESPEJO;
+            else particleMode=NUBE;
+            break;
 		case OF_KEY_UP:
 			angle++;
 			if(angle>30) angle=30;
@@ -465,3 +378,15 @@ void testApp::mouseReleased(int x, int y, int button)
 //--------------------------------------------------------------
 void testApp::windowResized(int w, int h)
 {}
+
+void testApp::guiEvent(ofxUIEventArgs &e)
+{        cout << "event";
+	string name = e.widget->getName();
+	int kind = e.widget->getKind();
+    
+    if(name == "reset")
+    {
+        cout << "reset";
+        resetParticles();
+    }
+}

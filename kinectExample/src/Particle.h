@@ -42,14 +42,36 @@ class Particle
     ofColor color ;
     int _x;
     int _y;
+    
     void addForce(float a_x, float a_y, float a_z) {
         acceleration.x += a_x;
         acceleration.y += a_y;
         acceleration.z += a_z;
     };
+    
     void addForce(ofVec3f a_loc) {
-        acceleration = a_loc;
+        acceleration += a_loc;
     }
+    
+    void stopAcc() {
+        acceleration.x = 0;
+        acceleration.y = 0;
+        acceleration.z = 0;
+    };
+    
+    void setForce(ofVec3f a_loc){
+        stopAcc();
+        addForce(a_loc);
+    }
+    
+    void update(){
+    	velocity += acceleration;
+        position += velocity;
+    }
+    
+    
+    
+    
     
 };
 #endif

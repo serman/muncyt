@@ -4,6 +4,7 @@
 #include "ofxOpenCv.h"
 #include "ofxKinect.h"
 #include "Particle.h"
+#include "ofxUI.h"
 
 // uncomment this to read from two kinects simultaneously
 //#define USE_TWO_KINECTS
@@ -22,13 +23,18 @@ public:
 	void mousePressed(int x, int y, int button);
 	void mouseReleased(int x, int y, int button);
 	void windowResized(int w, int h);
+    void guiEvent(ofxUIEventArgs &e);
+
 	void	drawLines();
+    void showDebug();
 	ofxKinect kinect;
 	bool pulso=false;
 #ifdef USE_TWO_KINECTS
 	ofxKinect kinect2;
 #endif
 	
+   	ofxUICanvas *gui1;
+    
 	ofxCvColorImage colorImg;
 	
 	ofxCvGrayscaleImage grayImage; // grayscale depth image
@@ -37,7 +43,7 @@ public:
 	
 	ofxCvContourFinder contourFinder;
 	
-    
+    bool debug=true;
 	bool bThreshWithOpenCV;
 	bool bDrawPointCloud;
 	
@@ -65,6 +71,12 @@ public:
     void setupParticles();
      void drawParticles();
     void updateParticles();
+	void    resetParticles();
     int numParticles=0;
+    enum  {NUBE, ESPEJO};
+    int particleMode;
     
+    float speed=1.0;
+    int stopUmbral=10000;
+   
 };
