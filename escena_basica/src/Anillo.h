@@ -91,8 +91,8 @@ public:
 	}
 	
 	void update() {
-		if(abs(accAng)<0.05) accAng=0.0;
-		accAng*=0.60;
+		if(abs(accAng)<0.01) accAng=0.0;
+		accAng*=0.30;
 		wAng += accAng;
 		angT += wAng;
 	}
