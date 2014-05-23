@@ -58,6 +58,7 @@ void testApp::setup() {
     gui1->addIntSlider("stopUmbral", 10, 10000, &stopUmbral) ;
     gui1->addSpacer();
 	gui1->addButton("reset",true);
+    ofAddListener(gui1->newGUIEvent,this,&testApp::guiEvent);
 
 }
 
@@ -154,7 +155,7 @@ void testApp::draw() {
             ofPushMatrix();
                 // the projected points are 'upside down' and 'backwards'
                 ofScale(1, -1, -1);
-                ofTranslate(0, 0, -1000); // center the points a bit
+                ofTranslate(0, 0, -1500); // center the points a bit
                 if(pulso==true)
                     //drawPointCloud();
                     drawParticles();

@@ -9,6 +9,7 @@
 #include "ofxCv.h"
 #include "cheapComm.h"
 #include "mosaicRecorder.h"
+#include <math.h>
 //#define _USE_LIVE_VIDEO		// uncomment this to use a live camera
 #define VIDEOWITH 640
 #define VIDEOHEIGHT 480
@@ -34,14 +35,19 @@ class testApp : public ofBaseApp{
         ofTrueTypeFont consoleFont;
     	/** intermediate images for tracking ***/
 	    ofxCvColorImage		sourceColorImg;			//a place to save the live video frame
+        ofxCvGrayscaleImage		previousImg;			//a place to save the live video frame
     	ofxCvGrayscaleImage grayImage;
         ofxCvShortImage		floatBgImg;
 	    ofxCvGrayscaleImage grayBg;
-        ofImage blobImgOF;
+        ofImage maskedImageOF;
         ofImage blobImgOF_min;
+    ofImage contourMaskOF;
+    	void setMaskedImageBlobs();
 	    bool adminMode;
 	    long exposureStartTime;
-    
+    int nonZero=0;
+        int movementAverage[50];
+    int counterAverage=0;
 	    ofFbo fbo;
     /*** tracking parameters ***/
     	int minBlobSize=150;
@@ -58,9 +64,9 @@ class testApp : public ofBaseApp{
 	    vector <ofPoint> positions;
     	int rectCounter=0;
     int alphaCounter=0;
-    bool debug = true;
 	public:
 		void setup();
+	    void setupStatus();
 		void update();
 		void draw();
 	    void drawCoolGui();
@@ -74,7 +80,7 @@ class testApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
-    
+    	void gui2Event(ofxUIEventArgs &e);
         void blobAdded(ofxBlob &_blob);
         void blobDeleted(ofxBlob &_blob);
     	ofxUITextArea *msgArea;
@@ -82,4 +88,8 @@ class testApp : public ofBaseApp{
         string textString;
     	ofxSyphonServer individualTextureSyphonServer;
 		ofTexture tex;
+    
+    	std::map<string, int> appStatuses;
+	    
+    
 };
