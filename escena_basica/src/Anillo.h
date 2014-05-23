@@ -34,11 +34,18 @@ public:
 	float fase;
 	float angT;
 	float wAng;
-	
+		
 	float radioPart;
 	ofColor color;
 	
+	ofTexture tex;
+	bool	swTexture;
+	
 	float accAng;
+	float dAcc;	// variacion de aceleracion
+	float viscAcc; // frenado de Aceleracion
+
+	ofRectangle anilloUI_L, anilloUI_R;	
 	
 	Anillo() {}
 	Anillo(ofVec2f _pos, float rInt, float rExt) {
@@ -49,15 +56,20 @@ public:
 		radioMed = (radioInt + radioExt) / 2.0;
 		ancho = radioExt-radioInt;	
 		
-		radioPart = ancho*0.4/2.0;
+		radioPart = ancho*0.5/2.0;
 		ofLogVerbose("radioPart: " + ofToString(radioPart));
 		fase=0;
 		angT = 0.0;
 		wAng = -0.3*TWO_PI/(60.0);
 		accAng = 0.0;
 		
+		dAcc = 0.03;
+		viscAcc = 0.30;
+		
 		color = ofColor(ofColor::fromHsb(30, 200, 200) );
 		colorFondo = ofColor(ofColor::fromHsb(120, 200, 100, 40));
+
+		swTexture = false;
 		
 		// preparar contorno
 		int resol = 360/5;
@@ -80,6 +92,11 @@ public:
 		contorno.close();
 		
 	}
+	
+	void setUI(ofRectangle ctrl_decc, ofRectangle ctrl_acc) {
+		anilloUI_L = ctrl_decc;
+		anilloUI_R = ctrl_acc;
+	}
 
 	void setAceleracion(float _accAng) {
 		accAng = _accAng;
@@ -90,9 +107,14 @@ public:
 		accAng += _accAng;
 	}
 	
+	void setTexture(ofTexture _tex) {
+		tex = _tex;
+		swTexture = true;
+	}
+	
 	void update() {
 		if(abs(accAng)<0.01) accAng=0.0;
-		accAng*=0.30;
+		accAng*=viscAcc;
 		wAng += accAng;
 		angT += wAng;
 	}
@@ -111,10 +133,48 @@ public:
 
 			// particula
 			ofSetColor(color);
-			ofCircle(radioMed*cos(angT), radioMed*sin(angT), radioPart);
+			ofPushMatrix();
+			ofTranslate(radioMed*cos(angT), radioMed*sin(angT));
+//			ofRotate(PI+ofRadToDeg(angT));
+			if(swTexture) {
+				// IMAGEN!
+				ofEllipse(0,0, 2*radioPart, 2*radioPart);//+ofMap(wAng,-PI,PI,-140,140)) );
+			}
+			else {
+				ofEllipse(0,0, 2*radioPart, 2*radioPart);//+ofMap(wAng,-PI,PI,-140,140)) );
+			}
+			ofPopMatrix();
 		}
 		ofPopStyle();
 		ofPopMatrix();
 	}
 
+	void drawControls() {		
+		ofPushStyle();
+		ofEnableAlphaBlending();
+		ofFill();
+		//	ofSetColor(200);
+		ofSetColor(color);
+		ofRect(anilloUI_L);
+		ofRect(anilloUI_R);
+		ofPopStyle();
+		
+		ofPushMatrix();
+		ofPushStyle();
+	}
+
+	bool interaccionAnillo(float x, float y) {
+		
+		if(anilloUI_L.inside(x,y)) {
+			acelera(dAcc);
+			ofLogVerbose("Acc --: " + ofToString(accAng));
+			return true;
+		}
+		if(anilloUI_R.inside(x,y)) {
+			acelera(-dAcc);
+			ofLogVerbose("Acc ++: " + ofToString(accAng));
+			return false;
+		}	
+		return false;
+	}
 };

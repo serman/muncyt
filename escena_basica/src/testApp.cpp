@@ -110,14 +110,17 @@ void testApp::setup() {
 	chispa = Destello(0,0, 80, 0.3);
 	
 
-	// Acelerador Exterior
+// Acelerador Exterior - - - 
 	// Anillo(ofVec2f _pos, float rInt, float rExt);
 	anillo = Anillo(ofVec2f(centro.x,centro.y), radioInt, radioExt);
 	
 	// Control del anillo
-	anilloUI_L = ofRectangle(0,ofGetHeight()-40, 40,40);
-	anilloUI_R = ofRectangle(ofGetWidth()-40,ofGetHeight()-40, 40,40);
+	ofRectangle anilloUI_L = ofRectangle(0,ofGetHeight()-40, 40,40);
+	ofRectangle anilloUI_R = ofRectangle(ofGetWidth()-40,ofGetHeight()-40, 40,40);
+	anillo.setUI(anilloUI_L, anilloUI_R);
 	
+	
+// Otros - - - - - 
 	swBlendModeADD = false;
 	
 	
@@ -281,15 +284,7 @@ void testApp::draw() {
 	anillo.draw();
 	
 	// GUI ANILLO
-	ofPushStyle();
-	ofEnableAlphaBlending();
-	ofFill();
-//	ofSetColor(200);
-	ofSetColor(anillo.color);
-	ofRect(0, ofGetHeight()-40, 40,40);
-	ofRect(ofGetWidth()-40, ofGetHeight()-40, 40,40);
-	ofPopStyle();
-	
+	anillo.drawControls();
 	
 	// Info
 	string info = "";
@@ -552,17 +547,19 @@ void testApp::mousePressed(int x, int y, int button) {
 //		fuerzaWAng = ofDegToRad( ofMap(x, 0, ofGetWidth(), 30, 360*6) );
 //		fuerzaVal = ( ofMap(y, 0, ofGetHeight(), 0, 200) );
 //	}
-	
+
+
+	anillo.interaccionAnillo(x,y);
 //	if((x>ofGetWidth()-40) && (y>ofGetHeight()-40)) {
-	if(anilloUI_L.inside(x,y)) {
-		anillo.acelera(0.03);
-		ofLogVerbose("Acc --: " + ofToString(anillo.accAng));
-	}
+//	if(anilloUI_L.inside(x,y)) {
+//		anillo.acelera(0.03);
+//		ofLogVerbose("Acc --: " + ofToString(anillo.accAng));
+//	}
 //	if((x<40) && (y>ofGetHeight()-40)) {
-	if(anilloUI_R.inside(x,y)) {
-		anillo.acelera(-0.03);
-		ofLogVerbose("Acc ++: " + ofToString(anillo.accAng));
-	}
+//	if(anilloUI_R.inside(x,y)) {
+//		anillo.acelera(-0.03);
+//		ofLogVerbose("Acc ++: " + ofToString(anillo.accAng));
+//	}
 }
 
 //--------------------------------------------------------------
