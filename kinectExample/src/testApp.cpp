@@ -51,7 +51,7 @@ void testApp::setup() {
     incrDistance=0;
 	setupParticles();
     
-    gui1 = new ofxUICanvas(0,100,400,500);
+    gui1 = new ofxUICanvas(0,100,400,600);
    
     
     gui1->addSlider("speed", 0.4, 5, &speed);
@@ -59,7 +59,7 @@ void testApp::setup() {
     gui1->addSpacer();
 	gui1->addButton("reset",true);
     ofAddListener(gui1->newGUIEvent,this,&testApp::guiEvent);
-
+	setupShader();
 }
 
 //--------------------------------------------------------------
@@ -120,7 +120,9 @@ void testApp::updateParticles() {
             //if(counter%300==0)
             //cout << "counter: " << p->position << " ===...........=== "<< mvect << " x: " << x << " y " << y <<"\n";
         	//p->color=ofColor(255,255,255,255);
-            p->color=ofColor::fromHsb(ofMap(kinect.getDistanceAt(p->_x, p->_y), zMin, zMax, 4, 255) , 255, 255, 50);
+//            p->color=ofColor::fromHsb(ofMap(kinect.getDistanceAt(p->_x, p->_y), zMin, zMax, 4, 255) , 255, 255, 50);
+            p->color=ofColor::yellowGreen;
+            p->color=ofColor::fromHsb(ofMap(kinect.getDistanceAt(p->_x, p->_y), zMin, zMax, 0, 360) , 255, 255, 200);
            // p->color=ofColor( kinect.getColorAt(p->_x, p->_y) );
             if((p->_x+p->_x)%400==0 ){ //820
                         	//p->color=ofColor(0,255,0,255);
@@ -133,6 +135,7 @@ void testApp::updateParticles() {
         }else{
            // meshParticles.addVertex(p->position);
             p->color=ofColor(255,0,0,40);
+            
             //meshParticles.addColor(ofColor(255,0,0,40));
         }
     }//end for all points within vector
@@ -147,8 +150,7 @@ void testApp::draw() {
 	ofBackground(10,10,10,100);
 
 	ofSetColor(255, 255, 255);
-	
-
+  	//drawNoise();
 		easyCam.begin();
         ofPushMatrix();
             // ofRotateZ(90);
@@ -156,17 +158,17 @@ void testApp::draw() {
                 // the projected points are 'upside down' and 'backwards'
                 ofScale(1, -1, -1);
                 ofTranslate(0, 0, -1500); // center the points a bit
-                if(pulso==true)
-                    //drawPointCloud();
+			    if(pulso==true){
+                	//drawPointCloud();
                     drawParticles();
+    			}
                 else
     //                drawPointCloud();
                     drawLines();
             ofPopMatrix();
         ofPopMatrix();
 		easyCam.end();
-
-	
+		
     if(debug) showDebug();
 }
 
@@ -177,7 +179,7 @@ void testApp::drawPointCloud() {
     incrDistance+=1;
 	mesh.setMode(OF_PRIMITIVE_POINTS);
     int step;
-	step = 4;
+	step = 1;
 	for(int y = 0; y < h; y += step) { //recorro los puntos bajando por las columnas
 		for(int x = 0; x < w; x += step) { //recorro columnas
 			if(kinect.getDistanceAt(x, y) > 200
@@ -185,7 +187,8 @@ void testApp::drawPointCloud() {
                 	ofVec2f p2= ofVec2f(x,y);
                     //mesh.addColor(kinect.getColorAt(x,y));
                     //mesh.addColor(ofColor::fromHsb(ofMap(kinect.getDistanceAt(x, y), zMin, zMax, 0, 360) , 255, 255, 50));
-                    mesh.addColor(ofColor::yellowGreen );
+                    //mesh.addColor(ofColor::yellowGreen );
+                	mesh.addColor(ofColor(255,255,255,ofMap(mouseX,1,ofGetWidth(),1,255 ) ) );
                     //				mesh.addVertex(kinect.getWorldCoordinateAt(x, y));
                     ofVec3f vtmp = kinect.getWorldCoordinateAt(x , y);
                     mesh.addVertex(vtmp);
@@ -205,6 +208,35 @@ void testApp::drawPointCloud() {
 	mesh.draw();	
 	ofDisableDepthTest();
 }
+
+void testApp::setupShader(){
+	shader.load("", "shaders/myCrazyFragFile.frag");
+
+}
+
+void testApp::drawNoise(){
+   // ofSetColor(255);
+    
+    /**ofTexture mtexture;
+    mtexture.allocate(200, 200, GL_RGB);
+    ofImage mimage;mimage.loadImage("Vendeta.jpg");
+    mimage.getTextureReference().bind();**/
+    
+    shader.begin();
+	
+    shader.setUniform3f("iResolution", ofGetWidth(), ofGetHeight(),0);
+    shader.setUniform1f("iGlobalTime", ofGetElapsedTimef());
+    shader.setUniform2f("iMouse",ofGetMouseX(),ofGetMouseY());
+
+    //mtexture.loadScreenData(600,600,200,200);
+    //mtexture.loadData(mimage.getPixelsRef());
+///shader.setUniformTexture("iChannel0",mtexture,2 );
+    
+    ofRect(0, 0, ofGetWidth(), ofGetHeight());
+    shader.end();
+    //mimage.getTextureReference().unbind();
+}
+
 
 void testApp::setupParticles(){
    //particles.clear() ;
@@ -381,7 +413,7 @@ void testApp::windowResized(int w, int h)
 {}
 
 void testApp::guiEvent(ofxUIEventArgs &e)
-{        cout << "event";
+{
 	string name = e.widget->getName();
 	int kind = e.widget->getKind();
     

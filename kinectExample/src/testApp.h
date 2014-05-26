@@ -78,5 +78,10 @@ public:
     
     float speed=1.0;
     int stopUmbral=10000;
-   
+    
+    
+    //shaders
+    ofShader shader;
+    void setupShader();
+   	void drawNoise();
 };
