@@ -126,7 +126,7 @@ void testApp::setup() {
 	
 	frecFondo = 4.0;
 	
-	
+	myComm.setup();
 }
 
 void testApp::cargaSounds() {
@@ -213,7 +213,11 @@ void testApp::update() {
 	for(int i=0; i<nucleos.size(); i++) {
 		nucleos[i].get()->update();
 	}
-	
+    //Envio OSC
+	if(ofGetFrameNum()%10 ==0){
+        myComm.sendPosition(anillo.angT, anillo.accAng);
+    }
+        
 	
 }
 

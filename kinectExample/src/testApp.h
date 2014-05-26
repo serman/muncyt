@@ -5,6 +5,7 @@
 #include "ofxKinect.h"
 #include "Particle.h"
 #include "ofxUI.h"
+#include "cheapCommRcv.h"
 
 // uncomment this to read from two kinects simultaneously
 //#define USE_TWO_KINECTS
@@ -84,4 +85,7 @@ public:
     ofShader shader;
     void setupShader();
    	void drawNoise();
+    
+    //osc
+    cheapCommRcv myOSCrcv;
 };

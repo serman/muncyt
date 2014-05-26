@@ -60,6 +60,9 @@ void testApp::setup() {
 	gui1->addButton("reset",true);
     ofAddListener(gui1->newGUIEvent,this,&testApp::guiEvent);
 	setupShader();
+    
+    
+    myOSCrcv.setup();
 }
 
 //--------------------------------------------------------------
@@ -82,6 +85,11 @@ void testApp::update() {
     else{
             particleMode=NUBE; //NUBE
     } **/
+    
+    if(myOSCrcv.update()==true){
+        //TODO compute position values and trigger the animations
+        cout << "myOSCrcv.remotePosition"  << myOSCrcv.remotePosition << "\n";
+    }
 
 }
 void testApp::updateParticles() {

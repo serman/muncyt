@@ -7,7 +7,7 @@
 #include "Anillo.h"
 
 #include "ofxXmlSettings.h"
-
+#include "cheapComm.h"
 // -------------------------------------------------
 
 #define COLOR_VERDE 0x5dca31
@@ -147,5 +147,9 @@ public:
 	// XML
 	void GrabaConfig();
 	void CargaConfig();
+    
+    
+    //Comunicacin
+    cheapComm myComm;
 };
 
