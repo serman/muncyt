@@ -6,6 +6,8 @@
 #include "particulas.h"
 #include "Anillo.h"
 
+#include "ofxXmlSettings.h"
+
 // -------------------------------------------------
 
 #define COLOR_VERDE 0x5dca31
@@ -136,7 +138,6 @@ public:
 	
 	// Anillo de aceleraci—n
 	Anillo	anillo;
-	ofRectangle anilloUI_L, anilloUI_R;
 	
 	bool swBlendModeADD;
 	
@@ -145,6 +146,6 @@ public:
 	
 	// XML
 	void GrabaConfig();
-	void cargaConfig();
+	void CargaConfig();
 };
 

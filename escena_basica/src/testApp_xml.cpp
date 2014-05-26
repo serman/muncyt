@@ -15,6 +15,19 @@ void testApp::GrabaConfig() {
 	
 }
 
-void testApp::cargaConfig() {
+void testApp::CargaConfig() {
+	ofxXmlSettings xml;
+//	xml.loadFile("settings.xml");
+//	
+//	xml.pushTag("osc");
+//	oscHost = xml.getValue("host", "localhost");
+//	oscPort = xml.getValue("port", 8338);
+//	xml.popTag();
+//	
+//	xml.pushTag("faceShift");
+//	faceShiftPort = xml.getValue("port", 33433);
+//	xml.popTag();
+//	
+//	addresses = ofSplitString(ofBufferFromFile("addresses.txt"), "\n");
 	
 }
