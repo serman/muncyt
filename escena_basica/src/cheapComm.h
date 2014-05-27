@@ -18,7 +18,7 @@ class cheapComm {
 	public:
         cheapComm();    
 	    void setup();
-   		 void sendPosition( float sector, float speed );
+		void sendPosition( float sector, float speed );
     	void sendExplosion();
 
 	    ofxOscSender myosc;

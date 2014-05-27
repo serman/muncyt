@@ -23,7 +23,7 @@ void cheapComm::sendPosition( float sector, float speed ){
 		m.setAddress("/position");
 		m.addFloatArg(sector);
         m.addFloatArg(speed);
-		myosc.sendMessage(m);        
+		myosc.sendMessage(m);
 
 }
 
