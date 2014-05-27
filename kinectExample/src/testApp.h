@@ -85,7 +85,8 @@ public:
     ofShader shader;
     void setupShader();
    	void drawNoise();
-    
+    bool boolDrawNoise=false;
+    int alphaParticles=255;
     //osc
     cheapCommRcv myOSCrcv;
 };

@@ -69,7 +69,6 @@
 		E7E077E815D3B6510020DFD4 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E077E715D3B6510020DFD4 /* QTKit.framework */; };
 		E7F985F815E0DEA3003869B5 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7F985F515E0DE99003869B5 /* Accelerate.framework */; };
 		EBCDE831EFAE08274E799C97 /* Calibration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 402C8F4015542356D362AC88 /* Calibration.cpp */; };
-		F736258F192247A000964804 /* mosaicRecorder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F736258D192247A000964804 /* mosaicRecorder.cpp */; };
 		F73625921923A1C500964804 /* ofxVideoSaver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F73625911923A1C500964804 /* ofxVideoSaver.cpp */; };
 		F73625981923B6C800964804 /* ofxVideoRecorder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F73625961923B6C800964804 /* ofxVideoRecorder.cpp */; };
 		F76B4A79BD8DE4854141CB47 /* fdog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2D8249D46647E3C51769CDE /* fdog.cpp */; };
@@ -365,7 +364,6 @@
 		F4F5B6B8BA2BD52C646ED908 /* OscException.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = OscException.h; path = ../../../addons/ofxOsc/libs/oscpack/src/osc/OscException.h; sourceTree = SOURCE_ROOT; };
 		F66993296A3AEEC70FD444F5 /* ofxNetwork.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxNetwork.h; path = ../../../addons/ofxNetwork/src/ofxNetwork.h; sourceTree = SOURCE_ROOT; };
 		F7269F96AC34A2B44A680D03 /* ofxCvFloatImage.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxCvFloatImage.h; path = ../../../addons/ofxOpenCv/src/ofxCvFloatImage.h; sourceTree = SOURCE_ROOT; };
-		F736258D192247A000964804 /* mosaicRecorder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mosaicRecorder.cpp; sourceTree = "<group>"; };
 		F736258E192247A000964804 /* mosaicRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mosaicRecorder.h; sourceTree = "<group>"; };
 		F73625901923A1BC00964804 /* ofxVideoSaver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxVideoSaver.h; sourceTree = "<group>"; };
 		F73625911923A1C500964804 /* ofxVideoSaver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxVideoSaver.cpp; sourceTree = "<group>"; };
@@ -482,6 +480,7 @@
 		F7B27EBD1915E4E10022B207 /* Syphon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Syphon.framework; sourceTree = "<group>"; };
 		F7B27EBF1915E4E10022B207 /* SyphonNameboundClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SyphonNameboundClient.h; sourceTree = "<group>"; };
 		F7B27EC01915E4E10022B207 /* SyphonNameboundClient.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SyphonNameboundClient.m; sourceTree = "<group>"; };
+		F7D6C4FE1933F23000FBE6BF /* moveAndRecord.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = moveAndRecord.h; sourceTree = "<group>"; };
 		F7F0BE8E191A6F680095B0B9 /* cheapComm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cheapComm.cpp; sourceTree = "<group>"; };
 		F7F0BE8F191A6F680095B0B9 /* cheapComm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cheapComm.h; sourceTree = "<group>"; };
 		F7FBC56859535E597B24BB91 /* NetworkingUtils.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = NetworkingUtils.h; path = ../../../addons/ofxOsc/libs/oscpack/src/ip/NetworkingUtils.h; sourceTree = SOURCE_ROOT; };
@@ -1116,7 +1115,6 @@
 			isa = PBXGroup;
 			children = (
 				F73625931923A1CC00964804 /* ofxVideoSaver */,
-				F736258D192247A000964804 /* mosaicRecorder.cpp */,
 				F736258E192247A000964804 /* mosaicRecorder.h */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */,
@@ -1124,6 +1122,7 @@
 				E4B69E1F0A3A1BDC003C02F2 /* testApp.h */,
 				F7F0BE8E191A6F680095B0B9 /* cheapComm.cpp */,
 				F7F0BE8F191A6F680095B0B9 /* cheapComm.h */,
+				F7D6C4FE1933F23000FBE6BF /* moveAndRecord.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -1513,7 +1512,6 @@
 			files = (
 				F7B27DE2191334CA0022B207 /* tinyxmlerror.cpp in Sources */,
 				F7B27EC11915E4E10022B207 /* ofxSyphonClient.mm in Sources */,
-				F736258F192247A000964804 /* mosaicRecorder.cpp in Sources */,
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				F7B27DBB191333760022B207 /* ofxUIImageToggle.cpp in Sources */,
 				F7B27DB0191333760022B207 /* ofxUICanvas.cpp in Sources */,

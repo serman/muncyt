@@ -58,6 +58,9 @@ void testApp::setup() {
     gui1->addIntSlider("stopUmbral", 10, 10000, &stopUmbral) ;
     gui1->addSpacer();
 	gui1->addButton("reset",true);
+    gui1->addToggle("noise", &boolDrawNoise);
+    gui1->addIntSlider("alpha Particles", 1, 255, &alphaParticles) ;
+    
     ofAddListener(gui1->newGUIEvent,this,&testApp::guiEvent);
 	setupShader();
     
@@ -129,9 +132,10 @@ void testApp::updateParticles() {
             //cout << "counter: " << p->position << " ===...........=== "<< mvect << " x: " << x << " y " << y <<"\n";
         	//p->color=ofColor(255,255,255,255);
 //            p->color=ofColor::fromHsb(ofMap(kinect.getDistanceAt(p->_x, p->_y), zMin, zMax, 4, 255) , 255, 255, 50);
-            p->color=ofColor::yellowGreen;
-            p->color=ofColor::fromHsb(ofMap(kinect.getDistanceAt(p->_x, p->_y), zMin, zMax, 0, 360) , 255, 255, 200);
+            //p->color=ofColor(255,255,255,ofMap(mouseX,1,ofGetWidth(),1,255 ) );
+            //p->color=ofColor::fromHsb(ofMap(kinect.getDistanceAt(p->_x, p->_y), zMin, zMax, 0, 360) , 255, 255, 200);
            // p->color=ofColor( kinect.getColorAt(p->_x, p->_y) );
+            p->color=ofColor(255,255,255,alphaParticles);
             if((p->_x+p->_x)%400==0 ){ //820
                         	//p->color=ofColor(0,255,0,255);
                 //if( ofGetFrameNum()%1==0) cout <<  " ::: "	<< diff.lengthSquared() <<  " .... "<< p->velocity <<" ... " << p->acceleration;
@@ -158,14 +162,15 @@ void testApp::draw() {
 	ofBackground(10,10,10,100);
 
 	ofSetColor(255, 255, 255);
-  	//drawNoise();
+    if(boolDrawNoise)  	drawNoise();
+    ofEnableAlphaBlending();
 		easyCam.begin();
         ofPushMatrix();
             // ofRotateZ(90);
             ofPushMatrix();
                 // the projected points are 'upside down' and 'backwards'
                 ofScale(1, -1, -1);
-                ofTranslate(0, 0, -1500); // center the points a bit
+                ofTranslate(0, 0, -1000); // center the points a bit
 			    if(pulso==true){
                 	//drawPointCloud();
                     drawParticles();
@@ -218,7 +223,7 @@ void testApp::drawPointCloud() {
 }
 
 void testApp::setupShader(){
-	shader.load("", "shaders/myCrazyFragFile.frag");
+	shader.load("", "shaders/myCrazyFragFile2.frag");
 
 }
 
@@ -233,7 +238,7 @@ void testApp::drawNoise(){
     shader.begin();
 	
     shader.setUniform3f("iResolution", ofGetWidth(), ofGetHeight(),0);
-    shader.setUniform1f("iGlobalTime", ofGetElapsedTimef());
+    shader.setUniform1f("iGlobalTime", ofRandomf());
     shader.setUniform2f("iMouse",ofGetMouseX(),ofGetMouseY());
 
     //mtexture.loadScreenData(600,600,200,200);
@@ -271,7 +276,7 @@ void testApp::resetParticles(){
 
 void testApp::drawParticles(){
     meshParticles.setMode(OF_PRIMITIVE_POINTS);
-    glPointSize(3);
+    glPointSize(1);
 	ofEnableDepthTest();
 	meshParticles.draw();
 	ofDisableDepthTest();

@@ -7,6 +7,7 @@
 #include "ofxUI.h"
 #include "ofxSyphon.h"
 #include "ofxCv.h"
+#include "moveAndRecord.h"
 #include "cheapComm.h"
 #include "mosaicRecorder.h"
 #include <math.h>
@@ -50,11 +51,11 @@ class testApp : public ofBaseApp{
     int counterAverage=0;
 	    ofFbo fbo;
     /*** tracking parameters ***/
-    	int minBlobSize=150;
-	    int maxBlobSize=3000;
-    	int blobThreshold=11;
+    	int minBlobSize=300;
+	    int maxBlobSize=4500;
+    	int blobThreshold=30;
 	    int amplify=10;
-    	int smooth=1;
+    	int smooth=2;
         bool refreshBackground=false;
 	    bool adaptativeBackground=false;
 	    float fLearnRate= 0.005f;
@@ -90,6 +91,8 @@ class testApp : public ofBaseApp{
 		ofTexture tex;
     
     	std::map<string, int> appStatuses;
-	    
+    	moveAndRecord moveandrecord;
+	   
+    
     
 };

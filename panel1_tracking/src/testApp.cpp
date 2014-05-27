@@ -68,12 +68,16 @@ void testApp::setup(){
         positions.push_back(ofPoint(2000,2000)); //–apa para que el bucle aguante un par de segundos mas
         positions.push_back(ofPoint(2000,2000)); //–apa para que el bucle aguante un par de segundos mas
         positions.push_back(ofPoint(2000,2000)); //–apa para que el bucle aguante un par de segundos mas
+	
+    	moveandrecord.setup();
+    
 }
 
 void testApp::setupStatus(){
         appStatuses["syphonEnabled"]=false;
     	appStatuses["debug"]=true;
     	appStatuses["adaptativeBackground"]=false;
+	    appStatuses["blobInSquare"]=false;
     
 }
 
@@ -143,11 +147,17 @@ void testApp::update(){
     
     myComm.sendBlobs( blobTracker.trackedBlobs);
 	blobTracker.setFiltersParam(amplify, smooth);
+	
+    if(moveandrecord.detectBlobinSquare(blobTracker)){
+        //blobImgOF_min.cropFrom(maskedImageOF, moveandrecord.triggerRectangle.x, moveandrecord.triggerRectangle.y, moveandrecord.triggerRectangle.width, moveandrecord.triggerRectangle.height);
+        mRecorder.start(3000, 25, &blobImgOF_min,moveandrecord.triggerRectangle.x,moveandrecord.triggerRectangle.y,moveandrecord.triggerRectangle.width,moveandrecord.triggerRectangle.height);
+    }
+
 
 }
 
 void testApp::drawCoolGui(){
-        ofPushStyle();
+    ofPushStyle();
     ofEnableAlphaBlending();
     if( ofGetFrameNum() % 3 ==0){
         rectCounter++;
@@ -243,16 +253,25 @@ void testApp::draw(){
     if(appStatuses["debug"]) showDebug();
     
 //resized Image, READY 4 RECORDING
-    blobImgOF_min=maskedImageOF;
-    blobImgOF_min.resize(320, 240);
+    //blobImgOF_min=maskedImageOF;
+    //blobImgOF_min.resize(320, 240);
+    
+    if(moveandrecord.state==moveandrecord.blobInSquare){
+        blobImgOF_min=maskedImageOF;
+        blobImgOF_min.resize(320, 240);
+        blobImgOF_min.update();
+    }
     mRecorder.update();
 // END RECORDING-READY BLOCK
+    
+    moveandrecord.draw();
 }
 
 void testApp::showDebug(){
     ofDrawBitmapString("Framerate " + ofToString(ofGetFrameRate()), 20, 20);
         ofDrawBitmapString("NonZero " + ofToString(nonZero), 20, 40);
 }
+
 
 
 void testApp::blobAdded(ofxBlob &_blob){
