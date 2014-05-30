@@ -14,6 +14,8 @@
 		7F5FFFFE192A035000CA8725 /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7F5FFFF8192A035000CA8725 /* tinyxmlerror.cpp */; };
 		7F5FFFFF192A035000CA8725 /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7F5FFFF9192A035000CA8725 /* tinyxmlparser.cpp */; };
 		7F93F38C19186382004761F3 /* Efectos.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7F93F38B19186382004761F3 /* Efectos.cpp */; };
+		7FB6BF6119389C2700C396A4 /* tuioComm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7FB6BF6019389C2700C396A4 /* tuioComm.cpp */; };
+		7FB6BF6519389DBC00C396A4 /* testApp_tuioMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7FB6BF6419389DBC00C396A4 /* testApp_tuioMgr.cpp */; };
 		7FFD07A21913A0450022FA53 /* b2BroadPhase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7FFD07231913A0450022FA53 /* b2BroadPhase.cpp */; };
 		7FFD07A31913A0450022FA53 /* b2CollideCircle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7FFD07251913A0450022FA53 /* b2CollideCircle.cpp */; };
 		7FFD07A41913A0450022FA53 /* b2CollideEdge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7FFD07261913A0450022FA53 /* b2CollideEdge.cpp */; };
@@ -146,6 +148,15 @@
 		7F5FFFFC192A035000CA8725 /* ofxXmlSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxXmlSettings.h; sourceTree = "<group>"; };
 		7F93F38A19186382004761F3 /* Efectos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Efectos.h; sourceTree = "<group>"; };
 		7F93F38B19186382004761F3 /* Efectos.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Efectos.cpp; sourceTree = "<group>"; };
+		7FB6BF4319389B7C00C396A4 /* ofxTuio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTuio.h; sourceTree = "<group>"; };
+		7FB6BF4419389B7C00C396A4 /* ofxTuioClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTuioClient.h; sourceTree = "<group>"; };
+		7FB6BF4519389B7C00C396A4 /* ofxTuioContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTuioContainer.h; sourceTree = "<group>"; };
+		7FB6BF4619389B7C00C396A4 /* ofxTuioCursor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTuioCursor.h; sourceTree = "<group>"; };
+		7FB6BF4719389B7C00C396A4 /* ofxTuioObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTuioObject.h; sourceTree = "<group>"; };
+		7FB6BF4819389B7C00C396A4 /* ofxTuioPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTuioPoint.h; sourceTree = "<group>"; };
+		7FB6BF5F19389C2700C396A4 /* tuioComm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tuioComm.h; sourceTree = "<group>"; };
+		7FB6BF6019389C2700C396A4 /* tuioComm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tuioComm.cpp; sourceTree = "<group>"; };
+		7FB6BF6419389DBC00C396A4 /* testApp_tuioMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testApp_tuioMgr.cpp; sourceTree = "<group>"; };
 		7FFD07211913A0450022FA53 /* Box2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Box2D.h; sourceTree = "<group>"; };
 		7FFD07231913A0450022FA53 /* b2BroadPhase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = b2BroadPhase.cpp; sourceTree = "<group>"; };
 		7FFD07241913A0450022FA53 /* b2BroadPhase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2BroadPhase.h; sourceTree = "<group>"; };
@@ -383,6 +394,28 @@
 			path = src;
 			sourceTree = "<group>";
 		};
+		7FB6BF0519389B7C00C396A4 /* ofxTuio */ = {
+			isa = PBXGroup;
+			children = (
+				7FB6BF4219389B7C00C396A4 /* src */,
+			);
+			name = ofxTuio;
+			path = ../../../addons/ofxTuio;
+			sourceTree = SOURCE_ROOT;
+		};
+		7FB6BF4219389B7C00C396A4 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				7FB6BF4319389B7C00C396A4 /* ofxTuio.h */,
+				7FB6BF4419389B7C00C396A4 /* ofxTuioClient.h */,
+				7FB6BF4519389B7C00C396A4 /* ofxTuioContainer.h */,
+				7FB6BF4619389B7C00C396A4 /* ofxTuioCursor.h */,
+				7FB6BF4719389B7C00C396A4 /* ofxTuioObject.h */,
+				7FB6BF4819389B7C00C396A4 /* ofxTuioPoint.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		7FFD071D1913A0450022FA53 /* ofxBox2d */ = {
 			isa = PBXGroup;
 			children = (
@@ -599,6 +632,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				7FB6BF0519389B7C00C396A4 /* ofxTuio */,
 				F7EBD16819334D11009805D5 /* ofxOsc */,
 				7F5FFFF4192A035000CA8725 /* ofxXmlSettings */,
 				7FFD071D1913A0450022FA53 /* ofxBox2d */,
@@ -671,10 +705,11 @@
 			children = (
 				F7EBD16619334C47009805D5 /* comm */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
-				E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* testApp.h */,
+				E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */,
 				7F2CBE7B1926ED1400981859 /* testApp_Collisions.cpp */,
 				7F5F0006192A689200CA8725 /* testApp_xml.cpp */,
+				7FB6BF6419389DBC00C396A4 /* testApp_tuioMgr.cpp */,
 				7FFD0B76191434000022FA53 /* particulas.h */,
 				7FFD0B77191434000022FA53 /* particulas.cpp */,
 				7F93F38A19186382004761F3 /* Efectos.h */,
@@ -698,6 +733,8 @@
 			children = (
 				F7EBD16319334C43009805D5 /* cheapComm.cpp */,
 				F7EBD16419334C43009805D5 /* cheapComm.h */,
+				7FB6BF5F19389C2700C396A4 /* tuioComm.h */,
+				7FB6BF6019389C2700C396A4 /* tuioComm.cpp */,
 			);
 			name = comm;
 			sourceTree = "<group>";
@@ -963,6 +1000,8 @@
 				7F5FFFFF192A035000CA8725 /* tinyxmlparser.cpp in Sources */,
 				7F5F0000192A035000CA8725 /* ofxXmlSettings.cpp in Sources */,
 				7F5F0007192A689200CA8725 /* testApp_xml.cpp in Sources */,
+				7FB6BF6119389C2700C396A4 /* tuioComm.cpp in Sources */,
+				7FB6BF6519389DBC00C396A4 /* testApp_tuioMgr.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

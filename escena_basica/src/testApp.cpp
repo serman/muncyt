@@ -127,6 +127,9 @@ void testApp::setup() {
 	frecFondo = 4.0;
 	
 	myComm.setup();
+	
+	
+	setupTuio();
 }
 
 void testApp::cargaSounds() {
@@ -218,7 +221,26 @@ void testApp::update() {
 	if(ofGetFrameNum()%10 ==0){
         myComm.sendPosition(anillo.angT, anillo.accAng);
     }
-        
+	
+	
+	// - - - - TUIOS - - - - 
+    tuioClient.getMessage();
+
+	// Interaccion de los blobs recibidos	
+	list<ofxTuioCursor*>cursorList = tuioClient.getTuioCursors();
+	for(list<ofxTuioCursor*>::iterator it=cursorList.begin(); it != cursorList.end(); it++) {
+		ofxTuioCursor *tcur = (*it);
+//		ofPoint ptCursor = ofPoint(tcur->getX(),tcur->getY());
+		ofPoint ptCursor = tuioPoint2Screen(*tcur);
+		
+		
+		// Evaluar si esta en posicion de interaccion:		
+		if(bordeLine.inside(ptCursor)) {
+			addDestello(ptCursor.x, ptCursor.y);
+		}
+//		else anillo.interaccionAnillo(ptCursor);
+		
+    }
 	
 }
 
@@ -290,6 +312,11 @@ void testApp::draw() {
 	
 	// GUI ANILLO
 	anillo.drawControls();
+	
+	
+	// TUIOS
+    tuioClient.drawCursors();	
+	
 	
 	// Info
 	string info = "";
@@ -536,10 +563,7 @@ void testApp::mouseDragged(int x, int y, int button) {
 	   fuerzaWAng = ofDegToRad( ofMap(x-marco.x, 0, marco.width, 30, 360*6) );
 	   fuerzaVal = ( ofMap(y-marco.y, 0, marco.height, 0, 200) );
 	}
-//	if(swFuerza) {
-//		fuerzaWAng = ofDegToRad( ofMap(x, 0, ofGetWidth(), 30, 360*6) );
-//		fuerzaVal = ( ofMap(y, 0, ofGetHeight(), 0, 200) );
-//	}
+	
 }
 
 //--------------------------------------------------------------
@@ -548,23 +572,9 @@ void testApp::mousePressed(int x, int y, int button) {
 		fuerzaWAng = ofDegToRad( ofMap(x-marco.x, 0, marco.width, 30, 360*6) );
 		fuerzaVal = ( ofMap(y-marco.y, 0, marco.height, 0, 200) );
 	}
-	//	if(swFuerza) {
-//		fuerzaWAng = ofDegToRad( ofMap(x, 0, ofGetWidth(), 30, 360*6) );
-//		fuerzaVal = ( ofMap(y, 0, ofGetHeight(), 0, 200) );
-//	}
-
 
 	anillo.interaccionAnillo(x,y);
-//	if((x>ofGetWidth()-40) && (y>ofGetHeight()-40)) {
-//	if(anilloUI_L.inside(x,y)) {
-//		anillo.acelera(0.03);
-//		ofLogVerbose("Acc --: " + ofToString(anillo.accAng));
-//	}
-//	if((x<40) && (y>ofGetHeight()-40)) {
-//	if(anilloUI_R.inside(x,y)) {
-//		anillo.acelera(-0.03);
-//		ofLogVerbose("Acc ++: " + ofToString(anillo.accAng));
-//	}
+	
 }
 
 //--------------------------------------------------------------
@@ -580,4 +590,45 @@ void testApp::mouseReleased(int x, int y, int button) {
 //--------------------------------------------------------------
 void testApp::resized(int w, int h){
 }
+
+
+// ------------------------- TUIO ----------------------
+
+void testApp::setupTuio() {
+	
+	tuioClient.start(3333);
+    
+    ofAddListener(tuioClient.cursorAdded,this,&testApp::tuioAdded);
+	ofAddListener(tuioClient.cursorRemoved,this,&testApp::tuioRemoved);
+	ofAddListener(tuioClient.cursorUpdated,this,&testApp::tuioUpdated);
+	
+}
+
+void testApp::tuioAdded(ofxTuioCursor &tuioCursor){
+	//	ofPoint loc = ofPoint(tuioCursor.getX()*ofGetWidth(),tuioCursor.getY()*ofGetHeight());
+	ofPoint loc = tuioPoint2Screen(tuioCursor);
+
+	// Si se quiere que solo interaccione cuando 
+	anillo.interaccionAnillo(loc);
+	
+	cout << "Point n" << tuioCursor.getSessionId() << " add at " << loc << endl;
+}
+
+void testApp::tuioUpdated(ofxTuioCursor &tuioCursor){
+	//	ofPoint loc = ofPoint(tuioCursor.getX()*ofGetWidth(),tuioCursor.getY()*ofGetHeight());
+	ofPoint loc = tuioPoint2Screen(tuioCursor);
+	cout << "Point n" << tuioCursor.getSessionId() << " updated at " << loc << endl;
+}
+
+void testApp::tuioRemoved(ofxTuioCursor &tuioCursor){
+	//	ofPoint loc = ofPoint(tuioCursor.getX()*ofGetWidth(),tuioCursor.getY()*ofGetHeight());
+	ofPoint loc = tuioPoint2Screen(tuioCursor);
+	cout << "Point n" << tuioCursor.getSessionId() << " remove at " << loc << endl;
+}
+
+ofPoint testApp::tuioPoint2Screen(ofxTuioCursor &tuioCursor) {
+	return ofPoint(tuioCursor.getX()*ofGetWidth(),tuioCursor.getY()*ofGetHeight());
+}
+
+
 
