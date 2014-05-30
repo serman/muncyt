@@ -14,7 +14,10 @@ cheapCommRcv::cheapCommRcv(){
 void cheapCommRcv::setup(){
     int serverRecvPort = 9000;
 	myosc.setup(serverRecvPort);
-    
+
+	remotePosition=0;
+	remoteSpeed=0;
+
 
 }
 

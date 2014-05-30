@@ -29,7 +29,7 @@ public:
 	void	drawLines();
     void showDebug();
 	ofxKinect kinect;
-	bool pulso=false;
+	bool pulso;
 #ifdef USE_TWO_KINECTS
 	ofxKinect kinect2;
 #endif
@@ -44,7 +44,7 @@ public:
 	
 	ofxCvContourFinder contourFinder;
 	
-    bool debug=true;
+    bool debug;
 	bool bThreshWithOpenCV;
 	bool bDrawPointCloud;
 	
@@ -67,26 +67,26 @@ public:
     ofImage Img;
     ofMesh mesh;
     ofMesh meshParticles;
-	bool explosion=false;
+	bool explosion;
     //function
     void setupParticles();
      void drawParticles();
     void updateParticles();
 	void    resetParticles();
-    int numParticles=0;
+    int numParticles;
     enum  {NUBE, ESPEJO};
     int particleMode;
     
-    float speed=1.0;
-    int stopUmbral=10000;
+    float speed;
+    int stopUmbral;
     
     
     //shaders
     ofShader shader;
     void setupShader();
    	void drawNoise();
-    bool boolDrawNoise=false;
-    int alphaParticles=255;
+    bool boolDrawNoise;
+    int alphaParticles;
     //osc
     cheapCommRcv myOSCrcv;
 };
