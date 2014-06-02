@@ -163,6 +163,10 @@ public:
 		ofPushStyle();
 	}
 
+	bool interaccionAnillo(ofPoint pt) {
+		return interaccionAnillo(pt.x, pt.y);
+	}
+	
 	bool interaccionAnillo(float x, float y) {
 		
 		if(anilloUI_L.inside(x,y)) {

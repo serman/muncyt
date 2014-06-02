@@ -43,11 +43,23 @@ void testApp::setup() {
 	
 	// start from the front
 	bDrawPointCloud = true;
-    
+
+	// init variables
+	explosion = false;
+	numParticles = 0;
+    speed = 1.0;
+    stopUmbral = 10000;
+    alphaParticles = 255;
+	
+    boolDrawNoise = false;
+	
+	pulso = false;
+	debug = true;
+	
     low=0.25;
     zMin = 200;
     zMax = 1500;
-    
+
     incrDistance=0;
 	setupParticles();
     

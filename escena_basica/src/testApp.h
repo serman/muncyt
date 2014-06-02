@@ -9,6 +9,8 @@
 
 #include "ofxXmlSettings.h"
 #include "cheapComm.h"
+//#include "ofxTuio.h"
+#include "tuioComm.h"
 // -------------------------------------------------
 
 #define COLOR_VERDE 0x5dca31
@@ -148,9 +150,18 @@ public:
 	// XML
 	void GrabaConfig();
 	void CargaConfig();
-    
-    
-    //Comunicacin
+        
+    //Comunicacion
     cheapComm myComm;
+	
+	// TUIO
+    void	tuioAdded(ofxTuioCursor & tuioCursor);
+	void	tuioRemoved(ofxTuioCursor & tuioCursor);
+	void	tuioUpdated(ofxTuioCursor & tuioCursor);
+    
+	void	setupTuio();
+    ofxTuioClient   tuioClient;
+	ofPoint tuioPoint2Screen(ofxTuioCursor &tuioCursor);
+	
 };
 

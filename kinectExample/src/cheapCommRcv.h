@@ -21,8 +21,10 @@ class cheapCommRcv {
     	bool update( );
         cheapCommRcv();
 	    ofxOscReceiver myosc;
-	    float remotePosition=0;
-    	float remoteSpeed=0;
+//	    float remotePosition=0;
+//    	float remoteSpeed=0;
+		float remotePosition;
+		float remoteSpeed;
     
     private:
 
