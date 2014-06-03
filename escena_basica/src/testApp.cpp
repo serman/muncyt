@@ -219,7 +219,7 @@ void testApp::update() {
 	
     //Envio OSC
 	if(ofGetFrameNum()%10 ==0){
-        myComm.sendPosition(anillo.angT, anillo.accAng);
+        myComm.sendPosition(anillo.angT, anillo.wAng);
     }
 	
 	
