@@ -274,6 +274,7 @@
 		F4F5B6B8BA2BD52C646ED908 /* OscException.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = OscException.h; path = ../../../addons/ofxOsc/libs/oscpack/src/osc/OscException.h; sourceTree = SOURCE_ROOT; };
 		F71866A1193959C90087623C /* cheapCommRcv.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cheapCommRcv.cpp; sourceTree = "<group>"; };
 		F71866A2193959C90087623C /* cheapCommRcv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cheapCommRcv.h; sourceTree = "<group>"; };
+		F71866AD193F3E550087623C /* threadedObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = threadedObject.h; sourceTree = "<group>"; };
 		F7FBC56859535E597B24BB91 /* NetworkingUtils.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = NetworkingUtils.h; path = ../../../addons/ofxOsc/libs/oscpack/src/ip/NetworkingUtils.h; sourceTree = SOURCE_ROOT; };
 		F9A4454B00CCFD7265D3CA85 /* ofxUILabelButton.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUILabelButton.cpp; path = ../../../addons/ofxUI/src/ofxUILabelButton.cpp; sourceTree = SOURCE_ROOT; };
 		F9DF961B5E7D4C4E1E5D029C /* ofxUITextArea.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUITextArea.h; path = ../../../addons/ofxUI/src/ofxUITextArea.h; sourceTree = SOURCE_ROOT; };
@@ -605,6 +606,7 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				F71866AD193F3E550087623C /* threadedObject.h */,
 				F71866A1193959C90087623C /* cheapCommRcv.cpp */,
 				F71866A2193959C90087623C /* cheapCommRcv.h */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,

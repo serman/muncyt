@@ -2,6 +2,11 @@
 
 #include "ofMain.h"
 #include "cheapCommRcv.h"
+#include "ofxUI.h"
+// this h file has the definition for an object that uses the threaded addon:
+#include "threadedObject.h"
+
+#define PKTLENGTH 14
 //#define NOARDUINO 1
 class testApp : public ofBaseApp{
 
@@ -29,16 +34,23 @@ class testApp : public ofBaseApp{
     bool		bSendSerialMessage;			// a flag for sending serial
     char		bytesRead[3];				// data from serial, we will be trying to read 3
     char		bytesReadString[4];			// a string needs a null terminator, so we need 3 + 1 bytes
-    unsigned char 		protocolToSend[7];
+    unsigned char 		protocolToSend[PKTLENGTH];
     int			nBytesRead;					// how much did we read?
     int			nTimesRead;					// how many times did we read?
     float		readTime;					// when did we last read?
 		
+    threadedObject	TO;
+    
     ofRectangle mrect;
     ofRectangle mrect2;
     long lastTimeSent;
     int lastNumberSent;
-    
+    void intToChar(unsigned char *dst,int num,int charLength);
+    ofxUICanvas *gui1;
+	void gui1Event(ofxUIEventArgs &e);
+    int ledNumber;
+    char mode;
+    int red, green, blue;
 };
 
 //c command code: l= light one; u= light until;
