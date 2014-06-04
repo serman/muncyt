@@ -270,6 +270,7 @@ void testApp::setupParticles(){
 	int    sampling=2;
     //Loop through all the rows
 
+	numParticles = 0;
     //Loop through all the columns
     for ( int y = 0 ; y < h ; y+=sampling ){
         for ( int x = 0 ; x < w ; x+=sampling ){
@@ -303,11 +304,62 @@ void testApp::showDebug(){
     
 }
 
-void testApp::drawLines(){
+void testApp::drawLines(int step = 5){
 	int w = 640;
 	int h = 480;
     incrDistance+=1;
-    int step=5;
+    std::vector<ofPolyline> lineMesh;
+    ofColor col ;
+    float _time = ofGetElapsedTimef() ;
+    float theta = sin ( ofGetElapsedTimef() ) ;
+    ofVec2f v1=ofVec2f(640,480);
+    ofPolyline lineMesh1;
+    ofPoint lastPoint ;
+    
+	for(int y = 0; y < h; y += step) { //recorro los puntos bajando por las columnas
+        ofPath line ;
+		bool bLastValid = false;
+		int _xStep = step;
+		for(int x = 0; x < w; x += step) { //recorro columnas
+			if(kinect.getDistanceAt(x, y) > 200 && kinect.getDistanceAt(x, y) < zMax) {
+                ofVec2f p2= ofVec2f(x,y);
+                ofVec3f vtmp = kinect.getWorldCoordinateAt(x , y);
+                
+                ofPoint _lastPoint = vtmp ;
+                float dist = abs(vtmp.z - lastPoint.z) ;
+                if (  dist < 30  )
+                {
+                    if ( bLastValid == false )
+                    {
+                        line.moveTo( vtmp ) ;
+                    }
+                    else
+                    {
+                        line.lineTo( vtmp ) ;//addVertex( vertex ) ;
+                    }
+                    bLastValid = true ;
+                    
+                }
+                else
+                {
+                    bLastValid = false ;
+                }
+                lastPoint = vtmp ;
+            }//if
+        } //for interior
+        ofColor c=  ofColor( 35 , 255 , 24 ) ;
+		line.setColor( c ) ;
+        line.setFilled( false ) ;
+        line.setStrokeColor( c ) ;
+        line.setStrokeWidth( 1);
+        line.draw();
+	}
+}
+
+void testApp::drawLinesV( int step = 5){
+	int w = 640;
+	int h = 480;
+    incrDistance+=1;
     std::vector<ofPolyline> lineMesh;
     ofColor col ;
     float _time = ofGetElapsedTimef() ;

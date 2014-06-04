@@ -26,7 +26,8 @@ public:
 	void windowResized(int w, int h);
     void guiEvent(ofxUIEventArgs &e);
 
-	void	drawLines();
+	void	drawLines(int step);
+	void	drawLinesV(int step);
     void showDebug();
 	ofxKinect kinect;
 	bool pulso;

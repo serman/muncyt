@@ -34,16 +34,16 @@ public:
 	float fase;
 	float angT;
 	float wAng;
-		
+	float accAng;
+	float dAcc;	// variacion de aceleracion
+	float viscAcc; // frenado de Aceleracion
+	
 	float radioPart;
 	ofColor color;
 	
 	ofTexture tex;
 	bool	swTexture;
 	
-	float accAng;
-	float dAcc;	// variacion de aceleracion
-	float viscAcc; // frenado de Aceleracion
 
 	ofRectangle anilloUI_L, anilloUI_R;	
 	
