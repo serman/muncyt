@@ -702,6 +702,7 @@
 				F7C17087192B81A30034A5CB /* ofxXmlSettings */,
 				F7C16FFB192B76E20034A5CB /* ofxUI */,
 				9683228C705CA3FF4F2EA945 /* ofxKinect */,
+				E45BE5980E8CC70C009D7055 /* frameworks */,
 				A0B90D3B0ADB9C1716816714 /* ofxOpenCv */,
 			);
 			name = addons;
@@ -813,7 +814,6 @@
 				E4B69E1C0A3A1BDC003C02F2 /* src */,
 				E4EEC9E9138DF44700A80321 /* openFrameworks */,
 				BB4B014C10F69532006C3DED /* addons */,
-				E45BE5980E8CC70C009D7055 /* frameworks */,
 				E4B69B5B0A3A1756003C02F2 /* kinectExampleDebug.app */,
 			);
 			sourceTree = "<group>";

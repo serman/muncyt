@@ -17,7 +17,7 @@ public:
 	void draw();
 	void exit();
 	
-	void drawPointCloud();
+	void drawPointCloud(int step = 1);
 	
 	void keyPressed(int key);
 	void mouseDragged(int x, int y, int button);
@@ -26,17 +26,20 @@ public:
 	void windowResized(int w, int h);
     void guiEvent(ofxUIEventArgs &e);
 
-	void	drawLines(int step);
-	void	drawLinesV(int step);
-    void showDebug();
-	ofxKinect kinect;
-	bool pulso;
-#ifdef USE_TWO_KINECTS
-	ofxKinect kinect2;
-#endif
+	void	drawLinesH(float step = 5.0);
+	void	drawLinesV(float step = 5.0);
+    void	showDebug();
 	
+	ofxKinect kinect;
+
+	bool	pulso;
+	
+	// GUI
+	void		setupGUI();
    	ofxUICanvas *gui1;
     
+	void		grabarScreen();
+	
 	ofxCvColorImage colorImg;
 	
 	ofxCvGrayscaleImage grayImage; // grayscale depth image
@@ -61,27 +64,30 @@ public:
     
     
     // zMax
-    int zMin;
-    int zMax;
+    float zMin, zMax;
+
     float low;
     int    incrDistance;
     ofImage Img;
     ofMesh mesh;
     ofMesh meshParticles;
 	bool explosion;
+
     //function
-    void setupParticles();
-     void drawParticles();
-    void updateParticles();
+    void	setupParticles();
+	void	drawParticles();
+    void	updateParticles();
 	void    resetParticles();
-    int numParticles;
-    enum  {NUBE, ESPEJO};
-    int particleMode;
+    int		numParticles;
+    enum	{NUBE, ESPEJO};
+    int		particleMode;
     
     float speed;
     int stopUmbral;
     
-    
+    int stepCloudPoint;
+	int stepLines;
+	
     //shaders
     ofShader shader;
     void setupShader();

@@ -60,25 +60,63 @@ void testApp::setup() {
     zMin = 200;
     zMax = 1500;
 
+	stepLines = 5;
+	
     incrDistance=0;
+	
+	
+	// setupCam
+	// fijar posicion y orientacion (ofNode, Target, lookAt...)
+	easyCam.setAutoDistance(true);
+	
 	setupParticles();
     
-    gui1 = new ofxUICanvas(0,100,400,600);
-   
-    
-    gui1->addSlider("speed", 0.4, 5, &speed);
-    gui1->addIntSlider("stopUmbral", 10, 10000, &stopUmbral) ;
-    gui1->addSpacer();
-	gui1->addButton("reset",true);
-    gui1->addToggle("noise", &boolDrawNoise);
-    gui1->addIntSlider("alpha Particles", 1, 255, &alphaParticles) ;
-    
-    ofAddListener(gui1->newGUIEvent,this,&testApp::guiEvent);
+	setupGUI();
+
 	setupShader();
     
     
     myOSCrcv.setup();
 }
+
+
+
+void testApp::setupGUI() {
+	gui1 = new ofxUICanvas(0,100,400,600);
+	
+	gui1->addSlider("speed", 0.4, 5, &speed);
+	gui1->addIntSlider("stopUmbral", 10, 10000, &stopUmbral) ;
+	
+	gui1->addSpacer();
+	gui1->addButton("save",true);
+	gui1->addButton("load",true);	
+	gui1->addSpacer();
+	
+	gui1->addButton("reset",true);
+	
+	gui1->addToggle("noise", &boolDrawNoise);
+	gui1->addIntSlider("alpha Particles", 1, 255, &alphaParticles) ;
+	
+	gui1->addSpacer();
+	
+	gui1->addIntSlider("stepPointCloud", 1,5, &stepCloudPoint);
+	gui1->addIntSlider("stepLines", 2,10, &stepLines);
+	
+	gui1->addSpacer();
+	
+	gui1->addRangeSlider("RangoZ", 100, 3000, &zMin, &zMax);
+	
+	gui1->addSpacer();
+	
+	gui1->addToggle("Pulso", &pulso);
+	gui1->addToggle("Explosion", &explosion);
+	
+	gui1->addSpacer();
+	
+	ofAddListener(gui1->newGUIEvent,this,&testApp::guiEvent);
+}
+
+
 
 //--------------------------------------------------------------
 void testApp::update() {
@@ -176,35 +214,39 @@ void testApp::draw() {
 	ofSetColor(255, 255, 255);
     if(boolDrawNoise)  	drawNoise();
     ofEnableAlphaBlending();
-		easyCam.begin();
-        ofPushMatrix();
-            // ofRotateZ(90);
-            ofPushMatrix();
-                // the projected points are 'upside down' and 'backwards'
-                ofScale(1, -1, -1);
-                ofTranslate(0, 0, -1000); // center the points a bit
-			    if(pulso==true){
-                	//drawPointCloud();
-                    drawParticles();
-    			}
-                else
-    //                drawPointCloud();
-                    drawLines();
-            ofPopMatrix();
-        ofPopMatrix();
-		easyCam.end();
+	easyCam.begin();
+	ofPushMatrix();
+		// ofRotateZ(90);
+		ofPushMatrix();
+			// the projected points are 'upside down' and 'backwards'
+			ofScale(1, -1, -1);
+			ofTranslate(0, 0, -1000); // center the points a bit
+			if(pulso==true){
+				//drawPointCloud(stepCloudPoint);
+				drawLinesV(stepLines);
+				drawParticles();
+			}
+			else {
+//                drawPointCloud();
+				drawLinesV(stepLines);
+			}
+		ofPopMatrix();
+	ofPopMatrix();
+	easyCam.end();
 		
     if(debug) showDebug();
 }
 
-void testApp::drawPointCloud() {
+
+
+
+
+void testApp::drawPointCloud(int step) {
     mesh.clear();
 	int w = 640;
 	int h = 480;
     incrDistance+=1;
 	mesh.setMode(OF_PRIMITIVE_POINTS);
-    int step;
-	step = 1;
 	for(int y = 0; y < h; y += step) { //recorro los puntos bajando por las columnas
 		for(int x = 0; x < w; x += step) { //recorro columnas
 			if(kinect.getDistanceAt(x, y) > 200
@@ -229,10 +271,15 @@ void testApp::drawPointCloud() {
                 //vtmp.x +=20*sin(vtmp.y/10.0*PI+ofGetElapsedTimeMillis())*sin(ofGetElapsedTimeMillis()/1000.0*TWO_PI);
 	}
 	glPointSize(2);
+	glEnable(GL_POINT_SMOOTH);	// Para que sean puntos redondos
 	ofEnableDepthTest();
 	mesh.draw();	
 	ofDisableDepthTest();
 }
+
+
+
+
 
 void testApp::setupShader(){
 	shader.load("", "shaders/myCrazyFragFile2.frag");
@@ -290,6 +337,7 @@ void testApp::resetParticles(){
 void testApp::drawParticles(){
     meshParticles.setMode(OF_PRIMITIVE_POINTS);
     glPointSize(1);
+	glEnable(GL_POINT_SMOOTH);	// Para que sean puntos redondos
 	ofEnableDepthTest();
 	meshParticles.draw();
 	ofDisableDepthTest();
@@ -301,10 +349,21 @@ void testApp::showDebug(){
 	    ofDrawBitmapString("MODO NUBE " , 20, 50);
     else
     	ofDrawBitmapString("MODO ESPEJO " , 20, 50);
-    
+	
+	// ofEasyCam
+    ofDrawBitmapString("EasyCam - distance: " + ofToString(easyCam.getDistance()), ofGetWidth()-200, 20);
+    ofDrawBitmapString("drag: " + ofToString(easyCam.getDrag()), ofGetWidth()-200, 35);
+	
+	ofNode nodeCam = easyCam.getTarget();
+//    ofDrawBitmapString("EasyCam - posCam: " + ofToString(nodeCam.getX()) + "," + ofToString(nodeCam.getY()) + "," + ofToString(nodeCam.getZ()), ofGetWidth()-200, 50);
+    ofDrawBitmapString("posCam: " + ofToString(nodeCam.getPosition()), ofGetWidth()-200, 50);
+    ofDrawBitmapString("globalposCam: " + ofToString(nodeCam.getGlobalPosition()), ofGetWidth()-200, 65);
+    ofDrawBitmapString("spitch: " + ofToString(nodeCam.getPitch()), ofGetWidth()-200, 80);
+//    ofDrawBitmapString("EasyCam - distance: " + ofToString(easyCam.getDistance()), ofGetWidth()-200, 20);
+//    ofDrawBitmapString("EasyCam - distance: " + ofToString(easyCam.getDistance()), ofGetWidth()-200, 20);
 }
 
-void testApp::drawLines(int step = 5){
+void testApp::drawLinesH(float step){
 	int w = 640;
 	int h = 480;
     incrDistance+=1;
@@ -314,20 +373,23 @@ void testApp::drawLines(int step = 5){
     float theta = sin ( ofGetElapsedTimef() ) ;
     ofVec2f v1=ofVec2f(640,480);
     ofPolyline lineMesh1;
-    ofPoint lastPoint ;
+//    ofPoint lastPoint ;
+    ofVec3f lastPoint ;
     
 	for(int y = 0; y < h; y += step) { //recorro los puntos bajando por las columnas
         ofPath line ;
 		bool bLastValid = false;
 		int _xStep = step;
 		for(int x = 0; x < w; x += step) { //recorro columnas
-			if(kinect.getDistanceAt(x, y) > 200 && kinect.getDistanceAt(x, y) < zMax) {
+			if(kinect.getDistanceAt(x, y) > zMin && kinect.getDistanceAt(x, y) < zMax) {
                 ofVec2f p2= ofVec2f(x,y);
                 ofVec3f vtmp = kinect.getWorldCoordinateAt(x , y);
                 
                 ofPoint _lastPoint = vtmp ;
-                float dist = abs(vtmp.z - lastPoint.z) ;
-                if (  dist < 30  )
+//                float dist = abs(vtmp.z - lastPoint.z) ;
+//                if (  dist < 30  )
+				float dist2 = vtmp.squareDistance(lastPoint);
+                if (  dist2 < 120  )
                 {
                     if ( bLastValid == false )
                     {
@@ -345,8 +407,8 @@ void testApp::drawLines(int step = 5){
                     bLastValid = false ;
                 }
                 lastPoint = vtmp ;
-            }//if
-        } //for interior
+            }
+        } 
         ofColor c=  ofColor( 35 , 255 , 24 ) ;
 		line.setColor( c ) ;
         line.setFilled( false ) ;
@@ -356,30 +418,33 @@ void testApp::drawLines(int step = 5){
 	}
 }
 
-void testApp::drawLinesV( int step = 5){
-	int w = 640;
-	int h = 480;
+void testApp::drawLinesV(float step){
+	int w = kinect.width;
+	int h = kinect.height;
     incrDistance+=1;
     std::vector<ofPolyline> lineMesh;
     ofColor col ;
     float _time = ofGetElapsedTimef() ;
     float theta = sin ( ofGetElapsedTimef() ) ;
-    ofVec2f v1=ofVec2f(640,480);
+    ofVec2f v1=ofVec2f(w,h);
     ofPolyline lineMesh1;
-    ofPoint lastPoint ;
+//    ofPoint lastPoint ;
+    ofVec3f lastPoint ;
     
-	for(int y = 0; y < h; y += step) { //recorro los puntos bajando por las columnas
-        ofPath line ;
+	for(int x = 0; x < w; x += step) { // recorro la horizontal
+        ofPath line;
 		bool bLastValid = false;
-		int _xStep = step;
-		for(int x = 0; x < w; x += step) { //recorro columnas
-			if(kinect.getDistanceAt(x, y) > 200 && kinect.getDistanceAt(x, y) < zMax) {
-                ofVec2f p2= ofVec2f(x,y);
+//		int _xStep = step;
+		for(int y = 0; y < h; y += step) { // recorro columnas
+			if(kinect.getDistanceAt(x, y) > zMin && kinect.getDistanceAt(x, y) < zMax) {
+                ofVec2f p2   = ofVec2f(x,y);
                 ofVec3f vtmp = kinect.getWorldCoordinateAt(x , y);
                 
-                ofPoint _lastPoint = vtmp ;
-                float dist = abs(vtmp.z - lastPoint.z) ;
-                if (  dist < 30  )
+//                ofPoint _lastPoint = vtmp ;
+//                float dist = abs(vtmp.z - lastPoint.z) ;
+//                if (  dist < 30  )
+				float dist2 = vtmp.squareDistance(lastPoint);
+                if (  dist2 < 120  )
                 {
                     if ( bLastValid == false )
                     {
@@ -389,17 +454,17 @@ void testApp::drawLinesV( int step = 5){
                     {
                         line.lineTo( vtmp ) ;//addVertex( vertex ) ;
                     }
-                    bLastValid = true ;
-                    
+                    bLastValid = true ;                    
                 }
                 else
                 {
                     bLastValid = false ;
                 }
-                lastPoint = vtmp ;
-            }//if
-        } //for interior
-        ofColor c=  ofColor( 35 , 255 , 24 ) ;
+                lastPoint = vtmp;
+            }
+        } 
+		
+        ofColor c =  ofColor( 35 , 255 , 24 ) ;
 		line.setColor( c ) ;
         line.setFilled( false ) ;
         line.setStrokeColor( c ) ;
@@ -413,9 +478,11 @@ void testApp::exit() {
 	kinect.setCameraTiltAngle(0); // zero the tilt on exit
 	kinect.close();
 	
-#ifdef USE_TWO_KINECTS
-	kinect2.close();
-#endif
+	//gui1->saveSettings("gui_kinect.xml");
+    
+	delete gui1;
+	
+	
 }
 
 //--------------------------------------------------------------
@@ -468,10 +535,31 @@ void testApp::keyPressed (int key) {
             zMax-=10;
             break;
         case 's':
-            Img.grabScreen( 0, 0, ofGetWidth(), ofGetHeight() );
-            Img.saveImage( "test.png" );
+			grabarScreen();
+			break;
+		case 'v':
+			gui1->saveSettings("/config/gui/gui_kinect.xml");
+			break;
+			
 	}
 }
+
+
+void testApp::grabarScreen() {
+	Img.grabScreen( 0, 0, ofGetWidth(), ofGetHeight() );
+	string nameImg = "./images/screens/pantalla_";
+	nameImg+=ofToString(ofGetYear())+
+			ofToString(ofGetYear(),4)+
+			ofToString(ofGetMonth(),2,'0')+
+			ofToString(ofGetDay(),2,'0')+
+			ofToString(ofGetHours(),2,'0')+
+			ofToString(ofGetMinutes(),2,'0')+
+			ofToString(ofGetSeconds(),2,'0')+
+			".png";
+	cout << nameImg;
+	Img.saveImage( nameImg );
+}
+
 
 //--------------------------------------------------------------
 void testApp::mouseDragged(int x, int y, int button)
@@ -498,5 +586,15 @@ void testApp::guiEvent(ofxUIEventArgs &e)
     {
         cout << "reset";
         resetParticles();
+    }
+	else if(name == "save")
+    {
+        cout << "save";
+		gui1->saveSettings("./config/gui/gui_kinect.xml");
+    }
+	else if(name == "load")
+    {
+        cout << "load";
+		gui1->loadSettings("./config/gui/gui_kinect.xml");
     }
 }

@@ -1,0 +1,46 @@
+<Widget>
+    <Kind>4</Kind>
+    <Name>speed</Name>
+    <Value>0.728571475</Value>
+</Widget>
+<Widget>
+    <Kind>42</Kind>
+    <Name>stopUmbral</Name>
+    <Value>3068</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>noise</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>42</Kind>
+    <Name>alpha Particles</Name>
+    <Value>255</Value>
+</Widget>
+<Widget>
+    <Kind>42</Kind>
+    <Name>stepPointCloud</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>42</Kind>
+    <Name>stepLines</Name>
+    <Value>5</Value>
+</Widget>
+<Widget>
+    <Kind>6</Kind>
+    <Name>RangoZ</Name>
+    <HighValue>1202.295898438</HighValue>
+    <LowValue>447.704101562</LowValue>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>Pulso</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>Explosion</Name>
+    <Value>0</Value>
+</Widget>
