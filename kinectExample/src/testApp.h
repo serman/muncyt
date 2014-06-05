@@ -33,6 +33,8 @@ public:
 	ofxKinect kinect;
 
 	bool	pulso;
+	bool	bDrawPoints;
+	bool	bDrawLinesH, bDrawLinesV;
 	
 	// GUI
 	void		setupGUI();
@@ -82,18 +84,21 @@ public:
     enum	{NUBE, ESPEJO};
     int		particleMode;
     
-    float speed;
-    int stopUmbral;
+    float	speed;
+    int		stopUmbral;
     
-    int stepCloudPoint;
-	int stepLines;
+    int		stepCloudPoint;
+	int		stepLines;
 	
     //shaders
     ofShader shader;
-    void setupShader();
-   	void drawNoise();
-    bool boolDrawNoise;
-    int alphaParticles;
+    void	setupShader();
+   	void	drawNoise();
+    bool	boolDrawNoise;
+    int		alphaParticles;
+	
+    int		alphaLines;
+	
     //osc
     cheapCommRcv myOSCrcv;
 };

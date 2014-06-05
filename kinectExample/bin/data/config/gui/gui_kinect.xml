@@ -1,22 +1,37 @@
 <Widget>
     <Kind>4</Kind>
     <Name>speed</Name>
-    <Value>0.728571475</Value>
+    <Value>3.509693861</Value>
 </Widget>
 <Widget>
     <Kind>42</Kind>
     <Name>stopUmbral</Name>
-    <Value>3068</Value>
+    <Value>188</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>NUBE</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>ESPEJO</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>42</Kind>
+    <Name>alpha Particles</Name>
+    <Value>160</Value>
+</Widget>
+<Widget>
+    <Kind>42</Kind>
+    <Name>alpha Lines</Name>
+    <Value>201</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
     <Name>noise</Name>
     <Value>0</Value>
-</Widget>
-<Widget>
-    <Kind>42</Kind>
-    <Name>alpha Particles</Name>
-    <Value>255</Value>
 </Widget>
 <Widget>
     <Kind>42</Kind>
@@ -31,13 +46,23 @@
 <Widget>
     <Kind>6</Kind>
     <Name>RangoZ</Name>
-    <HighValue>1202.295898438</HighValue>
-    <LowValue>447.704101562</LowValue>
+    <HighValue>1500.000000000</HighValue>
+    <LowValue>200.000000000</LowValue>
 </Widget>
 <Widget>
     <Kind>2</Kind>
-    <Name>Pulso</Name>
-    <Value>0</Value>
+    <Name>DrawPoints</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>DrawLinesH</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>DrawLinesV</Name>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
