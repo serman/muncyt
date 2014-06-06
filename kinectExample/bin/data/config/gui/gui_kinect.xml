@@ -1,0 +1,71 @@
+<Widget>
+    <Kind>4</Kind>
+    <Name>speed</Name>
+    <Value>3.509693861</Value>
+</Widget>
+<Widget>
+    <Kind>42</Kind>
+    <Name>stopUmbral</Name>
+    <Value>188</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>NUBE</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>ESPEJO</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>42</Kind>
+    <Name>alpha Particles</Name>
+    <Value>160</Value>
+</Widget>
+<Widget>
+    <Kind>42</Kind>
+    <Name>alpha Lines</Name>
+    <Value>201</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>noise</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>42</Kind>
+    <Name>stepPointCloud</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>42</Kind>
+    <Name>stepLines</Name>
+    <Value>5</Value>
+</Widget>
+<Widget>
+    <Kind>6</Kind>
+    <Name>RangoZ</Name>
+    <HighValue>1500.000000000</HighValue>
+    <LowValue>200.000000000</LowValue>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>DrawPoints</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>DrawLinesH</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>DrawLinesV</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>Explosion</Name>
+    <Value>0</Value>
+</Widget>
