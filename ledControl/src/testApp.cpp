@@ -8,7 +8,7 @@ void testApp::setup(){
 #ifndef NOARDUINO
     setupSerial();
 #endif
-    red=32;green=32;blue=32;
+    redc=32;greenc=32;bluec=32;
     mrect=ofRectangle(0,500,1024,50);
     mrect2=ofRectangle(0,100,1024,100);
     lastTimeSent=ofGetElapsedTimeMillis();
@@ -20,9 +20,9 @@ void testApp::setup(){
     
     
     gui1->addIntSlider("pixel", 0, 120, &ledNumber);
-    gui1->addIntSlider("red", 0, 255, &red);
-    gui1->addIntSlider("green", 0, 255, &green);
-    gui1->addIntSlider("blue", 0, 255, &blue);
+    gui1->addIntSlider("red", 0, 255, &redc);
+    gui1->addIntSlider("green", 0, 255, &greenc);
+    gui1->addIntSlider("blue", 0, 255, &bluec);
     
     gui1->addToggle("mode", false);
     ofAddListener(gui1->newGUIEvent,this,&testApp::gui1Event);
@@ -55,8 +55,10 @@ void testApp::setupSerial(){
 //--------------------------------------------------------------
 void testApp::update(){
     if(myOSCrcv.update()==true){
-        //TODO compute position values and trigger the animations
-        cout << "myOSCrcv.remotePosition"  << myOSCrcv.remotePosition << "\n";
+        int degs=ofRadToDeg( abs( myOSCrcv.remotePosition));
+        degs=degs%360;
+       // cout <<"remote " << myOSCrcv.remotePosition << " postion: "<<  ofMap(degs, 0, 360, 0, 120) << "\n";
+        light('s', ofMap(degs, 0, 360, 0, 120), ofColor::white);
     }
 }
 
@@ -74,9 +76,9 @@ void testApp::light(char code, int number, ofColor mcolor){
     TO.lock();
     protocolToSend[0]=code;
 	intToChar(&protocolToSend[1] ,number, 3 );
-    intToChar(&protocolToSend[4] ,red, 3);
-    intToChar(&protocolToSend[7] ,green, 3);
-    intToChar(&protocolToSend[10] ,blue, 3);
+    intToChar(&protocolToSend[4] ,redc, 3);
+    intToChar(&protocolToSend[7] ,greenc, 3);
+    intToChar(&protocolToSend[10] ,bluec, 3);
     protocolToSend[13]='\n';
 	TO.unlock();
 /*    protocolToSend[1]= number & 0x00FF;
@@ -91,7 +93,7 @@ void testApp::light(char code, int number, ofColor mcolor){
     protocolToSend[10]= 255; //codigo de fin de paquete 1 255
     protocolToSend[11]= 0x55; //codigo de fin de paquete 2 0x55
  */
-    cout << protocolToSend;
+    //cout << protocolToSend;
 
 #ifndef NOARDUINO
    // mySerial.writeBytes(&protocolToSend[0], PKTLENGTH);
@@ -166,7 +168,7 @@ void testApp::gui1Event(ofxUIEventArgs &e)
     else if(name== "pixel" || name== "red" || name== "green" || name== "blue"){
 		if(((ofGetElapsedTimeMillis()-lastTimeSent)>40)
            /**&& ledNumber != lastNumberSent**/ ) {
-            light(mode,ledNumber,ofColor(red,green,blue) );
+            light(mode,ledNumber,ofColor(redc,greenc,bluec) );
             lastTimeSent=ofGetElapsedTimeMillis();
             lastNumberSent=ledNumber;
         }

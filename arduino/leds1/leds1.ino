@@ -42,7 +42,7 @@ void blink(){
 }
 
 void setup() {
-  Serial.begin(28800);
+  Serial.begin(57600);
   // initialize the LED pin as an output:
   strip.begin();
   clearLEDs();
@@ -84,10 +84,10 @@ void loop() {
       //if(prevRcvPixel !=  currentRcvPixel)
       //strip.setPixelColor(prevRcvPixel,0);
       clearLEDs();
-      strip.setPixelColor(currentRcvPixel, (strip.Color(35, 35, 35))); 
-      strip.setPixelColor(currentRcvPixel+1, (strip.Color(35, 35, 35))); 
-      strip.setPixelColor(currentRcvPixel+2, (strip.Color(35, 35, 35))); 
-      strip.setPixelColor(currentRcvPixel+3, (strip.Color(35, 35, 35))); 
+      strip.setPixelColor(currentRcvPixel, strip.Color(colorR, colorG, colorB) ); 
+      strip.setPixelColor(currentRcvPixel+1, strip.Color(colorR, colorG, colorB) ); 
+      strip.setPixelColor(currentRcvPixel+2, strip.Color(colorR, colorG, colorB) ); 
+      strip.setPixelColor(currentRcvPixel+3, strip.Color(colorR, colorG, colorB) ); 
       strip.show();
     }
     else{      
@@ -104,7 +104,7 @@ void loop() {
  
 void establishContact() {
    Serial.print("0");   // send an initial string
-   delay(30);         //within this time we should receive the full msg     
+   delay(15);         //within this time we should receive the full msg     
    
 }
 

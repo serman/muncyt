@@ -5,6 +5,7 @@
 #include "ofxUI.h"
 // this h file has the definition for an object that uses the threaded addon:
 #include "threadedObject.h"
+#include <math.h>
 
 #define PKTLENGTH 14
 //#define NOARDUINO 1
@@ -50,7 +51,7 @@ class testApp : public ofBaseApp{
 	void gui1Event(ofxUIEventArgs &e);
     int ledNumber;
     char mode;
-    int red, green, blue;
+    int redc, greenc, bluec;
 };
 
 //c command code: l= light one; u= light until;
