@@ -14,6 +14,7 @@
 		49BEEB2DFA5319D55AA6899F /* tilt.c in Sources */ = {isa = PBXBuildFile; fileRef = BF2F2AA872288D30F53983EF /* tilt.c */; };
 		63020F16C7E8DED980111241 /* ofxCvImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6151136D101F857DAE12722 /* ofxCvImage.cpp */; };
 		686B0DF6249B52E1A85B39EC /* ofxKinect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7ED9FFC7D08DA194C2CE7D09 /* ofxKinect.cpp */; };
+		7FCD30971941BB1C00D5358C /* ofxGrabCam.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7FCD308B1941BB1C00D5358C /* ofxGrabCam.cpp */; };
 		ACE7DC9A3223ED5EE1B80074 /* cameras.c in Sources */ = {isa = PBXBuildFile; fileRef = 3DBD37876A11E46E4D7069B3 /* cameras.c */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
 		D31F5C1B140C59B2AF1533A8 /* registration.c in Sources */ = {isa = PBXBuildFile; fileRef = 71958293AC5292DE4B7C619D /* registration.c */; };
@@ -183,6 +184,8 @@
 		7C3D9C0EAC738ED2624D264B /* ml.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ml.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv/ml.h; sourceTree = SOURCE_ROOT; };
 		7E57AAE3FAB29F87D19451BC /* sampling.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = sampling.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/sampling.h; sourceTree = SOURCE_ROOT; };
 		7ED9FFC7D08DA194C2CE7D09 /* ofxKinect.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxKinect.cpp; path = ../../../addons/ofxKinect/src/ofxKinect.cpp; sourceTree = SOURCE_ROOT; };
+		7FCD308B1941BB1C00D5358C /* ofxGrabCam.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxGrabCam.cpp; sourceTree = "<group>"; };
+		7FCD308C1941BB1C00D5358C /* ofxGrabCam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxGrabCam.h; sourceTree = "<group>"; };
 		83C70000C4AE60283CC77EB9 /* freenect_internal.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = freenect_internal.h; path = ../../../addons/ofxKinect/libs/libfreenect/src/freenect_internal.h; sourceTree = SOURCE_ROOT; };
 		8530EAD600CD792B81B2E79D /* legacy.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = legacy.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/legacy/legacy.hpp; sourceTree = SOURCE_ROOT; };
 		8A4DD23693DFAB8EC05FAA5D /* ofxCvShortImage.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxCvShortImage.cpp; path = ../../../addons/ofxOpenCv/src/ofxCvShortImage.cpp; sourceTree = SOURCE_ROOT; };
@@ -625,6 +628,24 @@
 			name = opencv;
 			sourceTree = "<group>";
 		};
+		7FCD30321941BB1C00D5358C /* ofxGrabCam */ = {
+			isa = PBXGroup;
+			children = (
+				7FCD308A1941BB1C00D5358C /* src */,
+			);
+			name = ofxGrabCam;
+			path = ../../../addons/ofxGrabCam;
+			sourceTree = SOURCE_ROOT;
+		};
+		7FCD308A1941BB1C00D5358C /* src */ = {
+			isa = PBXGroup;
+			children = (
+				7FCD308B1941BB1C00D5358C /* ofxGrabCam.cpp */,
+				7FCD308C1941BB1C00D5358C /* ofxGrabCam.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		86FEC009E2721D0FB23338D7 /* features2d */ = {
 			isa = PBXGroup;
 			children = (
@@ -698,6 +719,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				7FCD30321941BB1C00D5358C /* ofxGrabCam */,
 				F7EBD1A7193358F3009805D5 /* ofxOsc */,
 				F7C17087192B81A30034A5CB /* ofxXmlSettings */,
 				F7C16FFB192B76E20034A5CB /* ofxUI */,
@@ -1309,6 +1331,7 @@
 				F7EBD1D8193358F3009805D5 /* NetworkingUtils.cpp in Sources */,
 				F7EBD1D7193358F3009805D5 /* IpEndpointName.cpp in Sources */,
 				F7C17064192B76E30034A5CB /* ofxUIEventArgs.cpp in Sources */,
+				7FCD30971941BB1C00D5358C /* ofxGrabCam.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

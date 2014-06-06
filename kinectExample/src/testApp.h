@@ -7,8 +7,16 @@
 #include "ofxUI.h"
 #include "cheapCommRcv.h"
 
+//#define EASYCAM
+
+#ifndef EASYCAM
+	#include "ofxGrabCam.h"
+#endif
+//#include "ofxGrabCam.h"
+
 // uncomment this to read from two kinects simultaneously
 //#define USE_TWO_KINECTS
+
 class testApp : public ofBaseApp {
 public:
 	
@@ -62,7 +70,15 @@ public:
     //ofxParticle3D particles[particlesSize];
 	 vector<Particle> particles ;
 	// used for viewing the point cloud
+	
+#ifdef EASYCAM
 	ofEasyCam easyCam;
+#else 
+	ofxGrabCam camera;	
+	void saveCameraPose();
+	void loadCameraPose();
+#endif
+	
     
     
     // zMax

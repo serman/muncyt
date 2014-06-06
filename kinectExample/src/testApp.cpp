@@ -15,7 +15,6 @@ void testApp::setup() {
 	//kinect.init(false, false); // disable video image (faster fps)
 	
 	kinect.open();		// opens first available kinect
-	//kinect.open(1);	// open a kinect by id, starting with 0 (sorted by serial # lexicographically))
 	//kinect.open("A00362A08602047A");	// open a kinect using it's unique serial #
 	
 	// print the intrinsic IR sensor values
@@ -67,7 +66,15 @@ void testApp::setup() {
 	
 	// setupCam
 	// fijar posicion y orientacion (ofNode, Target, lookAt...)
+#ifdef EASYCAM	
 	easyCam.setAutoDistance(true);
+#else 
+//	camera.setMouseActions(false);
+//	camera.removeListeners();
+	camera.setCursorWorld(ofVec3f(0,0,-2000));
+	
+#endif
+	
 	
 	setupParticles();
     
@@ -178,21 +185,8 @@ void testApp::updateParticles() {
     ofVec3f diff ;
     std::vector<Particle>::iterator p ;
 	
-//	float xm = 9999;
-//	float xM = -9999;
-//	float ym = 9999;
-//	float yM = -9999;
-//	float zm = 9999999;
-//	float zM = -9999999;
     for ( p = particles.begin() ; p != particles.end() ; p++ )
     {
-//		ofVec3f pt = kinect.getWorldCoordinateAt(p->_x, p->_y);
-//		if(xm>pt.x) xm = pt.x;
-//		if(xM<pt.x) xM = pt.x;
-//		if(ym>pt.y) ym = pt.y;
-//		if(yM<pt.y) yM = pt.y;
-//		if(zm>pt.z) zm = pt.z;
-//		if(zM<pt.z) zM = pt.z;
 		
         if(kinect.getDistanceAt(p->_x, p->_y) > 200 && kinect.getDistanceAt(p->_x, p->_y) < zMax) {
 
@@ -221,17 +215,9 @@ void testApp::updateParticles() {
 	                p->update();
                // p->position+=ofNoise( p->position.x,p->position.y,p->position.z)*30;
             }
-            //if(counter%300==0)
-            //cout << "counter: " << p->position << " ===...........=== "<< mvect << " x: " << x << " y " << y <<"\n";
-        	//p->color=ofColor(255,255,255,255);
-//            p->color=ofColor::fromHsb(ofMap(kinect.getDistanceAt(p->_x, p->_y), zMin, zMax, 4, 255) , 255, 255, 50);
-            //p->color=ofColor(255,255,255,ofMap(mouseX,1,ofGetWidth(),1,255 ) );
-            //p->color=ofColor::fromHsb(ofMap(kinect.getDistanceAt(p->_x, p->_y), zMin, zMax, 0, 360) , 255, 255, 200);
-           // p->color=ofColor( kinect.getColorAt(p->_x, p->_y) );
+			
             p->color=ofColor(255,255,255,alphaParticles);
             if((p->_x+p->_x)%400==0 ){ //820
-                        	//p->color=ofColor(0,255,0,255);
-                //if( ofGetFrameNum()%1==0) cout <<  " ::: "	<< diff.lengthSquared() <<  " .... "<< p->velocity <<" ... " << p->acceleration;
                 
             }
             meshParticles.addVertex(p->position);
@@ -247,8 +233,6 @@ void testApp::updateParticles() {
     //if((ofGetFrameNum()%1==0))
     //cout << " \n ----------------------------------------------- \n";
 
-//    ofLogNotice("World Coords: xyz m: " + ofToString(ofVec3f(xm,ym,zm)));
-//    ofLogNotice("World Coords: xyz M: " + ofToString(ofVec3f(xM,yM,zM)));
 }
 
 // - - - - - - - - - - - - - - - - - - -- -- -- -- -- -- -- -- -- -- -- -- -- --- --- --- --- --- ---
@@ -259,16 +243,21 @@ void testApp::draw() {
 	ofSetColor(255, 255, 255);
     if(boolDrawNoise)  	drawNoise();
     ofEnableAlphaBlending();
+	
+#ifdef EASYCAM
 	easyCam.begin();
-	ofPushMatrix();
+#else
+	camera.begin();
+#endif
+	
+	
+	ofPushMatrix();	
 		// the projected points are 'upside down' and 'backwards'
-		ofScale(1, -1, -1);
-		ofTranslate(0, 0, -1000); // Acerca a camara la nube de puntos
+		ofScale(1, 1, -1);
+//		ofTranslate(0, 0, -1000); // Acerca a camara la nube de puntos
 		
 		// Superponemos modos de dibujo en 3D
-		if(bDrawPoints) {
-			drawParticles();
-		}
+		if(bDrawPoints) drawParticles();
 		if(bDrawLinesH) drawLinesH();
 		if(bDrawLinesV) drawLinesV();
 		
@@ -282,7 +271,13 @@ void testApp::draw() {
 //			drawLinesV(stepLines);
 //		}
 	ofPopMatrix();
+	
+	
+#ifdef EASYCAM
 	easyCam.end();
+#else
+	camera.end();
+#endif	
 	
 	// Dibujar imagen Profundidad
 	float ww = 300;
@@ -294,7 +289,6 @@ void testApp::draw() {
 	kinect.drawDepth(ofGetWidth()-ww,ofGetHeight()-hh,ww,hh);
 		
     if(debug) showDebug();
-	
 	
 	
 }
@@ -317,7 +311,7 @@ void testApp::drawPointCloud(int step) {
                     //mesh.addColor(kinect.getColorAt(x,y));
                     //mesh.addColor(ofColor::fromHsb(ofMap(kinect.getDistanceAt(x, y), zMin, zMax, 0, 360) , 255, 255, 50));
                     //mesh.addColor(ofColor::yellowGreen );
-                	mesh.addColor(ofColor(255,255,255,ofMap(mouseX,1,ofGetWidth(),1,255 ) ) );
+                	mesh.addColor(ofColor(255,255,255,ofMap(mouseX,1,ofGetWidth(),100,255 ) ) );
                     //				mesh.addVertex(kinect.getWorldCoordinateAt(x, y));
                     ofVec3f vtmp = kinect.getWorldCoordinateAt(x , y);
                     mesh.addVertex(vtmp);
@@ -374,8 +368,8 @@ void testApp::drawNoise(){
 
 void testApp::setupParticles(){
    //particles.clear() ;
-    int w= 640;
-    int h= 480;
+    int w= kinect.width;
+    int h= kinect.height;
 	int    sampling=2;
     //Loop through all the rows
 
@@ -385,11 +379,19 @@ void testApp::setupParticles(){
     for ( int y = 0 ; y < h ; y+=sampling ){
         for ( int x = 0 ; x < w ; x+=sampling ){
 //			particles.push_back(Particle(ofVec3f(0,0,0),ofColor(255,255,255) ,x,y));
-			float px = ofRandom(-1000,1000);
-			float py = ofRandom(-1000,1000);
-			float pz = ofRandom(0,5000);
-			particles.push_back(Particle(ofVec3f(px,py,pz) ,ofColor(255,255,255) ,x,y));
-        numParticles++ ;
+//			float px = ofRandom(-1000,1000);
+//			float py = ofRandom(-1000,1000);
+//			float pz = ofRandom(0,5000);
+//			particles.push_back(Particle(ofVec3f(px,py,pz) ,ofColor(255,255,255) ,x,y));
+			
+			float ang1 = ofRandom(PI);
+			float ang2 = ofRandom(TWO_PI);
+			float rr = 10000;
+			
+			float rrho = rr*sin(ang1);
+			
+			particles.push_back(Particle(ofVec3f(rrho*cos(ang2),rrho*sin(ang2),rr*cos(ang1)+2500) ,ofColor(255,255,255) ,x,y));
+			numParticles++ ;
         }
     }
     
@@ -418,16 +420,16 @@ void testApp::showDebug(){
     	ofDrawBitmapString("MODO ESPEJO " , 20, 50);
 	
 	// ofEasyCam
-    ofDrawBitmapString("EasyCam - distance: " + ofToString(easyCam.getDistance()), ofGetWidth()-200, 20);
-    ofDrawBitmapString("drag: " + ofToString(easyCam.getDrag()), ofGetWidth()-200, 35);
-	
-	ofNode nodeCam = easyCam.getTarget();
-//    ofDrawBitmapString("EasyCam - posCam: " + ofToString(nodeCam.getX()) + "," + ofToString(nodeCam.getY()) + "," + ofToString(nodeCam.getZ()), ofGetWidth()-200, 50);
-    ofDrawBitmapString("posCam: " + ofToString(nodeCam.getPosition()), ofGetWidth()-200, 50);
-    ofDrawBitmapString("globalposCam: " + ofToString(nodeCam.getGlobalPosition()), ofGetWidth()-200, 65);
-    ofDrawBitmapString("spitch: " + ofToString(nodeCam.getPitch()), ofGetWidth()-200, 80);
 //    ofDrawBitmapString("EasyCam - distance: " + ofToString(easyCam.getDistance()), ofGetWidth()-200, 20);
-//    ofDrawBitmapString("EasyCam - distance: " + ofToString(easyCam.getDistance()), ofGetWidth()-200, 20);
+//    ofDrawBitmapString("drag: " + ofToString(easyCam.getDrag()), ofGetWidth()-200, 35);
+//	
+//	ofNode nodeCam = easyCam.getTarget();
+////    ofDrawBitmapString("EasyCam - posCam: " + ofToString(nodeCam.getX()) + "," + ofToString(nodeCam.getY()) + "," + ofToString(nodeCam.getZ()), ofGetWidth()-200, 50);
+//    ofDrawBitmapString("posCam: " + ofToString(nodeCam.getPosition()), ofGetWidth()-200, 50);
+//    ofDrawBitmapString("globalposCam: " + ofToString(nodeCam.getGlobalPosition()), ofGetWidth()-200, 65);
+//    ofDrawBitmapString("spitch: " + ofToString(nodeCam.getPitch()), ofGetWidth()-200, 80);
+////    ofDrawBitmapString("EasyCam - distance: " + ofToString(easyCam.getDistance()), ofGetWidth()-200, 20);
+////    ofDrawBitmapString("EasyCam - distance: " + ofToString(easyCam.getDistance()), ofGetWidth()-200, 20);
 }
 
 void testApp::drawLinesH(float step){
@@ -542,7 +544,7 @@ void testApp::drawLinesV(float step){
 
 //--------------------------------------------------------------
 void testApp::exit() {
-	kinect.setCameraTiltAngle(0); // zero the tilt on exit
+//	kinect.setCameraTiltAngle(0); // zero the tilt on exit
 	kinect.close();
 	
 	//gui1->saveSettings("gui_kinect.xml");
@@ -577,7 +579,8 @@ void testApp::keyPressed (int key) {
 			break;
         case 'g':
             debug=!debug;
-            			break;
+			gui1->toggleVisible();
+			break;
         case 'p':
             if(particleMode==NUBE)
                 particleMode=ESPEJO;
@@ -607,8 +610,15 @@ void testApp::keyPressed (int key) {
 		case 'v':
 			gui1->saveSettings("/config/gui/gui_kinect.xml");
 			break;
+				
 			
 	}
+	
+#ifndef EASYCAM
+if(key=='1')	saveCameraPose();
+else if(key=='2') 	loadCameraPose();
+#endif
+	
 }
 
 
@@ -658,11 +668,18 @@ void testApp::guiEvent(ofxUIEventArgs &e)
     {
         cout << "save";
 		gui1->saveSettings("./config/gui/gui_kinect.xml");
+#ifndef EASYCAM
+		saveCameraPose();
+#endif
     }
 	else if(name == "load")
     {
         cout << "load";
 		gui1->loadSettings("./config/gui/gui_kinect.xml");
+#ifndef EASYCAM
+		loadCameraPose();
+#endif
+		
     }
 	else if(name == "MODO_Partics")
     {
@@ -672,3 +689,21 @@ void testApp::guiEvent(ofxUIEventArgs &e)
 //		gui1->loadSettings("./config/gui/gui_kinect.xml");
     }
 }
+
+// CameraPose
+#ifndef EASYCAM
+void testApp::saveCameraPose() {
+	// grabar
+	ofFile fileWrite("./config/cameraPose.txt",ofFile::WriteOnly);
+	ofMatrix4x4 savedPose = camera.getGlobalTransformMatrix();
+	fileWrite << savedPose;		
+}
+
+void testApp::loadCameraPose() {
+	// leer
+	ofFile fileRead("./config/cameraPose.txt");
+	ofMatrix4x4 myMatrix;
+	fileRead >> myMatrix;
+	camera.setTransformMatrix(myMatrix);
+}	
+#endif

@@ -6,7 +6,7 @@
 <Widget>
     <Kind>42</Kind>
     <Name>stopUmbral</Name>
-    <Value>188</Value>
+    <Value>825</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -46,8 +46,8 @@
 <Widget>
     <Kind>6</Kind>
     <Name>RangoZ</Name>
-    <HighValue>1500.000000000</HighValue>
-    <LowValue>200.000000000</LowValue>
+    <HighValue>2467.346923828</HighValue>
+    <LowValue>455.102050781</LowValue>
 </Widget>
 <Widget>
     <Kind>2</Kind>
