@@ -369,6 +369,12 @@
 		F73625911923A1C500964804 /* ofxVideoSaver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxVideoSaver.cpp; sourceTree = "<group>"; };
 		F73625961923B6C800964804 /* ofxVideoRecorder.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxVideoRecorder.cpp; sourceTree = "<group>"; };
 		F73625971923B6C800964804 /* ofxVideoRecorder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxVideoRecorder.h; sourceTree = "<group>"; };
+		F7A398831940DB8F00F48F14 /* ofxTuio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxTuio.h; sourceTree = "<group>"; };
+		F7A398841940DB8F00F48F14 /* ofxTuioClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxTuioClient.h; sourceTree = "<group>"; };
+		F7A398851940DB8F00F48F14 /* ofxTuioContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxTuioContainer.h; sourceTree = "<group>"; };
+		F7A398861940DB8F00F48F14 /* ofxTuioCursor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxTuioCursor.h; sourceTree = "<group>"; };
+		F7A398871940DB8F00F48F14 /* ofxTuioObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxTuioObject.h; sourceTree = "<group>"; };
+		F7A398881940DB8F00F48F14 /* ofxTuioPoint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxTuioPoint.h; sourceTree = "<group>"; };
 		F7AFF65E192D7CAA00EA59D5 /* descartes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = descartes.h; sourceTree = "<group>"; };
 		F7B27D4D191333760022B207 /* ofxUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxUI.h; sourceTree = "<group>"; };
 		F7B27D4E191333760022B207 /* ofxUI2DGraph.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxUI2DGraph.cpp; sourceTree = "<group>"; };
@@ -929,6 +935,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				F7A398811940DB8F00F48F14 /* ofxTuio */,
 				F73625941923B6C800964804 /* ofxVideoRecorder */,
 				F7B27EB01915E4E10022B207 /* ofxSyphon */,
 				F7B27DD7191334CA0022B207 /* ofxXmlSettings */,
@@ -1178,6 +1185,28 @@
 			);
 			name = src;
 			path = ../../../addons/ofxVideoRecorder/src;
+			sourceTree = "<group>";
+		};
+		F7A398811940DB8F00F48F14 /* ofxTuio */ = {
+			isa = PBXGroup;
+			children = (
+				F7A398821940DB8F00F48F14 /* src */,
+			);
+			name = ofxTuio;
+			sourceTree = "<group>";
+		};
+		F7A398821940DB8F00F48F14 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				F7A398831940DB8F00F48F14 /* ofxTuio.h */,
+				F7A398841940DB8F00F48F14 /* ofxTuioClient.h */,
+				F7A398851940DB8F00F48F14 /* ofxTuioContainer.h */,
+				F7A398861940DB8F00F48F14 /* ofxTuioCursor.h */,
+				F7A398871940DB8F00F48F14 /* ofxTuioObject.h */,
+				F7A398881940DB8F00F48F14 /* ofxTuioPoint.h */,
+			);
+			name = src;
+			path = ../../../addons/ofxTuio/src;
 			sourceTree = "<group>";
 		};
 		F7B27D4B191333760022B207 /* ofxUI */ = {

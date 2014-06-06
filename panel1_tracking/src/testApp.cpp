@@ -71,6 +71,12 @@ void testApp::setup(){
 	
     	moveandrecord.setup();
     
+    if(appStatuses["sendTUIO"]==true){
+        frameseq=0;
+        setupTUIO();
+    
+    };
+    
 }
 
 void testApp::setupStatus(){
@@ -78,6 +84,7 @@ void testApp::setupStatus(){
     	appStatuses["debug"]=true;
     	appStatuses["adaptativeBackground"]=false;
 	    appStatuses["blobInSquare"]=false;
+	    appStatuses["sendTUIO"]=true;
     
 }
 
@@ -147,14 +154,77 @@ void testApp::update(){
     
     myComm.sendBlobs( blobTracker.trackedBlobs);
 	blobTracker.setFiltersParam(amplify, smooth);
-	
+    if(appStatuses["sendTUIO"]==true){
+        sendTUIO(&(blobTracker.trackedBlobs));
+        
+    };
+    
     if(moveandrecord.detectBlobinSquare(blobTracker)){
         //blobImgOF_min.cropFrom(maskedImageOF, moveandrecord.triggerRectangle.x, moveandrecord.triggerRectangle.y, moveandrecord.triggerRectangle.width, moveandrecord.triggerRectangle.height);
         mRecorder.start(3000, 25, &blobImgOF_min,moveandrecord.triggerRectangle.x,moveandrecord.triggerRectangle.y,moveandrecord.triggerRectangle.width,moveandrecord.triggerRectangle.height);
     }
-
-
 }
+
+void testApp::setupTUIO(){
+    string localhost = "127.0.0.1";
+    int TUIOPort= 3333;
+    TUIOSocket.setup(localhost, TUIOPort);
+}
+
+void testApp::sendTUIO(std::vector<ofxBlob> * objectBlobs){
+    bool bHeightWidth=true;
+	    frameseq++;
+        ofxOscBundle b_obj;
+        ofxOscMessage alive_obj;
+        // Sends alive message - saying 'Hey, there's no alive blobs'
+        alive_obj.setAddress("/tuio/2Dcur");
+        alive_obj.addStringArg("alive");
+        
+        // Send fseq message
+        ofxOscMessage fseq_obj;
+        fseq_obj.setAddress( "/tuio/2Dcur" );
+        fseq_obj.addStringArg( "fseq" );
+        fseq_obj.addIntArg(frameseq);
+        
+        if(objectBlobs->size() == 0)
+        {
+            b_obj.addMessage( alive_obj );		// add message to bundle
+            b_obj.addMessage( fseq_obj );		// add message to bundle
+            TUIOSocket.sendBundle( b_obj ); // send bundle
+        }
+        else
+        {
+            //map<int, ofxBlob>::iterator blob_obj;
+            //std::vector<ofxBlob>::iterator blob_obj=objectBlobs->begin();
+            for( std::vector<ofxBlob>::iterator blob_obj = objectBlobs->begin(); blob_obj != objectBlobs->end(); blob_obj++)
+            {
+                // omit point (0,0) since this means that we are outside of the range
+                if(blob_obj->centroid.x == 0 && blob_obj->centroid.y == 0)
+                    continue;
+                //Set Message
+                ofxOscMessage set_obj;
+                set_obj.setAddress( "/tuio/2Dcur" );
+                set_obj.addStringArg("set");
+                set_obj.addIntArg(blob_obj->id);				// id
+                set_obj.addFloatArg(blob_obj->centroid.x);	// x
+                set_obj.addFloatArg(blob_obj->centroid.y);	// y
+                set_obj.addFloatArg(blob_obj->D.x);			// dX
+                set_obj.addFloatArg(blob_obj->D.y);			// dY
+                set_obj.addFloatArg(blob_obj->maccel);		// m
+                if(bHeightWidth)
+                {
+                    set_obj.addFloatArg(blob_obj->boundingRect.width);	// wd
+                    set_obj.addFloatArg(blob_obj->boundingRect.height);	// ht
+                }
+                b_obj.addMessage( set_obj );							// add message to bundle
+                alive_obj.addIntArg(blob_obj->id);				// add blob to list of ALL active IDs
+            }
+            b_obj.addMessage( alive_obj );		//add message to bundle
+            b_obj.addMessage( fseq_obj );		//add message to bundle
+            TUIOSocket.sendBundle( b_obj ); //send bundle
+        }
+}
+
 
 void testApp::drawCoolGui(){
     ofPushStyle();
