@@ -2,7 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxOpenCv.h"
-#include "ofxKinect.h"
+
 #include "Particle.h"
 #include "ofxUI.h"
 #include "cheapCommRcv.h"
@@ -16,6 +16,19 @@
 
 // uncomment this to read from two kinects simultaneously
 //#define USE_TWO_KINECTS
+
+#define ASUS
+
+#ifndef ASUS
+	#include "ofxKinect.h"
+#else
+	#include "ofxOpenNI2Grabber.h"
+	#include "ofxOpenNI2Recorder.h"
+	#include "extendedDepthSource.h"
+#endif
+
+#define IRCAMERAWIDTH 640
+#define IRCAMERAHEIGHT 480
 
 class testApp : public ofBaseApp {
 public:
@@ -38,8 +51,15 @@ public:
 	void	drawLinesV(float step = 5.0);
     void	showDebug();
 	
+#ifndef ASUS
 	ofxKinect kinect;
-
+#else
+    ofxOpenNI2Grabber oniCamGrabber;
+    ofxOpenNI2GrabberSettings oniSettings;
+	ofxOpenNI2Recorder oniCamrecorder;
+    extendedDepthSource depthGenerator;
+    bool isReady;
+#endif
 	bool	pulso;
 	bool	bDrawPoints;
 	bool	bDrawLinesH, bDrawLinesV;
@@ -59,11 +79,8 @@ public:
 	ofxCvContourFinder contourFinder;
 	
     bool debug;
-	bool bThreshWithOpenCV;
 	bool bDrawPointCloud;
-	
-	int nearThreshold;
-	int farThreshold;
+
 	
 	int angle;
     //int particlesSize=640*480;

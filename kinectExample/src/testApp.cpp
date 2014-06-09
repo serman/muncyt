@@ -6,7 +6,7 @@ void testApp::setup() {
 	ofSetLogLevel(OF_LOG_VERBOSE);
 	
     ofSetFullscreen(true);
-    
+    #ifndef ASUS
 	// enable depth->video image calibration
 	kinect.setRegistration(true);
     
@@ -29,16 +29,58 @@ void testApp::setup() {
 	grayImage.allocate(kinect.width, kinect.height);
 	grayThreshNear.allocate(kinect.width, kinect.height);
 	grayThreshFar.allocate(kinect.width, kinect.height);
+    // zero the tilt on startup
+	angle = 0;
+	kinect.setCameraTiltAngle(angle);
 	
-	nearThreshold = 230;
-	farThreshold = 70;
-	bThreshWithOpenCV = true;
+    #else
+    oniSettings.width = IRCAMERAWIDTH;
+	oniSettings.height = IRCAMERAHEIGHT;
+	oniSettings.fps = 30;
+	oniSettings.doDepth = true;
+	oniSettings.doRawDepth = true;
+	oniSettings.doColor = true;
+	oniSettings.doIr = false;
+    
+    oniSettings.depthPixelFormat = PIXEL_FORMAT_DEPTH_1_MM;
+	oniSettings.colorPixelFormat = PIXEL_FORMAT_RGB888;
+	oniSettings.irPixelFormat = PIXEL_FORMAT_GRAY16;
+	oniSettings.doRegisterDepthToColor = false;
+	oniSettings.useOniFile = false;
+	oniSettings.oniFilePath = "UNDEFINED";
+    
+    //will search this directory for an .oni file
+	//if not found will use the first available camera
+	
+	ofDirectory currentONIDirectory(ofToDataPath("current", true));
+	if (currentONIDirectory.exists())
+	{
+		currentONIDirectory.listDir();
+		vector<ofFile> files = currentONIDirectory.getFiles();
+		if (files.size()>0)
+		{
+			oniSettings.useOniFile = true;
+			oniSettings.oniFilePath = files[0].path();
+			ofLogVerbose() << "using oniFilePath : " << oniSettings.oniFilePath;
+		}
+	}
+	
+	isReady = oniCamGrabber.setup(oniSettings);
+	//recorder.setup(&oniGrabber);
+    for (std::vector<VideoStream*>::iterator it = oniCamGrabber.streams.begin() ; it != oniCamGrabber.streams.end(); ++it){
+        (*it)->setMirroringEnabled(false);
+    }
+    depthGenerator.setup(oniCamGrabber.deviceController);
+
+    //depthGenerator.videoStream.setMirroringEnabled(true);
+	ofLogVerbose() << "testApp started";
+    
+    #endif
+
 	
 	ofSetFrameRate(60);
 	
-	// zero the tilt on startup
-	angle = 0;
-	kinect.setCameraTiltAngle(angle);
+
 	
 	// start from the front
 	bDrawPointCloud = true;
@@ -138,8 +180,7 @@ void testApp::setupGUI() {
 //--------------------------------------------------------------
 void testApp::update() {
 	
-//	ofBackground(100, 100, 100);
-	
+	#ifndef ASUS
 	kinect.update();
 	
 	// there is a new frame and we are connected
@@ -161,14 +202,19 @@ void testApp::update() {
 		}
 		
 	}
-	
-	
-	
-	
-	
-	
-	
-	
+    #else
+        if (isReady)
+        {
+            
+            oniCamGrabber.update();
+            //oniCamGrabber.
+//TODO actualizar solo cuando hay un nuevo frame
+            if(depthGenerator.isUpdated==true){
+	            updateParticles();
+            	depthGenerator.isUpdated=false;
+            }
+        }
+    #endif
 	
     // Update OSC
     if(myOSCrcv.update()==true){
@@ -183,16 +229,29 @@ void testApp::updateParticles() {
     meshParticles.clear();
     ofVec3f mdestPoint;
     ofVec3f diff ;
+    int pp=0;
     std::vector<Particle>::iterator p ;
 	
     for ( p = particles.begin() ; p != particles.end() ; p++ )
     {
 		
-        if(kinect.getDistanceAt(p->_x, p->_y) > 200 && kinect.getDistanceAt(p->_x, p->_y) < zMax) {
+#ifndef ASUS
+        if( kinect.getDistanceAt(p->_x, p->_y) > 200  &&  kinect.getDistanceAt(p->_x, p->_y) < zMax ) {
 
             if(particleMode==ESPEJO){
                 p->stopAcc();
              	mdestPoint= kinect.getWorldCoordinateAt(p->_x, p->_y);//getWorldCoordinateAt() returns the position in millimeters with kinect at the origin.
+                
+#else	
+        int distance=depthGenerator.currentRawPixels->getPixels()[p->_y * depthGenerator.width + p->_x];
+                  //cout << zMax;
+        if(distance> 200 && distance < zMax) {
+            pp++;
+            if(particleMode==ESPEJO){
+                p->stopAcc();
+               mdestPoint=  oniCamGrabber.convertDepthToWorld(p->_x, p->_y);
+            
+#endif
                 diff = mdestPoint- p->position;
                 if(diff.lengthSquared()>stopUmbral){
                     diff.normalize();
@@ -230,6 +289,7 @@ void testApp::updateParticles() {
             //meshParticles.addColor(ofColor(255,0,0,40));
         }
     }//end for all points within vector
+           // cout <<"particulas dentro: " << pp << "\n";
     //if((ofGetFrameNum()%1==0))
     //cout << " \n ----------------------------------------------- \n";
 
@@ -278,7 +338,8 @@ void testApp::draw() {
 #else
 	camera.end();
 #endif	
-	
+    
+#ifndef ASUS
 	// Dibujar imagen Profundidad
 	float ww = 300;
 	float hh = (float)300/kinect.width * kinect.height;
@@ -287,7 +348,7 @@ void testApp::draw() {
 	ofRect(ofGetWidth()-ww,ofGetHeight()-hh,ww,hh);
 	ofSetColor(255,255,255);
 	kinect.drawDepth(ofGetWidth()-ww,ofGetHeight()-hh,ww,hh);
-		
+#endif
     if(debug) showDebug();
 	
 	
@@ -299,23 +360,34 @@ void testApp::draw() {
 
 void testApp::drawPointCloud(int step) {
     mesh.clear();
-	int w = 640;
-	int h = 480;
+
+	int w = IRCAMERAWIDTH;
+	int h = IRCAMERAHEIGHT;
+
+    
     incrDistance+=1;
 	mesh.setMode(OF_PRIMITIVE_POINTS);
 	for(int y = 0; y < h; y += step) { //recorro los puntos bajando por las columnas
 		for(int x = 0; x < w; x += step) { //recorro columnas
+#ifndef ASUS
 			if(kinect.getDistanceAt(x, y) > 200
                && kinect.getDistanceAt(x, y) < zMax) {
                 	ofVec2f p2= ofVec2f(x,y);
-                    //mesh.addColor(kinect.getColorAt(x,y));
-                    //mesh.addColor(ofColor::fromHsb(ofMap(kinect.getDistanceAt(x, y), zMin, zMax, 0, 360) , 255, 255, 50));
-                    //mesh.addColor(ofColor::yellowGreen );
+
                 	mesh.addColor(ofColor(255,255,255,ofMap(mouseX,1,ofGetWidth(),100,255 ) ) );
-                    //				mesh.addVertex(kinect.getWorldCoordinateAt(x, y));
                     ofVec3f vtmp = kinect.getWorldCoordinateAt(x , y);
                     mesh.addVertex(vtmp);
-            
+
+#else
+            int distance=depthGenerator.currentRawPixels->getPixels()[y * depthGenerator.width +x];
+
+            if(distance> 200 && distance < zMax) {
+                    ofVec2f p2   = ofVec2f(x,y);
+                    ofVec3f vtmp=oniCamGrabber.convertDepthToWorld(x,y);
+                mesh.addColor(ofColor(255,255,255,ofMap(mouseX,1,ofGetWidth(),100,255 ) ) );
+                	mesh.addVertex(vtmp);
+                
+#endif
                 //}
 
                // lineMesh1.addColor(ofColor::yellowGreen );
@@ -368,8 +440,13 @@ void testApp::drawNoise(){
 
 void testApp::setupParticles(){
    //particles.clear() ;
+#ifndef ASUS
     int w= kinect.width;
     int h= kinect.height;
+#else
+    int w= oniSettings.width;
+    int h= oniSettings.height;
+#endif
 	int    sampling=2;
     //Loop through all the rows
 
@@ -433,14 +510,16 @@ void testApp::showDebug(){
 }
 
 void testApp::drawLinesH(float step){
-	int w = 640;
-	int h = 480;
+
+	int w = IRCAMERAWIDTH;
+	int h = IRCAMERAHEIGHT;
+
     incrDistance+=1;
     std::vector<ofPolyline> lineMesh;
     ofColor col ;
     float _time = ofGetElapsedTimef() ;
     float theta = sin ( ofGetElapsedTimef() ) ;
-    ofVec2f v1=ofVec2f(640,480);
+    ofVec2f v1=ofVec2f(IRCAMERAWIDTH,IRCAMERAWIDTH);
     ofPolyline lineMesh1;
 //    ofPoint lastPoint ;
     ofVec3f lastPoint ;
@@ -450,10 +529,16 @@ void testApp::drawLinesH(float step){
 		bool bLastValid = false;
 		int _xStep = step;
 		for(int x = 0; x < w; x += step) { //recorro columnas
+#ifndef ASUS
 			if(kinect.getDistanceAt(x, y) > zMin && kinect.getDistanceAt(x, y) < zMax) {
                 ofVec2f p2= ofVec2f(x,y);
                 ofVec3f vtmp = kinect.getWorldCoordinateAt(x , y);
-                
+#else
+            int distance=depthGenerator.currentRawPixels->getPixels()[y * depthGenerator.width +x];
+            if(distance> zMin && distance < zMax) {
+                ofVec2f p2   = ofVec2f(x,y);
+                ofVec3f vtmp=oniCamGrabber.convertDepthToWorld(x,y);
+#endif
                 ofPoint _lastPoint = vtmp ;
 //                float dist = abs(vtmp.z - lastPoint.z) ;
 //                if (  dist < 30  )
@@ -488,8 +573,14 @@ void testApp::drawLinesH(float step){
 }
 
 void testApp::drawLinesV(float step){
-	int w = kinect.width;
-	int h = kinect.height;
+    
+#ifndef ASUS
+    int w= kinect.width;
+    int h= kinect.height;
+#else
+    int w= oniSettings.width;
+    int h= oniSettings.height;
+#endif
     incrDistance+=1;
     std::vector<ofPolyline> lineMesh;
     ofColor col ;
@@ -505,10 +596,16 @@ void testApp::drawLinesV(float step){
 		bool bLastValid = false;
 //		int _xStep = step;
 		for(int y = 0; y < h; y += step) { // recorro columnas
+#ifndef ASUS
 			if(kinect.getDistanceAt(x, y) > zMin && kinect.getDistanceAt(x, y) < zMax) {
                 ofVec2f p2   = ofVec2f(x,y);
                 ofVec3f vtmp = kinect.getWorldCoordinateAt(x , y);
-                
+#else
+            int distance=depthGenerator.currentRawPixels->getPixels()[y * depthGenerator.width +x];
+            if(distance> 200 && distance < zMax) {
+                ofVec2f p2   = ofVec2f(x,y);
+	            ofVec3f vtmp=oniCamGrabber.convertDepthToWorld(x,y);
+#endif
 //                ofPoint _lastPoint = vtmp ;
 //                float dist = abs(vtmp.z - lastPoint.z) ;
 //                if (  dist < 30  )
@@ -545,8 +642,11 @@ void testApp::drawLinesV(float step){
 //--------------------------------------------------------------
 void testApp::exit() {
 //	kinect.setCameraTiltAngle(0); // zero the tilt on exit
+#ifndef ASUS
 	kinect.close();
-	
+#else
+    oniCamGrabber.close();
+#endif
 	//gui1->saveSettings("gui_kinect.xml");
     
 	delete gui1;
@@ -557,7 +657,7 @@ void testApp::exit() {
 //--------------------------------------------------------------
 void testApp::keyPressed (int key) {
 	switch (key) {
-
+#ifndef ASUS
 		case 'o':
 			kinect.setCameraTiltAngle(angle); // go back to prev tilt
 			kinect.open();
@@ -571,6 +671,7 @@ void testApp::keyPressed (int key) {
 		case '0':
 			kinect.setLed(ofxKinect::LED_OFF);
 			break;
+#endif
 		case 'm':
 			bDrawPoints=!bDrawPoints;
 			break;
@@ -586,6 +687,7 @@ void testApp::keyPressed (int key) {
                 particleMode=ESPEJO;
             else particleMode=NUBE;
             break;
+#ifndef ASUS            
 		case OF_KEY_UP:
 			angle++;
 			if(angle>30) angle=30;
@@ -595,7 +697,10 @@ void testApp::keyPressed (int key) {
 		case OF_KEY_DOWN:
 			angle--;
 			if(angle<-30) angle=-30;
+
 			kinect.setCameraTiltAngle(angle);
+
+#endif
 			break;
             
         case 'e':
