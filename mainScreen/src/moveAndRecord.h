@@ -9,11 +9,12 @@
 #ifndef panel1_tracking_moveAndRecord_h
 #define panel1_tracking_moveAndRecord_h
 #include "ofMain.h"
-#include "ofxBlobTracker.h"
+
 
 #endif
 #define RECORDINGTIME 3000
 #define RECTANGLESIZE 80
+#define TUIOMODE
 class moveAndRecord {
     public:
     ofRectangle triggerRectangle;
@@ -23,10 +24,11 @@ class moveAndRecord {
     enum statesDrawing{blobInSquare,blobOutSquare,hidden};
     int state=blobOutSquare;
     //este es el "update"
+#ifndef TUIOMODE
     bool detectBlobinSquare(ofxBlobTracker &blobTracker){
         if(state==blobInSquare){
             if(ofGetElapsedTimeMillis()-timeLastDetection > RECORDINGTIME){
-                triggerRectangle.setPosition( ofRandom(0,320-RECTANGLESIZE), ofRandom(0,240-RECTANGLESIZE) );
+                triggerRectangle.setPosition( ofRandom(0,640-RECTANGLESIZE), ofRandom(0,480-RECTANGLESIZE) );
                 state=hidden;
                 timeHidden=ofGetElapsedTimeMillis();
             }
@@ -40,7 +42,7 @@ class moveAndRecord {
     
         for (int j=0; j<blobTracker.trackedBlobs.size(); j++){
             //cout << "blob size" << blobTracker.trackedBlobs.size() << "\n";
-            if ( triggerRectangle.inside( blobTracker[j].lastCentroid.x*320, blobTracker[j].lastCentroid.y*240) ){
+            if ( triggerRectangle.inside( blobTracker[j].lastCentroid.x*640, blobTracker[j].lastCentroid.y*480) ){
                 state= blobInSquare;
                 timeLastDetection=ofGetElapsedTimeMillis();
                 return true;
@@ -48,7 +50,35 @@ class moveAndRecord {
         }
         return false;
     };
-    
+#else
+    bool detectBlobinSquare(list<ofxTuioObject*> objectList){
+        if(state==blobInSquare){
+            if(ofGetElapsedTimeMillis()-timeLastDetection > RECORDINGTIME){
+                triggerRectangle.setPosition( ofRandom(0,640-RECTANGLESIZE), ofRandom(0,480-RECTANGLESIZE) );
+                state=hidden;
+                timeHidden=ofGetElapsedTimeMillis();
+            }
+            return false;
+        }
+        else if (state == hidden){
+            if(ofGetElapsedTimeMillis()- timeHidden >10000){
+                state=blobOutSquare;
+            }
+        }
+        
+        list<ofxTuioObject*>::iterator tobj;
+        for (tobj=objectList.begin(); tobj != objectList.end(); tobj++) {
+			ofxTuioObject *blob = (*tobj);
+            //cout << "blob size" << blobTracker.trackedBlobs.size() << "\n";
+            if ( triggerRectangle.inside( blob->getX()*640, blob->getY()*480) ){
+                state= blobInSquare;
+                timeLastDetection=ofGetElapsedTimeMillis();
+                return true;
+            }
+        }
+        return false;
+    }
+ #endif
     void draw(){
         
         if(state==hidden){

@@ -80,7 +80,7 @@ void testApp::setup(){
 }
 
 void testApp::setupStatus(){
-        appStatuses["syphonEnabled"]=false;
+        appStatuses["syphonEnabled"]=true;
     	appStatuses["debug"]=true;
     	appStatuses["adaptativeBackground"]=false;
 	    appStatuses["blobInSquare"]=false;
@@ -152,7 +152,7 @@ void testApp::update(){
     
     previousImg=grayImage;
     
-    myComm.sendBlobs( blobTracker.trackedBlobs);
+    //myComm.sendBlobs( blobTracker.trackedBlobs);
 	blobTracker.setFiltersParam(amplify, smooth);
     if(appStatuses["sendTUIO"]==true){
         sendTUIO(&(blobTracker.trackedBlobs));
@@ -161,7 +161,7 @@ void testApp::update(){
     
     if(moveandrecord.detectBlobinSquare(blobTracker)){
         //blobImgOF_min.cropFrom(maskedImageOF, moveandrecord.triggerRectangle.x, moveandrecord.triggerRectangle.y, moveandrecord.triggerRectangle.width, moveandrecord.triggerRectangle.height);
-        mRecorder.start(3000, 25, &blobImgOF_min,moveandrecord.triggerRectangle.x,moveandrecord.triggerRectangle.y,moveandrecord.triggerRectangle.width,moveandrecord.triggerRectangle.height);
+      // ESTE ES EL BUENO mRecorder.start(3000, 25, &blobImgOF_min,moveandrecord.triggerRectangle.x,moveandrecord.triggerRectangle.y,moveandrecord.triggerRectangle.width,moveandrecord.triggerRectangle.height);
     }
 }
 
@@ -317,7 +317,7 @@ void testApp::draw(){
         #else
             tex.loadData(vidPlayer.getPixels(), VIDEOWITH,VIDEOHEIGHT, GL_RGB);
         #endif
-        tex.loadData(maskedImageOF.getPixels(),VIDEOWITH,VIDEOHEIGHT, GL_RGB);
+        //tex.loadData(maskedImageOF.getPixels(),VIDEOWITH,VIDEOHEIGHT, GL_RGB);
         individualTextureSyphonServer.publishTexture(&tex);
     }
     if(appStatuses["debug"]) showDebug();

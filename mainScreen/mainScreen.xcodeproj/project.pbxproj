@@ -439,6 +439,13 @@
 		F7269F96AC34A2B44A680D03 /* ofxCvFloatImage.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxCvFloatImage.h; path = ../../../addons/ofxOpenCv/src/ofxCvFloatImage.h; sourceTree = SOURCE_ROOT; };
 		F736258A1922467900964804 /* mosaicPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mosaicPlayer.cpp; sourceTree = "<group>"; };
 		F736258B1922467900964804 /* mosaicPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mosaicPlayer.h; sourceTree = "<group>"; };
+		F77369141941D84600548CEA /* ofxTuio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxTuio.h; sourceTree = "<group>"; };
+		F77369151941D84600548CEA /* ofxTuioClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxTuioClient.h; sourceTree = "<group>"; };
+		F77369161941D84600548CEA /* ofxTuioContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxTuioContainer.h; sourceTree = "<group>"; };
+		F77369171941D84600548CEA /* ofxTuioCursor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxTuioCursor.h; sourceTree = "<group>"; };
+		F77369181941D84600548CEA /* ofxTuioObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxTuioObject.h; sourceTree = "<group>"; };
+		F77369191941D84600548CEA /* ofxTuioPoint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxTuioPoint.h; sourceTree = "<group>"; };
+		F773691B194206B000548CEA /* moveAndRecord.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = moveAndRecord.h; sourceTree = "<group>"; };
 		F7FBC56859535E597B24BB91 /* NetworkingUtils.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = NetworkingUtils.h; path = ../../../addons/ofxOsc/libs/oscpack/src/ip/NetworkingUtils.h; sourceTree = SOURCE_ROOT; };
 		F886EBA3F8F05C7F74633933 /* devmem2d.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = devmem2d.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/gpu/devmem2d.hpp; sourceTree = SOURCE_ROOT; };
 		F9A4454B00CCFD7265D3CA85 /* ofxUILabelButton.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUILabelButton.cpp; path = ../../../addons/ofxUI/src/ofxUILabelButton.cpp; sourceTree = SOURCE_ROOT; };
@@ -748,6 +755,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				F77369121941D84600548CEA /* ofxTuio */,
 				F70E3F6A191C6D050050DEB7 /* ofxCv */,
 				F70E3F5C191C63AA0050DEB7 /* ofxXmlSettings */,
 				F70E3F46191C637D0050DEB7 /* ofxSyphon */,
@@ -1002,6 +1010,7 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				F773691B194206B000548CEA /* moveAndRecord.h */,
 				F70E3F3F191C5D6C0050DEB7 /* cheapComm.cpp */,
 				F70E3F40191C5D6C0050DEB7 /* cheapComm.h */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
@@ -1245,6 +1254,28 @@
 				F70E3F90191C6D050050DEB7 /* Wrappers.cpp */,
 			);
 			path = src;
+			sourceTree = "<group>";
+		};
+		F77369121941D84600548CEA /* ofxTuio */ = {
+			isa = PBXGroup;
+			children = (
+				F77369131941D84600548CEA /* src */,
+			);
+			name = ofxTuio;
+			sourceTree = "<group>";
+		};
+		F77369131941D84600548CEA /* src */ = {
+			isa = PBXGroup;
+			children = (
+				F77369141941D84600548CEA /* ofxTuio.h */,
+				F77369151941D84600548CEA /* ofxTuioClient.h */,
+				F77369161941D84600548CEA /* ofxTuioContainer.h */,
+				F77369171941D84600548CEA /* ofxTuioCursor.h */,
+				F77369181941D84600548CEA /* ofxTuioObject.h */,
+				F77369191941D84600548CEA /* ofxTuioPoint.h */,
+			);
+			name = src;
+			path = ../../../addons/ofxTuio/src;
 			sourceTree = "<group>";
 		};
 		F9F05170CB9BDF47DA2B6E6A /* include */ = {

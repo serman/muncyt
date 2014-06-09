@@ -5,6 +5,9 @@
 #include "ofxSyphon.h"
 #include "ofxCv.h"
 #include "mosaicPlayer.h"
+#include "ofxTuio.h"
+#include "moveAndRecord.h"
+
 class testApp : public ofBaseApp{
 
 	public:
@@ -29,4 +32,11 @@ class testApp : public ofBaseApp{
     ofPixels cameraPixels;
     ofImage cameraImg;
     mosaicPlayer mPlayer;
+    ofxTuioClient tuioclient;
+    
+    void	tuioAdded(ofxTuioCursor & tuioCursor);
+	void	tuioRemoved(ofxTuioCursor & tuioCursor);
+	void	tuioUpdated(ofxTuioCursor & tuioCursor);
+    
+    moveAndRecord moveandrecord;
 };
