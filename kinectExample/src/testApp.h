@@ -62,8 +62,8 @@ public:
 #endif
 	bool	pulso;
 	bool	bDrawPoints;
-	bool	bDrawLinesH, bDrawLinesV;
-	
+	bool	bDrawLinesH, bDrawLinesV,bDrawNativePointCloud;
+	int 	distanciaLineasK;
 	// GUI
 	void		setupGUI();
    	ofxUICanvas *gui1;

@@ -68,7 +68,7 @@ void testApp::setup() {
 	isReady = oniCamGrabber.setup(oniSettings);
 	//recorder.setup(&oniGrabber);
     for (std::vector<VideoStream*>::iterator it = oniCamGrabber.streams.begin() ; it != oniCamGrabber.streams.end(); ++it){
-        (*it)->setMirroringEnabled(false);
+        (*it)->setMirroringEnabled(true);
     }
     depthGenerator.setup(oniCamGrabber.deviceController);
 
@@ -91,7 +91,7 @@ void testApp::setup() {
     speed = 1.0;
     stopUmbral = 10000;
     alphaParticles = 255;
-	
+	particleMode=ESPEJO;
     boolDrawNoise = false;
 	
 	debug = true;
@@ -147,6 +147,7 @@ void testApp::setupGUI() {
 	gui1->addRadio("MODO_Partics", names, OFX_UI_ORIENTATION_HORIZONTAL);
 	gui1->addIntSlider("alpha Particles", 1, 255, &alphaParticles) ;
 	gui1->addIntSlider("alpha Lines", 1, 255, &alphaLines) ;
+	gui1->addIntSlider("Distance Lines", 50, 600, &distanciaLineasK) ;
 	gui1->addToggle("noise", &boolDrawNoise);
 	
 	gui1->addSpacer();
@@ -156,13 +157,14 @@ void testApp::setupGUI() {
 	
 	gui1->addSpacer();
 	
-	gui1->addRangeSlider("RangoZ", 100, 3000, &zMin, &zMax);
+	gui1->addRangeSlider("RangoZ", 100, 4000, &zMin, &zMax);
 	
 	gui1->addSpacer();
 	
 	gui1->addToggle("DrawPoints", &bDrawPoints);
 	gui1->addToggle("DrawLinesH", &bDrawLinesH);
 	gui1->addToggle("DrawLinesV", &bDrawLinesV);
+    gui1->addToggle("DrawNativePointCloud", &bDrawNativePointCloud);
 	gui1->addToggle("Explosion", &explosion);
 	gui1->addSpacer();
 	
@@ -173,6 +175,7 @@ void testApp::setupGUI() {
 	gui1->addSpacer();
 	
 	ofAddListener(gui1->newGUIEvent,this,&testApp::guiEvent);
+
 }
 
 
@@ -236,7 +239,7 @@ void testApp::updateParticles() {
     {
 		
 #ifndef ASUS
-        if( kinect.getDistanceAt(p->_x, p->_y) > 200  &&  kinect.getDistanceAt(p->_x, p->_y) < zMax ) {
+        if( kinect.getDistanceAt(p->_x, p->_y) > zMin  &&  kinect.getDistanceAt(p->_x, p->_y) < zMax ) {
 
             if(particleMode==ESPEJO){
                 p->stopAcc();
@@ -245,7 +248,7 @@ void testApp::updateParticles() {
 #else	
         int distance=depthGenerator.currentRawPixels->getPixels()[p->_y * depthGenerator.width + p->_x];
                   //cout << zMax;
-        if(distance> 200 && distance < zMax) {
+        if(distance> zMin && distance < zMax) {
             pp++;
             if(particleMode==ESPEJO){
                 p->stopAcc();
@@ -317,9 +320,10 @@ void testApp::draw() {
 //		ofTranslate(0, 0, -1000); // Acerca a camara la nube de puntos
 		
 		// Superponemos modos de dibujo en 3D
-		if(bDrawPoints) drawParticles();
+	    if(bDrawPoints) drawParticles();
 		if(bDrawLinesH) drawLinesH();
 		if(bDrawLinesV) drawLinesV();
+    	if(bDrawNativePointCloud) drawPointCloud();
 		
 //		if(pulso==true){
 //			//drawPointCloud(stepCloudPoint);
@@ -363,14 +367,13 @@ void testApp::drawPointCloud(int step) {
 
 	int w = IRCAMERAWIDTH;
 	int h = IRCAMERAHEIGHT;
-
     
     incrDistance+=1;
 	mesh.setMode(OF_PRIMITIVE_POINTS);
 	for(int y = 0; y < h; y += step) { //recorro los puntos bajando por las columnas
 		for(int x = 0; x < w; x += step) { //recorro columnas
 #ifndef ASUS
-			if(kinect.getDistanceAt(x, y) > 200
+			if(kinect.getDistanceAt(x, y) > zMin
                && kinect.getDistanceAt(x, y) < zMax) {
                 	ofVec2f p2= ofVec2f(x,y);
 
@@ -380,8 +383,7 @@ void testApp::drawPointCloud(int step) {
 
 #else
             int distance=depthGenerator.currentRawPixels->getPixels()[y * depthGenerator.width +x];
-
-            if(distance> 200 && distance < zMax) {
+            if(distance> zMin && distance < zMax) {
                     ofVec2f p2   = ofVec2f(x,y);
                     ofVec3f vtmp=oniCamGrabber.convertDepthToWorld(x,y);
                 mesh.addColor(ofColor(255,255,255,ofMap(mouseX,1,ofGetWidth(),100,255 ) ) );
@@ -482,7 +484,7 @@ void testApp::resetParticles(){
 
 void testApp::drawParticles(){
     meshParticles.setMode(OF_PRIMITIVE_POINTS);
-    glPointSize(1);
+    glPointSize(2);
 	glEnable(GL_POINT_SMOOTH);	// Para que sean puntos redondos
 	ofEnableDepthTest();
 	meshParticles.draw();
@@ -531,19 +533,17 @@ void testApp::drawLinesH(float step){
 		for(int x = 0; x < w; x += step) { //recorro columnas
 #ifndef ASUS
 			if(kinect.getDistanceAt(x, y) > zMin && kinect.getDistanceAt(x, y) < zMax) {
-                ofVec2f p2= ofVec2f(x,y);
                 ofVec3f vtmp = kinect.getWorldCoordinateAt(x , y);
 #else
             int distance=depthGenerator.currentRawPixels->getPixels()[y * depthGenerator.width +x];
             if(distance> zMin && distance < zMax) {
-                ofVec2f p2   = ofVec2f(x,y);
                 ofVec3f vtmp=oniCamGrabber.convertDepthToWorld(x,y);
 #endif
                 ofPoint _lastPoint = vtmp ;
 //                float dist = abs(vtmp.z - lastPoint.z) ;
 //                if (  dist < 30  )
 				float dist2 = vtmp.squareDistance(lastPoint);
-                if (  dist2 < 120  )
+                if (  dist2 < distanciaLineasK  )
                 {
                     if ( bLastValid == false )
                     {
@@ -598,19 +598,17 @@ void testApp::drawLinesV(float step){
 		for(int y = 0; y < h; y += step) { // recorro columnas
 #ifndef ASUS
 			if(kinect.getDistanceAt(x, y) > zMin && kinect.getDistanceAt(x, y) < zMax) {
-                ofVec2f p2   = ofVec2f(x,y);
                 ofVec3f vtmp = kinect.getWorldCoordinateAt(x , y);
 #else
             int distance=depthGenerator.currentRawPixels->getPixels()[y * depthGenerator.width +x];
-            if(distance> 200 && distance < zMax) {
-                ofVec2f p2   = ofVec2f(x,y);
+            if(distance> zMin && distance < zMax) {
 	            ofVec3f vtmp=oniCamGrabber.convertDepthToWorld(x,y);
 #endif
 //                ofPoint _lastPoint = vtmp ;
 //                float dist = abs(vtmp.z - lastPoint.z) ;
 //                if (  dist < 30  )
 				float dist2 = vtmp.squareDistance(lastPoint);
-                if (  dist2 < 120  )
+                if (  dist2 < distanciaLineasK  )
                 {
                     if ( bLastValid == false )
                     {
@@ -715,7 +713,11 @@ void testApp::keyPressed (int key) {
 		case 'v':
 			gui1->saveSettings("/config/gui/gui_kinect.xml");
 			break;
-				
+        case ' ':
+            if(gui1->isEnabled() )
+	            gui1->disable();
+            else
+				gui1->enable();
 			
 	}
 	
