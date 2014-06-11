@@ -50,6 +50,8 @@ public:
 	void	drawLinesH(float step = 5.0);
 	void	drawLinesV(float step = 5.0);
     void	showDebug();
+    void setRandomBG();
+    void fadeBG();
 	
 #ifndef ASUS
 	ofxKinect kinect;
@@ -113,6 +115,7 @@ public:
 	void	drawParticles();
     void	updateParticles();
 	void    resetParticles();
+    void 	explosionParticles();
     int		numParticles;
     enum	{NUBE, ESPEJO};
     int		particleMode;
@@ -131,7 +134,9 @@ public:
     int		alphaParticles;
 	
     int		alphaLines;
-	
+	ofColor colorfondo;
+    long lastExplosionTime;
     //osc
     cheapCommRcv myOSCrcv;
+
 };

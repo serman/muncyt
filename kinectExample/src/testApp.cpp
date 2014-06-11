@@ -80,7 +80,7 @@ void testApp::setup() {
 	
 	ofSetFrameRate(60);
 	
-
+	colorfondo=ofColor::black;
 	
 	// start from the front
 	bDrawPointCloud = true;
@@ -219,14 +219,33 @@ void testApp::update() {
         }
     #endif
 	
-    // Update OSC
-    if(myOSCrcv.update()==true){
-        //TODO compute position values and trigger the animations
-        cout << "myOSCrcv.remotePosition"  << myOSCrcv.remotePosition << "\n";
+    
+    int response=myOSCrcv.update();
+    if(response==myOSCrcv.position){
+        if(ofGetElapsedTimeMillis()-lastExplosionTime>4000){
+			ofLog() << "myOSCrcv.remotePosition"  << myOSCrcv.remotePosition << "\n";
+        }
+    }
+    else if(response==myOSCrcv.explosion){
+        ofLog() << "explosin"<< endl;
+        lastExplosionTime=ofGetElapsedTimeMillis();
+        setRandomBG();
+        explosionParticles();
+        
     }
 
 }
 
+void testApp::setRandomBG(){
+    colorfondo = ofColor::fromHsb(ofRandom(360),255,255);
+}
+
+void testApp::fadeBG() {
+    float bb = colorfondo.getBrightness();
+	if(bb<2) colorfondo.setBrightness(0);
+    else colorfondo.setBrightness(bb*0.95);
+
+}
 
 void testApp::updateParticles() {
     meshParticles.clear();
@@ -301,7 +320,10 @@ void testApp::updateParticles() {
 // - - - - - - - - - - - - - - - - - - -- -- -- -- -- -- -- -- -- -- -- -- -- --- --- --- --- --- ---
 
 void testApp::draw() {
-	ofBackground(10,10,10,100);
+    
+    fadeBG();
+	ofBackground(colorfondo);
+//	ofBackground(10,10,10,100);
 
 	ofSetColor(255, 255, 255);
     if(boolDrawNoise)  	drawNoise();
@@ -482,6 +504,19 @@ void testApp::resetParticles(){
     setupParticles();
 }
 
+    
+void testApp::explosionParticles(){
+    ofVec3f centroEscena = ofVec3f(0,0,2500);
+	for(int i=0; i<particles.size(); i++) {
+        ofVec3f dir = particles[i].position - centroEscena;
+        dir.normalize();
+        dir*=1000;
+        particles[i].addForce(dir);
+    }
+}
+
+ 
+    
 void testApp::drawParticles(){
     meshParticles.setMode(OF_PRIMITIVE_POINTS);
     glPointSize(2);
