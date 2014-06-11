@@ -36,7 +36,10 @@ color[] colors;
 
 float fase = 0;
 
-
+// Background anim
+color bckColor = color(0);
+color bckColorTgt = bckColor;
+float f_bckColor = 0.2;
 
 void setup() {
 //  size(1280,800);
@@ -74,6 +77,9 @@ void draw() {
   translate(width/2,height/2);
   noStroke();
 
+  drawBckColor_circulo();
+
+
   drawPatronCirculos();  
   popMatrix();
   
@@ -83,6 +89,37 @@ void draw() {
 
   float vMax = TWO_PI;
   fase += radians(map(mouseX, 0, width, -vMax,vMax));
+}
+
+void drawBckColor_circulo() {
+  // update color
+  float hc = hue(bckColor);
+  float hct = hue(bckColorTgt);
+  hc = updateVar(hc,hct, f_bckColor, 2.0);
+
+  float sc = saturation(bckColor);
+  float sct = saturation(bckColorTgt);
+  sc = updateVar(sc,sct, f_bckColor, 2.0);
+
+  float bc = brightness(bckColor);
+  float bct = brightness(bckColorTgt);
+  bc = updateVar(bc,bct, f_bckColor, 2.0);
+  
+  pushStyle();
+    colorMode(HSB,255);
+    color(hc,sc,bc);
+    fill(bckColor);
+    ellipse(0,0,2*rMax,2*rMax);
+  popStyle();
+}
+
+float updateVar(float vAct, float vTgt, float f_v, float lim) {
+  float vUpd = vAct;
+  float dv = vAct-vTgt;
+  if(dv<lim)   vUpd = vTgt;
+  else         vUpd -= dv*f_v;
+    
+  return vUpd;
 }
 
 void drawPatronCirculos() {
