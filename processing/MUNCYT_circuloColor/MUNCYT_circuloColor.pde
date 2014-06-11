@@ -24,25 +24,37 @@ int MODO_3 = 3;  // Puntos
 int modoDraw = MODO_0;
 
 PShape ps;
-int nRads = 5;//10;
-int nAngs = 8;//30;
 float radMax;
 
-float rot_ps = 0.0;
+// params patron circulos
+int nRads = 5;//10;
+int nAngs = 8;//30;
 
+// params patron radial
+float angRango_rad;
+int nAngs_rad;
+float nRamas_rad;
+color cFill_rad;
+
+// rotacion
+float rot_ps = 0.0;
 
 PShape  psConcentrico;
 PShape  psRadial;
 PShape  psLines;
 PShape  psPuntos;
 
+
+
 // Background anim
 color bckColor = color(200,200,10);
-color bckColorTgt = bckColor;
+color bckColorTgt = color(0);
 float f_bckColor = 0.2;
 color  cBackground;
 float  hTgt, sTgt, bTgt;
-float fBckColor = 0.02;
+float fBckColor = 0.00001;
+int tOrden;
+int tFull = 200;
 
 void setup() {
   size(1280,800,P2D);
@@ -52,24 +64,22 @@ void setup() {
   radMax = height/2;
 
   crearPatronConcentrico(radMax, nRads, nAngs);
+
+  
+  angRango_rad = PI/10;
+  nAngs_rad = 6;
+  nRamas_rad = 4;
   
   colorMode(HSB,360,100,100);
-  color cfillRadial = color(90,100,100);
+  cFill_rad = color(90,100,100);
   colorMode(RGB,255);
 // creaPatronRadial(float radMax, float angRango, int nAngs, float nRamas, color colorFill) {
-  creaPatronRadial(radMax, PI/10, 6, 4, cfillRadial);
+  creaPatronRadial(radMax, angRango_rad, nAngs_rad, nRamas_rad, cFill_rad);
 
 //void creaPatronLineas(float radMax, float ancho, float sep) {
 //void creaPatronPuntos(float radMax, int nPts, float rPts) {
   creaPatronLineas(radMax, 30, 20);
   creaPatronPuntos(radMax, 100, 4);
-  
-  colorMode(HSB,360,100,100);
-  hTgt = 60;
-  sTgt = 50;
-  bTgt = 0;
-  cBackground = color(hTgt, sTgt, bTgt);
-  colorMode(RGB,255);
   
   
   setupOSC();
@@ -92,6 +102,12 @@ void draw() {
   else if(modoDraw==MODO_2)  shape(psLines);
   else if(modoDraw==MODO_3)  shape(psPuntos);
 //  shape(psRadial, mouseX, mouseY);
+
+  pushStyle();
+  noStroke();
+  fill(0);
+  ellipse(0,0, 80,80);
+
   popMatrix();
     
   text("fr: "+frameRate,10,10);
@@ -105,26 +121,30 @@ void draw() {
 
 
 void drawBckColor_circulo() {
-  pushStyle();
-    colorMode(HSB,255);
-    // update color
-    float hc = hue(bckColor);
-    float hct = hue(bckColorTgt);
-    hc = updateVar(hc,hct, f_bckColor, 2.0);
+  if(tOrden<millis()-tFull) {
+    pushStyle();
+      colorMode(HSB,255);
+      // update color. Solo Brillo: 255->0
+      
+      float hc = hue(bckColor);
+  //    float hct = hue(bckColorTgt);
+  //    hc = updateVar(hc,hct, f_bckColor, 2.0);
   
-    float sc = saturation(bckColor);
-    float sct = saturation(bckColorTgt);
-    sc = updateVar(sc,sct, f_bckColor, 2.0);
-  
-    float bc = brightness(bckColor);
-    float bct = brightness(bckColorTgt);
-    bc = updateVar(bc,bct, f_bckColor, 2.0);
-  
-    color(hc,sc,bc);
-    fill(bckColor);
-    noStroke();
-    ellipse(0,0,2*radMax,2*radMax);
-  popStyle();
+      float sc = saturation(bckColor);
+  //    float sct = saturation(bckColorTgt);
+  //    sc = updateVar(sc,sct, f_bckColor, 2.0);
+    
+      float bc = brightness(bckColor);
+      float bct = brightness(bckColorTgt);
+      bc = updateVar(bc,bct, f_bckColor, 2.0);
+    
+      bckColor = color(hc,sc,bc);
+    popStyle();    
+  }
+  fill(bckColor);
+  noStroke();
+  ellipse(0,0,2*radMax,2*radMax);
+
 }
 
 float updateVar(float vAct, float vTgt, float f_v, float lim) {
@@ -132,19 +152,30 @@ float updateVar(float vAct, float vTgt, float f_v, float lim) {
   float dv = vAct-vTgt;
   if(dv<lim)   vUpd = vTgt;
   else         vUpd -= dv*f_v;
+  
+  float reducc = dv*f_v;
     
+  println("updtVar de "+vAct+" a "+vUpd + " . . . "+reducc);
+  
   return vUpd;
 }
 
-
+void setBckColor() {
+  // random color
+  pushStyle();
+  colorMode(HSB,255);
+  bckColor = color(random(255),255,255);
+  popStyle();
+  tOrden = millis();
+}
 
 
 void mousePressed() {
-  if(swRota) wAng=map(mouseX, 0, width, -TWO_PI, TWO_PI);
+  if(swRota) wAng=map(mouseX, 0, width, -PI, PI);
 }
 
 void mouseDragged() {
-  if(swRota) wAng=map(mouseX, 0, width, -TWO_PI, TWO_PI);
+  if(swRota) wAng=map(mouseX, 0, width, -PI, PI);
 }
 
 void keyPressed() {
@@ -156,23 +187,60 @@ void keyPressed() {
   if(key=='r') swRota = !swRota;
   
   if(key=='q') {
-    nRads++;
-    crearPatronConcentrico(radMax, nRads, nAngs);     
+    if(modoDraw==MODO_0) {
+      nRads++;
+      crearPatronConcentrico(radMax, nRads, nAngs);
+    }
+    else if(modoDraw==MODO_1) {
+      nRamas_rad++;
+//      angRango_rad = PI/10;
+//      nAngs_rad = 6;
+//      nRamas_rad = 4;
+      creaPatronRadial(radMax, angRango_rad, nAngs_rad, nRamas_rad, cFill_rad);
+    }
   }
+  
   else if(key=='a') {
-    nRads--;
-    if(nRads<0) nRads=0;
-    crearPatronConcentrico(radMax, nRads, nAngs);         
+    if(modoDraw==MODO_0) {
+      nRads--;
+      if(nRads<0) nRads=0;
+      crearPatronConcentrico(radMax, nRads, nAngs);         
+    }
+    else if(modoDraw==MODO_1) {
+      nRamas_rad--;
+      if(nRamas_rad<0) nRamas_rad=0;
+//      angRango_rad = PI/10;
+//      nAngs_rad = 6;
+//      nRamas_rad = 4;
+      creaPatronRadial(radMax, angRango_rad, nAngs_rad, nRamas_rad, cFill_rad);
+    }
   }
   
   else if(key=='w') {
-    nAngs++;
-    crearPatronConcentrico(radMax, nRads, nAngs);     
+    if(modoDraw==MODO_0) {
+      nAngs++;
+      crearPatronConcentrico(radMax, nRads, nAngs);
+    }
+    else if(modoDraw==MODO_1) {
+      angRango_rad+=radians(5);
+      creaPatronRadial(radMax, angRango_rad, nAngs_rad, nRamas_rad, cFill_rad);
+    }
+    
   }
   else if(key=='s') {
-    nAngs--;
-    if(nAngs<0) nAngs=0;
-    crearPatronConcentrico(radMax, nRads, nAngs);     
+    if(modoDraw==MODO_0) {
+      nAngs--;
+      if(nAngs<0) nAngs=0;
+      crearPatronConcentrico(radMax, nRads, nAngs);
+    }
+    else if(modoDraw==MODO_1) {
+      angRango_rad-=radians(5);
+      creaPatronRadial(radMax, angRango_rad, nAngs_rad, nRamas_rad, cFill_rad);
+    }    
+  }
+  
+  else if(key=='b') {
+    setBckColor();
   }
   
 }
