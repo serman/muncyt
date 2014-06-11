@@ -52,6 +52,7 @@ class testApp : public ofBaseApp{
     int ledNumber;
     char mode;
     int redc, greenc, bluec;
+    long lastExplosion=0;
 };
 
 //c command code: l= light one; u= light until;

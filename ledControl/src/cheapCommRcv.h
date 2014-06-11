@@ -16,9 +16,11 @@
 
 
 class cheapCommRcv {
+
 	public:
+        enum  {none,position, explosion};
 	    void setup();
-    	bool update( );
+    	int update( );
         cheapCommRcv();
 	    ofxOscReceiver myosc;
 	    float remotePosition=0;

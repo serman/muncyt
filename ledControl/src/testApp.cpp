@@ -24,13 +24,21 @@ void testApp::setup(){
     gui1->addIntSlider("green", 0, 255, &greenc);
     gui1->addIntSlider("blue", 0, 255, &bluec);
     
-    gui1->addToggle("mode", false);
+    vector<string> vnames; vnames.push_back("single"); vnames.push_back("multi"); vnames.push_back("off");vnames.push_back("fade");
+
+    gui1->addLabel("MODE", OFX_UI_FONT_MEDIUM);
+    
+    ofxUIRadio *radio = gui1->addRadio("mode", vnames, OFX_UI_ORIENTATION_HORIZONTAL);
+    radio->activateToggle("off");
+    
+    //gui1->addToggle("mode", false);
     ofAddListener(gui1->newGUIEvent,this,&testApp::gui1Event);
     TO.setup(&mySerial, &protocolToSend[0] );
     TO.start();
 }
 
 void testApp::setupSerial(){
+    cout << "que pasa";
     bSendSerialMessage = false;
 	mySerial.listDevices();
 	vector <ofSerialDeviceInfo> deviceList = mySerial.getDeviceList();
@@ -54,11 +62,20 @@ void testApp::setupSerial(){
 
 //--------------------------------------------------------------
 void testApp::update(){
-    if(myOSCrcv.update()==true){
-        int degs=ofRadToDeg( abs( myOSCrcv.remotePosition));
-        degs=degs%360;
-       // cout <<"remote " << myOSCrcv.remotePosition << " postion: "<<  ofMap(degs, 0, 360, 0, 120) << "\n";
-        light('s', ofMap(degs, 0, 360, 0, 120), ofColor::white);
+    int response=myOSCrcv.update();
+    if(response==myOSCrcv.position){
+        if(ofGetElapsedTimeMillis()-lastExplosion>4000){
+            int degs=ofRadToDeg( abs( myOSCrcv.remotePosition));
+            degs=degs%360;
+           // cout <<"remote " << myOSCrcv.remotePosition << " postion: "<<  ofMap(degs, 0, 360, 0, 120) << "\n";
+            light('s', ofMap(degs, 0, 360, 0, 120), ofColor::white);
+        }
+    }
+    else if(response==myOSCrcv.explosion){
+        cout << "explosin"<< endl;
+        light('f', ofMap(1, 0, 360, 0, 120), ofColor::white);
+        lastExplosion=ofGetElapsedTimeMillis();
+        
     }
 }
 
@@ -158,11 +175,26 @@ void testApp::gui1Event(ofxUIEventArgs &e)
    // cout << "event";
 	string name = e.widget->getName();
 	int kind = e.widget->getKind();
-    
-    if(name == "mode")
-    {
-        if(mode=='l') mode='s';
-        else mode='l';
+    if(kind ==OFX_UI_WIDGET_TOGGLE){
+        cout << name << endl;
+        if(name == "single")
+        {
+			mode='s';
+        }
+        
+        else if(name == "off")
+        {
+			mode='o';
+        }
+        else if(name == "fade")
+        {
+			mode='f';
+        }
+        else if(name == "multi")
+        {
+			mode='l';
+        }
+        light(mode,ledNumber,ofColor(redc,greenc,bluec) );
         
     }
     else if(name== "pixel" || name== "red" || name== "green" || name== "blue"){
