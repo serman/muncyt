@@ -9,7 +9,7 @@
 //   NEO_GRB     Pixels are wired for GRB bitstream
 //   NEO_KHZ400  400 KHz bitstream (e.g. FLORA pixels)
 //   NEO_KHZ800  800 KHz bitstream (e.g. High Density LED strip)
-int LED_COUNT=540;
+int LED_COUNT=120;
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(LED_COUNT, PIN, NEO_GRB + NEO_KHZ800);
 
 
@@ -26,6 +26,8 @@ int colorR_rcv=0;
 int colorG_rcv=0;
 int colorB_rcv=0;
 
+typedef enum fadestates { RISE, DOWN, ENDED, OFF };
+fadestates fadestate=OFF;
 
 char mode, mode_rcv='l';
 
@@ -34,6 +36,7 @@ char mode, mode_rcv='l';
 
 int rcvChar=0;
 String rcvAll="";
+int fadeCurrentValue=0;
 void blink(){
    digitalWrite(13,HIGH);
    delay(400);
@@ -47,7 +50,7 @@ void setup() {
   strip.begin();
   clearLEDs();
   strip.show(); // Initialize all pixels to 'off'
-  pinMode(13, OUTPUT);  
+ // pinMode(13, OUTPUT);  
 }
 
 
@@ -72,6 +75,7 @@ void loop() {
  /****** MODOS DE FUNCIONAMIENTO *******/  
 
     if(mode=='l'){ //modo encender todos los pixels hasta el numero recibido
+        fadestate=OFF;
      for(int i=0; i<currentRcvPixel; i++) {
           strip.setPixelColor(i, (strip.Color(colorR, colorG, colorB)));        
       }    
@@ -81,6 +85,7 @@ void loop() {
       strip.show();
     }  
     else if(mode=='s'){ //modo encender pixel unico
+        fadestate=OFF;
       //if(prevRcvPixel !=  currentRcvPixel)
       //strip.setPixelColor(prevRcvPixel,0);
       clearLEDs();
@@ -90,13 +95,39 @@ void loop() {
       strip.setPixelColor(currentRcvPixel+3, strip.Color(colorR, colorG, colorB) ); 
       strip.show();
     }
-    else{      
-      for(int i=1; i<LED_COUNT; i++) {
+    
+    else if (mode=='o'){      //off
+    fadestate=OFF;
+      for(int i=0; i<LED_COUNT; i++) {
           strip.setPixelColor(i, (strip.Color(0, 0, 0)));        
       }   
             
           strip.show();
    }
+   else if(mode=='f'){//fade To green color fast;
+     if (fadestate==OFF){
+       fadestate=RISE;
+     }
+     
+     if (fadestate!=ENDED){        
+       if(fadestate==RISE){
+          fadeCurrentValue+=30;
+          if(fadeCurrentValue>=255)     
+            fadestate=DOWN;
+       }
+     if(fadestate==DOWN){
+      fadeCurrentValue-=5;
+       if(fadeCurrentValue<=0){ fadeCurrentValue=0; fadestate=ENDED;} 
+     }
+     for (int i=0; i<LED_COUNT; i++)
+        {
+          strip.setPixelColor(i, (strip.Color(0, fadeCurrentValue, 0)));                 
+        }
+        strip.show();
+   }
+  }//end fade mode
+
+   
   establishContact();
   
  
@@ -104,7 +135,7 @@ void loop() {
  
 void establishContact() {
    Serial.print("0");   // send an initial string
-   delay(15);         //within this time we should receive the full msg     
+   delay(25);         //within this time we should receive the full msg     
    
 }
 
@@ -159,7 +190,7 @@ void serialEvent() {
 
 void clearLEDs()
 {
-  for (int i=0; i<120; i++)
+  for (int i=0; i<LED_COUNT; i++)
   {
     strip.setPixelColor(i, 0);
   }
