@@ -480,7 +480,6 @@
 		F7B27EBD1915E4E10022B207 /* Syphon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Syphon.framework; sourceTree = "<group>"; };
 		F7B27EBF1915E4E10022B207 /* SyphonNameboundClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SyphonNameboundClient.h; sourceTree = "<group>"; };
 		F7B27EC01915E4E10022B207 /* SyphonNameboundClient.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SyphonNameboundClient.m; sourceTree = "<group>"; };
-		F7D6C4FE1933F23000FBE6BF /* moveAndRecord.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = moveAndRecord.h; sourceTree = "<group>"; };
 		F7F0BE8E191A6F680095B0B9 /* cheapComm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cheapComm.cpp; sourceTree = "<group>"; };
 		F7F0BE8F191A6F680095B0B9 /* cheapComm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cheapComm.h; sourceTree = "<group>"; };
 		F7FBC56859535E597B24BB91 /* NetworkingUtils.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = NetworkingUtils.h; path = ../../../addons/ofxOsc/libs/oscpack/src/ip/NetworkingUtils.h; sourceTree = SOURCE_ROOT; };
@@ -1122,7 +1121,6 @@
 				E4B69E1F0A3A1BDC003C02F2 /* testApp.h */,
 				F7F0BE8E191A6F680095B0B9 /* cheapComm.cpp */,
 				F7F0BE8F191A6F680095B0B9 /* cheapComm.h */,
-				F7D6C4FE1933F23000FBE6BF /* moveAndRecord.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;

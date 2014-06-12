@@ -5,9 +5,11 @@
 #include "ofxSyphon.h"
 #include "ofxCv.h"
 #include "mosaicPlayer.h"
+#include "mosaicRecorder.h"
 #include "ofxTuio.h"
 #include "moveAndRecord.h"
-
+#include "ofxImageSequence.h"
+#include <ofMath.h>
 class testApp : public ofBaseApp{
 
 	public:
@@ -26,17 +28,30 @@ class testApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
     
     	ofxSyphonClient mSyphonClient;
+    ofxSyphonClient mSyphonClient2;
 	    cheapComm myOSCcomm;
     //32 bits red, 32 bits green, 32 bits blue, from 0 to 1 in 'infinite' steps
     	ofFbo fbo; // with alpha
     ofPixels cameraPixels;
     ofImage cameraImg;
-    mosaicPlayer mPlayer;
     ofxTuioClient tuioclient;
     
-    void	tuioAdded(ofxTuioCursor & tuioCursor);
+/*    void	tuioAdded(ofxTuioCursor & tuioCursor);
 	void	tuioRemoved(ofxTuioCursor & tuioCursor);
 	void	tuioUpdated(ofxTuioCursor & tuioCursor);
-    
+    */
     moveAndRecord moveandrecord;
+    mosaicRecorder mRecorder;
+    ofPixels remoteBlobImgPxl;
+    ofImage testImg;
+    ofImage feedImg;
+    
+    std::map<string, int> appStatuses;
+     void setupStatus();
+    enum mode{CAPTURE, MOSAIC};
+    
+    
+    void setupSequences();
+    vector<ofxImageSequence> sequences;
+    void showDebug();
 };

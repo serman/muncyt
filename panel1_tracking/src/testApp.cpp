@@ -9,6 +9,9 @@ void testApp::setup(){
     //ofSetBackgroundAuto(false);
     #ifdef _USE_LIVE_VIDEO
         //cam.setVerbose(true);
+        cam.listDevices();
+    	cam.setDeviceID(1);
+    
         cam.initGrabber(VIDEOWITH,VIDEOHEIGHT);
     #else
         vidPlayer.loadMovie("test1.mov");
@@ -45,6 +48,7 @@ void testApp::setup(){
     ofAddListener(gui2->newGUIEvent,this,&testApp::gui2Event);
     
     individualTextureSyphonServer.setName("CameraOutput");
+    onlyBlobsImageSyphonServer.setName("onlyBlobs");
     tex.allocate(VIDEOWITH,VIDEOHEIGHT, GL_RGB);
     
     myComm.setup();
@@ -69,7 +73,7 @@ void testApp::setup(){
         positions.push_back(ofPoint(2000,2000)); //–apa para que el bucle aguante un par de segundos mas
         positions.push_back(ofPoint(2000,2000)); //–apa para que el bucle aguante un par de segundos mas
 	
-    	moveandrecord.setup();
+    	
     
     if(appStatuses["sendTUIO"]==true){
         frameseq=0;
@@ -85,6 +89,7 @@ void testApp::setupStatus(){
     	appStatuses["adaptativeBackground"]=false;
 	    appStatuses["blobInSquare"]=false;
 	    appStatuses["sendTUIO"]=true;
+        appStatuses["isCameraReady"]=false;
     
 }
 
@@ -99,6 +104,7 @@ void testApp::update(){
     #endif
     
     if (isNewFrame){
+        appStatuses["isCameraReady"]=true;
         #ifdef _USE_LIVE_VIDEO
                 sourceColorImg.setFromPixels(cam.getPixels(), VIDEOWITH,VIDEOHEIGHT);
         #else
@@ -159,10 +165,7 @@ void testApp::update(){
         
     };
     
-    if(moveandrecord.detectBlobinSquare(blobTracker)){
-        //blobImgOF_min.cropFrom(maskedImageOF, moveandrecord.triggerRectangle.x, moveandrecord.triggerRectangle.y, moveandrecord.triggerRectangle.width, moveandrecord.triggerRectangle.height);
-      // ESTE ES EL BUENO mRecorder.start(3000, 25, &blobImgOF_min,moveandrecord.triggerRectangle.x,moveandrecord.triggerRectangle.y,moveandrecord.triggerRectangle.width,moveandrecord.triggerRectangle.height);
-    }
+
 }
 
 void testApp::setupTUIO(){
@@ -290,7 +293,7 @@ void testApp::setMaskedImageBlobs(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
-   // ofScale(0.75,0.75);
+    ofScale(0.75,0.75);
     
     //if(ofGetFrameNum() == 3 || (ofGetFrameNum() % 50 == 0))
      bg.draw(0,0,1920,1080);
@@ -311,7 +314,7 @@ void testApp::draw(){
     maskedImageOF.update();
 	maskedImageOF.draw(1391,604,320,240); //mask + blobs
     
-    if(appStatuses["syphonEnabled"]==true){
+    if(appStatuses["syphonEnabled"]==true && appStatuses["isCameraReady"]){
         #ifdef _USE_LIVE_VIDEO
             tex.loadData(cam.getPixels(), VIDEOWITH,VIDEOHEIGHT, GL_RGB);
         #else
@@ -319,6 +322,9 @@ void testApp::draw(){
         #endif
         //tex.loadData(maskedImageOF.getPixels(),VIDEOWITH,VIDEOHEIGHT, GL_RGB);
         individualTextureSyphonServer.publishTexture(&tex);
+        
+        tex.loadData(maskedImageOF.getPixels(),VIDEOWITH,VIDEOHEIGHT, GL_RGB);
+        onlyBlobsImageSyphonServer.publishTexture(&tex);
     }
     if(appStatuses["debug"]) showDebug();
     
@@ -326,15 +332,15 @@ void testApp::draw(){
     //blobImgOF_min=maskedImageOF;
     //blobImgOF_min.resize(320, 240);
     
-    if(moveandrecord.state==moveandrecord.blobInSquare){
+ /**   if(moveandrecord.state==moveandrecord.blobInSquare){
         blobImgOF_min=maskedImageOF;
         blobImgOF_min.resize(320, 240);
         blobImgOF_min.update();
-    }
+    }**/
     mRecorder.update();
 // END RECORDING-READY BLOCK
     
-    moveandrecord.draw();
+ //   moveandrecord.draw();
 }
 
 void testApp::showDebug(){

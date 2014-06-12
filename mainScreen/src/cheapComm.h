@@ -18,9 +18,9 @@
 class cheapComm {
 	public:
 	    void setup();
-    	void oscRcvUpdate( );
+    	void oscSendRecord();
         cheapComm();
-	    ofxOscReceiver myosc;
+	    ofxOscSender myosc;
     	
     private:
         

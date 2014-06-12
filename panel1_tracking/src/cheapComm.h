@@ -18,9 +18,9 @@
 class cheapComm {
 	public:
 	    void setup();
-    	void sendBlobs( vector<ofxBlob>);
+    	void oscRcvUpdate();
         cheapComm();
-	    ofxOscSender myosc;
+	    ofxOscReceiver myosc;
     	
     private:
         

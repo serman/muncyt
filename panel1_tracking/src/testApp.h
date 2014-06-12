@@ -9,7 +9,6 @@
 #include "ofxSyphon.h"
 #include "ofxCv.h"
 #include "ofxOsc.h"
-#include "moveAndRecord.h"
 #include "cheapComm.h"
 #include "mosaicRecorder.h"
 #include <math.h>
@@ -90,10 +89,11 @@ class testApp : public ofBaseApp{
 	    void cleanBackgrounds();
         string textString;
     	ofxSyphonServer individualTextureSyphonServer;
+        ofxSyphonServer onlyBlobsImageSyphonServer;
 		ofTexture tex;
     
     	std::map<string, int> appStatuses;
-    	moveAndRecord moveandrecord;
+    	
 
     /***TUIO **/
 	    void sendTUIO(std::vector<ofxBlob> * objectBlobs);

@@ -109,7 +109,7 @@
 		F70E3F9C191C6D050050DEB7 /* Utilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F70E3F8F191C6D050050DEB7 /* Utilities.cpp */; };
 		F70E3F9D191C6D050050DEB7 /* Wrappers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F70E3F90191C6D050050DEB7 /* Wrappers.cpp */; };
 		F70E3F9E191C6D050050DEB7 /* opencv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F70E3F91191C6D050050DEB7 /* opencv.a */; };
-		F736258C1922467900964804 /* mosaicPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F736258A1922467900964804 /* mosaicPlayer.cpp */; };
+		F769C9291947E4F700E500E8 /* ofxImageSequence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F769C9261947E4F700E500E8 /* ofxImageSequence.cpp */; };
 		F8D05F7C7F785CE323983B47 /* ofxUITextInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06C7032F68D99A145A53CB6F /* ofxUITextInput.cpp */; };
 		F9C20834354ACC8337320B8C /* ofxUIMultiImageToggle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C5ED4467DFF0AC3482E9362 /* ofxUIMultiImageToggle.cpp */; };
 		FB09C6B2A1DA0EA217240CB8 /* ofxCvGrayscaleImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 057122A817D12571F8C0C7A4 /* ofxCvGrayscaleImage.cpp */; };
@@ -437,8 +437,9 @@
 		F70E3F90191C6D050050DEB7 /* Wrappers.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Wrappers.cpp; sourceTree = "<group>"; };
 		F70E3F91191C6D050050DEB7 /* opencv.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = opencv.a; path = ../../../addons/ofxOpenCv/libs/opencv/lib/osx/opencv.a; sourceTree = "<group>"; };
 		F7269F96AC34A2B44A680D03 /* ofxCvFloatImage.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxCvFloatImage.h; path = ../../../addons/ofxOpenCv/src/ofxCvFloatImage.h; sourceTree = SOURCE_ROOT; };
-		F736258A1922467900964804 /* mosaicPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mosaicPlayer.cpp; sourceTree = "<group>"; };
-		F736258B1922467900964804 /* mosaicPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mosaicPlayer.h; sourceTree = "<group>"; };
+		F769C9261947E4F700E500E8 /* ofxImageSequence.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxImageSequence.cpp; sourceTree = "<group>"; };
+		F769C9271947E4F700E500E8 /* ofxImageSequence.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxImageSequence.h; sourceTree = "<group>"; };
+		F769C9281947E4F700E500E8 /* ofxImageSequence_Xtd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxImageSequence_Xtd.h; sourceTree = "<group>"; };
 		F77369141941D84600548CEA /* ofxTuio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxTuio.h; sourceTree = "<group>"; };
 		F77369151941D84600548CEA /* ofxTuioClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxTuioClient.h; sourceTree = "<group>"; };
 		F77369161941D84600548CEA /* ofxTuioContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxTuioContainer.h; sourceTree = "<group>"; };
@@ -446,6 +447,8 @@
 		F77369181941D84600548CEA /* ofxTuioObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxTuioObject.h; sourceTree = "<group>"; };
 		F77369191941D84600548CEA /* ofxTuioPoint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxTuioPoint.h; sourceTree = "<group>"; };
 		F773691B194206B000548CEA /* moveAndRecord.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = moveAndRecord.h; sourceTree = "<group>"; };
+		F773697D1946950300548CEA /* ofxImageSequenceRecorder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxImageSequenceRecorder.h; sourceTree = "<group>"; };
+		F773697F1946954100548CEA /* mosaicRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mosaicRecorder.h; sourceTree = "<group>"; };
 		F7FBC56859535E597B24BB91 /* NetworkingUtils.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = NetworkingUtils.h; path = ../../../addons/ofxOsc/libs/oscpack/src/ip/NetworkingUtils.h; sourceTree = SOURCE_ROOT; };
 		F886EBA3F8F05C7F74633933 /* devmem2d.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = devmem2d.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/gpu/devmem2d.hpp; sourceTree = SOURCE_ROOT; };
 		F9A4454B00CCFD7265D3CA85 /* ofxUILabelButton.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUILabelButton.cpp; path = ../../../addons/ofxUI/src/ofxUILabelButton.cpp; sourceTree = SOURCE_ROOT; };
@@ -755,6 +758,8 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				F769C9241947E4F700E500E8 /* ofxImageSequence */,
+				F773697B1946950300548CEA /* ofxImageSequenceRecorder */,
 				F77369121941D84600548CEA /* ofxTuio */,
 				F70E3F6A191C6D050050DEB7 /* ofxCv */,
 				F70E3F5C191C63AA0050DEB7 /* ofxXmlSettings */,
@@ -1010,14 +1015,13 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				F773697F1946954100548CEA /* mosaicRecorder.h */,
 				F773691B194206B000548CEA /* moveAndRecord.h */,
 				F70E3F3F191C5D6C0050DEB7 /* cheapComm.cpp */,
 				F70E3F40191C5D6C0050DEB7 /* cheapComm.h */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* testApp.h */,
-				F736258A1922467900964804 /* mosaicPlayer.cpp */,
-				F736258B1922467900964804 /* mosaicPlayer.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -1256,6 +1260,25 @@
 			path = src;
 			sourceTree = "<group>";
 		};
+		F769C9241947E4F700E500E8 /* ofxImageSequence */ = {
+			isa = PBXGroup;
+			children = (
+				F769C9251947E4F700E500E8 /* src */,
+			);
+			name = ofxImageSequence;
+			sourceTree = "<group>";
+		};
+		F769C9251947E4F700E500E8 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				F769C9261947E4F700E500E8 /* ofxImageSequence.cpp */,
+				F769C9271947E4F700E500E8 /* ofxImageSequence.h */,
+				F769C9281947E4F700E500E8 /* ofxImageSequence_Xtd.h */,
+			);
+			name = src;
+			path = ../../../addons/ofxImageSequence/src;
+			sourceTree = "<group>";
+		};
 		F77369121941D84600548CEA /* ofxTuio */ = {
 			isa = PBXGroup;
 			children = (
@@ -1276,6 +1299,23 @@
 			);
 			name = src;
 			path = ../../../addons/ofxTuio/src;
+			sourceTree = "<group>";
+		};
+		F773697B1946950300548CEA /* ofxImageSequenceRecorder */ = {
+			isa = PBXGroup;
+			children = (
+				F773697C1946950300548CEA /* src */,
+			);
+			name = ofxImageSequenceRecorder;
+			sourceTree = "<group>";
+		};
+		F773697C1946950300548CEA /* src */ = {
+			isa = PBXGroup;
+			children = (
+				F773697D1946950300548CEA /* ofxImageSequenceRecorder.h */,
+			);
+			name = src;
+			path = ../../../addons/ofxImageSequenceRecorder/src;
 			sourceTree = "<group>";
 		};
 		F9F05170CB9BDF47DA2B6E6A /* include */ = {
@@ -1406,9 +1446,9 @@
 				4ADB88E2FB52E76A471065DE /* ofxOscParameterSync.cpp in Sources */,
 				F70E3F65191C63AA0050DEB7 /* ofxXmlSettings.cpp in Sources */,
 				640279EE111671BD026CB013 /* ofxOscReceiver.cpp in Sources */,
-				F736258C1922467900964804 /* mosaicPlayer.cpp in Sources */,
 				8F5205AEF8861EF234F0651A /* ofxOscSender.cpp in Sources */,
 				ADE367465D2A8EBAD4C7A8D9 /* IpEndpointName.cpp in Sources */,
+				F769C9291947E4F700E500E8 /* ofxImageSequence.cpp in Sources */,
 				67FE4C7B15C2F0478C8126C2 /* NetworkingUtils.cpp in Sources */,
 				510CAFE035E576A4E1502D52 /* UdpSocket.cpp in Sources */,
 				A29D8C96AE042ECEAA1BD4F3 /* NetworkingUtilsWin.cpp in Sources */,

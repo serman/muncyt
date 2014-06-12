@@ -9,28 +9,40 @@
 #ifndef panel1_tracking_moveAndRecord_h
 #define panel1_tracking_moveAndRecord_h
 #include "ofMain.h"
-
+#include <math.h>
 
 #endif
-#define RECORDINGTIME 3000
-#define RECTANGLESIZE 80
+#define RECORDINGTIME 5000
+#define RECTANGLESIZE 128
+
+//en 1280x720 8 columnas x 4 filas = 32 cuadraditos
+//640 x 480 son 5 x casi 4
+
 #define TUIOMODE
 class moveAndRecord {
     public:
     ofRectangle triggerRectangle;
    // bool blobInSquare=false;
-	long timeLastDetection=0;
-    long timeHidden=0;
+	long timeLastDetection, timeHidden;
     enum statesDrawing{blobInSquare,blobOutSquare,hidden};
-    int state=blobOutSquare;
+    int state;
+    int currentRect;
     //este es el "update"
 #ifndef TUIOMODE
+    
     bool detectBlobinSquare(ofxBlobTracker &blobTracker){
         if(state==blobInSquare){
             if(ofGetElapsedTimeMillis()-timeLastDetection > RECORDINGTIME){
-                triggerRectangle.setPosition( ofRandom(0,640-RECTANGLESIZE), ofRandom(0,480-RECTANGLESIZE) );
+                //triggerRectangle.setPosition( ofRandom(0,640-RECTANGLESIZE), ofRandom(0,480-RECTANGLESIZE) );
+                
+				int newXPos = floor(currentRect%5)*RECTANGLESIZE;
+                int newYPos = floor(currentRect/5)*RECTANGLESIZE;
+                
+                triggerRectangle.setPosition(newXPos, newYPos );
+                
                 state=hidden;
                 timeHidden=ofGetElapsedTimeMillis();
+                if( ++currentRect >20 currentRect=0);
             }
             return false;
         }
@@ -50,13 +62,19 @@ class moveAndRecord {
         }
         return false;
     };
-#else
-    bool detectBlobinSquare(list<ofxTuioObject*> objectList){
+#else //MODO TUIO
+    bool detectBlobinSquare(list<ofxTuioCursor*> objectList){
         if(state==blobInSquare){
             if(ofGetElapsedTimeMillis()-timeLastDetection > RECORDINGTIME){
-                triggerRectangle.setPosition( ofRandom(0,640-RECTANGLESIZE), ofRandom(0,480-RECTANGLESIZE) );
+				int newXPos = floor(currentRect%5)*RECTANGLESIZE;
+                int newYPos = floor(currentRect/5)*RECTANGLESIZE;
+                
+                triggerRectangle.setPosition(newXPos, newYPos );
+                
                 state=hidden;
                 timeHidden=ofGetElapsedTimeMillis();
+                if( ++currentRect >20 )currentRect=0;
+
             }
             return false;
         }
@@ -64,20 +82,53 @@ class moveAndRecord {
             if(ofGetElapsedTimeMillis()- timeHidden >10000){
                 state=blobOutSquare;
             }
-        }
-        
-        list<ofxTuioObject*>::iterator tobj;
-        for (tobj=objectList.begin(); tobj != objectList.end(); tobj++) {
-			ofxTuioObject *blob = (*tobj);
-            //cout << "blob size" << blobTracker.trackedBlobs.size() << "\n";
-            if ( triggerRectangle.inside( blob->getX()*640, blob->getY()*480) ){
-                state= blobInSquare;
-                timeLastDetection=ofGetElapsedTimeMillis();
-                return true;
+        }else{
+            list<ofxTuioCursor*>::iterator tobj;
+            for (tobj=objectList.begin(); tobj != objectList.end(); tobj++) {
+                ofxTuioCursor *blob = (*tobj);
+                //cout << "blob size" << blobTracker.trackedBlobs.size() << "\n";
+                if ( triggerRectangle.inside( blob->getX()*640, blob->getY()*480) ){
+                    state= blobInSquare;
+                    timeLastDetection=ofGetElapsedTimeMillis();
+                    return true;
+                }
             }
         }
         return false;
     }
+    
+    bool detectMouseinSquare(int mousex, int mousey){
+        //
+        if(state==blobInSquare){
+            if(ofGetElapsedTimeMillis()-timeLastDetection > RECORDINGTIME){
+                if( ++currentRect >=20 )currentRect=0;
+				int newXPos = (currentRect%5)*RECTANGLESIZE;
+                cout <<  newXPos <<" " << currentRect;
+                int newYPos = floor(currentRect/5)*RECTANGLESIZE;
+                triggerRectangle.setPosition(newXPos, newYPos );
+                state=hidden;
+                timeHidden=ofGetElapsedTimeMillis();
+                
+                
+            }
+            return false;
+        }
+        else if (state == hidden){
+            if(ofGetElapsedTimeMillis()- timeHidden >2000){
+                state=blobOutSquare;
+            }
+        }else{ //blobOutSquare Comprobamos si está dentro            
+                if ( triggerRectangle.inside( mousex, mousey) ){
+                    state= blobInSquare;
+                    timeLastDetection=ofGetElapsedTimeMillis();
+                    return true;
+                }
+            
+        }
+        return false;
+    }
+
+    
  #endif
     void draw(){
         
@@ -87,7 +138,7 @@ class moveAndRecord {
         ofPushMatrix();
         ofPushStyle();
 
-        ofTranslate(194,139);
+        //ofTranslate(194,139);
 
         if(state==blobInSquare){
         	ofSetColor(255, 0, 0);
@@ -98,7 +149,7 @@ class moveAndRecord {
             ofNoFill();
         }
         else{
-                    ofSetColor(0, 255, 0);
+        	ofSetColor(0, 255, 0);
             ofNoFill();
         }
         
@@ -110,7 +161,11 @@ class moveAndRecord {
 
     
     void setup(){
-        triggerRectangle=ofRectangle(100,100,RECTANGLESIZE,RECTANGLESIZE);
+        timeLastDetection=0;
+        timeHidden=0;
+        state=blobOutSquare;
+        currentRect=0;
+        triggerRectangle=ofRectangle(0,0,RECTANGLESIZE,RECTANGLESIZE);
     };
     
     

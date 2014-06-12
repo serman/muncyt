@@ -13,7 +13,9 @@
 
 #endif
 #define RECORDINGTIME 3000
-#define RECTANGLESIZE 80
+#define RECTANGLESIZE 160
+//en 1280x720 8 columnas 4 filas
+
 class moveAndRecord {
     public:
     ofRectangle triggerRectangle;
@@ -22,10 +24,12 @@ class moveAndRecord {
     long timeHidden=0;
     enum statesDrawing{blobInSquare,blobOutSquare,hidden};
     int state=blobOutSquare;
+    int squareNumber=0;
     //este es el "update"
     bool detectBlobinSquare(ofxBlobTracker &blobTracker){
         if(state==blobInSquare){
             if(ofGetElapsedTimeMillis()-timeLastDetection > RECORDINGTIME){
+                //triggerRectangle.setPosition( ofRandom(0,320-RECTANGLESIZE), ofRandom(0,240-RECTANGLESIZE) );
                 triggerRectangle.setPosition( ofRandom(0,320-RECTANGLESIZE), ofRandom(0,240-RECTANGLESIZE) );
                 state=hidden;
                 timeHidden=ofGetElapsedTimeMillis();
