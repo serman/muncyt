@@ -163,5 +163,8 @@ public:
     ofxTuioClient   tuioClient;
 	ofPoint tuioPoint2Screen(ofxTuioCursor &tuioCursor);
 	
+	
+	bool swDrawTRAILS;
+	
 };
 

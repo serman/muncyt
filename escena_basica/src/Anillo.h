@@ -63,7 +63,7 @@ public:
 		wAng = -0.3*TWO_PI/(60.0);
 		accAng = 0.0;
 		
-		dAcc = 0.03;
+		dAcc = 0.03;//0.03;
 		viscAcc = 0.30;
 		
 		color = ofColor(ofColor::fromHsb(30, 200, 200) );
