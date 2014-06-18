@@ -32,7 +32,7 @@ void testApp::setup() {
 	ofLoadImage(texPartic, "media/images/dot.png");
 	
 
-	fpsAct = 30.0;
+	fpsAct = 370.0;
 	
 	// BOX2D
 	box2d.init();
@@ -50,7 +50,7 @@ void testApp::setup() {
 	
 	
 	// Poner Muro circular
-	float radioMuro = MIN(ofGetWidth(), ofGetHeight()) / 2.0*0.8;
+	float radioMuro = MIN(ofGetWidth(), ofGetHeight()) / 2.0*0.85;
 	int resol = 360/5;
 
 	radioInt = radioMuro;
@@ -91,8 +91,8 @@ void testApp::setup() {
 	modoDrawParticulas = MODO_PARTIC;	
 	
 	ofLogVerbose("Add nucleos");
-	// add some nucleos y boxes
-	int nCircs = 40 + floor(  ofRandom(20) );
+	// add some nucleos
+	int nCircs = 60 + floor(  ofRandom(20) );
 	for(int i =0; i<nCircs; i++) {
 		addNucleo(centro.x+ofRandom(-1,1), centro.y+ofRandom(-1,1), rNucleo);
 	}
@@ -115,8 +115,12 @@ void testApp::setup() {
 	anillo = Anillo(ofVec2f(centro.x,centro.y), radioInt, radioExt);
 	
 	// Control del anillo
-	ofRectangle anilloUI_L = ofRectangle(0,ofGetHeight()-40, 40,40);
-	ofRectangle anilloUI_R = ofRectangle(ofGetWidth()-40,ofGetHeight()-40, 40,40);
+//	ofRectangle anilloUI_L = ofRectangle(0,ofGetHeight()-40, 40,40);
+//	ofRectangle anilloUI_R = ofRectangle(ofGetWidth()-40,ofGetHeight()-40, 40,40);
+	float dRad = radioExt-radioInt;
+	float rMed = radioInt+dRad/2;
+	ofRectangle anilloUI_L = ofRectangle(centro.x-rMed-(dRad*0.9/2),centro.y-(dRad*0.9/2), dRad*0.9,dRad*0.9);
+	ofRectangle anilloUI_R = ofRectangle(centro.x+rMed-(dRad*0.9/2),centro.y-(dRad*0.9/2), dRad*0.9,dRad*0.9);
 	anillo.setUI(anilloUI_L, anilloUI_R);
 	
 	
@@ -125,6 +129,8 @@ void testApp::setup() {
 	
 	
 	frecFondo = 4.0;
+	
+	swDrawTRAILS = false;
 	
 	myComm.setup();
 	
@@ -167,7 +173,6 @@ void testApp::update() {
 		}
 	}
 	nuevasPartics.clear();	// **** BORRADO ****
-
 
 	// Update Destellos
 	for(int i=destellos.size()-1; i>0; i--) {
@@ -230,15 +235,18 @@ void testApp::update() {
 	list<ofxTuioCursor*>cursorList = tuioClient.getTuioCursors();
 	for(list<ofxTuioCursor*>::iterator it=cursorList.begin(); it != cursorList.end(); it++) {
 		ofxTuioCursor *tcur = (*it);
+
 //		ofPoint ptCursor = ofPoint(tcur->getX(),tcur->getY());
 		ofPoint ptCursor = tuioPoint2Screen(*tcur);
-		
+
+//		ofLogNotice("nuevo TUIO cursor: " + ofToString(ptCursor));
 		
 		// Evaluar si esta en posicion de interaccion:		
 		if(bordeLine.inside(ptCursor)) {
 			addDestello(ptCursor.x, ptCursor.y);
 		}
-//		else anillo.interaccionAnillo(ptCursor);
+		
+		else anillo.interaccionAnillo(ptCursor);
 		
     }
 	
@@ -248,9 +256,10 @@ void testApp::update() {
 void testApp::draw() {
 
 //	ofBackground(0);
-	ofColor colorCentro = ofColor::fromHsb(60, 50+50*sin(ofGetElapsedTimef()/frecFondo*TWO_PI), 255);
-	ofBackgroundGradient(colorCentro, ofColor::black, OF_GRADIENT_CIRCULAR);
+	ofColor colorCentro = ofColor::fromHsb(60, 50+50*sin(ofGetElapsedTimef()/frecFondo*TWO_PI), 100);
+	ofBackgroundGradient (colorCentro, ofColor::black, OF_GRADIENT_CIRCULAR);
 //	ofBackgroundGradient(ofColor::gray, ofColor::black, OF_GRADIENT_CIRCULAR);
+	
 	
 	// Selector Fuerza: 
 	// caja fuera de los dos circulos
@@ -278,6 +287,7 @@ void testApp::draw() {
 		nucleos[i].get()->draw();
 	}
 	
+	
 	for(int i=0; i<neutrones.size(); i++) {
 //		ofFill();
 		float veloc = neutrones[i].get()->getVelocity().length();
@@ -296,6 +306,14 @@ void testApp::draw() {
 
 	// dibuja valor fuerza
 //	drawFuerza(bordeLine.getCentroid2D(), fuerza);
+	if(swDrawTRAILS) {
+		for(int i=0; i<nucleos.size(); i++) {
+			nucleos[i].get()->drawTrail();
+		}		
+		for(int i=0; i<neutrones.size(); i++) {
+			neutrones[i].get()->drawTrail();
+		}
+	}
 	
 	
 	// Destellos y Efectos
@@ -315,7 +333,7 @@ void testApp::draw() {
 	
 	
 	// TUIOS
-    tuioClient.drawCursors();	
+//    tuioClient.drawCursors();	
 	
 	
 	// Info
@@ -335,6 +353,10 @@ void testApp::draw() {
 	//	ofSetHexColor(0x444342);
 	ofSetHexColor(0xCCCCCC);
 	ofDrawBitmapString(info, 30, 30);
+	
+//	ofSetColor(255);
+//	ofLine(ofGetMouseX()*ofGetWidth()/ofGetScreenWidth(),0,ofGetMouseX()*ofGetScreenWidth()/ofGetWidth(),ofGetHeight());
+
 }
 
 void testApp::drawFuerzaSelector() {
@@ -510,6 +532,10 @@ void testApp::keyPressed(int key) {
 	
 	if(key=='f') swFuerza = !swFuerza;
 	
+	if(key=='x') {
+		myComm.sendExplosion();
+	}
+	
 	if(key=='t') {
 		fpsAct = ofMap(mouseX,0,ofGetWidth(), 20.0, 600.0);
 		box2d.setFPS(fpsAct);
@@ -527,11 +553,9 @@ void testApp::keyPressed(int key) {
 		// cambiar particulas a modo PATH
 		setModoParticulas(MODO_PATH);
 	}
-	else if(key=='3') {
-		// cambiar particulas a modo BOX2D
-		setModoParticulas(MODO_BOX2D);
+	else if(key=='4') {
+		swDrawTRAILS = !swDrawTRAILS;
 	}
-	
 }
 
 void testApp::setModoParticulas(int _modo) {
@@ -617,7 +641,7 @@ void testApp::tuioAdded(ofxTuioCursor &tuioCursor){
 void testApp::tuioUpdated(ofxTuioCursor &tuioCursor){
 	//	ofPoint loc = ofPoint(tuioCursor.getX()*ofGetWidth(),tuioCursor.getY()*ofGetHeight());
 	ofPoint loc = tuioPoint2Screen(tuioCursor);
-	cout << "Point n" << tuioCursor.getSessionId() << " updated at " << loc << endl;
+	cout << "Point n" << tuioCursor.getSessionId() << " updated at " << loc << "    x: " << tuioCursor.getX() << endl;
 }
 
 void testApp::tuioRemoved(ofxTuioCursor &tuioCursor){
@@ -627,7 +651,13 @@ void testApp::tuioRemoved(ofxTuioCursor &tuioCursor){
 }
 
 ofPoint testApp::tuioPoint2Screen(ofxTuioCursor &tuioCursor) {
-	return ofPoint(tuioCursor.getX()*ofGetWidth(),tuioCursor.getY()*ofGetHeight());
+	ofLogNotice("ESTOY EN tuioPoint2Screen");
+//	return ofPoint(tuioCursor.getX()*ofGetScreenWidth(),tuioCursor.getY()*ofGetScreenHeight());	
+	cout << tuioCursor.getX() << ", " << tuioCursor.getY() << endl;
+	return ofPoint(tuioCursor.getX()*1024/0.6,tuioCursor.getY()*768/0.7);
+	
+//	return ofPoint(tuioCursor.getX()*ofGetWidth()* 2,tuioCursor.getY()*ofGetHeight() * 2);
+//	return ofPoint(tuioCursor.getX()*ofGetScreenWidth(),tuioCursor.getY()*ofGetScreenHeight());
 }
 
 

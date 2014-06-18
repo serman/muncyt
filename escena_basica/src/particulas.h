@@ -54,11 +54,14 @@ class Particula : public ofxBox2dCircle {
 	void draw();
 	
 	bool		swAcumula;
+	vector<ofPoint> trailV;
 	ofPolyline	trail;
+	
+	int		tLifeMax;
 	
 	void addPunto();
 	
-	
+	void drawTrail();	
 };
 
 #endif
