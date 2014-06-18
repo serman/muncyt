@@ -64,10 +64,10 @@ void testApp::update(){
   //  mPlayer.update();
     tuioclient.getMessage();
     
-//    if(moveandrecord.detectBlobinSquare(tuioclient.getTuioCursors())){
+    if(moveandrecord.detectBlobinSquare(tuioclient.getTuioCursors())){
     
     
-    if(moveandrecord.detectMouseinSquare(mouseX, mouseY)){
+   // if(moveandrecord.detectMouseinSquare(mouseX, mouseY)){
         mRecorder.current_video=moveandrecord.currentRect;
         mRecorder.start(3000, 25, remoteBlobImgPxl,
                         moveandrecord.triggerRectangle.width,moveandrecord.triggerRectangle.height,

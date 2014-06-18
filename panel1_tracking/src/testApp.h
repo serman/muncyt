@@ -15,6 +15,7 @@
 //#define _USE_LIVE_VIDEO		// uncomment this to use a live camera
 #define VIDEOWITH 640
 #define VIDEOHEIGHT 480
+#define VIDEO_PROC_SCALE 2;
 #define CAMERA_EXPOSURE_TIME  2200.0f
 
 class testApp : public ofBaseApp{

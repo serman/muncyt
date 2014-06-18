@@ -269,6 +269,7 @@ void testApp::updateParticles() {
                   //cout << zMax;
         if(distance> zMin && distance < zMax) {
             pp++;
+            p->recentlyUsed=5;
             if(particleMode==ESPEJO){
                 p->stopAcc();
                mdestPoint=  oniCamGrabber.convertDepthToWorld(p->_x, p->_y);
@@ -298,16 +299,38 @@ void testApp::updateParticles() {
             }
 			
             p->color=ofColor(255,255,255,alphaParticles);
-            if((p->_x+p->_x)%400==0 ){ //820
+            /**if((p->_x+p->_x)%400==0 ){ //820
                 
-            }
+            }**/
             meshParticles.addVertex(p->position);
            // meshParticles.addColor(ofColor::fromHsb(ofMap(p->_x, p->_y, zMin, zMax, 1, 360) , 255, 255, 50));
             meshParticles.addColor(p->color);
         }else{
            // meshParticles.addVertex(p->position);
-            p->color=ofColor(255,0,0,40);
-            
+            if(!p->recentlyUsed>0){
+            	p->color=ofColor(255,0,0,40);
+            }else{
+                p->color=ofColor(255,0,0,255);
+                meshParticles.addVertex(p->position);
+                meshParticles.addColor(p->color);
+                p->recentlyUsed--;
+                /*
+                mdestPoint= ofVec3f(0,0,-10);
+                diff = mdestPoint- p->position;
+                if(diff.lengthSquared()<(stopUmbral)){
+                    p->stopAcc();
+                    p->velocity = ofVec3f(0,0,0);
+                    p->recentlyUsed=false;
+                }else{
+                diff.normalize();
+//                diff *= 2;
+               // p->addForce( diff );
+               // p->update();
+                p->color=ofColor(255,0,0,255);
+                meshParticles.addVertex(p->position);
+                meshParticles.addColor(p->color);
+				}*/
+            }
             //meshParticles.addColor(ofColor(255,0,0,40));
         }
     }//end for all points within vector

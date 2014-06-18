@@ -23,6 +23,7 @@ class Particle
         color = _color ;
         velocity = ofVec3f ( ofRandom ( -2 , 2 ) , ofRandom ( -2 , 2 ) , ofRandom ( -2 , -2 ) ) ;
         spawnPoint = _position ;
+        recentlyUsed=0;
     };
     
     Particle( ofVec3f _position , ofColor _color, int mx, int my )
@@ -33,6 +34,7 @@ class Particle
         spawnPoint = _position ;
         _x=mx;
         _y=my;
+        recentlyUsed=0;
     };
     
     
@@ -42,6 +44,7 @@ class Particle
     ofColor color ;
     int _x;
     int _y;
+    char recentlyUsed;
     
     void addForce(float a_x, float a_y, float a_z) {
         acceleration.x += a_x;

@@ -11,6 +11,8 @@ void testApp::setup(){
         //cam.setVerbose(true);
         cam.listDevices();
     	cam.setDeviceID(1);
+		cam.listDevices();
+		cam.setDesiredFrameRate(30);
     
         cam.initGrabber(VIDEOWITH,VIDEOHEIGHT);
     #else
