@@ -1,3 +1,5 @@
+import processing.event.KeyEvent;
+import processing.event.KeyEvent;
 
 import gab.opencv.*;
 import java.awt.Rectangle;
@@ -19,14 +21,9 @@ import controlP5.*;
 ControlP5 cp5;
 // Interface elements
 
-
 PFont font1, font2;
 
 // Logic
-boolean doProcess;
-
-String statusMsg = "";
-int idCur;
 
 // GUI
 
@@ -47,101 +44,141 @@ String[] xmlFiles;
 
 String path; // sketch path
 
-PGraphics mgraphics;
+PGraphics mgraphics; //haar features are drawn here
 
-Rectangle[] faces;
+Rectangle[] faces; //faces detected in the "real algorightm"
+ArrayList<Rectangle> fakeDetectedfaces; //faces detected with this fake algorithm
 /******statuses ****/
-boolean fileLoaded=false;
+boolean fileLoaded=false; //is xml haar file loaded
+boolean isDebug=true;
+boolean doProcess; //controls reproduction
+String statusMsg = "";
+int idCur;
+
+
+
 int windowsize=100; //haar window size
-int xposition=0;
+int xposition=0; 
 int yposition=0;
 Rectangle mrect;
 Rectangle faceRectangle;
-int stagesCounter=0;
-int featuresCounter=0;
-int stopStage=20;
-int xAxeMovement=100;
+int stagesCounter=0; //This variable is the counter used to know in which stage of the algorithm we are (0 to 26 for xxxfacexxx.xml)
+int featuresCounter=0; //Each stage has a different number of features
+//FAKE STUFF
+int stopStage=20; //The algorithm takes too long for a full visualization. so we include a stop stage
+int xAxeMovement=100; 
 int yAxeMovement=100;
-PImage img2;
+int slowOneOfEach= 1; 
+float areaInterseccion=0;
+PImage img2; //the image we represent on the right side
+miniImages minimages;
+
+boolean amIOveraFace=false;
 void setup() { 
   size(1280, 720,P2D);
   cp5 = new ControlP5(this);
   /*** OPENCV STUFF ***/
   loadNewPhoto("test640.jpg");
+  setInitPositions();
+  mrect.x=xposition;
+  mrect.y=yposition;
   
-  println("[main] using cascade: " + cascadeFile);
-  cp5.addButton("bAll")
-      .setPosition(marginL, marginT+50)
-        .setSize(200, 19).setCaptionLabel("RENDER ALL STAGES")
-          ;
-cp5.addButton("refresh")
-      .setPosition(marginL, marginT+100)
-        .setSize(200, 19).setCaptionLabel("refresh")
-          ;
+  if (isDebug){  
+    println("[main] using cascade: " + cascadeFile);
+    cp5.addButton("bAll")
+        .setPosition(marginL, marginT+50)
+          .setSize(200, 19).setCaptionLabel("RENDER ALL STAGES")
+            ;
+    cp5.addButton("refresh")
+        .setPosition(marginL, marginT+100)
+          .setSize(200, 19).setCaptionLabel("refresh")
+            ;
+  }
+  
   path = sketchPath; // an environment variable
   
-
-
+  fakeDetectedfaces=new ArrayList<Rectangle>();
   smooth();
 
-  font1 = createFont("Helvetica-Light", 25);
+  font1 = createFont("Helvetica-Light", 21);
   font2 = createFont("Helvetica", 11);
   mgraphics= createGraphics(100,100,P2D);
+  minimages= new miniImages();
+  minimages.setup();
   setupCurrentIteration();
   frameRate(60);
-}
-float areaInterseccion=0;
-void draw() {
   
+  if (isDebug==false) doProcess=true;
+  else{
+    yposition+=yAxeMovement;yposition+=yAxeMovement;//yposition+=yAxeMovement;yposition+=yAxeMovement;
+    xposition+=xAxeMovement;
+  }
+} //end setup
+
+
+void draw() {
+  println(xposition);
+  //actualizacion del rectangulo
     if(stagesCounter>stopStage){ //fin de una etapa toca mover cuadradito
       stagesCounter=0;
       featuresCounter=0;
       xposition+=xAxeMovement;
-      if(xposition>img.width-windowsize){
+      if(xposition>img.width-windowsize){ //row jump needed
         xposition=0;
         yposition+=yAxeMovement;
       }
-      if(yposition>img.height-windowsize){
-        yposition=0; 
-        //TODO hemos terminado!  
-      }
+      if(yposition>img.height-windowsize){ //current image has finished
+        refresh(); 
+        setInitPositions();
+      }      
       mrect.x=xposition;
       mrect.y=yposition;
       setupCurrentIteration();
+
     }
 
   // Draw
   background(255);
 
-
-  if (doProcess) {
-    renderStages(windowsize);
-  }
-  /********/
+  if(frameCount%40==0) slowMotion(false );
+   if (doProcess && (frameCount% slowOneOfEach)==0) {
+     renderStages(windowsize);
+   }
+  /****DRAW MAIN PHOTO****/
   pushMatrix();
     translate(800,0);
     image(img, 0, 0);
     noFill();
-    stroke(0, 255, 0,50);
+    stroke(0, 255, 0,10);
     strokeWeight(2);
     for (int i = 0; i < faces.length; i++) {
       rect(faces[i].x, faces[i].y, faces[i].width, faces[i].height);
     }
+
   //if(frameCount%30==0)
+    stroke(0, 255, 0,255);
+    strokeWeight(2);
+    for (int i = 0; i< fakeDetectedfaces.size(); i++) {
+      rect(fakeDetectedfaces.get(i).x, fakeDetectedfaces.get(i).y, fakeDetectedfaces.get(i).width, fakeDetectedfaces.get(i).height);
+    }
+    
     image(mgraphics,xposition,yposition); //dibuja el canvas con las features haar
+  
+  
   
     stroke(255,0,0);
     rect(mrect.x,mrect.y,mrect.width,mrect.height);
+        
+
   popMatrix();
  /************/
-   
-  pushMatrix();
-  
-    translate(400,20);
-    scale(2);
-    image(img2,0,0);
+
+// Draw zoomed version   
+  pushMatrix();  
+    translate(450,20);
     img2.filter(GRAY);
-    image(mgraphics,0,0);
+    image(img2,0,0,min(faceRectangle.width*2,250),min(faceRectangle.height*2,250));    
+    image(mgraphics,0,0,min(faceRectangle.width*2,250),min(faceRectangle.height*2,250));
   popMatrix();
   
 
@@ -157,11 +194,24 @@ void draw() {
   
   textFont(font1);
   fill(20);
-  text("El sistema recorre toda la imagen \n buscando patrones de luminosidad \n cada vez en mas detalle ",xPos,yPos+300);
-  text("Compara la intensidad de color bajo las zonas \n blancas y negras y busca que la diferencia \n supere cierto umbral",xPos,yPos+500);
-
+  text(" El sistema recorre toda la imagen \n buscando patrones de luminosidad \n cada vez en mas detalle ",xPos,yPos+250);
+  text(" Compara la intensidad de color bajo las zonas \n blancas y negras y busca que la diferencia \n supere cierto umbral",xPos,yPos+350);
+  text(" Para un ordenador, una cara humana sólo es un conjunto \n de contrastes dentro de una imagen",xPos,yPos+460);
+ 
+  if(amIOveraFace){ 
+    if( stagesCounter==10 && (featuresCounter==2 || featuresCounter==6)){
+      minimages.addImage(img2,mgraphics);
+    }
+    if( stagesCounter==11 && (featuresCounter==6 || featuresCounter==22  || featuresCounter==37) ) {
+      minimages.addImage(img2,mgraphics); 
+    }
+  } 
+  
+ 
+  minimages.draw();
   fill(80);
-  debugInfo();
+  if (isDebug==true)  debugInfo();
+
  
 }
 void debugInfo(){
@@ -179,21 +229,42 @@ void loadNewPhoto(String name){
   opencv.loadCascade(OpenCV.CASCADE_FRONTALFACE); 
   faces = opencv.detect(1.4,3,0,100,250);
   faceRectangle=faces[0];
-  faces = opencv.detect(1.4,4,0,100,250);
+  faces = opencv.detect(1.4,0,0,100,250);
   mrect=new Rectangle(0,0,100,100);
   img = loadImage(name);
 
 }
 
+//loads new image and define how fast the rectangles will move
 void refresh(){
-loadNewPhoto("test640_2.jpg");
-setupCurrentIteration();
+  loadNewPhoto("test640_2.jpg"); //TODO TAKE NEW PHOTO FROM LISTS OR WHATEVER
+  fakeDetectedfaces.clear();
+  //setupCurrentIteration();
+  minimages.reset();
+  
 }
+
+void setInitPositions(){
+  if(faceRectangle.y >100) {
+    xAxeMovement=faceRectangle.x/2;
+    yAxeMovement=faceRectangle.y/2;
+  }
+  else{  
+      yAxeMovement=100;  
+      yposition=faceRectangle.y; 
+      xposition=0;
+      xAxeMovement=faceRectangle.x/2; 
+  }
+}
+
+//set what happens when the finding window is over one position of the screen.
 void setupCurrentIteration(){    
   windowsize=faceRectangle.width;
   if(mgraphics.width!=windowsize)  mgraphics = createGraphics(windowsize,windowsize,P2D);
   mrect.width=windowsize;
   mrect.height=windowsize;
+  
+  
   if(mrect.intersects(faceRectangle)){
     Rectangle interseccion=mrect.intersection(faceRectangle);
     areaInterseccion=(float) (interseccion.width*interseccion.height/2) / (float)(windowsize*windowsize/2); //normalized intersection area
@@ -202,19 +273,21 @@ void setupCurrentIteration(){
     areaInterseccion=0;
   }
   /*** stop  Stage ***/
-  stopStage= ceil(map(areaInterseccion,0,1,1,13));
-  if(areaInterseccion>0.94) stopStage=18;
-  if(stopStage>8) stagesCounter=stopStage-8;
+  stopStage= ceil(map(areaInterseccion,0,1,1,9));
+  if(areaInterseccion>0.94) { //This iteration is over a face
+    stopStage=16;
+    fakeDetectedfaces.add(new Rectangle( mrect));
+    amIOveraFace=true;
+  }
+  else amIOveraFace=false;
   
-  xAxeMovement=faceRectangle.x/2;
-  yAxeMovement=faceRectangle.y/2;
-    println(mrect.x);
-  println(mrect.y);
-  println(mrect.width);
+  if(stopStage>10) stagesCounter=stopStage-10;
+  
+ 
+   
    img2=createImage(mrect.width,mrect.height,RGB); 
    img2=img.get( mrect.x, mrect.y, mrect.width,mrect.height);
-  img2.updatePixels();
-  println("actualizado");
+   img2.updatePixels();
 }
 
 public void  bAll(){
@@ -250,7 +323,7 @@ void renderStages(int imgSize) {
     
     if(featuresCounter<stage.getNumItems() -1) {
       featuresCounter++;
-      println (featuresCounter);
+      //println (featuresCounter);
     }
     else{
       featuresCounter=0;      
@@ -264,9 +337,29 @@ void renderStages(int imgSize) {
     }
 }
 
-void slowMotion(){
+boolean slowmoDOWN=false;
+void slowMotion(boolean start){
+//  println("startslowmo" + slowOneOfEach);
+  if(start) slowOneOfEach=2;
+  
+  if (slowOneOfEach > 1 ){    
+    if (slowmoDOWN==false){
+      if(slowOneOfEach<7)      slowOneOfEach++;
+      else {slowmoDOWN=true;}
+    }  else if(slowmoDOWN==true){
+      slowOneOfEach--;
+    }
+  }
+  
+  if(slowmoDOWN==true){
+     if( slowOneOfEach <=1) { 
+       slowmoDOWN=false;
+     println("end slowmodown");
+     }
+  }
+} 
 
-}
+
 void loadFile() {
   String name = cascadeFile;
   String path = sketchPath +"/";
@@ -276,4 +369,8 @@ void loadFile() {
   name = pieces[0];
 
  fileLoaded=true;
+}
+
+void keyPressed( ){
+  slowMotion(true);
 }
