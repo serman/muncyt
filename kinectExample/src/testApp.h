@@ -18,6 +18,7 @@
 //#define USE_TWO_KINECTS
 
 #define ASUS
+//#define USEFILE
 
 #ifndef ASUS
 	#include "ofxKinect.h"

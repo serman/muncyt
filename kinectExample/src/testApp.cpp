@@ -47,13 +47,16 @@ void testApp::setup() {
 	oniSettings.colorPixelFormat = PIXEL_FORMAT_RGB888;
 	//oniSettings.irPixelFormat = PIXEL_FORMAT_GRAY16;
 	oniSettings.doRegisterDepthToColor = true;
-	oniSettings.useOniFile = false;
-	oniSettings.oniFilePath = "UNDEFINED";
-    
+#ifdef USEFILE
+	oniSettings.useOniFile = true;
+	oniSettings.oniFilePath = "/Users/sergiogalan/MultimediaProgramming/of_v0.8.0_osx_release/apps/muncyt/kinectExample/bin/data/2014-06-24-18-17-54-693_depth_color_640w_480h_30fps.oni";
+#else
+    oniSettings.useOniFile=false;
+#endif
     //will search this directory for an .oni file
 	//if not found will use the first available camera
-	
 	ofDirectory currentONIDirectory(ofToDataPath("current", true));
+    
 	if (currentONIDirectory.exists())
 	{
 		currentONIDirectory.listDir();
@@ -67,7 +70,9 @@ void testApp::setup() {
 	}
 	
 	isReady = oniCamGrabber.setup(oniSettings);
-	//recorder.setup(&oniGrabber);
+	oniCamrecorder.setup(&oniCamGrabber);
+    
+ //configuracion
     for (std::vector<VideoStream*>::iterator it = oniCamGrabber.streams.begin() ; it != oniCamGrabber.streams.end(); ++it){
         (*it)->setMirroringEnabled(true);
     	CameraSettings *camset=    (*it)->getCameraSettings();
@@ -787,9 +792,18 @@ void testApp::keyPressed (int key) {
 			if(angle<-30) angle=-30;
 
 			kinect.setCameraTiltAngle(angle);
+            break;
+#else 	
+        case 'r':
+            if(oniCamrecorder.isRecording==true)
+                oniCamrecorder.stopRecording();
+            else
+                oniCamrecorder.startRecording();
+            break;
+            
 
 #endif
-			break;
+			
             
         case 'e':
             zMax+=10;
