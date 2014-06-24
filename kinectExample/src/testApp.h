@@ -60,12 +60,14 @@ public:
     ofxOpenNI2GrabberSettings oniSettings;
 	ofxOpenNI2Recorder oniCamrecorder;
     extendedDepthSource depthGenerator;
+    RGBSource rgbGenerator;
     bool isReady;
 #endif
 	bool	pulso;
 	bool	bDrawPoints;
 	bool	bDrawLinesH, bDrawLinesV,bDrawNativePointCloud;
     bool 	bDrawContours;
+    bool 	bRealColors;
 	int 	distanciaLineasK;
 	// GUI
 	void		setupGUI();

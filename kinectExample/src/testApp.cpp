@@ -43,8 +43,9 @@ void testApp::setup() {
 	oniSettings.doIr = false;
     
     oniSettings.depthPixelFormat = PIXEL_FORMAT_DEPTH_1_MM;
+
 	oniSettings.colorPixelFormat = PIXEL_FORMAT_RGB888;
-	oniSettings.irPixelFormat = PIXEL_FORMAT_GRAY16;
+	//oniSettings.irPixelFormat = PIXEL_FORMAT_GRAY16;
 	oniSettings.doRegisterDepthToColor = true;
 	oniSettings.useOniFile = false;
 	oniSettings.oniFilePath = "UNDEFINED";
@@ -69,9 +70,17 @@ void testApp::setup() {
 	//recorder.setup(&oniGrabber);
     for (std::vector<VideoStream*>::iterator it = oniCamGrabber.streams.begin() ; it != oniCamGrabber.streams.end(); ++it){
         (*it)->setMirroringEnabled(true);
+    	CameraSettings *camset=    (*it)->getCameraSettings();
+        if((*it)->isPropertySupported(STREAM_PROPERTY_AUTO_WHITE_BALANCE))
+        	camset->setAutoWhiteBalanceEnabled(true);
+        if((*it)->isPropertySupported(STREAM_PROPERTY_AUTO_EXPOSURE))
+        	camset->setAutoExposureEnabled(true);
+        
     }
     depthGenerator.setup(oniCamGrabber.deviceController);
-
+    	rgbGenerator.setup(oniCamGrabber.deviceController);
+    cout << "width: " <<  rgbGenerator.width << " hei: " <<rgbGenerator.height;
+    
     //depthGenerator.videoStream.setMirroringEnabled(true);
 	ofLogVerbose() << "testApp started";
     
@@ -131,7 +140,7 @@ void testApp::setup() {
 
 
 void testApp::setupGUI() {
-	gui1 = new ofxUICanvas(0,100,400,600);
+	gui1 = new ofxUICanvas(0,100,400,800);
 	
 	gui1->addSlider("speed", 0.0f, 200, &speed);
 	gui1->addIntSlider("stopUmbral", 1, 300, &stopUmbral) ;
@@ -168,6 +177,8 @@ void testApp::setupGUI() {
     gui1->addToggle("DrawNativePointCloud", &bDrawNativePointCloud);
 	gui1->addToggle("Explosion", &explosion);
     gui1->addToggle("bDrawContours", &bDrawContours);
+    gui1->addToggle("camera Colours", &bRealColors);
+    
 	gui1->addSpacer();
 	
 	gui1->addButton("reset",true);
@@ -213,11 +224,12 @@ void testApp::update() {
             
             oniCamGrabber.update();
             //oniCamGrabber.
-//TODO actualizar solo cuando hay un nuevo frame
             if(depthGenerator.isUpdated==true){
 	            updateParticles();
             	depthGenerator.isUpdated=false;
             }
+            rgbGenerator.update();
+            
         }
     #endif
 	
@@ -284,14 +296,7 @@ void testApp::updateParticles() {
 
             }
             else if(particleMode==NUBE) {
-                /**mdestPoint= ofVec3f(p->position.x + ofRandom(-ofGetFrameNum()%10, ofGetFrameNum()%10),
-                                    p->position.y + ofRandom(-ofGetFrameNum()%10, ofGetFrameNum()%10),
-                                    p->position.z -  ofRandom(40,100) );
 
-                 	diff = mdestPoint- p->position;
-                    diff *= 0.001;
-                    p->applyForce( diff );
-	                p->update(); **/
                 
                     p->sandDown(accTest,-200);
                     p->update();
@@ -299,13 +304,27 @@ void testApp::updateParticles() {
                // p->position+=ofNoise( p->position.x,p->position.y,p->position.z)*30;
             }
 			
-            p->color=ofColor(255,255,255,alphaParticles);
-            /**if((p->_x+p->_x)%400==0 ){ //820
-                
-            }**/
+            if (bRealColors){
+                #ifndef ASUS
+                p->color=kinect.getColorAt((p->_x , p->_y));
+                #else
+                p->color= rgbGenerator.currentPixels->getColor(p->_x , p->_y) ;
+				#endif
+            }
+            else{
+            	p->color=ofColor(255,255,255,alphaParticles);
+            }
             meshParticles.addVertex(p->position);
            // meshParticles.addColor(ofColor::fromHsb(ofMap(p->_x, p->_y, zMin, zMax, 1, 360) , 255, 255, 50));
             meshParticles.addColor(p->color);
+
+            
+            
+
+
+            //[p->_y * depthGenerator.width + p->_x]:
+            
+            
         }else{
            // meshParticles.addVertex(p->position);
             if(!p->recentlyUsed>0){
@@ -414,7 +433,8 @@ void testApp::draw() {
 
 void testApp::drawCountours(){    
     ofTexture& depth = oniCamGrabber.getDepthTextureReference();
-
+	depth.draw(0,0);
+    rgbGenerator.texture.draw(600,600);
 }
 
 
