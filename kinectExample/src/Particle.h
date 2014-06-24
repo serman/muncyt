@@ -10,6 +10,8 @@
 #ifndef _PARTICLE
 #define _PARTICLE
 
+#define MAX_SPEED 30.f
+#define MAX_STEER 0.9f
 #include "ofMain.h"
 
 class Particle
@@ -46,13 +48,13 @@ class Particle
     int _y;
     char recentlyUsed;
     
-    void addForce(float a_x, float a_y, float a_z) {
+    void applyForce(float a_x, float a_y, float a_z) {
         acceleration.x += a_x;
         acceleration.y += a_y;
         acceleration.z += a_z;
     };
     
-    void addForce(ofVec3f a_loc) {
+    void applyForce(ofVec3f a_loc) {
         acceleration += a_loc;
     }
     
@@ -62,19 +64,90 @@ class Particle
         acceleration.z = 0;
     };
     
-    void setForce(ofVec3f a_loc){
-        stopAcc();
-        addForce(a_loc);
-    }
+
     
     void update(){
     	velocity += acceleration;
         position += velocity;
+        acceleration=acceleration*0;
     }
     
     
+//ready made forces
+    void steer(ofVec3f& a_target, bool a_slowdown, float a_scale, float a_minDist ) {
+        ofVec3f steer;
+        ofVec3f desired = a_target - position;
+        float d = desired.length();
+        
+        // If the distance is greater than 0, calc steering (otherwise return zero vector)
+        if (d > 0.f) {
+            desired.normalize();
+            if(a_minDist == 0) a_slowdown = false;
+            // Two options for desired vector magnitude (1 -- based on distance, 2 -- maxspeed)
+            if ((a_slowdown) && (d < a_minDist)) {desired *= (MAX_SPEED * (d/a_minDist));} // This damping is somewhat arbitrary
+            else {desired *= (MAX_SPEED); }
+            
+            steer = (desired - velocity);
+            steer.limit(MAX_STEER);
+            steer *= a_scale;
+        } else {
+            steer.set(0.f, 0.f, 0.f);
+        }
+        acceleration += steer;
+    }
     
+    void gravityTowards(ofVec3f& a_target,float a_minDist, float speed){
+            ofVec3f diff =  a_target - position;
+            int sqdistance =  diff.length();
+            if(sqdistance>a_minDist){
+              diff.normalize();
+            int force=sqdistance/speed;
+            diff *= force;
+            applyForce( diff );
+         }//espejo
+        else{
+         diff.normalize();
+         int force=sqdistance/speed;
+         diff = diff*-1;
+         diff= diff*force;
+         applyForce(diff);
+        }
+    }
     
+    bool sandDown(int acc,int floor){
+        ofVec3f dPoint = ofVec3f( floor,position.y,position.z);
+        ofVec3f diff =  dPoint - position;
+        if(position.x<floor){ //no point can be "below our floor
+        	position.x=floor;
+            return false;
+        }
+        
+        
+        if(abs(diff.x)>1){
+        	diff.normalize();
+        	applyForce(diff*acc);
+            return true;
+        }else{
+            velocity*=0;
+            acceleration*=0;
+        	return false;
+        }
+    }
+    //este no rula añade una fuerza en al direccion de las agujas del reloj
+    void rotateAround(ofVec3f& a_target, float speed,float a_minDist){
+        ofVec3f dir = position - a_target;
+        float d = dir.length();
+        if (d < a_minDist && d > 0) {
+            float pct = 1 - (d / a_minDist);
+            dir.normalize();
+            dir *= (MAX_SPEED);
+            dir = (dir - velocity);
+            dir *= (2 * pct);
+            
+            acceleration.x = acceleration.x - dir.y;
+            acceleration.y = acceleration.y + dir.x;
+        }
+    }
     
 };
 #endif

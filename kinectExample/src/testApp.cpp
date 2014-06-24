@@ -45,7 +45,7 @@ void testApp::setup() {
     oniSettings.depthPixelFormat = PIXEL_FORMAT_DEPTH_1_MM;
 	oniSettings.colorPixelFormat = PIXEL_FORMAT_RGB888;
 	oniSettings.irPixelFormat = PIXEL_FORMAT_GRAY16;
-	oniSettings.doRegisterDepthToColor = false;
+	oniSettings.doRegisterDepthToColor = true;
 	oniSettings.useOniFile = false;
 	oniSettings.oniFilePath = "UNDEFINED";
     
@@ -133,9 +133,10 @@ void testApp::setup() {
 void testApp::setupGUI() {
 	gui1 = new ofxUICanvas(0,100,400,600);
 	
-	gui1->addSlider("speed", 0.4, 5, &speed);
-	gui1->addIntSlider("stopUmbral", 10, 10000, &stopUmbral) ;
-	
+	gui1->addSlider("speed", 0.0f, 200, &speed);
+	gui1->addIntSlider("stopUmbral", 1, 300, &stopUmbral) ;
+	gui1->addIntSlider("maxForce", 0, 20, &maxForce) ;
+    gui1->addSlider("Acceleration", 1.05f, 3, &accTest);
 	gui1->addSpacer();
 	gui1->addButton("save",true);
 	gui1->addButton("load",true);	
@@ -166,6 +167,7 @@ void testApp::setupGUI() {
 	gui1->addToggle("DrawLinesV", &bDrawLinesV);
     gui1->addToggle("DrawNativePointCloud", &bDrawNativePointCloud);
 	gui1->addToggle("Explosion", &explosion);
+    gui1->addToggle("bDrawContours", &bDrawContours);
 	gui1->addSpacer();
 	
 	gui1->addButton("reset",true);
@@ -271,30 +273,29 @@ void testApp::updateParticles() {
             pp++;
             p->recentlyUsed=5;
             if(particleMode==ESPEJO){
-                p->stopAcc();
                mdestPoint=  oniCamGrabber.convertDepthToWorld(p->_x, p->_y);
-            
 #endif
-                diff = mdestPoint- p->position;
-                if(diff.lengthSquared()>stopUmbral){
-                    diff.normalize();
-                    //diff *= 0.05;
-                    diff *= (speed / diff.lengthSquared());
-                    p->addForce( diff );
-                    p->update();
-                }//espejo
-                else{
-                    p->stopAcc();
-                    p->velocity = ofVec3f(0,0,0);
-                }
+               // diff =   mdestPoint - p->position;
+                diff=ofVec3f(0,0,0);
+                p->steer(mdestPoint, true, speed, stopUmbral );
+                // p->rotateAround( diff, speed, stopUmbral*100 );
+                //p->gravityTowards(mdestPoint, stopUmbral, speed);
+                p->update();
+
             }
             else if(particleMode==NUBE) {
-                mdestPoint= ofVec3f(p->position.x + ofRandom(-ofGetFrameNum()%300,ofGetFrameNum()%300),p->position.y + ofRandom(-ofGetFrameNum()%300,ofGetFrameNum()%300),p->position.z +
-                                    ofRandom(-ofGetFrameNum()%300,ofGetFrameNum()%300)); //kinect.getWorldCoordinateAt(ofRandom(0,400), ofRandom(200,400));// ofVec3f(ofRandom(900,1000),ofRandom(900,1000),ofRandom(900,1000));//
+                /**mdestPoint= ofVec3f(p->position.x + ofRandom(-ofGetFrameNum()%10, ofGetFrameNum()%10),
+                                    p->position.y + ofRandom(-ofGetFrameNum()%10, ofGetFrameNum()%10),
+                                    p->position.z -  ofRandom(40,100) );
+
                  	diff = mdestPoint- p->position;
-                    diff *= 0.00001;
-                    p->addForce( diff );
-	                p->update();
+                    diff *= 0.001;
+                    p->applyForce( diff );
+	                p->update(); **/
+                
+                    p->sandDown(accTest,-200);
+                    p->update();
+                
                // p->position+=ofNoise( p->position.x,p->position.y,p->position.z)*30;
             }
 			
@@ -362,9 +363,17 @@ void testApp::draw() {
 	ofPushMatrix();	
 		// the projected points are 'upside down' and 'backwards'
 		ofScale(1, 1, -1);
-//		ofTranslate(0, 0, -1000); // Acerca a camara la nube de puntos
+	    ofSetColor (ofColor::blue);
+	    ofLine(0, 0, 2000, 0);
+        ofSetColor (ofColor::white);
+        ofLine(0, 0, 0, 2000);
+        ofSetColor (ofColor::yellow);
+    	ofLine(0, 0, 0, 0, 0, 3000);
+
+   // ofTranslate(0, 0, 1000); //
 		
 		// Superponemos modos de dibujo en 3D
+    	if(bDrawContours) drawCountours();
 	    if(bDrawPoints) drawParticles();
 		if(bDrawLinesH) drawLinesH();
 		if(bDrawLinesV) drawLinesV();
@@ -403,7 +412,10 @@ void testApp::draw() {
 	
 }
 
+void testApp::drawCountours(){    
+    ofTexture& depth = oniCamGrabber.getDepthTextureReference();
 
+}
 
 
 
@@ -510,11 +522,11 @@ void testApp::setupParticles(){
 			
 			float ang1 = ofRandom(PI);
 			float ang2 = ofRandom(TWO_PI);
-			float rr = 10000;
+			float rr = 100;
 			
 			float rrho = rr*sin(ang1);
 			
-			particles.push_back(Particle(ofVec3f(rrho*cos(ang2),rrho*sin(ang2),rr*cos(ang1)+2500) ,ofColor(255,255,255) ,x,y));
+			particles.push_back(Particle(ofVec3f(rrho*cos(ang2),rrho*sin(ang2),-rr*cos(ang1)-1500) ,ofColor(255,255,255) ,x,y));
 			numParticles++ ;
         }
     }
@@ -534,7 +546,7 @@ void testApp::explosionParticles(){
         ofVec3f dir = particles[i].position - centroEscena;
         dir.normalize();
         dir*=1000;
-        particles[i].addForce(dir);
+        particles[i].applyForce(dir);
     }
 }
 

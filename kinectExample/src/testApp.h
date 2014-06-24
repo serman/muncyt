@@ -65,6 +65,7 @@ public:
 	bool	pulso;
 	bool	bDrawPoints;
 	bool	bDrawLinesH, bDrawLinesV,bDrawNativePointCloud;
+    bool 	bDrawContours;
 	int 	distanciaLineasK;
 	// GUI
 	void		setupGUI();
@@ -115,17 +116,19 @@ public:
 	void	drawParticles();
     void	updateParticles();
 	void    resetParticles();
+    void    drawCountours();
     void 	explosionParticles();
     int		numParticles;
     enum	{NUBE, ESPEJO};
     int		particleMode;
     
     float	speed;
+    float accTest;
     int		stopUmbral;
     
     int		stepCloudPoint;
 	int		stepLines;
-	
+
     //shaders
     ofShader shader;
     void	setupShader();
@@ -139,4 +142,7 @@ public:
     //osc
     cheapCommRcv myOSCrcv;
 
+    //test
+    int maxForce;
+    
 };
