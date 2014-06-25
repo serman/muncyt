@@ -397,7 +397,7 @@ void testApp::draw() {
    // ofTranslate(0, 0, 1000); //
 		
 		// Superponemos modos de dibujo en 3D
-    	if(bDrawContours) drawCountours();
+    
 	    if(bDrawPoints) drawParticles();
 		if(bDrawLinesH) drawLinesH();
 		if(bDrawLinesV) drawLinesV();
@@ -430,16 +430,22 @@ void testApp::draw() {
 	ofRect(ofGetWidth()-ww,ofGetHeight()-hh,ww,hh);
 	ofSetColor(255,255,255);
 	kinect.drawDepth(ofGetWidth()-ww,ofGetHeight()-hh,ww,hh);
+#else
+
+    if(bDrawContours) drawCountours();
+    
 #endif
     if(debug) showDebug();
 	
 	
 }
 
-void testApp::drawCountours(){    
+void testApp::drawCountours(){
+    ofNoFill();
+    ofSetColor(255,255,255);
     ofTexture& depth = oniCamGrabber.getDepthTextureReference();
-	depth.draw(0,0);
-    rgbGenerator.texture.draw(600,600);
+	depth.draw(ofGetWidth()-480*2,ofGetHeight()-360,480,360);
+    rgbGenerator.texture.draw(ofGetWidth()-480,ofGetHeight()-360,480,360);
 }
 
 
@@ -898,6 +904,10 @@ void testApp::guiEvent(ofxUIEventArgs &e)
 		ofLogNotice("MODO_Partics. " + wr ->getActiveName() + " = " + ofToString(wr->getValue()));
 		particleMode = wr->getValue();
 //		gui1->loadSettings("./config/gui/gui_kinect.xml");
+    }
+    else if(name=="RangoZ"){
+        cout << "cambio rango \n";
+        oniCamGrabber.depthSource.setDepthClipping(zMin,zMax);
     }
 }
 

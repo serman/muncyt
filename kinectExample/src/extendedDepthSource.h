@@ -17,12 +17,14 @@
 class extendedDepthSource: public DepthSource{
 public:
 	    Boolean isUpdated=false;
+
+    
+
 private:
     
     void onNewFrame(VideoStream& stream){
         isUpdated=true;
         DepthSource::onNewFrame(stream);
-        
     }
     
 };
