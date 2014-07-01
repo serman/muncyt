@@ -46,7 +46,7 @@ void testApp::setup(){
     gui2->addIntSlider("smooth", 0, 10, &smooth);
     gui2->addSpacer();
     gui2->addToggle("Adaptative", false);
-    gui2->addSlider("learnRate", 0	, 0.10101f, &fLearnRate) ;
+    gui2->addSlider("learnRate", 0	, 0.001f, &fLearnRate) ;
     ofAddListener(gui2->newGUIEvent,this,&testApp::gui2Event);
     
     individualTextureSyphonServer.setName("CameraOutput");
@@ -279,7 +279,7 @@ void testApp::setMaskedImageBlobs(){
     
     //creo la matriz donde se va a guardar la imagen de la mascara en blanco y negro. Negro donde no hay blob blanco donde lo hay
     cv::Mat contourMaskCV(640,480,CV_8U);
-    cv::threshold(grayimageCV, contourMaskCV, 128, 255, cv::THRESH_BINARY);
+    cv::threshold(grayimageCV, contourMaskCV, 10, 255, cv::THRESH_BINARY);
     
     //cv::Mat contourMaskCV;
     //contourMaskCV = ofxCv::toCv(grayImage);
@@ -287,30 +287,32 @@ void testApp::setMaskedImageBlobs(){
     cv::Mat maskedImage; //Matriz donde almacenar la imagen de destino
     //hago una copia de fullImageCV a maskedImg pero aplicandole la mascara previamente calculada.
     fullimageCV.copyTo(maskedImage, contourMaskCV);
-    
 	ofxCv::toOf(maskedImage, maskedImageOF);
+
     ofxCv::toOf(contourMaskCV, contourMaskOF);
     
 }
 
 //--------------------------------------------------------------
 void testApp::draw(){
-    ofScale(0.75,0.75);
+    ofPushMatrix();
+    //ofScale(0.75,0.75);
     
     //if(ofGetFrameNum() == 3 || (ofGetFrameNum() % 50 == 0))
-     bg.draw(0,0,1920,1080);
+    // bg.draw(0,0,1920,1080);
 
     //cleanBackgrounds();
-    drawCoolGui();
+   // drawCoolGui();
     setMaskedImageBlobs();
     sourceColorImg.draw(194,139,320,240); //img original
 
     
     contourMaskOF.update();
         ofSetColor(0, 255, 123, 100);
+    ofSetColor(255,255,255,255);
     contourMaskOF.draw(800,139,320,240); //masked image
-        ofSetColor(255,255,255,255);
-
+    
+	ofSetColor(255,255,255,255);
     blobTracker.draw(1391,139,320,240);//img + blobs
     
     maskedImageOF.update();
@@ -327,6 +329,8 @@ void testApp::draw(){
         
         tex.loadData(maskedImageOF.getPixels(),VIDEOWITH,VIDEOHEIGHT, GL_RGB);
         onlyBlobsImageSyphonServer.publishTexture(&tex);
+        
+        
     }
     if(appStatuses["debug"]) showDebug();
     
@@ -340,6 +344,7 @@ void testApp::draw(){
         blobImgOF_min.update();
     }**/
     mRecorder.update();
+    ofPopMatrix();
 // END RECORDING-READY BLOCK
     
  //   moveandrecord.draw();

@@ -1,6 +1,8 @@
 #include "testApp.h"
 #include <math.h>
 
+#include "cvFunctions.h"
+
 //--------------------------------------------------------------
 void testApp::setup() {
 	ofSetLogLevel(OF_LOG_VERBOSE);
@@ -25,10 +27,10 @@ void testApp::setup() {
 		ofLogNotice() << "zero plane dist: " << kinect.getZeroPlaneDistance() << "mm";
 	}
 	
-	colorImg.allocate(kinect.width, kinect.height);
-	grayImage.allocate(kinect.width, kinect.height);
-	grayThreshNear.allocate(kinect.width, kinect.height);
-	grayThreshFar.allocate(kinect.width, kinect.height);
+	colorImg.allocate(IRCAMERAWIDTH, IRCAMERAHEIGHT);
+	//grayImage.allocate(IRCAMERAWIDTH, IRCAMERAHEIGHT);
+	grayThreshNear.allocate(IRCAMERAWIDTH, IRCAMERAHEIGHT);
+	grayThreshFar.allocate(IRCAMERAWIDTH, IRCAMERAHEIGHT);
     // zero the tilt on startup
 	angle = 0;
 	kinect.setCameraTiltAngle(angle);
@@ -47,12 +49,12 @@ void testApp::setup() {
 	oniSettings.colorPixelFormat = PIXEL_FORMAT_RGB888;
 	//oniSettings.irPixelFormat = PIXEL_FORMAT_GRAY16;
 	oniSettings.doRegisterDepthToColor = true;
-#ifdef USEFILE
-	oniSettings.useOniFile = true;
-	oniSettings.oniFilePath = "/Users/sergiogalan/MultimediaProgramming/of_v0.8.0_osx_release/apps/muncyt/kinectExample/bin/data/2014-06-24-18-17-54-693_depth_color_640w_480h_30fps.oni";
-#else
+#ifndef USEFILE
     oniSettings.useOniFile=false;
-#endif
+#else
+    oniSettings.useOniFile = true;
+	oniSettings.oniFilePath = "/Users/sergiogalan/MultimediaProgramming/of_v0.8.0_osx_release/apps/muncyt/kinectExample/bin/data/2014-06-26-14-33-34-445_depth_color_640w_480h_30fps.oni";
+
     //will search this directory for an .oni file
 	//if not found will use the first available camera
 	ofDirectory currentONIDirectory(ofToDataPath("current", true));
@@ -68,10 +70,12 @@ void testApp::setup() {
 			ofLogVerbose() << "using oniFilePath : " << oniSettings.oniFilePath;
 		}
 	}
-	
+#endif
 	isReady = oniCamGrabber.setup(oniSettings);
+
+#ifndef USEFILE
 	oniCamrecorder.setup(&oniCamGrabber);
-    
+ #endif
  //configuracion
     for (std::vector<VideoStream*>::iterator it = oniCamGrabber.streams.begin() ; it != oniCamGrabber.streams.end(); ++it){
         (*it)->setMirroringEnabled(true);
@@ -133,9 +137,7 @@ void testApp::setup() {
 	
 	
 	setupParticles();
-    
 	setupGUI();
-
 	setupShader();
     
     
@@ -228,6 +230,12 @@ void testApp::update() {
         {
             
             oniCamGrabber.update();
+            grayImage.setFromPixels( oniCamGrabber.getDepthPixels() );
+			
+            grayImage.updateTexture();
+
+            img1.setFromPixels( oniCamGrabber.getDepthPixels());
+            img1.update();
             //oniCamGrabber.
             if(depthGenerator.isUpdated==true){
 	            updateParticles();
@@ -368,7 +376,7 @@ void testApp::updateParticles() {
 // - - - - - - - - - - - - - - - - - - -- -- -- -- -- -- -- -- -- -- -- -- -- --- --- --- --- --- ---
 
 void testApp::draw() {
-    
+
     fadeBG();
 	ofBackground(colorfondo);
 //	ofBackground(10,10,10,100);
@@ -413,8 +421,6 @@ void testApp::draw() {
 //			drawLinesV(stepLines);
 //		}
 	ofPopMatrix();
-	
-	
 #ifdef EASYCAM
 	easyCam.end();
 #else
@@ -433,7 +439,41 @@ void testApp::draw() {
 #else
 
     if(bDrawContours) drawCountours();
+    ofFill();
+ 	ofSetColor(255,255,255);
+    ofSetColor(255, 255, 0);
+    ofSetLineWidth(2);
+
     
+    ofPolyline resampled =getSmoothSilhouete1(contourFinder, img1, (float)speed/10)[0];
+
+
+    if(resampled.size()>=3) {
+        triangulation.reset();
+        for(int i=0; i<resampled.size(); i++) {
+            triangulation.addPoint(resampled[i]);
+        }
+        triangulation.triangulate();
+        triangContMesh.clear();
+        
+        
+        triangContMesh.setMode(OF_PRIMITIVE_TRIANGLES);
+        ofMesh tt = triangulation.triangleMesh;
+        vector<ofMeshFace> faces = tt.getUniqueFaces();
+        for(int i=0; i<faces.size(); i++) {
+            ofVec3f a = faces[i].getVertex(0);
+            ofVec3f b = faces[i].getVertex(1);
+            ofVec3f c = faces[i].getVertex(2);
+            ofVec3f pm = (a+b+c)/3.0;
+            
+            if( resampled.inside(ofPoint(pm.x,pm.y)) ) {
+                triangContMesh.addVertex(a);
+                triangContMesh.addVertex(b);
+                triangContMesh.addVertex(c);
+            }
+        }
+        triangContMesh.drawWireframe();
+    }
 #endif
     if(debug) showDebug();
 	
@@ -928,3 +968,4 @@ void testApp::loadCameraPose() {
 	camera.setTransformMatrix(myMatrix);
 }	
 #endif
+

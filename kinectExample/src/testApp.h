@@ -2,10 +2,11 @@
 
 #include "ofMain.h"
 #include "ofxOpenCv.h"
-
+#include "ofxCv.h"
 #include "Particle.h"
 #include "ofxUI.h"
 #include "cheapCommRcv.h"
+#include "ofxDelaunay.h"
 
 //#define EASYCAM
 
@@ -18,7 +19,7 @@
 //#define USE_TWO_KINECTS
 
 #define ASUS
-//#define USEFILE
+#define USEFILE
 
 #ifndef ASUS
 	#include "ofxKinect.h"
@@ -31,6 +32,8 @@
 #define IRCAMERAWIDTH 640
 #define IRCAMERAHEIGHT 480
 
+using namespace ofxCv;
+using namespace cv;
 class testApp : public ofBaseApp {
 public:
 	
@@ -78,11 +81,10 @@ public:
 	
 	ofxCvColorImage colorImg;
 	
-	ofxCvGrayscaleImage grayImage; // grayscale depth image
+	ofxCvColorImage grayImage; // grayscale depth image
 	ofxCvGrayscaleImage grayThreshNear; // the near thresholded image
 	ofxCvGrayscaleImage grayThreshFar; // the far thresholded image
 	
-	ofxCvContourFinder contourFinder;
 	
     bool debug;
 	bool bDrawPointCloud;
@@ -147,5 +149,19 @@ public:
 
     //test
     int maxForce;
+    
+    
+//********CV
+    ofxCv::ContourFinder contourFinder;
+    ofImage img1;
+    bool doTriang;
+	ofxDelaunay triangulation;
+	bool	bAddPts;		// si a–ade puntos a la triangulacion
+	bool	bSoloEnContorno;	// si muestra solo los triangulos de dentro del contorno
+	ofMesh	triangContMesh;
+	
+	bool doTessel;
+	ofTessellator tessel;
+	ofMesh contornoTes;	// contorno teselado
     
 };
