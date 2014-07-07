@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ofxUI.h"
 #include "ofMain.h"
 #include "cheapComm.h"
 #include "ofxSyphon.h"
@@ -10,6 +11,8 @@
 #include "moveAndRecord.h"
 #include "ofxImageSequence.h"
 #include <ofMath.h>
+
+#define MAX_SEQUENCES 3
 class testApp : public ofBaseApp{
 
 	public:
@@ -46,14 +49,24 @@ class testApp : public ofBaseApp{
     ofPixels remoteBlobImgPxl;
     ofImage testImg;
     ofImage feedImg;
-    
+    ofxUICanvas *gui2;
     std::map<string, int> appStatuses;
      void setupStatus();
     enum mode{CAPTURE, MOSAIC};
     
     
     void setupSequences();
+    void setupSequence(int seq);
     vector<ofxImageSequence> sequences;
     void showDebug();
     int RecordingBlobId;
+    
+    vector<ofPoint> points[MAX_SEQUENCES];
+    
+    void onRecordingFinished(int &num);
+    void playImage(int i);
+    int playImgIndex[MAX_SEQUENCES];
+    void gui2Event(ofxUIEventArgs &e);
+    int currentImg=0;
+    int maxFrame=50;
 };

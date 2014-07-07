@@ -389,6 +389,12 @@
 		F070AF5E3926EB2CB7A15D1B /* params.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = params.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/params.h; sourceTree = SOURCE_ROOT; };
 		F26E25F3872C0799D6433B99 /* ofxUILabel.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUILabel.h; path = ../../../addons/ofxUI/src/ofxUILabel.h; sourceTree = SOURCE_ROOT; };
 		F4F5B6B8BA2BD52C646ED908 /* OscException.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = OscException.h; path = ../../../addons/ofxOsc/libs/oscpack/src/osc/OscException.h; sourceTree = SOURCE_ROOT; };
+		F703441B196645DC00E68607 /* ofxTuio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxTuio.h; sourceTree = "<group>"; };
+		F703441C196645DC00E68607 /* ofxTuioClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxTuioClient.h; sourceTree = "<group>"; };
+		F703441D196645DC00E68607 /* ofxTuioContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxTuioContainer.h; sourceTree = "<group>"; };
+		F703441E196645DC00E68607 /* ofxTuioCursor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxTuioCursor.h; sourceTree = "<group>"; };
+		F703441F196645DC00E68607 /* ofxTuioObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxTuioObject.h; sourceTree = "<group>"; };
+		F7034420196645DC00E68607 /* ofxTuioPoint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxTuioPoint.h; sourceTree = "<group>"; };
 		F70E3F3F191C5D6C0050DEB7 /* cheapComm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cheapComm.cpp; sourceTree = "<group>"; };
 		F70E3F40191C5D6C0050DEB7 /* cheapComm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cheapComm.h; sourceTree = "<group>"; };
 		F70E3F48191C637D0050DEB7 /* ofxSyphon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxSyphon.h; sourceTree = "<group>"; };
@@ -440,12 +446,6 @@
 		F769C9261947E4F700E500E8 /* ofxImageSequence.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxImageSequence.cpp; sourceTree = "<group>"; };
 		F769C9271947E4F700E500E8 /* ofxImageSequence.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxImageSequence.h; sourceTree = "<group>"; };
 		F769C9281947E4F700E500E8 /* ofxImageSequence_Xtd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxImageSequence_Xtd.h; sourceTree = "<group>"; };
-		F77369141941D84600548CEA /* ofxTuio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxTuio.h; sourceTree = "<group>"; };
-		F77369151941D84600548CEA /* ofxTuioClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxTuioClient.h; sourceTree = "<group>"; };
-		F77369161941D84600548CEA /* ofxTuioContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxTuioContainer.h; sourceTree = "<group>"; };
-		F77369171941D84600548CEA /* ofxTuioCursor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxTuioCursor.h; sourceTree = "<group>"; };
-		F77369181941D84600548CEA /* ofxTuioObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxTuioObject.h; sourceTree = "<group>"; };
-		F77369191941D84600548CEA /* ofxTuioPoint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxTuioPoint.h; sourceTree = "<group>"; };
 		F773691B194206B000548CEA /* moveAndRecord.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = moveAndRecord.h; sourceTree = "<group>"; };
 		F773697D1946950300548CEA /* ofxImageSequenceRecorder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxImageSequenceRecorder.h; sourceTree = "<group>"; };
 		F773697F1946954100548CEA /* mosaicRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mosaicRecorder.h; sourceTree = "<group>"; };
@@ -760,7 +760,6 @@
 			children = (
 				F769C9241947E4F700E500E8 /* ofxImageSequence */,
 				F773697B1946950300548CEA /* ofxImageSequenceRecorder */,
-				F77369121941D84600548CEA /* ofxTuio */,
 				F70E3F6A191C6D050050DEB7 /* ofxCv */,
 				F70E3F5C191C63AA0050DEB7 /* ofxXmlSettings */,
 				F70E3F46191C637D0050DEB7 /* ofxSyphon */,
@@ -1015,6 +1014,7 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				F703441A196645DC00E68607 /* customTuio */,
 				F773697F1946954100548CEA /* mosaicRecorder.h */,
 				F773691B194206B000548CEA /* moveAndRecord.h */,
 				F70E3F3F191C5D6C0050DEB7 /* cheapComm.cpp */,
@@ -1042,6 +1042,19 @@
 				38871A5825686AE018EC2BF0 /* libs */,
 			);
 			name = ofxOsc;
+			sourceTree = "<group>";
+		};
+		F703441A196645DC00E68607 /* customTuio */ = {
+			isa = PBXGroup;
+			children = (
+				F703441B196645DC00E68607 /* ofxTuio.h */,
+				F703441C196645DC00E68607 /* ofxTuioClient.h */,
+				F703441D196645DC00E68607 /* ofxTuioContainer.h */,
+				F703441E196645DC00E68607 /* ofxTuioCursor.h */,
+				F703441F196645DC00E68607 /* ofxTuioObject.h */,
+				F7034420196645DC00E68607 /* ofxTuioPoint.h */,
+			);
+			path = customTuio;
 			sourceTree = "<group>";
 		};
 		F70E3F46191C637D0050DEB7 /* ofxSyphon */ = {
@@ -1277,28 +1290,6 @@
 			);
 			name = src;
 			path = ../../../addons/ofxImageSequence/src;
-			sourceTree = "<group>";
-		};
-		F77369121941D84600548CEA /* ofxTuio */ = {
-			isa = PBXGroup;
-			children = (
-				F77369131941D84600548CEA /* src */,
-			);
-			name = ofxTuio;
-			sourceTree = "<group>";
-		};
-		F77369131941D84600548CEA /* src */ = {
-			isa = PBXGroup;
-			children = (
-				F77369141941D84600548CEA /* ofxTuio.h */,
-				F77369151941D84600548CEA /* ofxTuioClient.h */,
-				F77369161941D84600548CEA /* ofxTuioContainer.h */,
-				F77369171941D84600548CEA /* ofxTuioCursor.h */,
-				F77369181941D84600548CEA /* ofxTuioObject.h */,
-				F77369191941D84600548CEA /* ofxTuioPoint.h */,
-			);
-			name = src;
-			path = ../../../addons/ofxTuio/src;
 			sourceTree = "<group>";
 		};
 		F773697B1946950300548CEA /* ofxImageSequenceRecorder */ = {

@@ -3,7 +3,7 @@
 //--------------------------------------------------------------
 void testApp::setup(){
     setupStatus();
-    ofSetFrameRate(60);
+    ofSetFrameRate(20);
     adminMode=true;
     bg.loadImage("bg2.png");
     //ofSetBackgroundAuto(false);
@@ -22,13 +22,14 @@ void testApp::setup(){
     consoleFont.loadFont("Menlo.ttc",17);
     
     
-    ofAddListener(blobTracker.blobAdded, this, &testApp::blobAdded);
-    ofAddListener(blobTracker.blobDeleted, this, &testApp::blobDeleted);
+  //  ofAddListener(blobTracker.blobAdded, this, &testApp::blobAdded);
+  //  ofAddListener(blobTracker.blobDeleted, this, &testApp::blobDeleted);
     
     grayImage.allocate(VIDEOWITH,VIDEOHEIGHT);
     floatBgImg.allocate(VIDEOWITH,VIDEOHEIGHT);	//ofxShortImage used for simple dynamic background subtraction
     grayBg.allocate(VIDEOWITH,VIDEOHEIGHT);
 	previousImg.allocate(VIDEOWITH,VIDEOHEIGHT);
+    mimage.allocate(640, 480, OF_IMAGE_COLOR_ALPHA);
     exposureStartTime = ofGetElapsedTimeMillis();
     
     gui1 = new ofxUICanvas(186,627,336,218);
@@ -54,7 +55,7 @@ void testApp::setup(){
     tex.allocate(VIDEOWITH,VIDEOHEIGHT, GL_RGB);
     
     myComm.setup();
-    mRecorder.setup();
+    //mRecorder.setup();
     
     int a=600;
     int b=231;
@@ -74,15 +75,15 @@ void testApp::setup(){
         positions.push_back(ofPoint(2000,2000)); //–apa para que el bucle aguante un par de segundos mas
         positions.push_back(ofPoint(2000,2000)); //–apa para que el bucle aguante un par de segundos mas
         positions.push_back(ofPoint(2000,2000)); //–apa para que el bucle aguante un par de segundos mas
-	
-    	
-    
+    	    
     if(appStatuses["sendTUIO"]==true){
         frameseq=0;
         setupTUIO();
     
     };
     
+    maskMaker.setup("shaders/composite_rgb",ofRectangle(0, 0, 640, 480));
+    fbo1.allocate(640,480,GL_RGBA);
 }
 
 void testApp::setupStatus(){
@@ -112,9 +113,10 @@ void testApp::update(){
         #else
                 sourceColorImg.setFromPixels(vidPlayer.getPixels(), VIDEOWITH,VIDEOHEIGHT);
         #endif
-        
+        sourceColorImg.updateTexture();
         grayImage = sourceColorImg;
-        
+
+//MEJORA FONDO HACIENDOLO ADAPTATIVO
         if(appStatuses["adaptativeBackground"]==true){
             floatBgImg.addWeighted( grayImage, fLearnRate); //we add a new bg image to the current bg image but we add it with the weight of the learn rate
 			//grayBg = floatBgImg;  // not yet implemented
@@ -122,7 +124,7 @@ void testApp::update(){
             //cv::Mat greyBgMat = ofxCv::toCv(grayBg); //current img
         	//greyBgMat.convertTo(greyBgMat, 255.0f/65535.0f, 0 ) ; // (bgmag  , greyimg, 255.0f/65535.0f, 0 ); esto no hace falta hacerlo pq la conversion es automatica
             //cvConvertScale( floatBgImg.getCvImage(), grayBg.getCvImage(), 255.0f/65535.0f, 0 );
-            grayBg=floatBgImg;
+            grayBg=floatBgImg; //convertimos a la imagen a grises
             grayBg.flagImageChanged();
             //cvConvertScale( floatBgImg.getCvImage(), grayBg.getCvImage(), 255.0f/65535.0f, 0 );
            // grayBg.flagImageChanged();
@@ -130,7 +132,7 @@ void testApp::update(){
         }
         //recapature the background until image/camera is fully exposed
         if((ofGetElapsedTimeMillis() - exposureStartTime) < CAMERA_EXPOSURE_TIME) bLearnBackground = true;
-        
+//CAMBIA FONDO
         if (bLearnBackground == true){
             floatBgImg = sourceColorImg;
             blobTracker.setBg(grayImage);
@@ -142,7 +144,9 @@ void testApp::update(){
         //  void    update( ofxCvGrayscaleImage& input, int _threshold = -1,  int minArea = 20 ,int maxArea = 40*240)/3, int nConsidered = 10, double hullPress = 20, bool bFindHoles = false, bool bUseApproximation = true);
 	}    
 	
-    previousImg-=grayImage;
+//CUENTA CANTIDAD DE MOVIMIENTO
+#ifdef CANTIDADMOVIMIENTO
+   previousImg-=grayImage;
 	previousImg.threshold(128);
     
     nonZero= previousImg.countNonZeroInRegion(0,0, previousImg.width, previousImg.height);
@@ -154,18 +158,16 @@ void testApp::update(){
     }
     nonZero=nonZero/50;
     
-    
-    
 	//cout  << "non zero" << nonZero << "\n";
     
-    previousImg=grayImage;
+    previousImg=grayImage;*/
+#endif
+    setMaskedImageBlobs();
+    
     
     //myComm.sendBlobs( blobTracker.trackedBlobs);
 	blobTracker.setFiltersParam(amplify, smooth);
-    if(appStatuses["sendTUIO"]==true){
-        sendTUIO(&(blobTracker.trackedBlobs));
-        
-    };
+
     
 
 }
@@ -211,15 +213,16 @@ void testApp::sendTUIO(std::vector<ofxBlob> * objectBlobs){
                 set_obj.setAddress( "/tuio/2Dcur" );
                 set_obj.addStringArg("set");
                 set_obj.addIntArg(blob_obj->id);				// id
-                set_obj.addFloatArg(blob_obj->centroid.x);	// x
-                set_obj.addFloatArg(blob_obj->centroid.y);	// y
+                set_obj.addFloatArg(blob_obj->boundingRect.getX());	// x
+                set_obj.addFloatArg(blob_obj->boundingRect.getY());	// y
                 set_obj.addFloatArg(blob_obj->D.x);			// dX
                 set_obj.addFloatArg(blob_obj->D.y);			// dY
                 set_obj.addFloatArg(blob_obj->maccel);		// m
                 if(bHeightWidth)
                 {
-                    set_obj.addFloatArg(blob_obj->boundingRect.width);	// wd
-                    set_obj.addFloatArg(blob_obj->boundingRect.height);	// ht
+                    set_obj.addFloatArg(blob_obj->boundingRect.getWidth());	// wd
+                    set_obj.addFloatArg(blob_obj->boundingRect.getHeight());	// ht
+                    //cout << blob_obj->boundingRect.getWidth();
                 }
                 b_obj.addMessage( set_obj );							// add message to bundle
                 alive_obj.addIntArg(blob_obj->id);				// add blob to list of ALL active IDs
@@ -279,8 +282,12 @@ void testApp::setMaskedImageBlobs(){
     
     //creo la matriz donde se va a guardar la imagen de la mascara en blanco y negro. Negro donde no hay blob blanco donde lo hay
     cv::Mat contourMaskCV(640,480,CV_8U);
-    cv::threshold(grayimageCV, contourMaskCV, 10, 255, cv::THRESH_BINARY);
+    cv::threshold(grayimageCV, contourMaskCV, 128, 255, cv::THRESH_BINARY);
     
+//    mimage.allocate(640,480);
+    ofxCv::toOf(contourMaskCV,mimage);
+    mimage.update();
+	//maskMaker.setMask(mimage);
     //cv::Mat contourMaskCV;
     //contourMaskCV = ofxCv::toCv(grayImage);
     //2¼ aplico la mascara
@@ -288,51 +295,59 @@ void testApp::setMaskedImageBlobs(){
     //hago una copia de fullImageCV a maskedImg pero aplicandole la mascara previamente calculada.
     fullimageCV.copyTo(maskedImage, contourMaskCV);
 	ofxCv::toOf(maskedImage, maskedImageOF);
-
+	maskedImageOF.update();
     ofxCv::toOf(contourMaskCV, contourMaskOF);
+    contourMaskOF.update();
     
 }
 
 //--------------------------------------------------------------
 void testApp::draw(){
     ofPushMatrix();
-    //ofScale(0.75,0.75);
+    ofEnableAlphaBlending();
+    ofScale(0.75,0.75);
     
     //if(ofGetFrameNum() == 3 || (ofGetFrameNum() % 50 == 0))
     // bg.draw(0,0,1920,1080);
 
     //cleanBackgrounds();
    // drawCoolGui();
-    setMaskedImageBlobs();
-    sourceColorImg.draw(194,139,320,240); //img original
-
     
-    contourMaskOF.update();
-        ofSetColor(0, 255, 123, 100);
+#ifndef TESTMODE
+    //sourceColorImg.draw(194,139,320,240); //img original
+	
+
+    fbo1.begin();
+	ofClear(0, 0, 0, 0);    //ofSetColor(255,255,255,255);
+    //ofBackground(255,255,255);
+	maskMaker.drawMask(sourceColorImg.getTextureReference(), maskedImageOF.getTextureReference(), 0,0,255,640,480 );
+    fbo1.end();
+    fbo1.draw(50,50);
+    //maskMaker.drawScrollingMask(sourceColorImg.getTextureReference(), contourMaskOF.getTextureReference(), 0, 255);
+    
+    ofSetColor(0, 255, 123, 100);
     ofSetColor(255,255,255,255);
     contourMaskOF.draw(800,139,320,240); //masked image
     
-	ofSetColor(255,255,255,255);
-    blobTracker.draw(1391,139,320,240);//img + blobs
-    
-    maskedImageOF.update();
+
+    ofSetColor(0);
+    ofRect(1391,139,320,240);
+        ofSetColor(255,255,255,255);
+	if(adminMode){
+    	blobTracker.draw(1391,139,320,240);//img + blobs}
+    }else{
+    	maskedImageOF.draw(1391,139,320,240);
+    }
 	maskedImageOF.draw(1391,604,320,240); //mask + blobs
-    
+ #endif
     if(appStatuses["syphonEnabled"]==true && appStatuses["isCameraReady"]){
-        #ifdef _USE_LIVE_VIDEO
-            tex.loadData(cam.getPixels(), VIDEOWITH,VIDEOHEIGHT, GL_RGB);
-        #else
-            tex.loadData(vidPlayer.getPixels(), VIDEOWITH,VIDEOHEIGHT, GL_RGB);
-        #endif
-        //tex.loadData(maskedImageOF.getPixels(),VIDEOWITH,VIDEOHEIGHT, GL_RGB);
-        individualTextureSyphonServer.publishTexture(&tex);
-        
-        tex.loadData(maskedImageOF.getPixels(),VIDEOWITH,VIDEOHEIGHT, GL_RGB);
-        onlyBlobsImageSyphonServer.publishTexture(&tex);
-        
-        
+        individualTextureSyphonServer.publishTexture(&sourceColorImg.getTextureReference());
+        onlyBlobsImageSyphonServer.publishTexture(&fbo1.getTextureReference());
     }
     if(appStatuses["debug"]) showDebug();
+    if(appStatuses["sendTUIO"]==true){
+        sendTUIO(&(blobTracker.trackedBlobs));
+    };
     
 //resized Image, READY 4 RECORDING
     //blobImgOF_min=maskedImageOF;
@@ -343,7 +358,7 @@ void testApp::draw(){
         blobImgOF_min.resize(320, 240);
         blobImgOF_min.update();
     }**/
-    mRecorder.update();
+  //  mRecorder.update();
     ofPopMatrix();
 // END RECORDING-READY BLOCK
     
@@ -402,7 +417,7 @@ void testApp::keyPressed(int key){
     }
     else if(key=='r'){
         blobImgOF_min.resize(320,240);
-        mRecorder.start(3000, 25, &blobImgOF_min);
+       // mRecorder.start(3000, 25, &blobImgOF_min);
     }
 }
 

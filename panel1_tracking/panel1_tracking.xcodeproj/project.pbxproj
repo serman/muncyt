@@ -72,6 +72,7 @@
 		F73625921923A1C500964804 /* ofxVideoSaver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F73625911923A1C500964804 /* ofxVideoSaver.cpp */; };
 		F73625981923B6C800964804 /* ofxVideoRecorder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F73625961923B6C800964804 /* ofxVideoRecorder.cpp */; };
 		F76B4A79BD8DE4854141CB47 /* fdog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2D8249D46647E3C51769CDE /* fdog.cpp */; };
+		F79985521964DACF00A7AC7C /* ofxSimpleMask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F79985501964DACF00A7AC7C /* ofxSimpleMask.cpp */; };
 		F7B27DAB191333760022B207 /* ofxUI2DGraph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7B27D4E191333760022B207 /* ofxUI2DGraph.cpp */; };
 		F7B27DAC191333760022B207 /* ofxUI2DPad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7B27D50191333760022B207 /* ofxUI2DPad.cpp */; };
 		F7B27DAD191333760022B207 /* ofxUIBaseDraws.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7B27D52191333760022B207 /* ofxUIBaseDraws.cpp */; };
@@ -369,6 +370,8 @@
 		F73625911923A1C500964804 /* ofxVideoSaver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxVideoSaver.cpp; sourceTree = "<group>"; };
 		F73625961923B6C800964804 /* ofxVideoRecorder.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxVideoRecorder.cpp; sourceTree = "<group>"; };
 		F73625971923B6C800964804 /* ofxVideoRecorder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxVideoRecorder.h; sourceTree = "<group>"; };
+		F79985501964DACF00A7AC7C /* ofxSimpleMask.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxSimpleMask.cpp; sourceTree = "<group>"; };
+		F79985511964DACF00A7AC7C /* ofxSimpleMask.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxSimpleMask.h; sourceTree = "<group>"; };
 		F7AFF65E192D7CAA00EA59D5 /* descartes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = descartes.h; sourceTree = "<group>"; };
 		F7B27D4D191333760022B207 /* ofxUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxUI.h; sourceTree = "<group>"; };
 		F7B27D4E191333760022B207 /* ofxUI2DGraph.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxUI2DGraph.cpp; sourceTree = "<group>"; };
@@ -928,6 +931,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				F799854E1964DACF00A7AC7C /* ofxSimpleMask */,
 				F73625941923B6C800964804 /* ofxVideoRecorder */,
 				F7B27EB01915E4E10022B207 /* ofxSyphon */,
 				F7B27DD7191334CA0022B207 /* ofxXmlSettings */,
@@ -1176,6 +1180,24 @@
 			);
 			name = src;
 			path = ../../../addons/ofxVideoRecorder/src;
+			sourceTree = "<group>";
+		};
+		F799854E1964DACF00A7AC7C /* ofxSimpleMask */ = {
+			isa = PBXGroup;
+			children = (
+				F799854F1964DACF00A7AC7C /* src */,
+			);
+			name = ofxSimpleMask;
+			sourceTree = "<group>";
+		};
+		F799854F1964DACF00A7AC7C /* src */ = {
+			isa = PBXGroup;
+			children = (
+				F79985501964DACF00A7AC7C /* ofxSimpleMask.cpp */,
+				F79985511964DACF00A7AC7C /* ofxSimpleMask.h */,
+			);
+			name = src;
+			path = ../../../addons/ofxSimpleMask/src;
 			sourceTree = "<group>";
 		};
 		F7B27D4B191333760022B207 /* ofxUI */ = {
@@ -1527,6 +1549,7 @@
 				F7B27DD6191333760022B207 /* ofxUIWidgetWithLabel.cpp in Sources */,
 				F7B27DB2191333760022B207 /* ofxUIDragableLabelButton.cpp in Sources */,
 				F7B27DB5191333760022B207 /* ofxUIFPS.cpp in Sources */,
+				F79985521964DACF00A7AC7C /* ofxSimpleMask.cpp in Sources */,
 				250A95BA26587BE85DB0A353 /* ofxCvColorImage.cpp in Sources */,
 				1D5F3298C2FA073628012944 /* ofxCvContourFinder.cpp in Sources */,
 				F7B27DCD191333760022B207 /* ofxUISuperCanvas.cpp in Sources */,

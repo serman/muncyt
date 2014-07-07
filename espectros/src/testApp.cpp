@@ -6,20 +6,19 @@ using namespace ofxCv;
 using namespace cv;
 
 void testApp::setup(){
-    ofSetFrameRate(30);
+    ofSetFrameRate(20);
         setupStatus();
     myOSCcomm.setup();
     //Syphon client
-    mSyphonClient.setup();
-    
+    mSyphonClient.setup();    
     mSyphonClient.set("CameraOutput","");
     
     mSyphonClient2.setup();
     mSyphonClient2.set("onlyBlobs","");
 
-    fbo.allocate(640, 480, GL_RGB);
-    fboGeneral.allocate(640, 480, GL_RGB);
-    remoteBlobImgPxl.allocate(640,480,OF_PIXELS_RGB);
+    fbo.allocate(640, 480, GL_RGBA);
+    //fboGeneral.allocate(640, 480, GL_RGB);
+    remoteBlobImgPxl.allocate(640,480,OF_PIXELS_RGBA);
    // cameraImg.allocate(640, 480,OF_IMAGE_COLOR );
     //mPlayer.setup();
     tuioclient.start();
@@ -28,27 +27,86 @@ void testApp::setup(){
         //feedImg.allocate(640,480,OF_IMAGE_COLOR_ALPHA);
     testImg.loadImage("test.jpg");
     mRecorder.setup();
-    for(int i=0; i<20;i++){
-        sequences.push_back(ofxImageSequence());
-    }
-    setupSequences();
-
+        setupSequences();
+    
+    
+        ofAddListener(finishedRecordingEvent,this, &testApp::onRecordingFinished);
+    
+     gui2 = new ofxUICanvas(1038,583, 295,285);
+    vector<string> vnames; vnames.push_back("0"); vnames.push_back("1"); vnames.push_back("2");
+    gui2->addLabel("VERTICAL RADIO", OFX_UI_FONT_MEDIUM);
+    ofxUIRadio *radio = gui2->addRadio("VR", vnames, OFX_UI_ORIENTATION_HORIZONTAL);
+    radio->activateToggle("0");
+    ofAddListener(gui2->newGUIEvent,this,&testApp::gui2Event);
+    gui2->addIntSlider("maxFrame", 0, 49, &maxFrame);
+    gui2->addLabel("GRABACION", OFX_UI_FONT_MEDIUM);
+    gui2->addToggle("grabacion", false);
 }
 
 void testApp::setupSequences(){
-    
+
+    ofxXmlSettings settings;
+    for(int i=0; i<MAX_SEQUENCES;i++){
+        sequences.push_back(ofxImageSequence());
+        //points[i]= vector<ofPoint>();
+    }
     int ii=0;
     for (std::vector<ofxImageSequence>::iterator it = sequences.begin() ;
          it != sequences.end(); ++it){
-
     	//it->loadSequence(ofToDataPath("recordings/video_"+ofToString(ii)+"/frame" , "png", 0, 75, 4);
         it->loadSequence(ofToDataPath("recordings/video_"+ofToString(ii)));
         it->setFrameRate(25);
         it->preloadAllFrames();
+        
+    //LOAD POINTS
+        vector<ofPoint> mpoints;
+        if(settings.loadFile("recordings/positions"+ofToString(ii)+".xml")){
+            settings.pushTag("positions");
+            int numberOfSavedPoints = settings.getNumTags("position");
+            for(int i = 0; i < numberOfSavedPoints; i++){
+                settings.pushTag("position", i);
+                ofPoint p;
+                p.x = settings.getValue("X", 0);
+                p.y = settings.getValue("Y", 0);
+                mpoints.push_back(p);
+                settings.popTag();
+            }
+            settings.popTag(); //pop position
+            points[ii]=mpoints;
+        }
+        else{
+            ofLogError("Position file did not load!");
+            ofLogError("recordings/positions"+ofToString(ii)+".xml");
+        }
         ii++;
-        break;
     }
     
+}
+
+void testApp::setupSequence(int seq){
+        sequences[seq].loadSequence(ofToDataPath("recordings/video_"+ofToString(seq)));
+        sequences[seq].setFrameRate(25);
+        sequences[seq].preloadAllFrames();
+        ofxXmlSettings settings;
+        vector<ofPoint> mpoints;
+        if(settings.loadFile("recordings/positions"+ofToString(seq)+".xml")){
+            settings.pushTag("positions");
+            int numberOfSavedPoints = settings.getNumTags("position");
+            for(int i = 0; i < numberOfSavedPoints; i++){
+                settings.pushTag("position", i);
+                ofPoint p;
+                p.x = settings.getValue("X", 0);
+                p.y = settings.getValue("Y", 0);
+                mpoints.push_back(p);
+                settings.popTag();
+            }
+            settings.popTag(); //pop position
+            points[seq]=mpoints;
+        }
+        else{
+            ofLogError("Position file did not load!");
+            ofLogError("recordings/positions"+ofToString(seq)+".xml");
+        }
 }
 
 void testApp::setupStatus(){
@@ -62,14 +120,15 @@ void testApp::setupStatus(){
 void testApp::update(){
   //  mPlayer.update();
     tuioclient.getMessage();
-    
+
     if(appStatuses["mode"]==CAPTURE){
-        ofxTuioCursor* blobToRecord=moveandrecord.detectBlobinSquare(tuioclient.getTuioCursors());
+        ofxTuioCursor* blobToRecord=moveandrecord.detectBlobinMouse(tuioclient.getTuioCursors(),mouseX,mouseY);
         if(blobToRecord!=NULL && mRecorder.isRecording==false){
         //if(moveandrecord.detectMouseinSquare(mouseX, mouseY)){
             mRecorder.current_video=moveandrecord.currentRect;
+            cout<< "width" << blobToRecord->width<< "height"<< blobToRecord->height;
             mRecorder.start(2000, 25, remoteBlobImgPxl,
-                            80,100,
+                            blobToRecord->width*640,blobToRecord->height*320,
                            blobToRecord->getX()*640,blobToRecord->getY()*320
                             );
             RecordingBlobId=blobToRecord->getSessionId();
@@ -81,7 +140,7 @@ void testApp::update(){
             for (tobj=objectList.begin(); tobj != objectList.end(); tobj++) {
                 ofxTuioCursor *blob = (*tobj);
                 if(blob->getSessionId() == RecordingBlobId){
-                    if(mRecorder.update(blob->getX()*640, blob->getY()*480)==true) RecordingBlobId=-1;
+                    if(mRecorder.update(blob->getX()*640-10 , blob->getY()*480-10)==true) RecordingBlobId=-1;
                     blobStillExists=true;
                     break;
                 }
@@ -105,18 +164,21 @@ void testApp::draw(){
     
     
     if(appStatuses["mode"]==CAPTURE){
+         //ofDisableBlendMode();
 		ofSetColor(255);
         mSyphonClient.draw(0, 0,640,480);
         list<ofxTuioCursor*>::iterator tobj;
         list<ofxTuioCursor*> objectList = tuioclient.getTuioCursors();
         for (tobj=objectList.begin(); tobj != objectList.end(); tobj++) {
             ofxTuioCursor *blob = (*tobj);
+            		ofSetColor(255,0,0);
             ofEllipse( blob->getX()*640, blob->getY()*480,9,9);
             //cout << "blob size" << blobTracker.trackedBlobs.size() << "\n";
         }
-        
+                    		ofSetColor(255);
         fbo.begin();
-        mSyphonClient.draw(0,0,640,480);
+        ofClear(0, 0, 0, 0);
+        mSyphonClient2.draw(0,0,640,480);
         //mSyphonClient.draw(0, 0,640,480);
         fbo.end();
         //fbo.draw(640,480,320,240);
@@ -124,7 +186,7 @@ void testApp::draw(){
         
         feedImg.setFromPixels(remoteBlobImgPxl);
         feedImg.update();
-        feedImg.draw(640,480,320,240);
+        //feedImg.draw(640,480,320,240);
         
         //remoteBlobImgPxl=feedImg.getPixelsRef();
         //cameraImg.setFromPixels(cameraPixels);
@@ -139,38 +201,39 @@ void testApp::draw(){
         moveandrecord.draw();
     }else  if(appStatuses["mode"]==MOSAIC){
 		ofPushMatrix();
-        //ofEnableBlendMode(OF_BLENDMODE_ALPHA);
         mSyphonClient.draw(0,0,640,480);
-        ofSetColor(255);
-    	//ofEnableBlendMode(OF_BLENDMODE_ADD);
-  
+        ofSetColor(255,255,255);
+
         float tt = ofGetElapsedTimef();
         
         int ii=0;
-        for (std::vector<ofxImageSequence>::iterator it = sequences.begin() ;
+        /*for (std::vector<ofxImageSequence>::iterator it = sequences.begin() ;
                                                 it != sequences.end(); ++it){
             int index= it->getCurrentFrame();
-
-
-			it->getFrame(index)->draw(100,100);//draw(RECTANGLESIZE*(ii%5),RECTANGLESIZE*floor(ii/5));
+			it->getFrame(index)->draw(points[ii][index].x,points[ii][index].y);//draw(RECTANGLESIZE*(ii%5),RECTANGLESIZE*floor(ii/5));
             index++;
             if(index> it->getTotalFrames() ) index=0;
             it->setFrame(index);
-//			it->getFrameForTime(tt+ii*10)->draw(140*((ii+9)%7),140*floor((9+ii)/7));
-//			it->getFrameForTime(tt+ii*10)->draw(140*((ii+19)%7),140*floor((19+ii)/7));
             ii++;
-
             break;
-
-        }
+        } */
         
 		//get the frame based on the current time and draw it
-        // ofDisableBlendMode();
+         //ofDisableBlendMode();
+       // glDisable (GL_BLEND);
+        playImage(currentImg);
         ofPopMatrix();
-
     }
   //
 	if(appStatuses["debug"]) showDebug();
+}
+
+void testApp::playImage(int i ){
+    int index = sequences[i].getCurrentFrame();
+    sequences[i].getFrame(index)->draw(points[i][index].x,points[i][index].y);
+    index++;
+    if(index> maxFrame/*sequences[i].getTotalFrames()*/ ) index=0;
+    sequences[i].setFrame(index);
 }
 
 void testApp::showDebug(){
@@ -198,6 +261,10 @@ void testApp::tuioRemoved(ofxTuioCursor &tuioCursor){
 
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
+
+}
+void testApp::onRecordingFinished(int &num){
+    setupSequence(num);
 
 }
 
@@ -249,4 +316,32 @@ void testApp::gotMessage(ofMessage msg){
 //--------------------------------------------------------------
 void testApp::dragEvent(ofDragInfo dragInfo){ 
 
+}
+
+void testApp::gui2Event(ofxUIEventArgs &e)
+{
+    cout << "event";
+	string name = e.widget->getName();
+	int kind = e.widget->getKind();
+    cout << "name" << name << "\n";
+    cout << "kind" << kind << "\n";
+    if(kind==2){
+        if(name == "2")
+        {
+            currentImg=2;
+        }
+        if(name == "1")
+        {
+            currentImg=1;
+        }
+        if(name == "0")
+        {
+            currentImg=0;
+        }
+    }
+    if(kind==OFX_UI_WIDGET_TOGGLE && name=="grabacion"){
+        if(appStatuses["mode"]==CAPTURE)
+            appStatuses["mode"]=MOSAIC;
+        else appStatuses["mode"]=CAPTURE;
+    }
 }

@@ -11,13 +11,14 @@
 #include "ofxOsc.h"
 #include "cheapComm.h"
 #include "mosaicRecorder.h"
+#include "ofxSimpleMask.h"
 #include <math.h>
 //#define _USE_LIVE_VIDEO		// uncomment this to use a live camera
 #define VIDEOWITH 640
 #define VIDEOHEIGHT 480
 #define VIDEO_PROC_SCALE 2;
 #define CAMERA_EXPOSURE_TIME  2200.0f
-
+//#define TESTMODE
 class testApp : public ofBaseApp{
     private:
         ofImage bg;
@@ -41,7 +42,7 @@ class testApp : public ofBaseApp{
         ofxCvGrayscaleImage		previousImg;			//a place to save the live video frame
     	ofxCvGrayscaleImage grayImage;
         ofxCvShortImage		floatBgImg;
-	    ofxCvGrayscaleImage grayBg;
+	    ofxCvGrayscaleImage grayBg; //
         ofImage maskedImageOF;
         ofImage blobImgOF_min;
     ofImage contourMaskOF;
@@ -101,5 +102,8 @@ class testApp : public ofBaseApp{
     	int frameseq;
     	ofxOscSender	TUIOSocket;
     	void setupTUIO();
+    ofxSimpleMask maskMaker;
+    ofImage mimage;
+    ofFbo fbo1;
     
 };

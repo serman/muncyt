@@ -10,7 +10,7 @@
 #define panel1_tracking_moveAndRecord_h
 #include "ofMain.h"
 #include <math.h>
-
+#include "ofxXmlSettings.h";
 #endif
 #define RECORDINGTIME 5000
 #define RECTANGLESIZE 128
@@ -75,6 +75,41 @@ class moveAndRecord {
                 timeHidden=ofGetElapsedTimeMillis();
                 if( ++currentRect >20 )currentRect=0;
 
+            }
+            return NULL;
+        }
+        else if (state == hidden){
+            if(ofGetElapsedTimeMillis()- timeHidden >10000){
+                state=blobOutSquare;
+            }
+        }else{
+            list<ofxTuioCursor*>::iterator tobj;
+            for (tobj=objectList.begin(); tobj != objectList.end(); tobj++) {
+                ofxTuioCursor *blob = (*tobj);
+                //cout << "blob size" << blobTracker.trackedBlobs.size() << "\n";
+                if ( triggerRectangle.inside( blob->getX()*640, blob->getY()*480) ){
+                    state= blobInSquare;
+                    timeLastDetection=ofGetElapsedTimeMillis();
+                    return blob;
+                }
+            }
+        }
+        return NULL;
+    }
+    
+    ofxTuioCursor* detectBlobinMouse(list<ofxTuioCursor*> objectList,int mousex, int mousey){
+        triggerRectangle.setPosition(mousex, mousey );
+        if(state==blobInSquare){
+            if(ofGetElapsedTimeMillis()-timeLastDetection > RECORDINGTIME){
+				//int newXPos = floor(currentRect%5)*RECTANGLESIZE;
+               // int newYPos = floor(currentRect/5)*RECTANGLESIZE;
+                
+                //triggerRectangle.setPosition(newXPos, newYPos );
+                
+                state=hidden;
+                timeHidden=ofGetElapsedTimeMillis();
+                if( ++currentRect >20 )currentRect=0;
+                
             }
             return NULL;
         }
