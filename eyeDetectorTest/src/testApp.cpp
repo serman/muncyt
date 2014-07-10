@@ -126,6 +126,9 @@ void testApp::keyPressed(int key){
     }else if(key=='l'){
         thresholdI-=10;
     }
+	else if(key=='v') {
+		cam.videoSettings();
+	}
     cout<<thresholdI;
 }
 

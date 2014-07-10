@@ -18,17 +18,28 @@ enum modo_Draw {
 	MODO_PATH
 };
 
+enum tipoPart { tipoNucleo, tipoNeutron };
+
+
 class Particula : public ofxBox2dCircle {
 	public:
 	
 	ofPoint pos;
 	ofPoint vel;
 	float radio;
-	float q;
+	
+	float masa;		// masa
+	float q;		// carga
+	float car1;		// caract1
+	float car2;		// caract2
+	int nivel1;		// 1 o -1
+	
 	float energia;
 	float energExcitado;
 	bool  swExcitado;
+	
 	ofTexture tex;
+	
 	ofColor	color;
 	ofColor	colorExcitado;
 	int tipo;
@@ -40,7 +51,11 @@ class Particula : public ofxBox2dCircle {
 	Particula();
 	
 	void setCarga(float _q);
+	void setCaract1(float _c);
+	void setCaract2(float _c);
+	
 	void setTexture(ofTexture & _tex);
+	
 	void setEscala(float _escale);
 	void setColor(ofColor _color);
 	void setColorExcitado(ofColor _color);
@@ -59,8 +74,7 @@ class Particula : public ofxBox2dCircle {
 	
 	int		tLifeMax;
 	
-	void addPunto();
-	
+	void updateTrail(ofPoint _pos);
 	void drawTrail();	
 };
 
