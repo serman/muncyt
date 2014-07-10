@@ -11,6 +11,10 @@
 #include "cheapComm.h"
 //#include "ofxTuio.h"
 #include "tuioComm.h"
+#include "tangiblesHandler.h"
+#include "handShadow.h"
+#include "anilloButton.h"
+#include "consts.h"
 // -------------------------------------------------
 
 #define COLOR_VERDE 0x5dca31
@@ -77,6 +81,7 @@ public:
 	ofxBox2dEdge			borde;
 	ofPolyline              bordeLine;
 	ofPolyline				circuloInt,circuloExt;
+    ofPolyline              entrada1, entrada2;
 	float			radioInt, radioExt;
 	
 	
@@ -158,13 +163,19 @@ public:
     void	tuioAdded(ofxTuioCursor & tuioCursor);
 	void	tuioRemoved(ofxTuioCursor & tuioCursor);
 	void	tuioUpdated(ofxTuioCursor & tuioCursor);
-    
+
+    void    onButtonPressed(BUTTON_TYPE &mtype);
 	void	setupTuio();
     ofxTuioClient   tuioClient;
 	ofPoint tuioPoint2Screen(ofxTuioCursor &tuioCursor);
 	
 	
 	bool swDrawTRAILS;
-	
+    tangiblesHandler hands;
+	tangiblesHandler touchElements;
+    anilloButton buttonSpeed1;
+    anilloButton buttonSpeed2;
+    anilloButton buttonCollide;
+    
 };
 

@@ -15,7 +15,6 @@
 		7F5FFFFF192A035000CA8725 /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7F5FFFF9192A035000CA8725 /* tinyxmlparser.cpp */; };
 		7F93F38C19186382004761F3 /* Efectos.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7F93F38B19186382004761F3 /* Efectos.cpp */; };
 		7FB6BF6119389C2700C396A4 /* tuioComm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7FB6BF6019389C2700C396A4 /* tuioComm.cpp */; };
-		7FB6BF6519389DBC00C396A4 /* testApp_tuioMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7FB6BF6419389DBC00C396A4 /* testApp_tuioMgr.cpp */; };
 		7FFD07A21913A0450022FA53 /* b2BroadPhase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7FFD07231913A0450022FA53 /* b2BroadPhase.cpp */; };
 		7FFD07A31913A0450022FA53 /* b2CollideCircle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7FFD07251913A0450022FA53 /* b2CollideCircle.cpp */; };
 		7FFD07A41913A0450022FA53 /* b2CollideEdge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7FFD07261913A0450022FA53 /* b2CollideEdge.cpp */; };
@@ -91,6 +90,8 @@
 		E7E077E515D3B63C0020DFD4 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E077E415D3B63C0020DFD4 /* CoreVideo.framework */; };
 		E7E077E815D3B6510020DFD4 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E077E715D3B6510020DFD4 /* QTKit.framework */; };
 		E7F985F815E0DEA3003869B5 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7F985F515E0DE99003869B5 /* Accelerate.framework */; };
+		F74B89AF196EEE3C005F3893 /* consts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F74B89AE196EEE3C005F3893 /* consts.cpp */; };
+		F74B89B3196EFF27005F3893 /* testApp_Interaction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F74B89B1196EFF27005F3893 /* testApp_Interaction.cpp */; };
 		F7EBD16519334C43009805D5 /* cheapComm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7EBD16319334C43009805D5 /* cheapComm.cpp */; };
 		F7EBD19319334D11009805D5 /* ofxOscBundle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7EBD16C19334D11009805D5 /* ofxOscBundle.cpp */; };
 		F7EBD19419334D11009805D5 /* ofxOscMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7EBD16E19334D11009805D5 /* ofxOscMessage.cpp */; };
@@ -156,7 +157,6 @@
 		7FB6BF4819389B7C00C396A4 /* ofxTuioPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTuioPoint.h; sourceTree = "<group>"; };
 		7FB6BF5F19389C2700C396A4 /* tuioComm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tuioComm.h; sourceTree = "<group>"; };
 		7FB6BF6019389C2700C396A4 /* tuioComm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tuioComm.cpp; sourceTree = "<group>"; };
-		7FB6BF6419389DBC00C396A4 /* testApp_tuioMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testApp_tuioMgr.cpp; sourceTree = "<group>"; };
 		7FFD07211913A0450022FA53 /* Box2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Box2D.h; sourceTree = "<group>"; };
 		7FFD07231913A0450022FA53 /* b2BroadPhase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = b2BroadPhase.cpp; sourceTree = "<group>"; };
 		7FFD07241913A0450022FA53 /* b2BroadPhase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2BroadPhase.h; sourceTree = "<group>"; };
@@ -300,6 +300,13 @@
 		E7E077E415D3B63C0020DFD4 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
 		E7E077E715D3B6510020DFD4 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
 		E7F985F515E0DE99003869B5 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = /System/Library/Frameworks/Accelerate.framework; sourceTree = "<absolute>"; };
+		F7016925196D84CB00D174E9 /* tangibleObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tangibleObject.h; sourceTree = "<group>"; };
+		F7016926196D84CB00D174E9 /* tangiblesHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tangiblesHandler.h; sourceTree = "<group>"; };
+		F7016928196D863700D174E9 /* handShadow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = handShadow.h; sourceTree = "<group>"; };
+		F74B89AD196EE2C5005F3893 /* consts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = consts.h; sourceTree = "<group>"; };
+		F74B89AE196EEE3C005F3893 /* consts.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = consts.cpp; sourceTree = "<group>"; };
+		F74B89B0196EF6E8005F3893 /* anilloButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = anilloButton.h; sourceTree = "<group>"; };
+		F74B89B1196EFF27005F3893 /* testApp_Interaction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testApp_Interaction.cpp; sourceTree = "<group>"; };
 		F7EBD16319334C43009805D5 /* cheapComm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cheapComm.cpp; sourceTree = "<group>"; };
 		F7EBD16419334C43009805D5 /* cheapComm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cheapComm.h; sourceTree = "<group>"; };
 		F7EBD16A19334D11009805D5 /* ofxOsc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxOsc.h; sourceTree = "<group>"; };
@@ -703,13 +710,16 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				F74B89AD196EE2C5005F3893 /* consts.h */,
+				F74B89AE196EEE3C005F3893 /* consts.cpp */,
+				F7016927196D84D100D174E9 /* touchObj */,
 				F7EBD16619334C47009805D5 /* comm */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* testApp.h */,
 				E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */,
+				F74B89B1196EFF27005F3893 /* testApp_Interaction.cpp */,
 				7F2CBE7B1926ED1400981859 /* testApp_Collisions.cpp */,
 				7F5F0006192A689200CA8725 /* testApp_xml.cpp */,
-				7FB6BF6419389DBC00C396A4 /* testApp_tuioMgr.cpp */,
 				7FFD0B76191434000022FA53 /* particulas.h */,
 				7FFD0B77191434000022FA53 /* particulas.cpp */,
 				7F93F38A19186382004761F3 /* Efectos.h */,
@@ -726,6 +736,17 @@
 				E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */,
 			);
 			name = openFrameworks;
+			sourceTree = "<group>";
+		};
+		F7016927196D84D100D174E9 /* touchObj */ = {
+			isa = PBXGroup;
+			children = (
+				F7016928196D863700D174E9 /* handShadow.h */,
+				F7016925196D84CB00D174E9 /* tangibleObject.h */,
+				F7016926196D84CB00D174E9 /* tangiblesHandler.h */,
+				F74B89B0196EF6E8005F3893 /* anilloButton.h */,
+			);
+			name = touchObj;
 			sourceTree = "<group>";
 		};
 		F7EBD16619334C47009805D5 /* comm */ = {
@@ -963,6 +984,7 @@
 				7FFD07BE1913A0450022FA53 /* b2ContactSolver.cpp in Sources */,
 				7FFD07BF1913A0450022FA53 /* b2EdgeAndCircleContact.cpp in Sources */,
 				7FFD07C01913A0450022FA53 /* b2EdgeAndPolygonContact.cpp in Sources */,
+				F74B89B3196EFF27005F3893 /* testApp_Interaction.cpp in Sources */,
 				F7EBD19419334D11009805D5 /* ofxOscMessage.cpp in Sources */,
 				7FFD07C11913A0450022FA53 /* b2PolygonAndCircleContact.cpp in Sources */,
 				7FFD07C21913A0450022FA53 /* b2PolygonContact.cpp in Sources */,
@@ -972,6 +994,7 @@
 				7FFD07C51913A0450022FA53 /* b2GearJoint.cpp in Sources */,
 				7FFD07C61913A0450022FA53 /* b2Joint.cpp in Sources */,
 				7FFD07C71913A0450022FA53 /* b2MotorJoint.cpp in Sources */,
+				F74B89AF196EEE3C005F3893 /* consts.cpp in Sources */,
 				7FFD07C81913A0450022FA53 /* b2MouseJoint.cpp in Sources */,
 				F7EBD19919334D11009805D5 /* NetworkingUtils.cpp in Sources */,
 				7FFD07C91913A0450022FA53 /* b2PrismaticJoint.cpp in Sources */,
@@ -1001,7 +1024,6 @@
 				7F5F0000192A035000CA8725 /* ofxXmlSettings.cpp in Sources */,
 				7F5F0007192A689200CA8725 /* testApp_xml.cpp in Sources */,
 				7FB6BF6119389C2700C396A4 /* tuioComm.cpp in Sources */,
-				7FB6BF6519389DBC00C396A4 /* testApp_tuioMgr.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

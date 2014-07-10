@@ -81,12 +81,12 @@ void Particula::draw() {
 		ofPushStyle();
 		ofEnableAlphaBlending();
 	//	ofSetColor(0,100,100, 100);
-	//	ofLine(this->getPosition().x, this->getPosition().y,ofGetWidth()/2.0, ofGetHeight()/2.0);
+	//	ofLine(this->getPosition().x, this->getPosition().y,W_WIDTH/2.0, ofGetHeight()/2.0);
 		ofPushMatrix();
 			ofTranslate(this->getPosition().x, this->getPosition().y);
 
 	//		ofSetColor(255,0,255, 60);		
-	//		ofLine(-ofGetWidth(),0,ofGetWidth(),0);
+	//		ofLine(-W_WIDTH,0,W_WIDTH,0);
 	//		ofLine(0,-ofGetHeight(),0,ofGetHeight());
 		
 			this->radio = this->getRadius(); 

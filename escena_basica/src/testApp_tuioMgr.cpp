@@ -21,24 +21,24 @@
 //}
 //
 //void testApp::tuioAdded(ofxTuioCursor &tuioCursor){
-//	//	ofPoint loc = ofPoint(tuioCursor.getX()*ofGetWidth(),tuioCursor.getY()*ofGetHeight());
+//	//	ofPoint loc = ofPoint(tuioCursor.getX()*W_WIDTH,tuioCursor.getY()*ofGetHeight());
 //	ofPoint loc = tuioPoint2Screen(tuioCursor);
 //	cout << "Point n" << tuioCursor.getSessionId() << " add at " << loc << endl;
 //}
 //
 //void testApp::tuioUpdated(ofxTuioCursor &tuioCursor){
-//	//	ofPoint loc = ofPoint(tuioCursor.getX()*ofGetWidth(),tuioCursor.getY()*ofGetHeight());
+//	//	ofPoint loc = ofPoint(tuioCursor.getX()*W_WIDTH,tuioCursor.getY()*ofGetHeight());
 //	ofPoint loc = tuioPoint2Screen(tuioCursor);
 //	cout << "Point n" << tuioCursor.getSessionId() << " updated at " << loc << endl;
 //}
 //
 //void testApp::tuioRemoved(ofxTuioCursor &tuioCursor){
-//	//	ofPoint loc = ofPoint(tuioCursor.getX()*ofGetWidth(),tuioCursor.getY()*ofGetHeight());
+//	//	ofPoint loc = ofPoint(tuioCursor.getX()*W_WIDTH,tuioCursor.getY()*ofGetHeight());
 //	ofPoint loc = tuioPoint2Screen(tuioCursor);
 //	cout << "Point n" << tuioCursor.getSessionId() << " remove at " << loc << endl;
 //}
 //
 //ofPoint testApp::tuioPoint2Screen(ofxTuioCursor &tuioCursor) {
-//	return ofPoint(tuioCursor.getX()*ofGetWidth(),tuioCursor.getY()*ofGetHeight());
+//	return ofPoint(tuioCursor.getX()*W_WIDTH,tuioCursor.getY()*ofGetHeight());
 //}
 

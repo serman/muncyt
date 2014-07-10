@@ -22,7 +22,7 @@ void testApp::setup() {
 	ofSetVerticalSync(true);
 	ofBackgroundHex(0xfdefc2);
 //	ofSetLogLevel(OF_LOG_NOTICE);
-	ofSetLogLevel(OF_LOG_VERBOSE);
+	ofSetLogLevel(OF_LOG_NOTICE);
 
 	ofEnableSmoothing();
 	
@@ -50,14 +50,14 @@ void testApp::setup() {
 	
 	
 	// Poner Muro circular
-	float radioMuro = MIN(ofGetWidth(), ofGetHeight()) / 2.0*0.85;
-	int resol = 360/5;
+	float radioMuro = MIN(W_WIDTH, W_HEIGHT) / 2.0*0.85;
+	int resol = 360;
 
 	radioInt = radioMuro;
-	radioExt = MIN(ofGetWidth(), ofGetHeight()) / 2.0*0.98;
+	radioExt = MIN(W_WIDTH, W_HEIGHT) / 2.0*0.98;
 
 	// Preparo el polyline
-	ofPoint centro = ofPoint(ofGetWidth()/2.0, ofGetHeight()/2.0);
+	ofPoint centro = ofPoint(W_WIDTH/2.0, W_HEIGHT/2.0);
 	bordeLine.arc(centro, radioMuro, radioMuro, 0.0, 360.0, true, resol);
 	
 	borde.clear();
@@ -67,8 +67,8 @@ void testApp::setup() {
 	// Paredes camara
 //	circuloInt.arc(centro, radioMuro, radioMuro, 0.0, 360.0, true, resol);
 	circuloExt.arc(centro, radioExt, radioExt, 0.0, 360.0, true, resol);
-
-	
+    entrada1.arc(ofPoint(centro.x,centro.y-radioExt+100), 100, 100, 125, 270,true,resol);
+    entrada2.arc(ofPoint(centro.x,centro.y-radioExt+100), (radioExt-radioInt), (radioExt-radioInt), 125, 270,true,resol);
 	
 	// Fuerza que afecta a todas las particulas
 	fuerzaVal = 100.0;
@@ -103,7 +103,7 @@ void testApp::setup() {
 	//GUI Fuerza
 	float ladoMarco = 90;
 	float margenMarco = 10;
-	marco = ofRectangle(ofGetWidth()-ladoMarco-margenMarco,margenMarco,ladoMarco,ladoMarco);
+	marco = ofRectangle(W_WIDTH-ladoMarco-margenMarco,margenMarco,ladoMarco,ladoMarco);
 	
 	
 	// Efecto
@@ -116,12 +116,25 @@ void testApp::setup() {
 	
 	// Control del anillo
 //	ofRectangle anilloUI_L = ofRectangle(0,ofGetHeight()-40, 40,40);
-//	ofRectangle anilloUI_R = ofRectangle(ofGetWidth()-40,ofGetHeight()-40, 40,40);
+//	ofRectangle anilloUI_R = ofRectangle(W_WIDTH-40,ofGetHeight()-40, 40,40);
 	float dRad = radioExt-radioInt;
 	float rMed = radioInt+dRad/2;
-	ofRectangle anilloUI_L = ofRectangle(centro.x-rMed-(dRad*0.9/2),centro.y-(dRad*0.9/2), dRad*0.9,dRad*0.9);
-	ofRectangle anilloUI_R = ofRectangle(centro.x+rMed-(dRad*0.9/2),centro.y-(dRad*0.9/2), dRad*0.9,dRad*0.9);
-	anillo.setUI(anilloUI_L, anilloUI_R);
+	buttonSpeed1.set(centro.x-rMed-(dRad*0.9/2),centro.y-(dRad*0.9/2), dRad*0.9,dRad*0.9);
+
+	buttonSpeed2.set(centro.x+rMed-(dRad*0.9/2),centro.y-(dRad*0.9/2), dRad*0.9,dRad*0.9);
+    buttonSpeed1.btype=TYPE_ACC;
+    buttonSpeed2.btype=TYPE_ACC;
+    buttonCollide.set(centro.x-(dRad*0.9/2),centro.y-rMed-(dRad*0.9/2), dRad*0.9,dRad*0.9);
+    buttonCollide.btype=TYPE_CRASH;
+    
+    touchElements.addObject(buttonSpeed1);
+    touchElements.addObject(buttonSpeed2);
+    touchElements.addObject(buttonCollide);
+    ofAddListener(buttonSpeed2.buttonEvent ,this, &testApp::onButtonPressed);
+    ofAddListener(buttonSpeed1.buttonEvent ,this, &testApp::onButtonPressed);
+    ofAddListener(buttonCollide.buttonEvent ,this, &testApp::onButtonPressed);
+    
+	//anillo.setUI(anilloUI_L, anilloUI_R);
 	
 	
 // Otros - - - - - 
@@ -132,6 +145,7 @@ void testApp::setup() {
 	
 	swDrawTRAILS = false;
 	
+
 	myComm.setup();
 	
 	
@@ -231,7 +245,13 @@ void testApp::update() {
 	// - - - - TUIOS - - - - 
     tuioClient.getMessage();
 
-	// Interaccion de los blobs recibidos	
+    buttonCollide.update_prev(anillo.getParticlePosition());
+    buttonSpeed1.update_prev(anillo.getParticlePosition());
+    buttonSpeed2.update_prev(anillo.getParticlePosition());
+    
+     touchElements.update();
+    hands.update();
+	/*// Interaccion de los blobs recibidos
 	list<ofxTuioCursor*>cursorList = tuioClient.getTuioCursors();
 	for(list<ofxTuioCursor*>::iterator it=cursorList.begin(); it != cursorList.end(); it++) {
 		ofxTuioCursor *tcur = (*it);
@@ -248,16 +268,20 @@ void testApp::update() {
 		
 		else anillo.interaccionAnillo(ptCursor);
 		
-    }
+    }*/
 	
 }
 
 //--------------------------------------------------------------
-void testApp::draw() {
-
+void testApp::draw(){
+    ofColor colorCentro = ofColor::fromHsb(0, 50+50*sin(ofGetElapsedTimef()/frecFondo*TWO_PI), 20);
+ //   ofBackgroundGradient (colorCentro, ofColor::black, OF_GRADIENT_CIRCULAR);
+    ofBackground(colorCentro);
+    ofPushMatrix(); //colocamos el canvas en su posicion centrada
+    ofTranslate((ofGetWidth()-W_WIDTH)/2, 0);
+    
 //	ofBackground(0);
-	ofColor colorCentro = ofColor::fromHsb(60, 50+50*sin(ofGetElapsedTimef()/frecFondo*TWO_PI), 100);
-	ofBackgroundGradient (colorCentro, ofColor::black, OF_GRADIENT_CIRCULAR);
+
 //	ofBackgroundGradient(ofColor::gray, ofColor::black, OF_GRADIENT_CIRCULAR);
 	
 	
@@ -270,11 +294,30 @@ void testApp::draw() {
 		ofEnableSmoothing();
 		ofNoFill();
 		ofSetLineWidth(1.0);
-		ofSetColor(10,10,10);
+		ofSetColor(220,220,200);
 		
 		// PARED EXTERIOR
+    	ofPoint centro = ofPoint(W_WIDTH/2.0, W_HEIGHT/2.0);
+        circuloExt.clear();
+        circuloExt.arc(centro, radioExt, radioExt, 0.0, 360.0, true, 180);
+        bordeLine.clear();
+    	float radioMuro = MIN(W_WIDTH, W_HEIGHT) / 2.0*0.85;
+    	bordeLine.arc(centro, radioMuro, radioMuro, 0.0, 360.0, true, 180);
+        for(int i=0; i< circuloExt.getVertices().size(); i+=2){
+            circuloExt.getVertices()[i]+=ofRandom(-3,3);
+            bordeLine.getVertices()[i]+=ofRandom(-3,3);
+        }
 		circuloExt.draw();
-		
+    entrada1.clear(); entrada2.clear();
+    entrada1.arc(ofPoint(centro.x,centro.y-radioExt+100), 100, 100, 125, 270,true,180);
+    entrada2.arc(ofPoint(centro.x,centro.y-radioExt+100), (radioExt-radioInt), (radioExt-radioInt), 125, 270,true,180);
+    for(int i=0; i< entrada1.getVertices().size(); i+=2){
+        entrada1.getVertices()[i]+=ofRandom(-3,3);
+        entrada2.getVertices()[i]+=ofRandom(-3,3);
+    }
+
+    entrada1.draw();
+    entrada2.draw();
 		// PARED INTERIOR
 		//box2d.drawGround();
 		bordeLine.draw();
@@ -329,12 +372,14 @@ void testApp::draw() {
 	anillo.draw();
 	
 	// GUI ANILLO
-	anillo.drawControls();
+	//anillo.drawControls();
 	
 	
 	// TUIOS
 //    tuioClient.drawCursors();	
-	
+    touchElements.draw();
+    hands.draw();
+    ofPopMatrix();
 	
 	// Info
 	string info = "";
@@ -355,12 +400,12 @@ void testApp::draw() {
 	ofDrawBitmapString(info, 30, 30);
 	
 //	ofSetColor(255);
-//	ofLine(ofGetMouseX()*ofGetWidth()/ofGetScreenWidth(),0,ofGetMouseX()*ofGetScreenWidth()/ofGetWidth(),ofGetHeight());
+//	ofLine(ofGetMouseX()*W_WIDTH/ofGetScreenWidth(),0,ofGetMouseX()*ofGetScreenWidth()/W_WIDTH,ofGetHeight());
 
 }
 
 void testApp::drawFuerzaSelector() {
-	//	fuerzaWAng = ofDegToRad( ofMap(x, 0, ofGetWidth(), 30, 360*6) );
+	//	fuerzaWAng = ofDegToRad( ofMap(x, 0, W_WIDTH, 30, 360*6) );
 	//	fuerzaVal = ofDegToRad( ofMap(y, 0, ofGetHeight(), 0, 200) );
 	ofPushStyle();
 	ofPushMatrix();
@@ -504,113 +549,6 @@ void testApp::addDestello(float px, float py) {
 }
 
 
-
-//--------------------------------------------------------------
-void testApp::keyPressed(int key) {
-	ofLogVerbose("keyPressed");
-	
-	if(key == 'c') {
-//		addNucleo(mouseX, mouseY, rNucleo);
-		addNucleo();
-	}
-	
-	if(key == 'n') {
-		addNeutron(mouseX, mouseY);
-	}
-	
-	if(key=='q') {
-		// Quitar particulas
-		for(int i=0; i<nucleos.size(); i++) {
-			nucleos[i].get()->destroy();
-		}
-		nucleos.clear();
-		for(int i=0; i<neutrones.size(); i++) {
-			neutrones[i].get()->destroy();
-		}
-		neutrones.clear();
-	}
-	
-	if(key=='f') swFuerza = !swFuerza;
-	
-	if(key=='x') {
-		myComm.sendExplosion();
-	}
-	
-	if(key=='t') {
-		fpsAct = ofMap(mouseX,0,ofGetWidth(), 20.0, 600.0);
-		box2d.setFPS(fpsAct);
-	}
-	
-	if(key == 's') ofToggleFullscreen();
-	
-	if(key=='b') swBlendModeADD=!swBlendModeADD;
-	
-	if(key=='1'){
-		// cambiar particulas a modo PARTIC
-		setModoParticulas(MODO_PARTIC);
-	}
-	else if(key=='2') {
-		// cambiar particulas a modo PATH
-		setModoParticulas(MODO_PATH);
-	}
-	else if(key=='4') {
-		swDrawTRAILS = !swDrawTRAILS;
-	}
-}
-
-void testApp::setModoParticulas(int _modo) {
-	modoDrawParticulas = _modo;
-	ofLogVerbose("setModoParticulas modo Draw: " + ofToString(_modo));
-	for(int i=0; i<neutrones.size(); i++) {
-		ofLogVerbose("neutron: " + ofToString(i));
-		neutrones[i].get()->setModoDraw(_modo);
-	}
-	for(int i=0; i<nucleos.size(); i++) {
-		nucleos[i].get()->setModoDraw(_modo);
-	}
-}
-
-//--------------------------------------------------------------
-void testApp::keyReleased(int key) {
-	ofLogVerbose("keyReleased");
-
-}
-
-//--------------------------------------------------------------
-void testApp::mouseMoved(int x, int y ) {
-	
-}
-
-//--------------------------------------------------------------
-void testApp::mouseDragged(int x, int y, int button) {
-	if(marco.inside(x,y)) {
-	   fuerzaWAng = ofDegToRad( ofMap(x-marco.x, 0, marco.width, 30, 360*6) );
-	   fuerzaVal = ( ofMap(y-marco.y, 0, marco.height, 0, 200) );
-	}
-	
-}
-
-//--------------------------------------------------------------
-void testApp::mousePressed(int x, int y, int button) {
-	if(marco.inside(x,y)) {
-		fuerzaWAng = ofDegToRad( ofMap(x-marco.x, 0, marco.width, 30, 360*6) );
-		fuerzaVal = ( ofMap(y-marco.y, 0, marco.height, 0, 200) );
-	}
-
-	anillo.interaccionAnillo(x,y);
-	
-}
-
-//--------------------------------------------------------------
-void testApp::mouseReleased(int x, int y, int button) {
-	if(!swFuerza) {
-		chispa.pos = ofPoint(x,y);
-		chispa.start();
-		
-		addDestello(x,y);
-	}
-}
-
 //--------------------------------------------------------------
 void testApp::resized(int w, int h){
 }
@@ -628,37 +566,6 @@ void testApp::setupTuio() {
 	
 }
 
-void testApp::tuioAdded(ofxTuioCursor &tuioCursor){
-	//	ofPoint loc = ofPoint(tuioCursor.getX()*ofGetWidth(),tuioCursor.getY()*ofGetHeight());
-	ofPoint loc = tuioPoint2Screen(tuioCursor);
-
-	// Si se quiere que solo interaccione cuando 
-	anillo.interaccionAnillo(loc);
-	
-	cout << "Point n" << tuioCursor.getSessionId() << " add at " << loc << endl;
-}
-
-void testApp::tuioUpdated(ofxTuioCursor &tuioCursor){
-	//	ofPoint loc = ofPoint(tuioCursor.getX()*ofGetWidth(),tuioCursor.getY()*ofGetHeight());
-	ofPoint loc = tuioPoint2Screen(tuioCursor);
-	cout << "Point n" << tuioCursor.getSessionId() << " updated at " << loc << "    x: " << tuioCursor.getX() << endl;
-}
-
-void testApp::tuioRemoved(ofxTuioCursor &tuioCursor){
-	//	ofPoint loc = ofPoint(tuioCursor.getX()*ofGetWidth(),tuioCursor.getY()*ofGetHeight());
-	ofPoint loc = tuioPoint2Screen(tuioCursor);
-	cout << "Point n" << tuioCursor.getSessionId() << " remove at " << loc << endl;
-}
-
-ofPoint testApp::tuioPoint2Screen(ofxTuioCursor &tuioCursor) {
-	ofLogNotice("ESTOY EN tuioPoint2Screen");
-//	return ofPoint(tuioCursor.getX()*ofGetScreenWidth(),tuioCursor.getY()*ofGetScreenHeight());	
-	cout << tuioCursor.getX() << ", " << tuioCursor.getY() << endl;
-	return ofPoint(tuioCursor.getX()*1024/0.6,tuioCursor.getY()*768/0.7);
-	
-//	return ofPoint(tuioCursor.getX()*ofGetWidth()* 2,tuioCursor.getY()*ofGetHeight() * 2);
-//	return ofPoint(tuioCursor.getX()*ofGetScreenWidth(),tuioCursor.getY()*ofGetScreenHeight());
-}
 
 
 

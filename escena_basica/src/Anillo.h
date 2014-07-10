@@ -15,8 +15,8 @@
  * 
  * 
 */
-
-class Anillo {
+#include "tangibleObject.h"
+class Anillo  {
 public:
 	// geometria
 	float radioInt;
@@ -43,11 +43,13 @@ public:
 	
 	ofTexture tex;
 	bool	swTexture;
-	
 
+
+    
 	ofRectangle anilloUI_L, anilloUI_R;	
 	
 	Anillo() {}
+    void setup(){}
 	Anillo(ofVec2f _pos, float rInt, float rExt) {
 		pos = _pos;
 		radioInt = rInt;
@@ -117,6 +119,7 @@ public:
 		accAng*=viscAcc;
 		wAng += accAng;
 		angT += wAng;
+
 	}
 	
 	void draw() {
@@ -127,9 +130,9 @@ public:
 			ofEnableAlphaBlending();
 			ofTranslate(pos.x, pos.y,0);
 			// fondo
-			ofFill();
-			ofSetColor(colorFondo);
-			contorno.draw();
+			//ofFill();
+			//ofSetColor(colorFondo);
+			//contorno.draw();
 
 			// particula
 			ofSetColor(color);
@@ -148,22 +151,25 @@ public:
 		ofPopStyle();
 		ofPopMatrix();
 	}
+    ofPoint getParticlePosition(){
+        return ofPoint(pos.x+radioMed*cos(angT), pos.y+radioMed*sin(angT));
+    }
 
 	void drawControls() {		
 		ofPushStyle();
 		ofEnableAlphaBlending();
 		ofFill();
 		//	ofSetColor(200);
-		ofSetColor(color);
+		ofSetColor(0,0,0,100);
 		ofRect(anilloUI_L);
 		ofRect(anilloUI_R);
 		ofPopStyle();
 		
-		ofPushMatrix();
-		ofPushStyle();
+		//ofPushMatrix();
+		//ofPushStyle();
 	}
 
-	bool interaccionAnillo(ofPoint pt) {
+	/*bool interaccionAnillo(ofPoint pt) {
 		return interaccionAnillo(pt.x, pt.y);
 	}
 	
@@ -180,5 +186,5 @@ public:
 			return false;
 		}	
 		return false;
-	}
+	}*/
 };
