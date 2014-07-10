@@ -429,7 +429,7 @@ void testApp::addNucleo(int xx, int yy){
 
 void testApp::addNucleo(int xx, int yy, float r){
 	nucleos.push_back(ofPtr<Particula>(new Particula));
-	nucleos.back().get()->setPhysics(50.5, 0.53, 0.1); //setPhysics(float density, float bounce, float friction);
+	nucleos.back().get()->setPhysics(50, 0.53, 0.1); //setPhysics(float density, float bounce, float friction);
 	nucleos.back().get()->setup(box2d.getWorld(), xx, yy, r);		// pos, rr
 	nucleos.back().get()->setRotation(ofRandom(360));
 	

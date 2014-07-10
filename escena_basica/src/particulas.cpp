@@ -18,11 +18,18 @@ Particula::Particula() {
 	// por defecto utilizamos modo de dibujo: MODO_PARTIC
 	modoDraw = MODO_PARTIC;
 	
-	tLifeMax = floor(ofRandom(120,200));
+	tLifeMax = floor(ofRandom(80,150));
 }
 
 void Particula::setCarga(float _q) {
 	q = _q;
+}
+
+void Particula::setCaract1(float _c) {
+	car1 = _c;
+}
+void Particula::setCaract2(float _c) {
+	car2 = _c;
 }
 
 void Particula::setColor(ofColor _color) {
@@ -57,21 +64,35 @@ void Particula::update() {
 	vel = this->getVelocity();
 	// update values de pos, veloc, radio...
 	if(modoDraw==MODO_PARTIC) {
-		trail.addVertex(pos);
+		updateTrail(pos);
 	}
 	else if(modoDraw==MODO_PATH) {
-		trail.addVertex(pos);
+		updateTrail(pos);
 	}
 	else if(modoDraw==MODO_BOX2D) {
 	}
 	
-	if(trail.size()>tLifeMax) 		trail.clear();
-//	float rnd = ofRandom(1);
-//	if(trail.size()>100 && rnd<0.1) {
-//		trail.clear();
-//	}
 }
 
+void Particula::updateTrail(ofPoint _pos) {
+	ofLogNotice("update pos: " + ofToString(trailV.size())+"/"+ofToString(tLifeMax));
+	trailV.push_back(pos);
+	if(trailV.size()>tLifeMax) {
+//		float rnd = ofRandom(1);
+//		if(rnd<0.4) 
+			trailV.erase(trailV.begin());//erase(0);
+	}
+	trail.clear();
+	for(int i=0; i<trailV.size(); i++) {
+		trail.addVertex(trailV[i]);
+	}
+		//	
+		//	if(trail.size()>100 && ) {
+		//		trail.clear();
+		//	}
+		
+}
+		
 void Particula::draw() {
 	ofSetColor(100,0,0);	// cambia bastante con esto
 	

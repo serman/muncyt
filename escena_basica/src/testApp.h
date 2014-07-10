@@ -5,6 +5,7 @@
 
 #include "Efectos.h"
 #include "particulas.h"
+#include "PNeutron.h"
 #include "Anillo.h"
 
 #include "ofxXmlSettings.h"
@@ -14,9 +15,8 @@
 // -------------------------------------------------
 
 #define COLOR_VERDE 0x5dca31
-const int tipoNucleo  = 0;
-const int tipoNeutron = 1;
-
+//const int tipoNucleo  = 0;
+//const int tipoNeutron = 1;
 
 #define N_SOUNDS 8
 

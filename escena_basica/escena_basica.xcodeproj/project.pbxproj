@@ -157,6 +157,7 @@
 		7FB6BF5F19389C2700C396A4 /* tuioComm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tuioComm.h; sourceTree = "<group>"; };
 		7FB6BF6019389C2700C396A4 /* tuioComm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tuioComm.cpp; sourceTree = "<group>"; };
 		7FB6BF6419389DBC00C396A4 /* testApp_tuioMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testApp_tuioMgr.cpp; sourceTree = "<group>"; };
+		7FD44177196B5DEF00C4634A /* PNeutron.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNeutron.h; sourceTree = "<group>"; };
 		7FFD07211913A0450022FA53 /* Box2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Box2D.h; sourceTree = "<group>"; };
 		7FFD07231913A0450022FA53 /* b2BroadPhase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = b2BroadPhase.cpp; sourceTree = "<group>"; };
 		7FFD07241913A0450022FA53 /* b2BroadPhase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2BroadPhase.h; sourceTree = "<group>"; };
@@ -712,6 +713,7 @@
 				7FB6BF6419389DBC00C396A4 /* testApp_tuioMgr.cpp */,
 				7FFD0B76191434000022FA53 /* particulas.h */,
 				7FFD0B77191434000022FA53 /* particulas.cpp */,
+				7FD44177196B5DEF00C4634A /* PNeutron.h */,
 				7F93F38A19186382004761F3 /* Efectos.h */,
 				7F93F38B19186382004761F3 /* Efectos.cpp */,
 				7F25A639191E9F6A006A4E30 /* Anillo.h */,
