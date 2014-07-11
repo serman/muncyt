@@ -9,13 +9,13 @@
  *
  */
 
-#include "testApp.h"
+#include "nuclear_debil.h"
 
-void testApp::GrabaConfig() {
+void nuclear_debil::GrabaConfig() {
 	
 }
 
-void testApp::CargaConfig() {
+void nuclear_debil::CargaConfig() {
 	ofxXmlSettings xml;
 //	xml.loadFile("settings.xml");
 //	

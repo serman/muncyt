@@ -6,10 +6,10 @@
 //
 //
 
-#include "testApp.h"
+#include "nuclear_debil.h"
 
 //--------------------------------------------------------------
-void testApp::keyPressed(int key) {
+void nuclear_debil::keyPressed(int key) {
 	ofLogVerbose("keyPressed");
 	
 	if(key == 'c') {
@@ -18,7 +18,7 @@ void testApp::keyPressed(int key) {
 	}
 	
 	if(key == 'n') {
-		addNeutron(mouseX, mouseY);
+		addNeutron(ofGetAppPtr()->mouseX, ofGetAppPtr()->mouseY);
 	}
 	
 	if(key=='q') {
@@ -40,7 +40,7 @@ void testApp::keyPressed(int key) {
 	}
 	
 	if(key=='t') {
-		fpsAct = ofMap(mouseX,0,W_WIDTH, 20.0, 600.0);
+		fpsAct = ofMap(ofGetAppPtr()->mouseX,0,W_WIDTH, 20.0, 600.0);
 		box2d.setFPS(fpsAct);
 	}
 	
@@ -48,20 +48,20 @@ void testApp::keyPressed(int key) {
 	
 	if(key=='b') swBlendModeADD=!swBlendModeADD;
 	
-	if(key=='1'){
+	if(key=='y'){
 		// cambiar particulas a modo PARTIC
 		setModoParticulas(MODO_PARTIC);
 	}
-	else if(key=='2') {
+	else if(key=='u') {
 		// cambiar particulas a modo PATH
 		setModoParticulas(MODO_PATH);
 	}
-	else if(key=='4') {
+	else if(key=='i') {
 		swDrawTRAILS = !swDrawTRAILS;
 	}
 }
 
-void testApp::setModoParticulas(int _modo) {
+void nuclear_debil::setModoParticulas(int _modo) {
 	modoDrawParticulas = _modo;
 	ofLogVerbose("setModoParticulas modo Draw: " + ofToString(_modo));
 	for(int i=0; i<neutrones.size(); i++) {
@@ -74,18 +74,18 @@ void testApp::setModoParticulas(int _modo) {
 }
 
 //--------------------------------------------------------------
-void testApp::keyReleased(int key) {
+void nuclear_debil::keyReleased(int key) {
 	ofLogVerbose("keyReleased");
     
 }
 
 //--------------------------------------------------------------
-void testApp::mouseMoved(int x, int y ) {
+void nuclear_debil::mouseMoved(int x, int y ) {
 	
 }
 
 //--------------------------------------------------------------
-void testApp::mouseDragged(int x, int y, int button) {
+void nuclear_debil::mouseDragged(int x, int y, int button) {
 	if(marco.inside(X_(x),y)) {
         fuerzaWAng = ofDegToRad( ofMap(x-marco.x, 0, marco.width, 30, 360*6) );
         fuerzaVal = ( ofMap(y-marco.y, 0, marco.height, 0, 200) );
@@ -94,7 +94,7 @@ void testApp::mouseDragged(int x, int y, int button) {
 }
 
 //--------------------------------------------------------------
-void testApp::mousePressed(int x, int y, int button) {
+void nuclear_debil::mousePressed(int x, int y, int button) {
 	if(marco.inside(X_(x),y)) {
 		fuerzaWAng = ofDegToRad( ofMap(X_(x)-marco.x, 0, marco.width, 30, 360*6) );
 		fuerzaVal = ( ofMap(y-marco.y, 0, marco.height, 0, 200) );
@@ -105,7 +105,7 @@ void testApp::mousePressed(int x, int y, int button) {
 }
 
 //--------------------------------------------------------------
-void testApp::mouseReleased(int x, int y, int button) {
+void nuclear_debil::mouseReleased(int x, int y, int button) {
 	if(!swFuerza) {
 		chispa.pos = ofPoint(X_(x),y);
 		chispa.start();
@@ -114,7 +114,7 @@ void testApp::mouseReleased(int x, int y, int button) {
 	}
 }
 
-void testApp::tuioAdded(ofxTuioCursor &tuioCursor){
+void nuclear_debil::tuioAdded(ofxTuioCursor &tuioCursor){
 	ofPoint loc = ofPoint(tuioCursor.getX()*W_WIDTH,tuioCursor.getY()*W_HEIGHT);
 	//cout << "Point n" << tuioCursor.getSessionId() << " add at " << loc << endl;
     
@@ -129,7 +129,7 @@ void testApp::tuioAdded(ofxTuioCursor &tuioCursor){
     touchElements.notifyTouch(loc.x, loc.y,tuioCursor.getSessionId());
 }
 
-void testApp::tuioUpdated(ofxTuioCursor &tuioCursor){
+void nuclear_debil::tuioUpdated(ofxTuioCursor &tuioCursor){
     int mx = W_WIDTH*tuioCursor.getX();
     int my =    W_HEIGHT*tuioCursor.getY();
 	ofPoint loc = ofPoint(tuioCursor.getX()*W_WIDTH,tuioCursor.getY()*W_HEIGHT);
@@ -142,7 +142,7 @@ void testApp::tuioUpdated(ofxTuioCursor &tuioCursor){
     hands.notifySlide(loc.x, loc.y,tuioCursor.getSessionId(),tuioCursor.getMotionAccel());
 }
 
-void testApp::tuioRemoved(ofxTuioCursor &tuioCursor){
+void nuclear_debil::tuioRemoved(ofxTuioCursor &tuioCursor){
 	ofPoint loc = ofPoint(tuioCursor.getX()*W_WIDTH,tuioCursor.getY()*W_HEIGHT);
     //cout << "Point n" << tuioCursor.getSessionId() << " remove at " << loc << endl;
     /*
@@ -157,7 +157,7 @@ void testApp::tuioRemoved(ofxTuioCursor &tuioCursor){
     
 }
 
-void testApp::onButtonPressed(BUTTON_TYPE& mtype){
+void nuclear_debil::onButtonPressed(BUTTON_TYPE& mtype){
     cout <<" buttonpressed " << endl;
     if(mtype==TYPE_ACC){
         anillo.acelera(-anillo.dAcc);

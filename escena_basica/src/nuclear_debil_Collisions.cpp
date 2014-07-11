@@ -7,10 +7,10 @@
  *
  */
 
-#include "testApp.h"
+#include "nuclear_debil.h"
 
 //--------------------------------------------------------------
-void testApp::contactStart(ofxBox2dContactArgs &e) {
+void nuclear_debil::contactStart(ofxBox2dContactArgs &e) {
 	if(e.a != NULL && e.b != NULL) { 
 		// Si chocan dos objetos Circle (dos particulas) suena un tipo de sonido
 		// Se puede hacer dependiente de 
@@ -27,7 +27,7 @@ void testApp::contactStart(ofxBox2dContactArgs &e) {
 }
 
 //--------------------------------------------------------------
-void testApp::contactEnd(ofxBox2dContactArgs &e) {
+void nuclear_debil::contactEnd(ofxBox2dContactArgs &e) {
 	if(e.a != NULL && e.b != NULL) { 
 		// si chocan dos particulas
 		if(e.a->GetType() == b2Shape::e_circle && e.b->GetType() == b2Shape::e_circle) {
@@ -70,7 +70,7 @@ void testApp::contactEnd(ofxBox2dContactArgs &e) {
 	}
 }
 
-void testApp::colisiona_N_n (Particula * pN, Particula * pn) {
+void nuclear_debil::colisiona_N_n (Particula * pN, Particula * pn) {
 	if(pN->swExcitado) {
 		ofVec2f ptChoque = (pN->getPosition() + pn->getPosition())/2.0;
 		
