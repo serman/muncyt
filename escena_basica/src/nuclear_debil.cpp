@@ -153,7 +153,7 @@ void nuclear_debil::setup() {
 	myComm.setup();
 	
 	
-	setupTuio();
+	//setupTuio();
 }
 
 void nuclear_debil::cargaSounds() {
@@ -247,7 +247,7 @@ void nuclear_debil::update(float dt) {
 	
 	
 	// - - - - TUIOS - - - - 
-    tuioClient.getMessage();
+    //tuioClient.getMessage();
 
     buttonCollide.update_prev(anillo.getParticlePosition());
     buttonSpeed1.update_prev(anillo.getParticlePosition());
@@ -562,14 +562,35 @@ void nuclear_debil::resized(int w, int h){
 
 void nuclear_debil::setupTuio() {
 	
-	tuioClient.start(3333);
+
     
-    ofAddListener(tuioClient.cursorAdded,this,&nuclear_debil::tuioAdded);
+  /*  ofAddListener(tuioClient.cursorAdded,this,&nuclear_debil::tuioAdded);
 	ofAddListener(tuioClient.cursorRemoved,this,&nuclear_debil::tuioRemoved);
 	ofAddListener(tuioClient.cursorUpdated,this,&nuclear_debil::tuioUpdated);
-	
+	*/
 }
 
+
+
+//scene notifications
+void nuclear_debil::sceneWillAppear( ofxScene * fromScreen ){  // reset our scene when we appear
+    //gui1->enable();
+   /* ofAddListener(tuioClient.cursorAdded,this,&nuclear_debil::tuioAdded);
+	ofAddListener(tuioClient.cursorRemoved,this,&nuclear_debil::tuioRemoved);
+	ofAddListener(tuioClient.cursorUpdated,this,&nuclear_debil::tuioUpdated);
+    */
+    
+};
+
+
+//scene notifications
+void nuclear_debil::sceneWillDisappear( ofxScene * toScreen ){
+   // gui1->disable();
+  /*  ofRemoveListener(tuioClient.cursorAdded,this,&nuclear_debil::tuioAdded);
+	ofRemoveListener(tuioClient.cursorRemoved,this,&nuclear_debil::tuioRemoved);
+	ofRemoveListener(tuioClient.cursorUpdated,this,&nuclear_debil::tuioUpdated);
+   */
+}
 
 
 

@@ -169,9 +169,11 @@ public:
 
     void    onButtonPressed(BUTTON_TYPE &mtype);
 	void	setupTuio();
-    ofxTuioClient   tuioClient;
+    ofxTuioClient   *tuioClient;
 	ofPoint tuioPoint2Screen(ofxTuioCursor &tuioCursor);
 	
+    void sceneWillAppear( ofxScene * fromScreen );
+    void sceneWillDisappear( ofxScene * toScreen );
 	
 	bool swDrawTRAILS;
     tangiblesHandler hands;
@@ -179,6 +181,8 @@ public:
     anilloButton buttonSpeed1;
     anilloButton buttonSpeed2;
     anilloButton buttonCollide;
+    
+    
     
 };
 

@@ -14,10 +14,17 @@ void electromagnetica::setup(){
     setupShader();
     setupGUI();
     mwave.setup();
+    //tuioClientEm.start(3333);
+    
+
+
+    
 }
 
 void electromagnetica::update(float d1){
+    //tuioClientEm.getMessage();
     
+    mwave.update();
     for(int i=0; i< meshParticles.getVertices().size(); i++){
         //ofSeedRandom();
         if(ofRandomf()>0.5)
@@ -26,11 +33,23 @@ void electromagnetica::update(float d1){
             meshParticles.getColors()[i].set(255);
 //        meshParticles.getColors()[i].set(255);
         if( particles[i].position.distance(ofPoint(X_(ofGetMouseX()),ofGetMouseY())) >100){
-            meshParticles.getColors()[i].set(0);
+           // meshParticles.getColors()[i].set(0);
         }
-
+        int index= particles[i]._x;
+        if(noiseMode){
+            ofPoint p= mwave.points[index];
+            particles[i].steer(p , true, 5, 10);
+            particles[i].update();
+        }else{
+            ofPoint p= ofPoint(particles[i]._x,particles[i]._y,particles[i].position.z);
+            particles[i].steer( p, true, 7, 10);
+            particles[i].update();
+        }
+        meshParticles.getVertices()[i].set(particles[i].position);
+        
     }
-    mwave.update();
+    
+    
     
 }
 
@@ -47,7 +66,7 @@ void electromagnetica::draw(){
 	ofEnableDepthTest();
     meshParticles.draw();
     ofDisableDepthTest();
-    //drawNoise();
+    drawNoise();
    //     ofDisableAlphaBlending();
     ofSetColor(255,0,0);
     ofFill();
@@ -68,10 +87,12 @@ void electromagnetica::setupShader(){
 void electromagnetica::setupGUI() {
 	gui1 = new ofxUICanvas(0,100,400,800);
     gui1->addSlider("alpha", 0.0, 1.0,&alpha);
-		//gui1->addToggle("noise", &boolDrawNoise);
+    gui1->addToggle("noise or wave", &noiseMode);
+    gui1->addSlider("freq", 0.0, 100.0,&(mwave.freq));
+    gui1->addSlider("freq", 0.0, 100.0,&(mwave.freq2));
 }
 void electromagnetica::showDebug(){
-    ofDrawBitmapString("Framerate " + ofToString(ofGetFrameRate()), 20, 20);
+    ofDrawBitmapString("Framerate " + ofToString(ofGetFrameRate()), 20, 100);
 
 }
 
@@ -164,3 +185,61 @@ void electromagnetica::resetParticles(){
     particles.clear();
     setupParticles();
 }
+
+//scene notifications
+void electromagnetica::sceneWillAppear( ofxScene * fromScreen ){  // reset our scene when we appear
+    gui1->enable();
+   /* ofAddListener(tuioClientEm.cursorAdded,this,&electromagnetica::tuioAdded);
+	ofAddListener(tuioClientEm.cursorRemoved,this,&electromagnetica::tuioRemoved);
+	ofAddListener(tuioClientEm.cursorUpdated,this,&electromagnetica::tuioUpdated);*/
+
+   
+};
+
+
+//scene notifications
+void electromagnetica::sceneWillDisappear( ofxScene * toScreen ){
+    gui1->disable();
+   /* ofRemoveListener(tuioClientEm.cursorAdded,this,&electromagnetica::tuioAdded);
+	ofRemoveListener(tuioClientEm.cursorRemoved,this,&electromagnetica::tuioRemoved);
+	ofRemoveListener(tuioClientEm.cursorUpdated,this,&electromagnetica::tuioUpdated);*/
+
+}
+
+
+void electromagnetica::tuioAdded(ofxTuioCursor &tuioCursor){
+	ofPoint loc = ofPoint(tuioCursor.getX()*W_WIDTH,tuioCursor.getY()*W_HEIGHT);
+	//cout << "Point n" << tuioCursor.getSessionId() << " add at " << loc << endl;
+    
+    
+    // o1.touch(loc.x, loc.y,tuioCursor.getSessionId());
+    // h1.touch(loc.x, loc.y,tuioCursor.getSessionId());
+    
+    noiseShadow *h1 = new noiseShadow();
+    h1->setup();
+    hands.addObject(*h1);
+    hands.notifyTouch(loc.x, loc.y,tuioCursor.getSessionId());
+   
+}
+
+void electromagnetica::tuioUpdated(ofxTuioCursor &tuioCursor){
+    int mx = W_WIDTH*tuioCursor.getX();
+    int my =    W_HEIGHT*tuioCursor.getY();
+
+    hands.notifySlide(mx, my,tuioCursor.getSessionId(),tuioCursor.getMotionAccel());
+}
+
+void electromagnetica::tuioRemoved(ofxTuioCursor &tuioCursor){
+	ofPoint loc = ofPoint(tuioCursor.getX()*W_WIDTH,tuioCursor.getY()*W_HEIGHT);
+    //cout << "Point n" << tuioCursor.getSessionId() << " remove at " << loc << endl;
+    /*
+     if(id_slider1==tuioCursor.getSessionId()) id_slider1=NULL;
+     if(id_jumpingRect==tuioCursor.getSessionId()) id_jumpingRect=NULL;
+     if(id_moverect==tuioCursor.getSessionId()) id_moverect=NULL;*/
+    
+    
+    hands.removeObjectByTuioID(tuioCursor.getSessionId() );
+    
+    
+}
+

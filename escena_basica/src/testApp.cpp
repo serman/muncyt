@@ -9,13 +9,15 @@ void testApp::setup(){
 	ofBackground(32, 32, 32);
 	ofEnableSmoothing();
     
-		
+    tuioClient.start(3333);
+    ofAddListener(tuioClient.cursorAdded,this,&testApp::tuioAdded);
+	ofAddListener(tuioClient.cursorRemoved,this,&testApp::tuioRemoved);
+	ofAddListener(tuioClient.cursorUpdated,this,&testApp::tuioUpdated);
 	///////////////////////////////////////
 	
 	sceneManager = ofxSceneManager::instance();
-    	sceneManager->addScene( new electromagnetica(), SCENE_2);
 	sceneManager->addScene( new nuclear_debil(), SCENE_1);
-
+    sceneManager->addScene( new electromagnetica(), SCENE_2);
 	sceneManager->addScene( new nuclear_fuerte(), SCENE_3);
     sceneManager->addScene( new gravedad(), SCENE_4);
 	
@@ -25,10 +27,11 @@ void testApp::setup(){
 	sceneManager->setCurtainRiseTime(1.0);
 	sceneManager->setOverlapUpdate(true);
     //sceneManager->goToScene(SCENE_2);
+
 }
 
 void testApp::update(){
-	
+	tuioClient.getMessage();
 	float dt = 0.016666666;
 	sceneManager->update( dt );
 		
@@ -61,3 +64,21 @@ void testApp::keyPressed(int key){
 void testApp::windowResized(int w, int h){
 	sceneManager->windowResized(w,h); // in case your screens need to know, will forward to all of them
 }
+
+
+void testApp::tuioAdded(ofxTuioCursor &tuioCursor){
+    cout << "tuio added";
+    sceneManager->getCurrentScene()->tuioAdded(tuioCursor);
+}
+
+void testApp::tuioUpdated(ofxTuioCursor &tuioCursor){
+    sceneManager->getCurrentScene()->tuioUpdated(tuioCursor);
+}
+
+void testApp::tuioRemoved(ofxTuioCursor &tuioCursor){
+    sceneManager->getCurrentScene()->tuioRemoved(tuioCursor);
+    
+}
+
+
+

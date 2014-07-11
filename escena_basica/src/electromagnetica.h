@@ -20,13 +20,16 @@
 #include "Particle.h"
 #include "ofxUI.h"
 #include "waves.h"
+#include "tangiblesHandler.h"
+#include "noiseShadow.h"
+#include "ofxTuio.h"
+
 // -------------------------------------------------
 
 
 
 
 class electromagnetica : public ofxScene {
-
 public:
     vector<Particle> particles ;
     ofMesh meshParticles;
@@ -38,6 +41,11 @@ public:
     
 	void mousePressed( int x, int y, int button );
     void keyPressed(int key);
+    //scene notifications
+	void sceneWillAppear( ofxScene * fromScreen );
+	
+	//scene notifications
+	void sceneWillDisappear( ofxScene * toScreen );
     //shaders
     ofShader shader;
     void	setupShader();
@@ -48,10 +56,19 @@ public:
     void showDebug();
     float alpha;
     
-    void		setupGUI();
+    void setupGUI();
    	ofxUICanvas *gui1;
 	void		grabarScreen();
     waves mwave;
+    ofxTuioClient   tuioClientEm;
+    bool noiseMode=false;
+        tangiblesHandler hands;
+    
+    void	tuioAdded(ofxTuioCursor & tuioCursor);
+	void	tuioRemoved(ofxTuioCursor & tuioCursor);
+	void	tuioUpdated(ofxTuioCursor & tuioCursor);
+    
+    
 };
 
 #endif /* defined(__escena_basica__electromagnetica__) */

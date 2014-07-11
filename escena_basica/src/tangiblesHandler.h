@@ -12,11 +12,12 @@
 
 class tangiblesHandler{
 public:
-    long id_counter=1;
+    long id_counter;
     vector<tangibleObject *> objectsCol;
     
     tangiblesHandler(){
         //objectsCol=vector<tangibleObject> ();
+        id_counter=1;
     }    
 
 

@@ -8,7 +8,7 @@
 #include "electromagnetica.h"
 #include "nuclear_fuerte/nuclear_fuerte.h"
 #include "gravedad/gravedad.h"
-
+#include "ofxTuio.h"
 
 class testApp : public ofBaseApp{
 
@@ -26,4 +26,10 @@ class testApp : public ofBaseApp{
 		void windowResized(int w, int h);
 	
 		ofxSceneManager *		sceneManager;
+        ofxTuioClient tuioClient;
+    
+        void tuioAdded(ofxTuioCursor &tuioCursor);
+        void tuioUpdated(ofxTuioCursor &tuioCursor);
+        void tuioRemoved(ofxTuioCursor &tuioCursor);
+    
 };
