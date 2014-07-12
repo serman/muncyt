@@ -307,18 +307,18 @@ void nuclear_debil::draw(){
         bordeLine.clear();
     	float radioMuro = MIN(W_WIDTH, W_HEIGHT) / 2.0*0.85;
     	bordeLine.arc(centro, radioMuro, radioMuro, 0.0, 360.0, true, 180);
-        for(int i=0; i< circuloExt.getVertices().size(); i+=2){
-            circuloExt.getVertices()[i]+=ofRandom(-3,3);
-            bordeLine.getVertices()[i]+=ofRandom(-3,3);
-        }
+//        for(int i=0; i< circuloExt.getVertices().size(); i+=2){
+//            circuloExt.getVertices()[i]+=ofRandom(-3,3);
+//            bordeLine.getVertices()[i]+=ofRandom(-3,3);
+//        }
 		circuloExt.draw();
     entrada1.clear(); entrada2.clear();
     entrada1.arc(ofPoint(centro.x,centro.y-radioExt+100), 100, 100, 125, 270,true,180);
     entrada2.arc(ofPoint(centro.x,centro.y-radioExt+100), (radioExt-radioInt), (radioExt-radioInt), 125, 270,true,180);
-    for(int i=0; i< entrada1.getVertices().size(); i+=2){
-        entrada1.getVertices()[i]+=ofRandom(-3,3);
-        entrada2.getVertices()[i]+=ofRandom(-3,3);
-    }
+//    for(int i=0; i< entrada1.getVertices().size(); i+=2){
+//        entrada1.getVertices()[i]+=ofRandom(-3,3);
+//        entrada2.getVertices()[i]+=ofRandom(-3,3);
+//    }
 
     entrada1.draw();
     entrada2.draw();
