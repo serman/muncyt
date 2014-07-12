@@ -11,6 +11,7 @@
 
 void electromagnetica::setup(){
     alpha=1.0;
+	noiseMode=false;
     setupShader();
     setupGUI();
     mwave.setup();

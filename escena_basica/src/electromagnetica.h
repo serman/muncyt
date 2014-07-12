@@ -61,8 +61,8 @@ public:
 	void		grabarScreen();
     waves mwave;
     ofxTuioClient   tuioClientEm;
-    bool noiseMode=false;
-        tangiblesHandler hands;
+    bool noiseMode;
+	tangiblesHandler hands;
     
     void	tuioAdded(ofxTuioCursor & tuioCursor);
 	void	tuioRemoved(ofxTuioCursor & tuioCursor);

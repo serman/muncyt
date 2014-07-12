@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		7F2CBE7C1926ED1400981859 /* nuclear_debil_Collisions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7F2CBE7B1926ED1400981859 /* nuclear_debil_Collisions.cpp */; };
+		7F386C3A19713CD2003C9AF0 /* ofxAnimatable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7F386C2519713CD2003C9AF0 /* ofxAnimatable.cpp */; };
+		7F386C3B19713CD2003C9AF0 /* ofxAnimatableFloat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7F386C2719713CD2003C9AF0 /* ofxAnimatableFloat.cpp */; };
+		7F386C3C19713CD2003C9AF0 /* ofxAnimatableOfColor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7F386C2919713CD2003C9AF0 /* ofxAnimatableOfColor.cpp */; };
+		7F386C3D19713CD2003C9AF0 /* ofxAnimatableOfPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7F386C2B19713CD2003C9AF0 /* ofxAnimatableOfPoint.cpp */; };
 		7F5F0000192A035000CA8725 /* ofxXmlSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7F5FFFFB192A035000CA8725 /* ofxXmlSettings.cpp */; };
 		7F5F0007192A689200CA8725 /* nuclear_debil_xml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7F5F0006192A689200CA8725 /* nuclear_debil_xml.cpp */; };
 		7F5FFFFD192A035000CA8725 /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7F5FFFF6192A035000CA8725 /* tinyxml.cpp */; };
@@ -92,10 +96,6 @@
 		E7F985F815E0DEA3003869B5 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7F985F515E0DE99003869B5 /* Accelerate.framework */; };
 		F74B89AF196EEE3C005F3893 /* consts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F74B89AE196EEE3C005F3893 /* consts.cpp */; };
 		F74B89B3196EFF27005F3893 /* nuclear_debil_Interaction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F74B89B1196EFF27005F3893 /* nuclear_debil_Interaction.cpp */; };
-		F74B89DC196F4ECC005F3893 /* ofxAnimatable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F74B89D4196F4ECC005F3893 /* ofxAnimatable.cpp */; };
-		F74B89DD196F4ECC005F3893 /* ofxAnimatableFloat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F74B89D6196F4ECC005F3893 /* ofxAnimatableFloat.cpp */; };
-		F74B89DE196F4ECC005F3893 /* ofxAnimatableOfColor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F74B89D8196F4ECC005F3893 /* ofxAnimatableOfColor.cpp */; };
-		F74B89DF196F4ECC005F3893 /* ofxAnimatableOfPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F74B89DA196F4ECC005F3893 /* ofxAnimatableOfPoint.cpp */; };
 		F74B89F0196F4EDD005F3893 /* ofxScreenCurtain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F74B89EE196F4EDD005F3893 /* ofxScreenCurtain.cpp */; };
 		F74B89F3196F5090005F3893 /* testApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F74B89F1196F5090005F3893 /* testApp.cpp */; };
 		F74B89F7196F6860005F3893 /* electromagnetica.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F74B89F5196F6860005F3893 /* electromagnetica.cpp */; };
@@ -194,6 +194,14 @@
 /* Begin PBXFileReference section */
 		7F25A639191E9F6A006A4E30 /* Anillo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Anillo.h; sourceTree = "<group>"; };
 		7F2CBE7B1926ED1400981859 /* nuclear_debil_Collisions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuclear_debil_Collisions.cpp; sourceTree = "<group>"; };
+		7F386C2519713CD2003C9AF0 /* ofxAnimatable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxAnimatable.cpp; sourceTree = "<group>"; };
+		7F386C2619713CD2003C9AF0 /* ofxAnimatable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxAnimatable.h; sourceTree = "<group>"; };
+		7F386C2719713CD2003C9AF0 /* ofxAnimatableFloat.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxAnimatableFloat.cpp; sourceTree = "<group>"; };
+		7F386C2819713CD2003C9AF0 /* ofxAnimatableFloat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxAnimatableFloat.h; sourceTree = "<group>"; };
+		7F386C2919713CD2003C9AF0 /* ofxAnimatableOfColor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxAnimatableOfColor.cpp; sourceTree = "<group>"; };
+		7F386C2A19713CD2003C9AF0 /* ofxAnimatableOfColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxAnimatableOfColor.h; sourceTree = "<group>"; };
+		7F386C2B19713CD2003C9AF0 /* ofxAnimatableOfPoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxAnimatableOfPoint.cpp; sourceTree = "<group>"; };
+		7F386C2C19713CD2003C9AF0 /* ofxAnimatableOfPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxAnimatableOfPoint.h; sourceTree = "<group>"; };
 		7F5F0006192A689200CA8725 /* nuclear_debil_xml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuclear_debil_xml.cpp; sourceTree = "<group>"; };
 		7F5FFFF6192A035000CA8725 /* tinyxml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxml.cpp; sourceTree = "<group>"; };
 		7F5FFFF7192A035000CA8725 /* tinyxml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tinyxml.h; sourceTree = "<group>"; };
@@ -361,14 +369,6 @@
 		F74B89AE196EEE3C005F3893 /* consts.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = consts.cpp; sourceTree = "<group>"; };
 		F74B89B0196EF6E8005F3893 /* anilloButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = anilloButton.h; sourceTree = "<group>"; };
 		F74B89B1196EFF27005F3893 /* nuclear_debil_Interaction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuclear_debil_Interaction.cpp; sourceTree = "<group>"; };
-		F74B89D4196F4ECC005F3893 /* ofxAnimatable.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxAnimatable.cpp; sourceTree = "<group>"; };
-		F74B89D5196F4ECC005F3893 /* ofxAnimatable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxAnimatable.h; sourceTree = "<group>"; };
-		F74B89D6196F4ECC005F3893 /* ofxAnimatableFloat.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxAnimatableFloat.cpp; sourceTree = "<group>"; };
-		F74B89D7196F4ECC005F3893 /* ofxAnimatableFloat.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxAnimatableFloat.h; sourceTree = "<group>"; };
-		F74B89D8196F4ECC005F3893 /* ofxAnimatableOfColor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxAnimatableOfColor.cpp; sourceTree = "<group>"; };
-		F74B89D9196F4ECC005F3893 /* ofxAnimatableOfColor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxAnimatableOfColor.h; sourceTree = "<group>"; };
-		F74B89DA196F4ECC005F3893 /* ofxAnimatableOfPoint.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxAnimatableOfPoint.cpp; sourceTree = "<group>"; };
-		F74B89DB196F4ECC005F3893 /* ofxAnimatableOfPoint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxAnimatableOfPoint.h; sourceTree = "<group>"; };
 		F74B89EE196F4EDD005F3893 /* ofxScreenCurtain.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxScreenCurtain.cpp; sourceTree = "<group>"; };
 		F74B89EF196F4EDD005F3893 /* ofxScreenCurtain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxScreenCurtain.h; sourceTree = "<group>"; };
 		F74B89F1196F5090005F3893 /* testApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testApp.cpp; sourceTree = "<group>"; };
@@ -543,6 +543,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7F386BE619713CD1003C9AF0 /* ofxAnimatable */ = {
+			isa = PBXGroup;
+			children = (
+				7F386C2419713CD2003C9AF0 /* src */,
+			);
+			name = ofxAnimatable;
+			path = ../../../addons/ofxAnimatable;
+			sourceTree = SOURCE_ROOT;
+		};
+		7F386C2419713CD2003C9AF0 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				7F386C2519713CD2003C9AF0 /* ofxAnimatable.cpp */,
+				7F386C2619713CD2003C9AF0 /* ofxAnimatable.h */,
+				7F386C2719713CD2003C9AF0 /* ofxAnimatableFloat.cpp */,
+				7F386C2819713CD2003C9AF0 /* ofxAnimatableFloat.h */,
+				7F386C2919713CD2003C9AF0 /* ofxAnimatableOfColor.cpp */,
+				7F386C2A19713CD2003C9AF0 /* ofxAnimatableOfColor.h */,
+				7F386C2B19713CD2003C9AF0 /* ofxAnimatableOfPoint.cpp */,
+				7F386C2C19713CD2003C9AF0 /* ofxAnimatableOfPoint.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		7F5FFFF4192A035000CA8725 /* ofxXmlSettings */ = {
 			isa = PBXGroup;
 			children = (
@@ -811,9 +835,9 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				7F386BE619713CD1003C9AF0 /* ofxAnimatable */,
 				F74B8A10196F7AA6005F3893 /* ofxUI */,
 				F74B89EC196F4EDD005F3893 /* ofxScreenCurtain */,
-				F74B89D2196F4ECC005F3893 /* ofxAnimatable */,
 				7FB6BF0519389B7C00C396A4 /* ofxTuio */,
 				F7EBD16819334D11009805D5 /* ofxOsc */,
 				7F5FFFF4192A035000CA8725 /* ofxXmlSettings */,
@@ -920,30 +944,6 @@
 				F74B89B0196EF6E8005F3893 /* anilloButton.h */,
 			);
 			name = touchObj;
-			sourceTree = "<group>";
-		};
-		F74B89D2196F4ECC005F3893 /* ofxAnimatable */ = {
-			isa = PBXGroup;
-			children = (
-				F74B89D3196F4ECC005F3893 /* src */,
-			);
-			name = ofxAnimatable;
-			sourceTree = "<group>";
-		};
-		F74B89D3196F4ECC005F3893 /* src */ = {
-			isa = PBXGroup;
-			children = (
-				F74B89D4196F4ECC005F3893 /* ofxAnimatable.cpp */,
-				F74B89D5196F4ECC005F3893 /* ofxAnimatable.h */,
-				F74B89D6196F4ECC005F3893 /* ofxAnimatableFloat.cpp */,
-				F74B89D7196F4ECC005F3893 /* ofxAnimatableFloat.h */,
-				F74B89D8196F4ECC005F3893 /* ofxAnimatableOfColor.cpp */,
-				F74B89D9196F4ECC005F3893 /* ofxAnimatableOfColor.h */,
-				F74B89DA196F4ECC005F3893 /* ofxAnimatableOfPoint.cpp */,
-				F74B89DB196F4ECC005F3893 /* ofxAnimatableOfPoint.h */,
-			);
-			name = src;
-			path = ../../../addons/ofxAnimatabler/src;
 			sourceTree = "<group>";
 		};
 		F74B89EC196F4EDD005F3893 /* ofxScreenCurtain */ = {
@@ -1349,7 +1349,6 @@
 				7FFD07A61913A0450022FA53 /* b2Collision.cpp in Sources */,
 				7FFD07A71913A0450022FA53 /* b2Distance.cpp in Sources */,
 				7FFD07A81913A0450022FA53 /* b2DynamicTree.cpp in Sources */,
-				F74B89DC196F4ECC005F3893 /* ofxAnimatable.cpp in Sources */,
 				F74B8A8E196F7AA7005F3893 /* ofxUISlider.cpp in Sources */,
 				7FFD07A91913A0450022FA53 /* b2TimeOfImpact.cpp in Sources */,
 				7FFD07AA1913A0450022FA53 /* b2ChainShape.cpp in Sources */,
@@ -1375,7 +1374,6 @@
 				7FFD07B01913A0450022FA53 /* b2Math.cpp in Sources */,
 				7FFD07B11913A0450022FA53 /* b2Settings.cpp in Sources */,
 				F7EBD19D19334D11009805D5 /* OscReceivedElements.cpp in Sources */,
-				F74B89DD196F4ECC005F3893 /* ofxAnimatableFloat.cpp in Sources */,
 				F74B8A93196F7AA7005F3893 /* ofxUITabBar.cpp in Sources */,
 				7FFD07B21913A0450022FA53 /* b2StackAllocator.cpp in Sources */,
 				7FFD07B31913A0450022FA53 /* b2Timer.cpp in Sources */,
@@ -1407,7 +1405,6 @@
 				7FFD07C11913A0450022FA53 /* b2PolygonAndCircleContact.cpp in Sources */,
 				7FFD07C21913A0450022FA53 /* b2PolygonContact.cpp in Sources */,
 				7FFD07C31913A0450022FA53 /* b2DistanceJoint.cpp in Sources */,
-				F74B89DE196F4ECC005F3893 /* ofxAnimatableOfColor.cpp in Sources */,
 				F7EBD19B19334D11009805D5 /* OscOutboundPacketStream.cpp in Sources */,
 				F74B8A70196F7AA7005F3893 /* ofxUI2DGraph.cpp in Sources */,
 				7FFD07C41913A0450022FA53 /* b2FrictionJoint.cpp in Sources */,
@@ -1450,7 +1447,6 @@
 				7FFD0B78191434000022FA53 /* particulas.cpp in Sources */,
 				F7EBD16519334C43009805D5 /* cheapComm.cpp in Sources */,
 				F74B8A88196F7AA7005F3893 /* ofxUINumberDialer.cpp in Sources */,
-				F74B89DF196F4ECC005F3893 /* ofxAnimatableOfPoint.cpp in Sources */,
 				7F93F38C19186382004761F3 /* Efectos.cpp in Sources */,
 				7F2CBE7C1926ED1400981859 /* nuclear_debil_Collisions.cpp in Sources */,
 				F74B8A78196F7AA7005F3893 /* ofxUIDropDownList.cpp in Sources */,
@@ -1467,6 +1463,10 @@
 				F74B8A87196F7AA7005F3893 /* ofxUIMultiImageToggle.cpp in Sources */,
 				7F5F0007192A689200CA8725 /* nuclear_debil_xml.cpp in Sources */,
 				7FB6BF6119389C2700C396A4 /* tuioComm.cpp in Sources */,
+				7F386C3A19713CD2003C9AF0 /* ofxAnimatable.cpp in Sources */,
+				7F386C3B19713CD2003C9AF0 /* ofxAnimatableFloat.cpp in Sources */,
+				7F386C3C19713CD2003C9AF0 /* ofxAnimatableOfColor.cpp in Sources */,
+				7F386C3D19713CD2003C9AF0 /* ofxAnimatableOfPoint.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1521,7 +1521,7 @@
 					"-lpthread",
 					"-mtune=native",
 				);
-				SDKROOT = macosx10.8;
+				SDKROOT = macosx10.6;
 			};
 			name = Debug;
 		};
@@ -1566,7 +1566,7 @@
 					"-lpthread",
 					"-mtune=native",
 				);
-				SDKROOT = macosx10.8;
+				SDKROOT = macosx10.6;
 			};
 			name = Release;
 		};
