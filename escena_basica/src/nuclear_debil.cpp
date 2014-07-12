@@ -333,9 +333,9 @@ void nuclear_debil::update(float dt) {
 
 //--------------------------------------------------------------
 void nuclear_debil::draw(){
-    ofColor colorCentro = ofColor::fromHsb(0, 50+50*sin(ofGetElapsedTimef()/frecFondo*TWO_PI), 20);
- //   ofBackgroundGradient (colorCentro, ofColor::black, OF_GRADIENT_CIRCULAR);
-    ofBackground(colorCentro);
+    ofColor colorCentro = ofColor::fromHsb(0, 0, 50+50*sin(ofGetElapsedTimef()/frecFondo*TWO_PI));
+    ofBackgroundGradient (colorCentro, ofColor::black, OF_GRADIENT_CIRCULAR);
+ //   ofBackground(colorCentro);
     ofPushMatrix(); //colocamos el canvas en su posicion centrada
     ofTranslate((ofGetWidth()-W_WIDTH)/2, 0);
     
@@ -362,21 +362,16 @@ void nuclear_debil::draw(){
         bordeLine.clear();
     	float radioMuro = MIN(W_WIDTH, W_HEIGHT) / 2.0*0.85;
     	bordeLine.arc(centro, radioMuro, radioMuro, 0.0, 360.0, true, 180);
-//        for(int i=0; i< circuloExt.getVertices().size(); i+=2){
-//            circuloExt.getVertices()[i]+=ofRandom(-3,3);
-//            bordeLine.getVertices()[i]+=ofRandom(-3,3);
-//        }
 		circuloExt.draw();
-    entrada1.clear(); entrada2.clear();
-    entrada1.arc(ofPoint(centro.x,centro.y-radioExt+100), 100, 100, 125, 270,true,180);
-    entrada2.arc(ofPoint(centro.x,centro.y-radioExt+100), (radioExt-radioInt), (radioExt-radioInt), 125, 270,true,180);
-//    for(int i=0; i< entrada1.getVertices().size(); i+=2){
-//        entrada1.getVertices()[i]+=ofRandom(-3,3);
-//        entrada2.getVertices()[i]+=ofRandom(-3,3);
-//    }
+	
+		entrada1.clear(); 
+		entrada2.clear();
+	
+		entrada1.arc(ofPoint(centro.x,centro.y-radioExt+100), 100, 100, 125, 270,true,180);
+		entrada2.arc(ofPoint(centro.x,centro.y-radioExt+100), (radioExt-radioInt), (radioExt-radioInt), 125, 270,true,180);
 
-    entrada1.draw();
-    entrada2.draw();
+		entrada1.draw();
+		entrada2.draw();
 		// PARED INTERIOR
 		//box2d.drawGround();
 		bordeLine.draw();
@@ -610,7 +605,6 @@ void nuclear_debil::addDestello(float px, float py) {
 void nuclear_debil::borrar_nucleos() {
 	for(int i=nucleos.size()-1; i>0; i--) {
 		nucleos[i].get()->destroy();
-		nucleos.erase(neutrones.begin()+i);
 	}
 	nucleos.clear();
 	
@@ -619,7 +613,6 @@ void nuclear_debil::borrar_nucleos() {
 void nuclear_debil::borrar_neutrones() {
 	for(int i=neutrones.size()-1; i>0; i--) {
 		neutrones[i].get()->destroy();
-		neutrones.erase(neutrones.begin()+i);
 	}
 	neutrones.clear();
 
