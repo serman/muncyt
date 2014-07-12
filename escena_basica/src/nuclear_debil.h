@@ -70,6 +70,9 @@ public:
 	void mouseReleased(int x, int y, int button);
 	void resized(int w, int h);
 	
+	void init_Escena();
+	void exit_Escena();
+	
 	EnergyData	energData;
     
 	ofxBox2d                            box2d;			  //	the box2d world
@@ -100,6 +103,9 @@ public:
 
 	void addNeutron(int xx, int yy);
 	void addNeutron(int xx, int yy, float vVal, float vAng);
+
+	void borrar_nucleos();
+	void borrar_neutrones();
 	
 	void setModoParticulas(int _modo);
 	int modoDrawParticulas;
