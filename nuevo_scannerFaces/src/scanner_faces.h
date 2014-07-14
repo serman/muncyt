@@ -21,7 +21,7 @@ struct MensajeTime {
 	void draw(ofTrueTypeFont font, ofTrueTypeFont fontPeque) {
 		
 		ofPushStyle();
-		ofSetColor(255,160);
+		ofSetColor(255,180);
 		ofFill();
 //		ofRectangle rTmp = font.getStringBoundingBox(mensaje, ofGetWidth()/2, ofGetHeight()/6);
 //		font.drawString(mensaje + ofToString(rTmp), rTmp.x-rTmp.width/2, rTmp.y);
@@ -30,14 +30,14 @@ struct MensajeTime {
 //		ofRect(rTmp);
 		
 		
-		ofSetColor(200,0,0,160);
+//		ofSetColor(200,0,0,160);
 //		ofRectangle rTmp1 = font.getStringBoundingBox(mensaje_1, rTmp.x, rTmp.y+rTmp.height);
 //		font.drawString(mensaje_1, rTmp1.x-rTmp1.width/2, rTmp1.y+30);
 		ofRectangle rTmp1 = font.getStringBoundingBox(mensaje_1, 0,0);
 		font.drawString(mensaje_1, ofGetWidth()/2-rTmp1.width/2, 180);
 //		ofRect(rTmp1);
 		
-		ofSetColor(200,200,0,160);
+		ofSetColor(200,200,0,180);
 //		ofRectangle rTmp2 = font.getStringBoundingBox(mensaje_peque, rTmp1.x, rTmp1.y+rTmp1.height);
 //		fontPeque.drawString(mensaje_peque, rTmp2.x-rTmp2.width/2, rTmp2.y);//+rTmp.height+30);
 		ofRectangle rTmp2 = font.getStringBoundingBox(mensaje_peque, 0,0);

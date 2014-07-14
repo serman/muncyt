@@ -11,8 +11,6 @@
 using namespace ofxCv;
 using namespace cv;
 
-
-
 void scanner_faces::setupEscenas() {
 	
 	contCaras = 0;

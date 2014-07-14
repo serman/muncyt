@@ -150,7 +150,7 @@ void nuclear_debil::setup() {
 	
 	//setupTuio();
 	
-	init_Escena();
+	//init_Escena();
 }
 
 void nuclear_debil::init_Escena() {
@@ -174,6 +174,8 @@ void nuclear_debil::init_Escena() {
 	for(int i =0; i<nCircs; i++) {
 		addNucleo(centro.x+ofRandom(-1,1), centro.y+ofRandom(-1,1), rNucleo);
 	}
+	
+	
 	
 	
 	// addListeners
@@ -642,7 +644,7 @@ void nuclear_debil::sceneWillAppear( ofxScene * fromScreen ){  // reset our scen
 	ofAddListener(tuioClient.cursorRemoved,this,&nuclear_debil::tuioRemoved);
 	ofAddListener(tuioClient.cursorUpdated,this,&nuclear_debil::tuioUpdated);
     */
-    
+    init_Escena();
 };
 
 
@@ -653,6 +655,7 @@ void nuclear_debil::sceneWillDisappear( ofxScene * toScreen ){
 	ofRemoveListener(tuioClient.cursorRemoved,this,&nuclear_debil::tuioRemoved);
 	ofRemoveListener(tuioClient.cursorUpdated,this,&nuclear_debil::tuioUpdated);
    */
+	exit_Escena();
 }
 
 
