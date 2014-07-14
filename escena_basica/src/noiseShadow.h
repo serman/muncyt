@@ -20,8 +20,9 @@ public:
     long age; //time of life
     ofPath mshape;
     ofColor mcolor;
-    ofVec3f rotVect=ofVec3f(0,0,1);
+    ofVec3f rotVect;//=ofVec3f(0,0,1);
     void setup(){
+		rotVect=ofVec3f(0,0,1);
         cursor_id=-1;
         //tangibleObject::setup();
         for(int i=0; i<10; i++)
