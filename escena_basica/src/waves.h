@@ -29,11 +29,11 @@ public:
     ofVec2f pInit;
     ofVec2f pEnd;
     ofVec2f xvector;
-    float theta = 0.05;
-    float dx = (2*PI / 500.0); // si t es mas pequeño hay mas ondas
+    float theta;// = 0.05;
+    float dx;// = (2*PI / 500.0); // si t es mas pequeño hay mas ondas
     int npuntos;
     int rotation;
-    float incr=-0.11; //esto define la frecuencia
+    float incr;//=-0.11; //esto define la frecuencia
     //gestion de punteros
     long p1_id;
     long p2_id;
@@ -96,6 +96,10 @@ public:
         p1_id=-1;
         p2_id=-1;
        // isCompleted=false;
+		theta = 0.05;
+		dx = (2*PI / 500.0); // si t es mas pequeño hay mas ondas
+		incr=-0.11; //esto define la frecuencia
+		
     }
     
     void update(){
