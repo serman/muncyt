@@ -10,8 +10,10 @@
 
 
 void electromagnetica::setup(){
+
     alpha=0.2;
     options_sampling=3;
+
     setupShader();
     setupGUI();
     wavesm.setup();

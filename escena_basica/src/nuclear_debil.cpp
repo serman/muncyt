@@ -31,27 +31,24 @@ void nuclear_debil::setup() {
 	// load the texure
 	ofDisableArbTex();
 	ofLoadImage(texPartic, "media/images/dot.png");
-	
 
+	
 	fpsAct = 370.0;
 	
 	// BOX2D
 	box2d.init();
-    cout << "tiriri";
 	box2d.setGravity(0, 0);
-        cout << "tiriri2" << endl;
 	box2d.createBounds();
-//	box2d.setFPS(30.0);
-	box2d.setFPS(fpsAct);
+//	box2d.setFPS(fpsAct);
 //	box2d.registerGrabbing();	// Esto creo que es para interaccion con mouse
-        cout << "tiriri3" << endl;
+
+	// Lo paso a init_Escena()
 	// EVENTOS
 	// register the listener so that we get the events
-    box2d.enableEvents();
-            cout << "tiriri3.5" << endl;
-	ofAddListener(box2d.contactStartEvents, this, &nuclear_debil::contactStart);
-	ofAddListener(box2d.contactEndEvents, this, &nuclear_debil::contactEnd);
-	        cout << "tiriri4" << endl;
+//    box2d.enableEvents();
+//	ofAddListener(box2d.contactStartEvents, this, &nuclear_debil::contactStart);
+//	ofAddListener(box2d.contactEndEvents, this, &nuclear_debil::contactEnd);
+	
 	
 	// Poner Muro circular
 	float radioMuro = MIN(W_WIDTH, W_HEIGHT) / 2.0*0.85;
@@ -81,8 +78,9 @@ void nuclear_debil::setup() {
 
 //	fuerzaAng += fuerzaWAng/ofGetFrameRate();
 	fuerza = ofPoint(fuerzaVal*cos(fuerzaAng), fuerzaVal*sin(fuerzaAng));
-
-	swFuerza = false;
+	
+	// Lo paso a init_Escena
+//	swFuerza = false;	// Lo paso a init_Escena
 	
 	// radios
 	rNucleo	= 14;
@@ -92,14 +90,14 @@ void nuclear_debil::setup() {
 	velocNeutronDestroy = velocNeutronLim*0.7;
 	velocNeutronLanz = 120;
 
-	modoDrawParticulas = MODO_PARTIC;	
-	
-	ofLogVerbose("Add nucleos");
-	// add some nucleos
-	int nCircs = 60 + floor(  ofRandom(20) );
-	for(int i =0; i<nCircs; i++) {
-		addNucleo(centro.x+ofRandom(-1,1), centro.y+ofRandom(-1,1), rNucleo);
-	}
+	// Lo paso a init_Escena()
+//	modoDrawParticulas = MODO_PARTIC;
+//	ofLogVerbose("Add nucleos");
+//	// add some nucleos
+//	int nCircs = 60 + floor(  ofRandom(20) );
+//	for(int i =0; i<nCircs; i++) {
+//		addNucleo(centro.x+ofRandom(-1,1), centro.y+ofRandom(-1,1), rNucleo);
+//	}
 	
 	cargaSounds();
 	
@@ -130,13 +128,14 @@ void nuclear_debil::setup() {
     buttonSpeed2.btype=TYPE_ACC;
     buttonCollide.set(centro.x-(dRad*0.9/2),centro.y-rMed-(dRad*0.9/2), dRad*0.9,dRad*0.9);
     buttonCollide.btype=TYPE_CRASH;
-    
+
     touchElements.addObject(buttonSpeed1);
     touchElements.addObject(buttonSpeed2);
     touchElements.addObject(buttonCollide);
-    ofAddListener(buttonSpeed2.buttonEvent ,this, &nuclear_debil::onButtonPressed);
-    ofAddListener(buttonSpeed1.buttonEvent ,this, &nuclear_debil::onButtonPressed);
-    ofAddListener(buttonCollide.buttonEvent ,this, &nuclear_debil::onButtonPressed);
+    // Lo paso a init_Escena()
+//    ofAddListener(buttonSpeed2.buttonEvent ,this, &nuclear_debil::onButtonPressed);
+//    ofAddListener(buttonSpeed1.buttonEvent ,this, &nuclear_debil::onButtonPressed);
+//    ofAddListener(buttonCollide.buttonEvent ,this, &nuclear_debil::onButtonPressed);
     
 	//anillo.setUI(anilloUI_L, anilloUI_R);
 	
@@ -144,16 +143,73 @@ void nuclear_debil::setup() {
 // Otros - - - - - 
 	swBlendModeADD = false;
 	
-	
 	frecFondo = 4.0;
-	
-	swDrawTRAILS = false;
-	
 
+	// Esto deber’a ser comœn a todas las escenas
 	myComm.setup();
 	
-	
 	//setupTuio();
+	
+	init_Escena();
+}
+
+void nuclear_debil::init_Escena() {
+	// init variables
+	fpsAct = 370.0;
+	box2d.setFPS(fpsAct);
+
+	swFuerza = false;
+	
+	modoDrawParticulas = MODO_PARTIC;	
+	swDrawTRAILS = true;
+
+
+	ofPoint centro = ofPoint(W_WIDTH/2.0, W_HEIGHT/2.0);
+
+	// crear cosas
+	ofLogVerbose("Add nucleos");
+	// add some nucleos
+	nucleos.clear();
+	int nCircs = 60 + floor(  ofRandom(20) );
+	for(int i =0; i<nCircs; i++) {
+		addNucleo(centro.x+ofRandom(-1,1), centro.y+ofRandom(-1,1), rNucleo);
+	}
+	
+	
+	// addListeners
+    box2d.enableEvents();
+	ofAddListener(box2d.contactStartEvents, this, &nuclear_debil::contactStart);
+	ofAddListener(box2d.contactEndEvents, this, &nuclear_debil::contactEnd);
+	
+    ofAddListener(buttonSpeed2.buttonEvent ,this, &nuclear_debil::onButtonPressed);
+    ofAddListener(buttonSpeed1.buttonEvent ,this, &nuclear_debil::onButtonPressed);
+    ofAddListener(buttonCollide.buttonEvent ,this, &nuclear_debil::onButtonPressed);
+	
+}
+
+void nuclear_debil::exit_Escena() {
+
+	// borrar objetos
+	// Eliminar neutrones
+	borrar_neutrones();
+	
+	// Eliminar nucleos
+	borrar_nucleos();
+	
+	// Eliminar los destellos que queden
+	destellos.clear();
+	
+	
+	// quitar listeners
+    box2d.disableEvents();
+	ofRemoveListener(box2d.contactStartEvents, this, &nuclear_debil::contactStart);
+	ofRemoveListener(box2d.contactEndEvents, this, &nuclear_debil::contactEnd);
+	
+    ofRemoveListener(buttonSpeed2.buttonEvent ,this, &nuclear_debil::onButtonPressed);
+    ofRemoveListener(buttonSpeed1.buttonEvent ,this, &nuclear_debil::onButtonPressed);
+    ofRemoveListener(buttonCollide.buttonEvent ,this, &nuclear_debil::onButtonPressed);	
+	
+	
 }
 
 void nuclear_debil::cargaSounds() {
@@ -187,7 +243,6 @@ void nuclear_debil::update(float dt) {
 		CineticData cd = nuevasPartics[i];
 		if(cd.tipoPart==tipoNeutron) {
 			addNeutron(cd.x, cd.y, velocNeutronLanz, cd.vAng);
-			ofLogVerbose("addNeutron en escena************************** n n n ********");
 		}
 	}
 	nuevasPartics.clear();	// **** BORRADO ****
@@ -253,7 +308,7 @@ void nuclear_debil::update(float dt) {
     buttonSpeed1.update_prev(anillo.getParticlePosition());
     buttonSpeed2.update_prev(anillo.getParticlePosition());
     
-     touchElements.update();
+	touchElements.update();
     hands.update();
 	/*// Interaccion de los blobs recibidos
 	list<ofxTuioCursor*>cursorList = tuioClient.getTuioCursors();
@@ -278,9 +333,9 @@ void nuclear_debil::update(float dt) {
 
 //--------------------------------------------------------------
 void nuclear_debil::draw(){
-    ofColor colorCentro = ofColor::fromHsb(0, 50+50*sin(ofGetElapsedTimef()/frecFondo*TWO_PI), 20);
- //   ofBackgroundGradient (colorCentro, ofColor::black, OF_GRADIENT_CIRCULAR);
-    ofBackground(colorCentro);
+    ofColor colorCentro = ofColor::fromHsb(0, 0, 50+50*sin(ofGetElapsedTimef()/frecFondo*TWO_PI));
+    ofBackgroundGradient (colorCentro, ofColor::black, OF_GRADIENT_CIRCULAR);
+ //   ofBackground(colorCentro);
     ofPushMatrix(); //colocamos el canvas en su posicion centrada
     ofTranslate((ofGetWidth()-W_WIDTH)/2, 0);
     
@@ -307,21 +362,16 @@ void nuclear_debil::draw(){
         bordeLine.clear();
     	float radioMuro = MIN(W_WIDTH, W_HEIGHT) / 2.0*0.85;
     	bordeLine.arc(centro, radioMuro, radioMuro, 0.0, 360.0, true, 180);
-        for(int i=0; i< circuloExt.getVertices().size(); i+=2){
-            circuloExt.getVertices()[i]+=ofRandom(-3,3);
-            bordeLine.getVertices()[i]+=ofRandom(-3,3);
-        }
 		circuloExt.draw();
-    entrada1.clear(); entrada2.clear();
-    entrada1.arc(ofPoint(centro.x,centro.y-radioExt+100), 100, 100, 125, 270,true,180);
-    entrada2.arc(ofPoint(centro.x,centro.y-radioExt+100), (radioExt-radioInt), (radioExt-radioInt), 125, 270,true,180);
-    for(int i=0; i< entrada1.getVertices().size(); i+=2){
-        entrada1.getVertices()[i]+=ofRandom(-3,3);
-        entrada2.getVertices()[i]+=ofRandom(-3,3);
-    }
+	
+		entrada1.clear(); 
+		entrada2.clear();
+	
+		entrada1.arc(ofPoint(centro.x,centro.y-radioExt+100), 100, 100, 125, 270,true,180);
+		entrada2.arc(ofPoint(centro.x,centro.y-radioExt+100), (radioExt-radioInt), (radioExt-radioInt), 125, 270,true,180);
 
-    entrada1.draw();
-    entrada2.draw();
+		entrada1.draw();
+		entrada2.draw();
 		// PARED INTERIOR
 		//box2d.drawGround();
 		bordeLine.draw();
@@ -552,6 +602,21 @@ void nuclear_debil::addDestello(float px, float py) {
 	
 }
 
+void nuclear_debil::borrar_nucleos() {
+	for(int i=nucleos.size()-1; i>0; i--) {
+		nucleos[i].get()->destroy();
+	}
+	nucleos.clear();
+	
+}
+
+void nuclear_debil::borrar_neutrones() {
+	for(int i=neutrones.size()-1; i>0; i--) {
+		neutrones[i].get()->destroy();
+	}
+	neutrones.clear();
+
+}
 
 //--------------------------------------------------------------
 void nuclear_debil::resized(int w, int h){
@@ -562,8 +627,6 @@ void nuclear_debil::resized(int w, int h){
 
 void nuclear_debil::setupTuio() {
 	
-
-    
   /*  ofAddListener(tuioClient.cursorAdded,this,&nuclear_debil::tuioAdded);
 	ofAddListener(tuioClient.cursorRemoved,this,&nuclear_debil::tuioRemoved);
 	ofAddListener(tuioClient.cursorUpdated,this,&nuclear_debil::tuioUpdated);

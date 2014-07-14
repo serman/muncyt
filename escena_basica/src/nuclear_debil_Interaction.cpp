@@ -23,14 +23,16 @@ void nuclear_debil::keyPressed(int key) {
 	
 	if(key=='q') {
 		// Quitar particulas
-		for(int i=0; i<nucleos.size(); i++) {
-			nucleos[i].get()->destroy();
-		}
-		nucleos.clear();
-		for(int i=0; i<neutrones.size(); i++) {
-			neutrones[i].get()->destroy();
-		}
-		neutrones.clear();
+		borrar_nucleos();
+		borrar_neutrones();
+//		for(int i=0; i<nucleos.size(); i++) {
+//			nucleos[i].get()->destroy();
+//		}
+//		nucleos.clear();
+//		for(int i=0; i<neutrones.size(); i++) {
+//			neutrones[i].get()->destroy();
+//		}
+//		neutrones.clear();
 	}
 	
 	if(key=='f') swFuerza = !swFuerza;
@@ -44,7 +46,7 @@ void nuclear_debil::keyPressed(int key) {
 		box2d.setFPS(fpsAct);
 	}
 	
-	if(key == 's') ofToggleFullscreen();
+//	if(key == 's') ofToggleFullscreen();
 	
 	if(key=='b') swBlendModeADD=!swBlendModeADD;
 	
