@@ -22,7 +22,7 @@ ControlP5 cp5;
 // Interface elements
 
 PFont font1, font2;
-
+PFont courier;
 // Logic
 
 // GUI
@@ -52,8 +52,12 @@ ArrayList<Rectangle> fakeDetectedfaces; //faces detected with this fake algorith
 boolean fileLoaded=false; //is xml haar file loaded
 boolean isDebug=true;
 boolean doProcess; //controls reproduction
+
+boolean showInterface;
+
 String statusMsg = "";
 int idCur;
+
 
 
 
@@ -72,10 +76,10 @@ int slowOneOfEach= 1;
 float areaInterseccion=0;
 PImage img2; //the image we represent on the right side
 miniImages minimages;
-
+PImage imagebg;
 boolean amIOveraFace=false;
 void setup() { 
-  size(1280, 720,P2D);
+  size(1280, 1024,P2D);
   cp5 = new ControlP5(this);
   /*** OPENCV STUFF ***/
   loadNewPhoto("test640.jpg");
@@ -102,6 +106,7 @@ void setup() {
 
   font1 = createFont("Helvetica-Light", 21);
   font2 = createFont("Helvetica", 11);
+  courier= createFont("courier",15);
   mgraphics= createGraphics(100,100,P2D);
   minimages= new miniImages();
   minimages.setup();
@@ -113,10 +118,12 @@ void setup() {
     yposition+=yAxeMovement;yposition+=yAxeMovement;//yposition+=yAxeMovement;yposition+=yAxeMovement;
     xposition+=xAxeMovement;
   }
+  imagebg=loadImage("background.jpg");
 } //end setup
 
 
 void draw() {
+
   println(xposition);
   //actualizacion del rectangulo
     if(stagesCounter>stopStage){ //fin de una etapa toca mover cuadradito
@@ -139,6 +146,7 @@ void draw() {
 
   // Draw
   background(255);
+  image(imagebg,0,0,width, height);
 
   if(frameCount%40==0) slowMotion(false );
    if (doProcess && (frameCount% slowOneOfEach)==0) {
@@ -146,7 +154,7 @@ void draw() {
    }
   /****DRAW MAIN PHOTO****/
   pushMatrix();
-    translate(800,0);
+    translate(740,80);
     image(img, 0, 0);
     noFill();
     stroke(0, 255, 0,10);
@@ -175,13 +183,13 @@ void draw() {
 
 // Draw zoomed version   
   pushMatrix();  
-    translate(450,20);
+    translate(55,391);
     img2.filter(GRAY);
     image(img2,0,0,min(faceRectangle.width*2,250),min(faceRectangle.height*2,250));    
     image(mgraphics,0,0,min(faceRectangle.width*2,250),min(faceRectangle.height*2,250));
   popMatrix();
   
-
+if(showInterface){
   int yPos = marginT;
   int xPos = marginL;
   yPos+= 20;
@@ -190,27 +198,33 @@ void draw() {
   text("\"" + cascadeFile + "\"", xPos, yPos);
   fill(255, 0, 0 );
   yPos += 15;
-  text(statusMsg, xPos, yPos);
-  
-  textFont(font1);
+ 
+}
+  textFont(courier);
+  fill(255,255,255);
+  text(statusMsg, 376, 428);
+ /* textFont(font1);
   fill(20);
   text(" El sistema recorre toda la imagen \n buscando patrones de luminosidad \n cada vez en mas detalle ",xPos,yPos+250);
   text(" Compara la intensidad de color bajo las zonas \n blancas y negras y busca que la diferencia \n supere cierto umbral",xPos,yPos+350);
   text(" Para un ordenador, una cara humana sólo es un conjunto \n de contrastes dentro de una imagen",xPos,yPos+460);
- 
+ */
   if(amIOveraFace){ 
     if( stagesCounter==10 && (featuresCounter==2 || featuresCounter==6)){
       minimages.addImage(img2,mgraphics);
     }
-    if( stagesCounter==11 && (featuresCounter==6 || featuresCounter==22  || featuresCounter==37) ) {
+    if( stagesCounter==11 && (featuresCounter==6 ||  featuresCounter==37) ) {
       minimages.addImage(img2,mgraphics); 
     }
   } 
   
- 
+  
+  pushMatrix();
+  translate(746,836);
   minimages.draw();
+  popMatrix();
   fill(80);
-  if (isDebug==true)  debugInfo();
+  if (isDebug==true && showInterface)  debugInfo();
 
  
 }
@@ -311,7 +325,8 @@ void renderStages(int imgSize) {
       int j=featuresCounter; 
       Tree tree = stage.getTree(j);
      // println("[main] Processing tree # " + j + " in stage " + (i+1));
-      statusMsg = "[main] Processing tree # " + j + " in stage " + (i+1);
+      //statusMsg = "[main] Processing tree # " + j + " in stage " + (i+1);
+      statusMsg = "ETAPA " + (i+1) + " TEST: " + j + "/"+stage.getNumItems();
      // redraw();
         //mgraphics.clear();
         mgraphics.beginDraw();
@@ -372,5 +387,12 @@ void loadFile() {
 }
 
 void keyPressed( ){
-  slowMotion(true);
+  //slowMotion(true);  
+  if(key== ' '  ){
+    println("key pressed");
+    showInterface =! showInterface;
+    if(showInterface) cp5.setAutoDraw(true);
+    else cp5.setAutoDraw(false);
+  }
+  
 }

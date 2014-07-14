@@ -33,13 +33,13 @@ class miniImages{
    mgraphic.image(mImg2,0,0,imgWidth,imgHeight);
    mgraphic.endDraw();
    images.add(mgraphic );
-   println("images size" + images.size());
+   //println("images size" + images.size());
  }
  
  void draw(){
    for(int i=0; i< images.size(); i++){
     // image(images.get(i),50+ i*imgWidth,initY,imgWidth,imgHeight);   
-     image(images.get(i),50+ i*(imgWidth+10),initY,imgWidth,imgHeight);   
+     image(images.get(i), i*(imgWidth+25),0,imgWidth,imgHeight);   
    } 
   
   }
