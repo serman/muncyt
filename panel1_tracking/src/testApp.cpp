@@ -3,17 +3,15 @@
 //--------------------------------------------------------------
 void testApp::setup(){
     setupStatus();
-    ofSetFrameRate(20);
+    ofSetFrameRate(25);
     adminMode=true;
-    bg.loadImage("bg2.png");
-    //ofSetBackgroundAuto(false);
+    bg.loadImage("bg.jpg");
+    ofSetBackgroundAuto(false);
     #ifdef _USE_LIVE_VIDEO
-        //cam.setVerbose(true);
         cam.listDevices();
     	cam.setDeviceID(1);
 		cam.listDevices();
 		cam.setDesiredFrameRate(30);
-    
         cam.initGrabber(VIDEOWITH,VIDEOHEIGHT);
     #else
         vidPlayer.loadMovie("test1.mov");
@@ -21,23 +19,14 @@ void testApp::setup(){
     #endif
     consoleFont.loadFont("Menlo.ttc",17);
     
-    
-  //  ofAddListener(blobTracker.blobAdded, this, &testApp::blobAdded);
-  //  ofAddListener(blobTracker.blobDeleted, this, &testApp::blobDeleted);
-    
     grayImage.allocate(VIDEOWITH,VIDEOHEIGHT);
     floatBgImg.allocate(VIDEOWITH,VIDEOHEIGHT);	//ofxShortImage used for simple dynamic background subtraction
     grayBg.allocate(VIDEOWITH,VIDEOHEIGHT);
 	previousImg.allocate(VIDEOWITH,VIDEOHEIGHT);
     mimage.allocate(640, 480, OF_IMAGE_COLOR_ALPHA);
     exposureStartTime = ofGetElapsedTimeMillis();
-    
-    gui1 = new ofxUICanvas(186,627,336,218);
-    textString = "";
-    gui1->addSpacer();
-    msgArea=gui1->addTextArea("textarea", textString, OFX_UI_FONT_LARGE);
-    bLearnBackground=true;
-    gui2 = new ofxUICanvas(1038,583, 295,285);
+       bLearnBackground=true;
+    gui2 = new ofxUICanvas(790,280, 295,285);
     
     
     gui2->addIntSlider("blob_threshold", 0, 255, &blobThreshold);
@@ -57,25 +46,7 @@ void testApp::setup(){
     myComm.setup();
     //mRecorder.setup();
     
-    int a=600;
-    int b=231;
-    for (int i=0; i<5; i++){ //
-        positions.push_back(ofPoint(550+i*36,231));
-    }
-
-    for (int i=0; i<5; i++){ //
-        positions.push_back(ofPoint(1155+i*37,231));
-    }
-	    positions.push_back(ofPoint(278,400));
-    for (int i=0; i<32; i++){ //
-        positions.push_back(ofPoint(278+i*37,450));
-    }
-        positions.push_back(ofPoint(1425,400));
-        positions.push_back(ofPoint(1425,500));
-        positions.push_back(ofPoint(2000,2000)); //–apa para que el bucle aguante un par de segundos mas
-        positions.push_back(ofPoint(2000,2000)); //–apa para que el bucle aguante un par de segundos mas
-        positions.push_back(ofPoint(2000,2000)); //–apa para que el bucle aguante un par de segundos mas
-    	    
+    
     if(appStatuses["sendTUIO"]==true){
         frameseq=0;
         setupTUIO();
@@ -140,8 +111,7 @@ void testApp::update(){
         }
         //blobTracker.setBg(grayBg);
         blobTracker.update(grayImage, blobThreshold,minBlobSize,maxBlobSize);
-        //  grayImage.flagImageChanged();
-        //  void    update( ofxCvGrayscaleImage& input, int _threshold = -1,  int minArea = 20 ,int maxArea = 40*240)/3, int nConsidered = 10, double hullPress = 20, bool bFindHoles = false, bool bUseApproximation = true);
+
 	}    
 	
 //CUENTA CANTIDAD DE MOVIMIENTO
@@ -234,44 +204,6 @@ void testApp::sendTUIO(std::vector<ofxBlob> * objectBlobs){
 }
 
 
-void testApp::drawCoolGui(){
-    ofPushStyle();
-    ofEnableAlphaBlending();
-    if( ofGetFrameNum() % 3 ==0){
-        rectCounter++;
-    	alphaCounter=0;
-    }
-    if(rectCounter>positions.size()) rectCounter=0;
-    ofImage rect;
-    rect.loadImage("rect.png");
-    ofSetColor(255,255,255,255);
-    for (int i=0; i<rectCounter-1; i++){ //
-        //if(i==10)	{ofRotate(90); rect.draw( positions[i].x, positions[i].y); ;ofRotate(-90);}
-        //if(i>41) 	   rect.draw(	positions[i].x, positions[i].y, 54, 54);
-        //else
-        rect.draw( positions[i].x, positions[i].y);
-        
-    }
-        //rect.draw(positions[i].x,positions[i].y,40,24);
-    ofSetColor(255,255,255,alphaCounter);
-    alphaCounter+=50; if(alphaCounter>255) alphaCounter=255;
-    rect.draw(positions[rectCounter-1].x,positions[rectCounter-1].y);
-    
-
-    
-    float maxMovement=5000.0;
-    float relMovement=nonZero/maxMovement;
-    if(relMovement>1) relMovement=1;
-    relMovement=relMovement*20;
-    relMovement=ceil(relMovement);
-    ofSetColor(255);
-    for(int j=0; j<(int)relMovement; j++){
-        ofRectRounded(670, 800-j*15, 200, 10, 3);
-    }
-//    ofRect( 660, 850-(relMovement*200),200,(relMovement*200) )
-    ofPopStyle();
-    ofDisableAlphaBlending();
-}
 
 void testApp::setMaskedImageBlobs(){
     //Paso las imagenes originales a openCV
@@ -305,40 +237,37 @@ void testApp::setMaskedImageBlobs(){
 void testApp::draw(){
     ofPushMatrix();
     ofEnableAlphaBlending();
-    ofScale(0.75,0.75);
+    //ofScale(0.75,0.75);
     
-    //if(ofGetFrameNum() == 3 || (ofGetFrameNum() % 50 == 0))
-    // bg.draw(0,0,1920,1080);
+   // if(ofGetFrameNum() == 3 || (ofGetFrameNum() % 50 == 0))
+    ofBackground(ofColor::black);
+     bg.draw(0,0,1280,1024);
 
     //cleanBackgrounds();
    // drawCoolGui();
     
 #ifndef TESTMODE
-    //sourceColorImg.draw(194,139,320,240); //img original
+    sourceColorImg.draw(59,169,480,360); //img original
 	
-
+// fbo1 contiene  las imagenes con la mascara ya aplicada.
     fbo1.begin();
 	ofClear(0, 0, 0, 0);    //ofSetColor(255,255,255,255);
     //ofBackground(255,255,255);
 	maskMaker.drawMask(sourceColorImg.getTextureReference(), maskedImageOF.getTextureReference(), 0,0,255,640,480 );
     fbo1.end();
-    fbo1.draw(50,50);
+    //fbo1.draw(50,50);
     //maskMaker.drawScrollingMask(sourceColorImg.getTextureReference(), contourMaskOF.getTextureReference(), 0, 255);
     
     ofSetColor(0, 255, 123, 100);
     ofSetColor(255,255,255,255);
-    contourMaskOF.draw(800,139,320,240); //masked image
+    contourMaskOF.draw(766,275,480,360); //masked image
     
 
     ofSetColor(0);
     ofRect(1391,139,320,240);
         ofSetColor(255,255,255,255);
-	if(adminMode){
-    	blobTracker.draw(1391,139,320,240);//img + blobs}
-    }else{
-    	maskedImageOF.draw(1391,139,320,240);
-    }
-	maskedImageOF.draw(1391,604,320,240); //mask + blobs
+    	blobTracker.draw(57,602,480,360);//img + blobs}
+   // 	maskedImageOF.draw(1391,139,320,240);
  #endif
     if(appStatuses["syphonEnabled"]==true && appStatuses["isCameraReady"]){
         individualTextureSyphonServer.publishTexture(&sourceColorImg.getTextureReference());
@@ -349,20 +278,9 @@ void testApp::draw(){
         sendTUIO(&(blobTracker.trackedBlobs));
     };
     
-//resized Image, READY 4 RECORDING
-    //blobImgOF_min=maskedImageOF;
-    //blobImgOF_min.resize(320, 240);
-    
- /**   if(moveandrecord.state==moveandrecord.blobInSquare){
-        blobImgOF_min=maskedImageOF;
-        blobImgOF_min.resize(320, 240);
-        blobImgOF_min.update();
-    }**/
-  //  mRecorder.update();
+
     ofPopMatrix();
-// END RECORDING-READY BLOCK
-    
- //   moveandrecord.draw();
+
 }
 
 void testApp::showDebug(){

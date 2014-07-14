@@ -33,7 +33,6 @@ class testApp : public ofBaseApp{
 		ofxBlobTracker          blobTracker;
     
     
-    	ofxUICanvas *gui1;
         ofxUICanvas *gui2;
     
         ofTrueTypeFont consoleFont;
@@ -64,8 +63,7 @@ class testApp : public ofBaseApp{
 	    float fLearnRate= 0.005f;
         bool bLearnBackground=true;	//a boolean to indicate whether to instruct the addon to learn the background again, defaults to true
     	cheapComm myComm;
-    	mosaicRecorder mRecorder;
-	    vector <ofPoint> positions;
+	    //vector <ofPoint> positions;
     	int rectCounter=0;
     int alphaCounter=0;
 	public:
@@ -73,8 +71,7 @@ class testApp : public ofBaseApp{
 	    void setupStatus();
 		void update();
 		void draw();
-	    void drawCoolGui();
-    void showDebug();
+        void showDebug();
 		void keyPressed(int key);
 		void keyReleased(int key);
 		void mouseMoved(int x, int y );
@@ -87,7 +84,6 @@ class testApp : public ofBaseApp{
     	void gui2Event(ofxUIEventArgs &e);
         void blobAdded(ofxBlob &_blob);
         void blobDeleted(ofxBlob &_blob);
-    	ofxUITextArea *msgArea;
 	    void cleanBackgrounds();
         string textString;
     	ofxSyphonServer individualTextureSyphonServer;
