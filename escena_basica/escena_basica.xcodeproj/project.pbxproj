@@ -479,6 +479,7 @@
 		F74B8AA219704992005F3893 /* ofxScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxScene.h; sourceTree = "<group>"; };
 		F74B8AA319704992005F3893 /* ofxSceneManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxSceneManager.cpp; sourceTree = "<group>"; };
 		F74B8AA419704992005F3893 /* ofxSceneManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxSceneManager.h; sourceTree = "<group>"; };
+		F74B8AA619721818005F3893 /* wavesManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wavesManager.h; sourceTree = "<group>"; };
 		F7EBD16319334C43009805D5 /* cheapComm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cheapComm.cpp; sourceTree = "<group>"; };
 		F7EBD16419334C43009805D5 /* cheapComm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cheapComm.h; sourceTree = "<group>"; };
 		F7EBD16A19334D11009805D5 /* ofxOsc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxOsc.h; sourceTree = "<group>"; };
@@ -985,6 +986,7 @@
 			isa = PBXGroup;
 			children = (
 				F74B89F5196F6860005F3893 /* electromagnetica.cpp */,
+				F74B8AA619721818005F3893 /* wavesManager.h */,
 				F74B89F6196F6860005F3893 /* electromagnetica.h */,
 				F74B8A9D196F8838005F3893 /* waves.h */,
 				F74B8A9F19703632005F3893 /* noiseShadow.h */,

@@ -10,73 +10,145 @@
 
 
 void electromagnetica::setup(){
-    alpha=1.0;
+    alpha=0.2;
+    options_sampling=3;
     setupShader();
     setupGUI();
-    mwave.setup();
+    wavesm.setup();
     //tuioClientEm.start(3333);
-    
 
+    gui1->disable();
+    
+    colours.push_back(ofColor(63,184,175));
+    colours.push_back(ofColor(127,199,175));
+    colours.push_back(ofColor(218,216,167));
+    colours.push_back(ofColor(255,158,157));
+    colours.push_back(ofColor(255,61,127));
+    colours.push_back(ofColor(0,223,252));
+    
 
     
 }
 
 void electromagnetica::update(float d1){
+    hands.update(); //actualiza la sombra de las manos
     //tuioClientEm.getMessage();
     
-    mwave.update();
-    for(int i=0; i< meshParticles.getVertices().size(); i++){
-        //ofSeedRandom();
-        if(ofRandomf()>0.5)
-            meshParticles.getColors()[i].set(0);
-        else
-            meshParticles.getColors()[i].set(255);
-//        meshParticles.getColors()[i].set(255);
-        if( particles[i].position.distance(ofPoint(X_(ofGetMouseX()),ofGetMouseY())) >100){
-           // meshParticles.getColors()[i].set(0);
+    wavesm.update(); //actualiza la onda  matematica
+
+   /* if(hands.objectsCol.size()==1){
+        //muevo particulas cerca de la mano: orbita
+        // oculto el resto
+        for(int i=0; i< meshParticles.getVertices().size(); i++){
+            if( particles[i].position.distanceSquared(ofPoint(hands.objectsCol[0]->x,hands.objectsCol[0]->y)) >10000){
+                meshParticles.getColors()[i].set(0);
+                
+            }else{ //color de ruido
+                if(ofRandomf()>0.5)
+                    meshParticles.getColors()[i].set(0);
+                else
+                    meshParticles.getColors()[i].set(255);
+                
+                ofPoint p= ofPoint(particles[i]._x,particles[i]._y,particles[i].position.z);
+                particles[i].gravityTowards(p, 30, 10);
+                particles[i].update();
+                meshParticles.getVertices()[i].set(particles[i].position);
+            }            
         }
-        int index= particles[i]._x;
-        if(noiseMode){
-            ofPoint p= mwave.points[index];
-            particles[i].steer(p , true, 5, 10);
-            particles[i].update();
-        }else{
+        
+    }else */if(wavesm.howManyWaves()==0){
+     //ruido puro
+        for(int i=0; i< meshParticles.getVertices().size(); i++){
+            //ofSeedRandom();
+            if(ofRandomf()>0.5)
+                meshParticles.getColors()[i].set(0);
+            else
+                meshParticles.getColors()[i].set(255);
+         
             ofPoint p= ofPoint(particles[i]._x,particles[i]._y,particles[i].position.z);
             particles[i].steer( p, true, 7, 10);
             particles[i].update();
+            meshParticles.getVertices()[i].set(particles[i].position);
         }
-        meshParticles.getVertices()[i].set(particles[i].position);
-        
     }
     
+    else if(wavesm.howManyWaves()>=1){ // Dependiendo de numero de ondas mas o menos particulas irán a cada onda.
+        //ondas entre 2 puntos
+        // oculto el resto
+        int puntos_ondas=0;
+        int ondasAct=wavesm.howManyWaves();
+        for(int i=0; i<wavesm.howManyWaves(); i++){
+            puntos_ondas+=wavesm.waveslist[i].AbsPoints.size();
+        }
+        int rows=W_WIDTH/options_sampling;
+        
+        for(int i=0; i< meshParticles.getVertices().size(); i++){
+            int index=i % puntos_ondas;
+            trIndices num_onda= wavesm.num_onda(index);
+            //particles[i]._x;
+            ofPoint p= wavesm.waveslist[num_onda.n_wave].AbsPoints[num_onda.new_index];
+            particles[i].steer(p , true, 5, 10);
+            particles[i].update();
+            if(ofRandomf()>0.5)
+                meshParticles.getColors()[i].set(0);
+            else
+                meshParticles.getColors()[i].set(255);
+            meshParticles.getVertices()[i].set(particles[i].position);
+            
+        }
+    }
+  /*  for(int i =0; i<hands.objectsCol.size(); i++){
+        int mx= hands.objectsCol[i]->x;
+        int my= hands.objectsCol[i]->y;
+        
+        ofPoint p= ofPoint(mx,my);
+        for(int j=1; j<100; j++){
+            int jj=(int) (numParticles/j);
+            particles[jj].steer(p , true, 5, 10);
+            particles[jj].update();
+            meshParticles.getColors()[jj].set(colours[(int)( hands.objectsCol[i]->cursor_id % colours.size()-1) ]);
+            meshParticles.getVertices()[jj].set(particles[jj].position);
+        }
+        
+    }*/
     
-    
-}
+    }
 
 void electromagnetica::draw(){
+    
     ofBackground(0);
     ofPushMatrix(); //colocamos el canvas en su posicion centrada
-    ofTranslate((ofGetWidth()-W_WIDTH)/2, 0);
-   // ofEnableAlphaBlending();
-    
-    ofSetColor(255);
-    meshParticles.setMode(OF_PRIMITIVE_POINTS);
-    glPointSize(2);
-   	glEnable(GL_POINT_SMOOTH);	// Para que sean puntos redondos
-	ofEnableDepthTest();
-    meshParticles.draw();
-    ofDisableDepthTest();
-    drawNoise();
-   //     ofDisableAlphaBlending();
-    ofSetColor(255,0,0);
-    ofFill();
-    mwave.draw();
+        ofTranslate((ofGetWidth()-W_WIDTH)/2, 0);
+        ofNoFill();
+        ofEllipse(W_WIDTH/2, W_WIDTH/2, W_WIDTH, W_WIDTH);
+       // ofEnableAlphaBlending();
+        
+        ofSetColor(255);
+        meshParticles.setMode(OF_PRIMITIVE_POINTS);
+        glPointSize(2);
+        glEnable(GL_POINT_SMOOTH);	// Para que sean puntos redondos
+        ofEnableDepthTest();
+
+        meshParticles.draw();
+
+        ofDisableDepthTest();
+        ofSetColor(255,0,0);
+        ofFill();
+        wavesm.draw();
+        ofPushStyle();
+            ofSetColor(0,0,0,0);
+            hands.draw();
+        ofPopStyle();
     ofPopMatrix();
 
     showDebug();
+    //wavesm.debugInfo();
 }
 
-void electromagnetica::mousePressed( int x, int y, int button ){}
+void electromagnetica::mousePressed( int x, int y, int button ){
+
+//    mwave.addPoint(X_(x),y,0);
+}
 
 void electromagnetica::setupShader(){
 	shader.load("", "shaders/whitenoise.frag");
@@ -88,8 +160,8 @@ void electromagnetica::setupGUI() {
 	gui1 = new ofxUICanvas(0,100,400,800);
     gui1->addSlider("alpha", 0.0, 1.0,&alpha);
     gui1->addToggle("noise or wave", &noiseMode);
-    gui1->addSlider("freq", 0.0, 100.0,&(mwave.freq));
-    gui1->addSlider("freq", 0.0, 100.0,&(mwave.freq2));
+ //   gui1->addSlider("freq", 0.0, 100.0,&(mwave.freq));
+ //   gui1->addSlider("freq", 0.0, 100.0,&(mwave.freq2));
 }
 void electromagnetica::showDebug(){
     ofDrawBitmapString("Framerate " + ofToString(ofGetFrameRate()), 20, 100);
@@ -140,15 +212,15 @@ void electromagnetica::setupParticles(){
 
     int w= W_WIDTH;
     int h= W_HEIGHT;
-	int    sampling=3;
+
     //Loop through all the rows
     
 	numParticles = 0;
     //Loop through all the columns
 	// Distribuir las particulas por la escena
     ofSeedRandom();
-    for ( int y = 0 ; y < h ; y+=sampling ){
-        for ( int x = 0 ; x < w ; x+=sampling ){
+    for ( int y = 0 ; y < h ; y+=options_sampling ){
+        for ( int x = 0 ; x < w ; x+=options_sampling ){
             //			particles.push_back(Particle(ofVec3f(0,0,0),ofColor(255,255,255) ,x,y));
             //			float px = ofRandom(-1000,1000);
             //			float py = ofRandom(-1000,1000);
@@ -217,9 +289,12 @@ void electromagnetica::tuioAdded(ofxTuioCursor &tuioCursor){
     
     noiseShadow *h1 = new noiseShadow();
     h1->setup();
+    //h1->setColor(colours[(int)( tuioCursor.getSessionId() % colours.size()-1) ]);
+   // h1->setColor(ofColor::black);
     hands.addObject(*h1);
     hands.notifyTouch(loc.x, loc.y,tuioCursor.getSessionId());
-   
+    //mwave.addPoint(loc.x,loc.y,tuioCursor.getSessionId());
+    wavesm.touch(loc.x, loc.y,tuioCursor.getSessionId());
 }
 
 void electromagnetica::tuioUpdated(ofxTuioCursor &tuioCursor){
@@ -227,6 +302,7 @@ void electromagnetica::tuioUpdated(ofxTuioCursor &tuioCursor){
     int my =    W_HEIGHT*tuioCursor.getY();
 
     hands.notifySlide(mx, my,tuioCursor.getSessionId(),tuioCursor.getMotionAccel());
+    wavesm.slide(mx,  my,tuioCursor.getSessionId(),tuioCursor.getMotionAccel());
 }
 
 void electromagnetica::tuioRemoved(ofxTuioCursor &tuioCursor){
@@ -239,7 +315,7 @@ void electromagnetica::tuioRemoved(ofxTuioCursor &tuioCursor){
     
     
     hands.removeObjectByTuioID(tuioCursor.getSessionId() );
-    
+    wavesm.touchUp(tuioCursor.getSessionId());
     
 }
 

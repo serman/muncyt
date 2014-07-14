@@ -23,6 +23,7 @@
 #include "tangiblesHandler.h"
 #include "noiseShadow.h"
 #include "ofxTuio.h"
+#include "wavesManager.h"
 
 // -------------------------------------------------
 
@@ -59,7 +60,7 @@ public:
     void setupGUI();
    	ofxUICanvas *gui1;
 	void		grabarScreen();
-    waves mwave;
+    wavesManager wavesm;
     ofxTuioClient   tuioClientEm;
     bool noiseMode=false;
         tangiblesHandler hands;
@@ -67,8 +68,8 @@ public:
     void	tuioAdded(ofxTuioCursor & tuioCursor);
 	void	tuioRemoved(ofxTuioCursor & tuioCursor);
 	void	tuioUpdated(ofxTuioCursor & tuioCursor);
-    
-    
+    int  options_sampling;
+    vector<ofColor> colours;
 };
 
 #endif /* defined(__escena_basica__electromagnetica__) */
