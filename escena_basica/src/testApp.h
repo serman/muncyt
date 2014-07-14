@@ -31,5 +31,6 @@ class testApp : public ofBaseApp{
         void tuioAdded(ofxTuioCursor &tuioCursor);
         void tuioUpdated(ofxTuioCursor &tuioCursor);
         void tuioRemoved(ofxTuioCursor &tuioCursor);
+    ofPath borde;
     
 };

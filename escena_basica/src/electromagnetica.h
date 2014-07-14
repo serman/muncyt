@@ -70,6 +70,8 @@ public:
 	void	tuioUpdated(ofxTuioCursor & tuioCursor);
     int  options_sampling;
     vector<ofColor> colours;
+    bool drawlines;
+        
 };
 
 #endif /* defined(__escena_basica__electromagnetica__) */

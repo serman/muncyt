@@ -34,23 +34,26 @@ public:
     void setup(){}
     
     void draw(){
+        ofPushStyle();
         ofNoFill();
         if(status_active ==false ){
             ofSetColor(ofColor::gray);
-            
             ofRect(x,y,width,height);
         }
         else{ //non active Status
             if(status_handIsOn ==true){
                 ofSetColor(ofColor::green);
-            ofRect(x,y,width,height);
+                ofFill();
+                ofRect(x,y,width,height);
                 
             }else{ //active bug hand is not on
                 ofSetColor(ofColor::blue);
-            ofRect(x,y,width,height);
+                ofFill();
+                ofRect(x,y,width,height);
             }
             
         }
+        ofPopStyle();
         //
         
     }

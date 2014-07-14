@@ -16,7 +16,7 @@
 class noiseShadow : public tangibleObject{
 public:
     ofMesh mesh;
-    int alpha;
+    int alpha1;
     long age; //time of life
     ofPath mshape;
     ofColor mcolor;
@@ -27,9 +27,9 @@ public:
         //tangibleObject::setup();
         for(int i=0; i<10; i++)
             mesh.addVertex(ofVec3f( ofRandom(20),ofRandom(20) ));
-        alpha=0;
+        alpha1=0;
         age=0;
-        mshape.lineTo(0,0,0);
+     /*   mshape.lineTo(0,0,0);
         mshape.lineTo(30,5,0);
         mshape.lineTo(55,2,0);
         mshape.lineTo(54,23,0);
@@ -38,7 +38,7 @@ public:
         mshape.lineTo(20,48,0);
         mshape.lineTo(10,30,0);
         mshape.lineTo(0,0,0);
-        mshape.setColor(ofColor(0,0,0,alpha));
+        mshape.setColor(ofColor(0,0,0,alpha));*/
        // mshape.setClosed(true);
         
         
@@ -50,11 +50,11 @@ public:
     
     void update(){
         if(cursor_id!=-1){
-            if(alpha<255) alpha+=20;
-            else alpha=255;
+            if(alpha1<180) alpha1+=10;
+            else alpha1=180;
             
         }else{
-            if(alpha>0) alpha-=10; else alpha=0;
+            if(alpha1>0) alpha1-=10; else alpha1=0;
         }
         
         int size=20;
@@ -67,22 +67,24 @@ public:
          for(int i=0; i<6; i++)
          mesh.addVertex(ofVec3f( ofRandom(size),ofRandom(size) ));*/
        // mshape.rotate(1,rotVect);
-        mshape.setColor(ofColor(0,0,0,alpha));
+       // mshape.setColor(ofColor(0,0,0,alpha));
     }
     
     void draw(){
+        ofPushMatrix();
+        ofPushStyle();
         ofEnableAlphaBlending();
         ofFill();
-        ofSetColor (255,0,0,alpha);
-        ofPushMatrix();
-        ofTranslate(x,y);
-        scale(3);
-        mshape.draw();
-//        ofEllipse( x, y,40, 40);
-        ofPopMatrix();
-        //movidillas
+        ofSetColor (50,250,50,alpha1);
+       // ofTranslate(x,y);
+//        scale(3);
+        ofEllipse( x-10, y-10,50, 50);
+        ofSetColor (255,0,0,alpha1);
+        ofDrawBitmapString(ofToString(x) + "," + ofToString(y),x+20,y+20 );
         ofDisableAlphaBlending();
+        ofPopStyle();
         ofPopMatrix();
+    
 
     };
     

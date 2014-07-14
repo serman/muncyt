@@ -422,6 +422,9 @@ void nuclear_debil::draw(){
 	chispa.draw();
 	
 	if(swBlendModeADD) ofDisableBlendMode();
+
+    // Botones para TUIO
+    touchElements.draw();
 	
 	// Mascara exterior
 	// ...Con algun Shape...
@@ -430,13 +433,33 @@ void nuclear_debil::draw(){
 	// GUI ANILLO
 	//anillo.drawControls();
 	
-	
 	// TUIOS
 //    tuioClient.drawCursors();	
-    touchElements.draw();
     hands.draw();
-    ofPopMatrix();
 	
+    // Circulo de info
+    
+    ofPushStyle();
+    
+        ofSetColor(ofColor::orange, 100);
+        ofNoFill();
+        ofSetLineWidth(3);
+        ofCircle(W_WIDTH/2,W_HEIGHT/2, 70);
+        ofSetLineWidth(1);
+        float rr = 40;
+        ofFill();
+        ofCircle(W_WIDTH/2,W_HEIGHT/2, rr);
+    
+    
+    
+    
+    ofPopStyle();
+
+    
+    
+    ofPopMatrix();  // FIn translate para centrar contenidos
+    
+    
 	// Info
 	string info = "";
 	info += "Press [c] for nucleos\n";
@@ -449,6 +472,7 @@ void nuclear_debil::draw(){
 	info += "Aplica Fuerza [f]: "+ofToString(swFuerza)+"\n";
 	info += "BlendMode ADD [b]: "+ofToString(swBlendModeADD)+" \n";
 	info += "aceleracion [click en esquinas inferiores - +] w/a: "+ofToString(anillo.wAng)+"/"+ofToString(anillo.accAng)+" \n\n";
+	info += "veloc Ang: " + ofToString(anillo.wAng) + "\n";
 
 	info += "nuevasPartics: " + ofToString(nuevasPartics.size()) + "\n";
 	//	ofSetHexColor(0x444342);

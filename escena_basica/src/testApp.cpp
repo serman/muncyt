@@ -1,5 +1,5 @@
 #include "testApp.h"
-
+#include "consts.h"
 
 void testApp::setup(){
 
@@ -43,7 +43,17 @@ void testApp::draw(){
 	sceneManager->draw();
 	
 	ofSetColor(255,0,0);
-	ofDrawBitmapString( "press 1, 2, or 3 to change scene", ofGetWidth() - 290, ofGetHeight() - 10);	
+	ofDrawBitmapString( "press 1, 2, or 3 to change scene", ofGetWidth() - 290, ofGetHeight() - 10);
+
+    borde.clear();
+    borde.setFillColor(ofColor::black);
+    borde.setPolyWindingMode(OF_POLY_WINDING_ODD);
+    ofPushMatrix(); //colocamos el canvas en su posicion centrada
+    ofTranslate((ofGetWidth()-W_WIDTH)/2, 0);
+    borde.rectangle(0,0,W_WIDTH, W_HEIGHT);
+    borde.circle(W_WIDTH/2, W_HEIGHT/2, W_HEIGHT,W_HEIGHT);
+    borde.draw();
+    ofPopMatrix();
 }
 
 

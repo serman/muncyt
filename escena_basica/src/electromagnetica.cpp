@@ -78,6 +78,7 @@ void electromagnetica::update(float d1){
         //ondas entre 2 puntos
         // oculto el resto
         int puntos_ondas=0;
+        
         int ondasAct=wavesm.howManyWaves();
         for(int i=0; i<wavesm.howManyWaves(); i++){
             puntos_ondas+=wavesm.waveslist[i].AbsPoints.size();
@@ -91,10 +92,17 @@ void electromagnetica::update(float d1){
             ofPoint p= wavesm.waveslist[num_onda.n_wave].AbsPoints[num_onda.new_index];
             particles[i].steer(p , true, 5, 10);
             particles[i].update();
-            if(ofRandomf()>0.5)
+           /* if(ofRandomf()>0.5)
                 meshParticles.getColors()[i].set(0);
             else
                 meshParticles.getColors()[i].set(255);
+            */
+            int len=wavesm.waveslist[num_onda.n_wave].npuntos;
+            
+            ofColor color1=ofColor::fromHsb( ofMap(len, 0, 768, 0,360),255,255) ;
+            color1.a=120;
+            meshParticles.getColors()[i].set(color1);
+            
             meshParticles.getVertices()[i].set(particles[i].position);
             
         }
@@ -121,26 +129,23 @@ void electromagnetica::draw(){
     ofBackground(0);
     ofPushMatrix(); //colocamos el canvas en su posicion centrada
         ofTranslate((ofGetWidth()-W_WIDTH)/2, 0);
+        drawNoise();
         ofNoFill();
         ofEllipse(W_WIDTH/2, W_WIDTH/2, W_WIDTH, W_WIDTH);
        // ofEnableAlphaBlending();
-        
-        ofSetColor(255);
-        meshParticles.setMode(OF_PRIMITIVE_POINTS);
-        glPointSize(2);
-        glEnable(GL_POINT_SMOOTH);	// Para que sean puntos redondos
-        ofEnableDepthTest();
-
-        meshParticles.draw();
-
-        ofDisableDepthTest();
-        ofSetColor(255,0,0);
-        ofFill();
-        wavesm.draw();
-        ofPushStyle();
-            ofSetColor(0,0,0,0);
-            hands.draw();
-        ofPopStyle();
+        ofPushMatrix();
+            ofSetColor(255);
+            meshParticles.setMode(OF_PRIMITIVE_POINTS);
+            glPointSize(2);
+            glEnable(GL_POINT_SMOOTH);	// Para que sean puntos redondos
+            ofEnableDepthTest();
+            meshParticles.draw();
+            ofDisableDepthTest();
+            ofSetColor(255,0,0);
+            ofFill();
+        if(drawlines) wavesm.draw();
+        ofPopMatrix();
+        hands.draw();
     ofPopMatrix();
 
     showDebug();
@@ -159,9 +164,9 @@ void electromagnetica::setupShader(){
 }
 
 void electromagnetica::setupGUI() {
-	gui1 = new ofxUICanvas(0,100,400,800);
+	gui1 = new ofxUICanvas(0,50,300,400);
     gui1->addSlider("alpha", 0.0, 1.0,&alpha);
-    gui1->addToggle("noise or wave", &noiseMode);
+   // gui1->addToggle("noise or wave", &noiseMode);
  //   gui1->addSlider("freq", 0.0, 100.0,&(mwave.freq));
  //   gui1->addSlider("freq", 0.0, 100.0,&(mwave.freq2));
 }
@@ -173,18 +178,21 @@ void electromagnetica::showDebug(){
 void electromagnetica::keyPressed(int key){
     switch(key){
         case 'v':
-			gui1->saveSettings("/config/gui/gui_kinect.xml");
+			gui1->saveSettings("/config/gui/gui_EM.xml");
 			break;
         case ' ':
             if(gui1->isEnabled() )
 	            gui1->disable();
             else
 				gui1->enable();
+        case 'l':
+            drawlines=!drawlines;
             
     }
 }
 
 void electromagnetica::drawNoise(){
+    ofPushStyle();
     ofFill();
      ofSetColor(255,255,255,40);
     
@@ -206,7 +214,7 @@ void electromagnetica::drawNoise(){
     
     ofRect(0, 0, W_WIDTH, W_HEIGHT);
     shader.end();
-
+    ofPopStyle();
     //mimage.getTextureReference().unbind();
 }
 
