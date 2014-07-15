@@ -314,7 +314,7 @@ void electromagnetica::tuioAdded(ofxTuioCursor &tuioCursor){
 
 void electromagnetica::tuioUpdated(ofxTuioCursor &tuioCursor){
     int mx = W_WIDTH*tuioCursor.getX();
-    int my =    W_HEIGHT*tuioCursor.getY();
+    int my = W_HEIGHT*tuioCursor.getY();
 
     hands.notifySlide(mx, my,tuioCursor.getSessionId(),tuioCursor.getMotionAccel());
     wavesm.slide(mx,  my,tuioCursor.getSessionId(),tuioCursor.getMotionAccel());

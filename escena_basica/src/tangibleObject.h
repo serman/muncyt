@@ -17,6 +17,8 @@ public:
     ofColor mcolor;
     long m_id;
 
+	ofVec2f getCentroid() {return ofVec2f(x+width/2.0, y+height/2.0);};
+
     virtual void setup()= 0;
     virtual void draw()= 0;
     virtual void update()= 0;

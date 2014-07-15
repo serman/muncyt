@@ -147,7 +147,7 @@ public:
 //			ofRotate(PI+ofRadToDeg(angT));
 			if(swTexture) {
 				// IMAGEN!
-				ofEllipse(0,0, 2*radioPart, 2*radioPart);//+ofMap(wAng,-PI,PI,-140,140)) );
+				tex.draw(-radioPart,-radioPart,2*radioPart,2*radioPart);
 			}
 			else {
 				ofEllipse(0,0, 2*radioPart, 2*radioPart);//+ofMap(wAng,-PI,PI,-140,140)) );

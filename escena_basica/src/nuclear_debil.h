@@ -121,6 +121,7 @@ public:
 	bool		swFuerza;
 	void		drawFuerza(ofPoint p, ofPoint gravity, float esc = 1.0);
 	void		drawFuerzaSelector();
+	void		drawInfo();
 
 	ofRectangle marco;
 	// TUT en https://www.iforce2d.net/b2dtut/fixtures
@@ -182,8 +183,10 @@ public:
     void sceneWillDisappear( ofxScene * toScreen );
 	
 	bool swDrawTRAILS;
+	
     tangiblesHandler hands;
 	tangiblesHandler touchElements;
+	
     anilloButton buttonSpeed1;
     anilloButton buttonSpeed2;
     anilloButton buttonCollide;

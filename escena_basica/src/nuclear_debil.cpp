@@ -83,8 +83,8 @@ void nuclear_debil::setup() {
 //	swFuerza = false;	// Lo paso a init_Escena
 	
 	// radios
-	rNucleo	= 14;
-	rNeutron = 5;
+	rNucleo	= 10;
+	rNeutron = 3;
 	
 	velocNeutronLim = 80;
 	velocNeutronDestroy = velocNeutronLim*0.7;
@@ -115,6 +115,7 @@ void nuclear_debil::setup() {
 // Acelerador Exterior - - - 
 	// Anillo(ofVec2f _pos, float rInt, float rExt);
 	anillo = Anillo(ofVec2f(centro.x,centro.y), radioInt, radioExt);
+	anillo.setTexture(texPartic);
 	
 	// Control del anillo
 //	ofRectangle anilloUI_L = ofRectangle(0,ofGetHeight()-40, 40,40);
@@ -312,6 +313,26 @@ void nuclear_debil::update(float dt) {
     
 	touchElements.update();
     hands.update();
+	
+	// recorrer el vector de cursores que hay en hands (tangiblesHandler) e interactuar si esta dentro del c’rculo
+	int ttAct = ofGetElapsedTimeMillis();
+	float sqLim = (radioInt*radioInt)*0.9;
+	int limTime = floor(1000/ofGetFrameRate())+20;
+	for(int i=0; i<hands.objectsCol.size(); i++) {
+//		ofLogNotice("handShadow num: " + ofToString(i));
+		handShadow * h = (handShadow *) hands.objectsCol[i];
+//		ofLogNotice("x,y: " + ofToString(h->x)+"/"+ofToString(h->y)+ "   age: " + ofToString(h->age));
+		// si esta en la parte central del c’rculo
+		ofVec2f vHand = ofVec2f(h->x,h->y);
+//		ofVec2f vHandCentro = ofVec2f(x-W_WIDTH/2.0,y-W_HEIGHT/2.0);
+		if(vHand.squareDistance(ofVec2f(W_WIDTH/2.0,W_HEIGHT/2.0)) < sqLim ) {
+			int dtt = ttAct-h->age;
+			if(dtt%500<limTime) {
+				addNucleo(h->x, h->y);
+			}
+		}
+	}
+	
 	/*// Interaccion de los blobs recibidos
 	list<ofxTuioCursor*>cursorList = tuioClient.getTuioCursors();
 	for(list<ofxTuioCursor*>::iterator it=cursorList.begin(); it != cursorList.end(); it++) {
@@ -461,6 +482,14 @@ void nuclear_debil::draw(){
     
     
 	// Info
+	//drawInfo();
+
+//	ofSetColor(255);
+//	ofLine(ofGetMouseX()*W_WIDTH/ofGetScreenWidth(),0,ofGetMouseX()*ofGetScreenWidth()/W_WIDTH,ofGetHeight());
+
+}
+
+void 	nuclear_debil::drawInfo(){
 	string info = "";
 	info += "Press [c] for nucleos\n";
 	info += "Press [n] for neutron\n";
@@ -478,10 +507,6 @@ void nuclear_debil::draw(){
 	//	ofSetHexColor(0x444342);
 	ofSetHexColor(0xCCCCCC);
 	ofDrawBitmapString(info, 30, 30);
-	
-//	ofSetColor(255);
-//	ofLine(ofGetMouseX()*W_WIDTH/ofGetScreenWidth(),0,ofGetMouseX()*ofGetScreenWidth()/W_WIDTH,ofGetHeight());
-
 }
 
 void nuclear_debil::drawFuerzaSelector() {
@@ -535,7 +560,6 @@ void nuclear_debil::drawFuerza(ofPoint p, ofPoint gravity, float esc) {
 
 
 
-
 //--------------------------------------------------------------
 void nuclear_debil::addNucleo(){
 	// Lo pone a una distancia dd del centro
@@ -548,7 +572,7 @@ void nuclear_debil::addNucleo(){
 }
 
 void nuclear_debil::addNucleo(int xx, int yy){
-	float r = ofRandom(10, 20);
+	float r = ofRandom(rNucleo-2,rNucleo+1);
 	addNucleo(xx,yy,r);
 }
 
@@ -680,7 +704,7 @@ void nuclear_debil::sceneWillDisappear( ofxScene * toScreen ){
 	ofRemoveListener(tuioClient.cursorUpdated,this,&nuclear_debil::tuioUpdated);
    */
 	exit_Escena();
-}
+};
 
 
 

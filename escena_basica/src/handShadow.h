@@ -23,8 +23,7 @@ public:
         for(int i=0; i<10; i++)
             mesh.addVertex(ofVec3f( ofRandom(20),ofRandom(20) ));
         alpha=0;
-        age=0;
-        
+        age=0;   
     }
     
     void update(){
@@ -39,7 +38,6 @@ public:
         int size=20;
         
         if(age >0 ){
-            
             size=MIN(70,size+((ofGetElapsedTimeMillis()-age)/300));
         }
        /* mesh.clear();
