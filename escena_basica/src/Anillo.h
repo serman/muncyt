@@ -135,7 +135,7 @@ public:
 			//contorno.draw();
             
             // fondo crece segun la velocidad
-            wAngMax = 0.14;
+            //wAngMax = 0.14;
 //            float angCtrlVelo = ofMap(abs(wAng), wAngMax, )
             
             

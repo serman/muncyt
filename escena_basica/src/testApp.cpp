@@ -47,11 +47,15 @@ void testApp::draw(){
 
     borde.clear();
     borde.setFillColor(ofColor::black);
+    
     borde.setPolyWindingMode(OF_POLY_WINDING_ODD);
+    borde.setMode(ofPath::POLYLINES);
+        borde.setCircleResolution(100);
     ofPushMatrix(); //colocamos el canvas en su posicion centrada
     ofTranslate((ofGetWidth()-W_WIDTH)/2, 0);
-    borde.rectangle(0,0,W_WIDTH, W_HEIGHT);
-    borde.circle(W_WIDTH/2, W_HEIGHT/2, W_HEIGHT,W_HEIGHT);
+    borde.rectangle(-100,0,W_WIDTH+200, W_HEIGHT+100);
+    borde.circle(W_WIDTH/2, W_HEIGHT/2, W_HEIGHT/2);
+
     borde.draw();
     ofPopMatrix();
 }

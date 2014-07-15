@@ -56,6 +56,9 @@ public:
     void resetParticles();
     void showDebug();
     float alpha;
+    float freq;
+    float wave_amp;
+    float n_ciclos;
     
     void setupGUI();
    	ofxUICanvas *gui1;
@@ -71,6 +74,7 @@ public:
     int  options_sampling;
     vector<ofColor> colours;
     bool drawlines;
+    void guiEvent(ofxUIEventArgs &e);
         
 };
 

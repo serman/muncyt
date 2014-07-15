@@ -20,8 +20,7 @@ public:
     vector<ofVec3f> points;
     vector<ofVec3f> AbsPoints;
     
-    float freq;
-    float freq2;
+
     ofPolyline curvas,curvas2;
 
     ofVec2f p1; bool p1set;
@@ -31,6 +30,8 @@ public:
     ofVec2f xvector;
     float theta;// = 0.05;
     float dx;// = (2*PI / 500.0); // si t es mas pequeño hay mas ondas
+    float a;//amplitud
+    float n_ciclos;
     int npuntos;
     int rotation;
     float incr;//=-0.11; //esto define la frecuencia
@@ -97,8 +98,10 @@ public:
         p2_id=-1;
        // isCompleted=false;
 		theta = 0.05;
-		dx = (2*PI / 500.0); // si t es mas pequeño hay mas ondas
+        n_ciclos=2;
+		dx = n_ciclos*(2*PI / 500.0); // si t es mas pequeño hay mas ondas
 		incr=-0.11; //esto define la frecuencia
+        a=50;
 		
     }
     
@@ -109,7 +112,7 @@ public:
         AbsPoints.clear();
         float x1=theta;
         for (int i=0; i < npuntos; i+=1){//cos (i/(npuntos*PI))
-            ofVec3f vector=ofVec3f(i,  100*cos ( x1 ),3);
+            ofVec3f vector=ofVec3f(i,  a*cos ( x1 ),3);
             points.push_back(vector);
             curvas.addVertex(vector);
             x1+=dx;
@@ -122,8 +125,7 @@ public:
     }
     
     void setup(){
-        freq=30;
-        freq2=0.5;
+  
         /*for (int i=0; i < npuntos; i++){
             ofVec3f vector=ofVec3f(i,100*sin( (ofGetFrameNum()*freq +2*PI*i*1 /freq2) /( npuntos) ),3);
             //points.push_back(vector);
@@ -178,7 +180,13 @@ ofSetColor(255,255,0);
         calcWave();
         if(p1set && p2set ) update();
     }
-    
+    void setFreq(float _f){
+        incr=_f;
+    }
+    void setAmplitude(float _amp){
+        a=_amp;
+        
+    }
     void calcWave(){
         if(p1set && p2set ){
             npuntos=int(p1.distance(p2));
@@ -196,8 +204,12 @@ ofSetColor(255,255,0);
             // cout << pInit.x << " " << pInit.y << " -angu " << rotation << endl;
             
         
-            dx = (2*PI / npuntos);
+            dx = n_ciclos*(2*PI / npuntos);
         }
+    }
+    void setCiclos(float _n){
+        n_ciclos= _n;
+        dx = n_ciclos*(2*PI / npuntos);
     }
     bool updateCursor(int s_id, int _x, int _y){
         if(p1_id==s_id){

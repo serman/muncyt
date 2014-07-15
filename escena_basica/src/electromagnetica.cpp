@@ -28,7 +28,10 @@ void electromagnetica::setup(){
     colours.push_back(ofColor(255,61,127));
     colours.push_back(ofColor(0,223,252));
     
-
+    freq=-0.11;
+    wave_amp=50;
+    n_ciclos=1;
+    ofAddListener(gui1->newGUIEvent,this,&electromagnetica::guiEvent);
     
 }
 
@@ -100,7 +103,7 @@ void electromagnetica::update(float d1){
             int len=wavesm.waveslist[num_onda.n_wave].npuntos;
             
             ofColor color1=ofColor::fromHsb( ofMap(len, 0, 768, 0,360),255,255) ;
-            color1.a=120;
+            color1.a=200;
             meshParticles.getColors()[i].set(color1);
             
             meshParticles.getVertices()[i].set(particles[i].position);
@@ -131,7 +134,7 @@ void electromagnetica::draw(){
         ofTranslate((ofGetWidth()-W_WIDTH)/2, 0);
         drawNoise();
         ofNoFill();
-        ofEllipse(W_WIDTH/2, W_WIDTH/2, W_WIDTH, W_WIDTH);
+        //ofEllipse(W_WIDTH/2, W_WIDTH/2, W_WIDTH, W_WIDTH);
        // ofEnableAlphaBlending();
         ofPushMatrix();
             ofSetColor(255);
@@ -167,11 +170,13 @@ void electromagnetica::setupGUI() {
 	gui1 = new ofxUICanvas(0,50,300,400);
     gui1->addSlider("alpha", 0.0, 1.0,&alpha);
    // gui1->addToggle("noise or wave", &noiseMode);
- //   gui1->addSlider("freq", 0.0, 100.0,&(mwave.freq));
+    gui1->addSlider("freq", -3, 3,&freq);
+    gui1->addSlider("amplitude", 1, 150,&wave_amp);
+        gui1->addSlider("n_ciclos", 0.5, 4,&n_ciclos);
  //   gui1->addSlider("freq", 0.0, 100.0,&(mwave.freq2));
 }
 void electromagnetica::showDebug(){
-    ofDrawBitmapString("Framerate " + ofToString(ofGetFrameRate()), 20, 100);
+    ofDrawBitmapString("Framerate " + ofToString(ofGetFrameRate()), 20, 300);
 
 }
 
@@ -329,3 +334,27 @@ void electromagnetica::tuioRemoved(ofxTuioCursor &tuioCursor){
     
 }
 
+void electromagnetica::guiEvent(ofxUIEventArgs &e){
+    string name = e.widget->getName();
+	int kind = e.widget->getKind();
+    if(name == "freq")
+    {
+		for(int i=0; i<wavesm.howManyWaves(); i++){
+            wavesm.waveslist[i].setFreq(freq);
+        }
+    }
+    else     if(name == "amplitude")
+    {
+       // cout << ofToString(wave_amp) << " ondas" << ofToString(wavesm.howManyWaves());
+		for(int i=0; i<wavesm.howManyWaves(); i++){
+            wavesm.waveslist[i].setAmplitude(wave_amp);
+        }
+    }
+    else     if(name == "n_ciclos")
+    {
+       
+		for(int i=0; i<wavesm.howManyWaves(); i++){
+            wavesm.waveslist[i].setCiclos(n_ciclos);
+        }
+    }
+}
