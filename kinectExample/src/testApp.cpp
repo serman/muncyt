@@ -146,59 +146,6 @@ void testApp::setup() {
 
 
 
-void testApp::setupGUI() {
-	gui1 = new ofxUICanvas(0,100,400,800);
-	
-	gui1->addSlider("speed", 0.0f, 200, &speed);
-	gui1->addIntSlider("stopUmbral", 1, 300, &stopUmbral) ;
-	gui1->addIntSlider("maxForce", 0, 20, &maxForce) ;
-    gui1->addSlider("Acceleration", 1.05f, 3, &accTest);
-	gui1->addSpacer();
-	gui1->addButton("save",true);
-	gui1->addButton("load",true);	
-	gui1->addSpacer();
-	
-    vector<string> names;
-	names.push_back("NUBE");
-	names.push_back("ESPEJO");
-	gui1->addRadio("MODO_Partics", names, OFX_UI_ORIENTATION_HORIZONTAL);
-	gui1->addIntSlider("alpha Particles", 1, 255, &alphaParticles) ;
-	gui1->addIntSlider("alpha Lines", 1, 255, &alphaLines) ;
-	gui1->addIntSlider("Distance Lines", 50, 600, &distanciaLineasK) ;
-	gui1->addToggle("noise", &boolDrawNoise);
-	
-	gui1->addSpacer();
-	
-	gui1->addIntSlider("stepPointCloud", 1,5, &stepCloudPoint);
-	gui1->addIntSlider("stepLines", 2,10, &stepLines);
-	
-	gui1->addSpacer();
-	
-	gui1->addRangeSlider("RangoZ", 100, 4000, &zMin, &zMax);
-	
-	gui1->addSpacer();
-	
-	gui1->addToggle("DrawPoints", &bDrawPoints);
-	gui1->addToggle("DrawLinesH", &bDrawLinesH);
-	gui1->addToggle("DrawLinesV", &bDrawLinesV);
-    gui1->addToggle("DrawNativePointCloud", &bDrawNativePointCloud);
-	gui1->addToggle("Explosion", &explosion);
-    gui1->addToggle("bDrawContours", &bDrawContours);
-    gui1->addToggle("camera Colours", &bRealColors);
-    
-	gui1->addSpacer();
-	
-	gui1->addButton("reset",true);
-	
-	
-	
-	gui1->addSpacer();
-	
-	ofAddListener(gui1->newGUIEvent,this,&testApp::guiEvent);
-
-}
-
-
 
 //--------------------------------------------------------------
 void testApp::update() {
@@ -228,18 +175,21 @@ void testApp::update() {
     #else
         if (isReady)
         {
-            
             oniCamGrabber.update();
             grayImage.setFromPixels( oniCamGrabber.getDepthPixels() );
-			
             grayImage.updateTexture();
+            
+// IMAGEN DE PRODUNFIDAD
 
-            img1.setFromPixels( oniCamGrabber.getDepthPixels());
-            img1.update();
             //oniCamGrabber.
             if(depthGenerator.isUpdated==true){
 	            updateParticles();
             	depthGenerator.isUpdated=false;
+                if(bDrawContours){
+                    depthImg.setFromPixels( oniCamGrabber.getDepthPixels());
+                    depthImg.update();
+                    resampledContour =getSmoothSilhouete1(contourFinder, depthImg, (float)speed/10)[0];
+                }
             }
             rgbGenerator.update();
             
@@ -437,103 +387,20 @@ void testApp::draw() {
 	ofSetColor(255,255,255);
 	kinect.drawDepth(ofGetWidth()-ww,ofGetHeight()-hh,ww,hh);
 #else
-
     if(bDrawContours) drawCountours();
-    ofFill();
- 	ofSetColor(255,255,255);
-    ofSetColor(255, 255, 0);
-    ofSetLineWidth(2);
-
-    
-    ofPolyline resampled =getSmoothSilhouete1(contourFinder, img1, (float)speed/10)[0];
-
-
-    if(resampled.size()>=3) {
-        triangulation.reset();
-        for(int i=0; i<resampled.size(); i++) {
-            triangulation.addPoint(resampled[i]);
-        }
-        triangulation.triangulate();
-        triangContMesh.clear();
-        
-        
-        triangContMesh.setMode(OF_PRIMITIVE_TRIANGLES);
-        ofMesh tt = triangulation.triangleMesh;
-        vector<ofMeshFace> faces = tt.getUniqueFaces();
-        for(int i=0; i<faces.size(); i++) {
-            ofVec3f a = faces[i].getVertex(0);
-            ofVec3f b = faces[i].getVertex(1);
-            ofVec3f c = faces[i].getVertex(2);
-            ofVec3f pm = (a+b+c)/3.0;
-            
-            if( resampled.inside(ofPoint(pm.x,pm.y)) ) {
-                triangContMesh.addVertex(a);
-                triangContMesh.addVertex(b);
-                triangContMesh.addVertex(c);
-            }
-        }
-        triangContMesh.drawWireframe();
-    }
 #endif
+    
+ /** DIBUJO SILUETA **/
+    if(bDrawContours){
+        drawCVSilhouettes();
+    }
+
     if(debug) showDebug();
 	
-	
-}
-
-void testApp::drawCountours(){
-    ofNoFill();
-    ofSetColor(255,255,255);
-    ofTexture& depth = oniCamGrabber.getDepthTextureReference();
-	depth.draw(ofGetWidth()-480*2,ofGetHeight()-360,480,360);
-    rgbGenerator.texture.draw(ofGetWidth()-480,ofGetHeight()-360,480,360);
 }
 
 
 
-void testApp::drawPointCloud(int step) {
-    mesh.clear();
-
-	int w = IRCAMERAWIDTH;
-	int h = IRCAMERAHEIGHT;
-    
-    incrDistance+=1;
-	mesh.setMode(OF_PRIMITIVE_POINTS);
-	for(int y = 0; y < h; y += step) { //recorro los puntos bajando por las columnas
-		for(int x = 0; x < w; x += step) { //recorro columnas
-#ifndef ASUS
-			if(kinect.getDistanceAt(x, y) > zMin
-               && kinect.getDistanceAt(x, y) < zMax) {
-                	ofVec2f p2= ofVec2f(x,y);
-
-                	mesh.addColor(ofColor(255,255,255,ofMap(mouseX,1,ofGetWidth(),100,255 ) ) );
-                    ofVec3f vtmp = kinect.getWorldCoordinateAt(x , y);
-                    mesh.addVertex(vtmp);
-
-#else
-            int distance=depthGenerator.currentRawPixels->getPixels()[y * depthGenerator.width +x];
-            if(distance> zMin && distance < zMax) {
-                    ofVec2f p2   = ofVec2f(x,y);
-                    ofVec3f vtmp=oniCamGrabber.convertDepthToWorld(x,y);
-                mesh.addColor(ofColor(255,255,255,ofMap(mouseX,1,ofGetWidth(),100,255 ) ) );
-                	mesh.addVertex(vtmp);
-                
-#endif
-                //}
-
-               // lineMesh1.addColor(ofColor::yellowGreen );
-               // lineMesh1.addVertex(vtmp);
-            }//if
-            
-        } //for interior
-        // cout << p1.distance(vtmp) << "\n";
-                //vtmp.x +=20*sin(vtmp.y/10.0*PI+ofGetElapsedTimeMillis())*sin(ofGetElapsedTimeMillis()/1000.0*TWO_PI);
-	}
-	glPointSize(2);
-	glEnable(GL_POINT_SMOOTH);	// Para que sean puntos redondos
-	ofEnableDepthTest();
-	mesh.draw();	
-	ofDisableDepthTest();
-}
 
 
 
@@ -544,28 +411,7 @@ void testApp::setupShader(){
 
 }
 
-void testApp::drawNoise(){
-   // ofSetColor(255);
-    
-    /**ofTexture mtexture;
-    mtexture.allocate(200, 200, GL_RGB);
-    ofImage mimage;mimage.loadImage("Vendeta.jpg");
-    mimage.getTextureReference().bind();**/
-    
-    shader.begin();
-	
-    shader.setUniform3f("iResolution", ofGetWidth(), ofGetHeight(),0);
-    shader.setUniform1f("iGlobalTime", ofRandomf());
-    shader.setUniform2f("iMouse",ofGetMouseX(),ofGetMouseY());
 
-    //mtexture.loadScreenData(600,600,200,200);
-    //mtexture.loadData(mimage.getPixelsRef());
-///shader.setUniformTexture("iChannel0",mtexture,2 );
-    
-    ofRect(0, 0, ofGetWidth(), ofGetHeight());
-    shader.end();
-    //mimage.getTextureReference().unbind();
-}
 
 
 void testApp::setupParticles(){
@@ -793,163 +639,6 @@ void testApp::exit() {
 	
 }
 
-//--------------------------------------------------------------
-void testApp::keyPressed (int key) {
-	switch (key) {
-#ifndef ASUS
-		case 'o':
-			kinect.setCameraTiltAngle(angle); // go back to prev tilt
-			kinect.open();
-			break;
-			
-		case 'c':
-			kinect.setCameraTiltAngle(0); // zero the tilt
-			kinect.close();
-			break;
-			
-		case '0':
-			kinect.setLed(ofxKinect::LED_OFF);
-			break;
-#endif
-		case 'm':
-			bDrawPoints=!bDrawPoints;
-			break;
-		case 'n':
-			explosion=!explosion;
-			break;
-        case 'g':
-            debug=!debug;
-			gui1->toggleVisible();
-			break;
-        case 'p':
-            if(particleMode==NUBE)
-                particleMode=ESPEJO;
-            else particleMode=NUBE;
-            break;
-#ifndef ASUS            
-		case OF_KEY_UP:
-			angle++;
-			if(angle>30) angle=30;
-			kinect.setCameraTiltAngle(angle);
-			break;
-			
-		case OF_KEY_DOWN:
-			angle--;
-			if(angle<-30) angle=-30;
-
-			kinect.setCameraTiltAngle(angle);
-            break;
-#else 	
-        case 'r':
-            if(oniCamrecorder.isRecording==true)
-                oniCamrecorder.stopRecording();
-            else
-                oniCamrecorder.startRecording();
-            break;
-            
-
-#endif
-			
-            
-        case 'e':
-            zMax+=10;
-            break;
-        case 'd':
-            zMax-=10;
-            break;
-        case 's':
-			grabarScreen();
-			break;
-		case 'v':
-			gui1->saveSettings("/config/gui/gui_kinect.xml");
-			break;
-        case ' ':
-            if(gui1->isEnabled() )
-	            gui1->disable();
-            else
-				gui1->enable();
-			
-	}
-	
-#ifndef EASYCAM
-if(key=='1')	saveCameraPose();
-else if(key=='2') 	loadCameraPose();
-#endif
-	
-}
-
-
-void testApp::grabarScreen() {
-	Img.grabScreen( 0, 0, ofGetWidth(), ofGetHeight() );
-	string nameImg = "./images/screens/pantalla_";
-	nameImg+=ofToString(ofGetYear())+
-			ofToString(ofGetYear(),4)+
-			ofToString(ofGetMonth(),2,'0')+
-			ofToString(ofGetDay(),2,'0')+
-			ofToString(ofGetHours(),2,'0')+
-			ofToString(ofGetMinutes(),2,'0')+
-			ofToString(ofGetSeconds(),2,'0')+
-			".png";
-	cout << nameImg;
-	Img.saveImage( nameImg );
-}
-
-
-//--------------------------------------------------------------
-void testApp::mouseDragged(int x, int y, int button)
-{}
-
-//--------------------------------------------------------------
-void testApp::mousePressed(int x, int y, int button)
-{}
-
-//--------------------------------------------------------------
-void testApp::mouseReleased(int x, int y, int button)
-{}
-
-//--------------------------------------------------------------
-void testApp::windowResized(int w, int h)
-{}
-
-void testApp::guiEvent(ofxUIEventArgs &e)
-{
-	string name = e.widget->getName();
-	int kind = e.widget->getKind();
-    
-    if(name == "reset")
-    {
-		ofLogNotice("reset");
-        resetParticles();
-    }
-	else if(name == "save")
-    {
-        cout << "save";
-		gui1->saveSettings("./config/gui/gui_kinect.xml");
-#ifndef EASYCAM
-		saveCameraPose();
-#endif
-    }
-	else if(name == "load")
-    {
-        cout << "load";
-		gui1->loadSettings("./config/gui/gui_kinect.xml");
-#ifndef EASYCAM
-		loadCameraPose();
-#endif
-		
-    }
-	else if(name == "MODO_Partics")
-    {
-		ofxUIRadio *  wr = (ofxUIRadio *) e.widget;
-		ofLogNotice("MODO_Partics. " + wr ->getActiveName() + " = " + ofToString(wr->getValue()));
-		particleMode = wr->getValue();
-//		gui1->loadSettings("./config/gui/gui_kinect.xml");
-    }
-    else if(name=="RangoZ"){
-        cout << "cambio rango \n";
-        oniCamGrabber.depthSource.setDepthClipping(zMin,zMax);
-    }
-}
 
 // CameraPose
 #ifndef EASYCAM

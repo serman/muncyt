@@ -14,7 +14,7 @@ vector<ofPolyline> getSmoothSilhouete1( ofxCv::ContourFinder &contourFinder, ofI
         convexHull.simplify();
         convexHull=convexHull.getResampledBySpacing(30);
         silhouettes.push_back (convexHull);
-        convexHull.draw();
+        //convexHull.draw();
         
     }
     return silhouettes;

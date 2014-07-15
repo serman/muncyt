@@ -72,6 +72,7 @@ public:
 	bool	bDrawLinesH, bDrawLinesV,bDrawNativePointCloud;
     bool 	bDrawContours;
     bool 	bRealColors;
+
 	int 	distanciaLineasK;
 	// GUI
 	void		setupGUI();
@@ -138,6 +139,7 @@ public:
     ofShader shader;
     void	setupShader();
    	void	drawNoise();
+    void    drawCVSilhouettes();
     bool	boolDrawNoise;
     int		alphaParticles;
 	
@@ -153,7 +155,8 @@ public:
     
 //********CV
     ofxCv::ContourFinder contourFinder;
-    ofImage img1;
+    ofPolyline resampledContour;
+    ofImage depthImg;
     bool doTriang;
 	ofxDelaunay triangulation;
 	bool	bAddPts;		// si a–ade puntos a la triangulacion

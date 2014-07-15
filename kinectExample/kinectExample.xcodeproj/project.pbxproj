@@ -54,6 +54,8 @@
 		F77369651945D5A600548CEA /* libMWClosestPoint.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F77369531945D5A600548CEA /* libMWClosestPoint.a */; };
 		F77369661945D5A600548CEA /* libOpenNI2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F77369541945D5A600548CEA /* libOpenNI2.a */; };
 		F77369671945D5A600548CEA /* libXnLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F77369551945D5A600548CEA /* libXnLib.a */; };
+		F7A515AA1975740000028875 /* testApp_Drawing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7A515A81975740000028875 /* testApp_Drawing.cpp */; };
+		F7A515AD197574C100028875 /* testApp_inputInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7A515AB197574C100028875 /* testApp_inputInterface.cpp */; };
 		F7C1705B192B76E30034A5CB /* ofxUI2DGraph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7C16FFE192B76E20034A5CB /* ofxUI2DGraph.cpp */; };
 		F7C1705C192B76E30034A5CB /* ofxUI2DPad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7C17000192B76E20034A5CB /* ofxUI2DPad.cpp */; };
 		F7C1705D192B76E30034A5CB /* ofxUIBaseDraws.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7C17002192B76E20034A5CB /* ofxUIBaseDraws.cpp */; };
@@ -348,6 +350,8 @@
 		F773695D1945D5A600548CEA /* 55-primesense-usb.rules */ = {isa = PBXFileReference; lastKnownFileType = text; path = "55-primesense-usb.rules"; sourceTree = "<group>"; };
 		F773695E1945D5A600548CEA /* README.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		F7736968194634E500548CEA /* extendedDepthSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = extendedDepthSource.h; sourceTree = "<group>"; };
+		F7A515A81975740000028875 /* testApp_Drawing.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testApp_Drawing.cpp; sourceTree = "<group>"; };
+		F7A515AB197574C100028875 /* testApp_inputInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testApp_inputInterface.cpp; sourceTree = "<group>"; };
 		F7C16FFD192B76E20034A5CB /* ofxUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxUI.h; sourceTree = "<group>"; };
 		F7C16FFE192B76E20034A5CB /* ofxUI2DGraph.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxUI2DGraph.cpp; sourceTree = "<group>"; };
 		F7C16FFF192B76E20034A5CB /* ofxUI2DGraph.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxUI2DGraph.h; sourceTree = "<group>"; };
@@ -954,6 +958,8 @@
 				F736259F19277CD900964804 /* ofxParticles */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */,
+				F7A515AB197574C100028875 /* testApp_inputInterface.cpp */,
+				F7A515A81975740000028875 /* testApp_Drawing.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* testApp.h */,
 				F73625AA192842BC00964804 /* Particle.h */,
 				F7736968194634E500548CEA /* extendedDepthSource.h */,
@@ -1694,6 +1700,7 @@
 				F7C17063192B76E30034A5CB /* ofxUIDropDownList.cpp in Sources */,
 				F7E3C06A195C34A000D7724A /* ObjectFinder.cpp in Sources */,
 				F7C17085192B76E30034A5CB /* ofxUIWidget.cpp in Sources */,
+				F7A515AD197574C100028875 /* testApp_inputInterface.cpp in Sources */,
 				F77369621945D5A600548CEA /* ofxOpenNI2Grabber.cpp in Sources */,
 				F7C17078192B76E30034A5CB /* ofxUIScrollableCanvas.cpp in Sources */,
 				F7C1705B192B76E30034A5CB /* ofxUI2DGraph.cpp in Sources */,
@@ -1762,6 +1769,7 @@
 				F7C17091192B81A30034A5CB /* tinyxml.cpp in Sources */,
 				F7C1706F192B76E30034A5CB /* ofxUIMinimalSlider.cpp in Sources */,
 				1D5F3298C2FA073628012944 /* ofxCvContourFinder.cpp in Sources */,
+				F7A515AA1975740000028875 /* testApp_Drawing.cpp in Sources */,
 				F7EBD1DA193358F3009805D5 /* OscOutboundPacketStream.cpp in Sources */,
 				F7E3C06E195C34A000D7724A /* Wrappers.cpp in Sources */,
 				F7C1706A192B76E30034A5CB /* ofxUIImageSlider.cpp in Sources */,
