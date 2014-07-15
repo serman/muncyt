@@ -208,6 +208,7 @@ public:
 	int nPersonaAct;
 	ofImage faceImage;
 	ofRectangle faceRect, faceRectAmpl;
+	ofRectangle faceRect_Tgt;	// este guarda el rect del Haar exacto
 	
 	
 	bool caraOut;

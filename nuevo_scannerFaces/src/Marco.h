@@ -28,7 +28,8 @@ public:
 	ofPath		borde;
 	
 	Marco() {
-		setFillColor(ofColor(127,127,127));
+//		setFillColor(ofColor(127,127,127));
+		setFillColor(ofColor(0));
 		setFillAlpha(255);
 		
 		setupBorde();
@@ -68,7 +69,38 @@ public:
 	void draw() {
 		ofPushStyle();
 			borde.draw();
-		ofPopStyle();		
+		ofPopStyle();
+		
+		// dibujar marcas
+		float gap = 20;
+		int	  lTick = 4;
+		int	  sep = 4;
+		ofPushStyle();
+		// UP 
+		ofSetColor(255);
+		ofSetLineWidth(1.5);
+		ofLine(rect.x, rect.y-gap, rect.x+rect.width, rect.y-gap);
+		ofLine(rect.x, rect.y+rect.height+gap, rect.x+rect.width, rect.y+rect.height+gap);
+		ofLine(rect.x-gap, rect.y, rect.x-gap, rect.y+rect.height);
+		ofLine(rect.x+rect.width+gap, rect.y, rect.x+rect.width+gap, rect.y+rect.height);
+		ofSetLineWidth(1.0);
+		int x0 = rect.x-gap;
+		int x1 = rect.x+rect.width+gap;
+		int y0 = rect.y-gap;
+		int y1 = rect.y+rect.height+gap;
+		for(int i=0; i<rect.width; i+=sep) {
+			ofLine(rect.x+i, y0, rect.x+i, y0+lTick);
+			ofLine(rect.x+i, y1, rect.x+i, y1-lTick);
+		}		
+		
+		for(int i=0; i<rect.height; i+=sep) {
+			ofLine(x0, rect.y+i, x0+lTick, rect.y+i);
+			ofLine(x1, rect.y+i, x1-lTick, rect.y+i);
+		}
+		
+		
+		ofPopStyle();
+		
 	}
 	
 	bool isOut(ofRectangle rr) {

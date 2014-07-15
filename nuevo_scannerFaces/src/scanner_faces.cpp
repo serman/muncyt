@@ -58,9 +58,15 @@ void scanner_faces::setup() {
 	// fbo para resultado de FT
 	// realmente podria hacer el fbo mas pequeño, del tamaño de la región visible
 	fboFT.allocate(wCam, hCam, GL_RGB);
+	fboFT.begin();
+	ofClear(0,255);
+	fboFT.end();
 	
 	// fbo para el scaneo
 	fboScan.allocate(wCam, hCam, GL_RGB);	// por ahora coge toda la imagen de la camara
+	fboScan.begin();
+	ofClear(0,255);
+	fboScan.end();
 	
 	// timers
 	setupTimers();
@@ -72,10 +78,6 @@ void scanner_faces::setup() {
 	// escenas
 	setupEscenas();
 	setEscena(SCN_WAITING);
-	
-	
-	
-	//	lastTF = ofGetElapsedTimef();
 	
 	// Grabar imagenes
 	nPersonaAct = 0;
@@ -101,14 +103,14 @@ void scanner_faces::setupFotos() {
 //	rectHaar.height = rectHaar.width/640*480;
 //	rectHaar.x = 0;
 //	rectHaar.y = (480-rectHaar.height)/2;
-	float www = cam.width*0.8;
-	float hhh = www/640*480;;
-	rectHaar = ofRectangle(0,(480-hhh)/2, www,hhh);
+	float hhh = cam.height;
+	float www = hhh*3/4;
+	rectHaar = ofRectangle((ofGetWidth()-www)/2,0, www,hhh);
 }
 
 
 void scanner_faces::setupObjFinders() {
-	finderSmoothRate = 0.15;
+	finderSmoothRate = 0.15; // si es mayor tiembla mas, y si es menor va mas lento y suave
 	//finder caras;
 	//	finder.setup("haars/haarcascade_frontalface_alt2.xml");
 	finder.setup(modos_haar[id_modo_haar_act]);
@@ -152,6 +154,7 @@ void scanner_faces::update_haarFinder() {
 	if(finder.size()>0) {
 		bFaceDetected = true;
 		
+		faceRect_Tgt = finder.getObject(0);
 		faceRect = finder.getObjectSmoothed(0);
 		
 		// Modifico el Rect
@@ -161,13 +164,17 @@ void scanner_faces::update_haarFinder() {
 		float dyDwn = 2*faceRect.height/10.0;	// 			
 		faceRectAmpl = ofRectangle(faceRect.x, faceRect.y-dyUp, faceRect.width, faceRect.height+ dyUp+dyDwn);
 		
+		// update rectangulo para la imagen para HaarViz
+//		rectHaar.x = faceRectAmpl.x+faceRectAmpl.width/2-rectHaar.width/2;	// suave pero llega tarde
+		rectHaar.x = faceRect_Tgt.x+faceRect_Tgt.width/2-rectHaar.width/2;	// tiembla mucho
+		
+		
 		if(swHaarEyes) {
 			// Paso la imagen al finder de ojos
 			faceImage.setFromPixels(cam.getPixels(), cam.width, cam.height, OF_IMAGE_COLOR );
 			faceImage.crop(faceRectAmpl.x, faceRectAmpl.y, faceRectAmpl.width, faceRectAmpl.height);
 			finderEyes.update(faceImage);
 		}
-		
 		
 		// check si la cara esta dentro de los margenes
 		caraOut = marco.isOut(faceRectAmpl);

@@ -78,7 +78,7 @@ void scanner_faces::setupMensajes() {
 	mensajes.push_back(" ");	// Tiempo para mostar análisis
 	mensajes_1.push_back(" ");
 	mensajes_peque.push_back(" ");
-	tiempos.push_back(3000);
+	tiempos.push_back(5000);
 
 	// Esto pasa a escena de escaneo:
 //	mensajes.push_back("ESCANEO");	// Luego quitare el texto
@@ -305,7 +305,7 @@ void scanner_faces::setupTimers() {
 	//	TIME_ENCUADRE;
 	
 	TIME_SCAN = 2000;	// tiempo de línea de escaneo
-	TIME_FIN = 5000;	// tiempo de recreo antes de acabar la sesión
+	TIME_FIN = 10000;	// tiempo de recreo antes de acabar la sesión
 	
 	TIME_FOTOS = 500;	// intervalo de toma de fotos
 	NFOTOSMAX = 3;
