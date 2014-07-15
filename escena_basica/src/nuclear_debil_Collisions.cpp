@@ -71,7 +71,7 @@ void nuclear_debil::contactEnd(ofxBox2dContactArgs &e) {
 }
 
 void nuclear_debil::colisiona_N_n (Particula * pN, Particula * pn) {
-	if(pN->swExcitado) {
+	if(pN->swExcitado && pn->getVelocity().length()>velocNeutronLim) {
 		ofVec2f ptChoque = (pN->getPosition() + pn->getPosition())/2.0;
 		
 		// sonido

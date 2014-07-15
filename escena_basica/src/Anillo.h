@@ -38,6 +38,9 @@ public:
 	float dAcc;	// variacion de aceleracion
 	float viscAcc; // frenado de Aceleracion
 	
+	float velocNeutronLanz;
+	float wAngMax;
+	
 	float radioPart;
 	ofColor color;
 	
@@ -62,8 +65,10 @@ public:
 		ofLogVerbose("radioPart: " + ofToString(radioPart));
 		fase=0;
 		angT = 0.0;
-		wAng = -0.3*TWO_PI/(60.0);
+		wAng = -0.1*TWO_PI/(60.0);
 		accAng = 0.0;
+		
+		wAngMax = 0.16;
 		
 		dAcc = 0.03;//0.03;
 		viscAcc = 0.30;
@@ -118,6 +123,10 @@ public:
 		if(abs(accAng)<0.01) accAng=0.0;
 		accAng*=viscAcc;
 		wAng += accAng;
+		if(abs(wAng)>wAngMax ) {
+			if(wAng<0) 			wAng=-wAngMax;
+			else				wAng=wAngMax;
+		}
 		angT += wAng;
 
 	}
@@ -174,6 +183,15 @@ public:
 		//ofPushMatrix();
 		//ofPushStyle();
 	}
+	
+	float getVelocNeutronLanz() {
+		float velocNeutronLim = 80.0;
+		float velocNeutronDestroy = velocNeutronLim*0.7;
+		velocNeutronLanz = ofMap(abs(wAng), 0,wAngMax, velocNeutronDestroy, 2*velocNeutronLim );
+		ofLogNotice("lanzar neutron. wAng: " + ofToString(abs(wAng)) + "  vel: " + ofToString(velocNeutronLanz));
+		return velocNeutronLanz;
+	}
+
 
 	/*bool interaccionAnillo(ofPoint pt) {
 		return interaccionAnillo(pt.x, pt.y);

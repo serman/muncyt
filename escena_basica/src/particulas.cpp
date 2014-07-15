@@ -72,6 +72,7 @@ void Particula::update() {
 	else if(modoDraw==MODO_BOX2D) {
 	}
 	
+	
 }
 
 void Particula::updateTrail(ofPoint _pos) {

@@ -63,7 +63,7 @@ void nuclear_debil::keyPressed(int key) {
 		setModoParticulas(MODO_BOX2D);
 	}
 	
-	else if(key=='t') {
+	else if(key=='j') {
 		swDrawTRAILS = !swDrawTRAILS;
 	}
 }
@@ -169,7 +169,13 @@ void nuclear_debil::onButtonPressed(BUTTON_TYPE& mtype){
     }
     else if(mtype==TYPE_CRASH){
         cout <<" crash " << endl;
-    }
+		// Lanzarla con velocidad que tenga el anillo
+		
+		float vvVal = anillo.getVelocNeutronLanz();
+		float vvAng = HALF_PI;
+		
+		addNeutron(W_WIDTH/2.0,W_HEIGHT/2.0-radioInt*0.9,vvVal,vvAng);
+	}
+	
 }
-
 

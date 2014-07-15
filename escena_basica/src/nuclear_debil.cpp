@@ -31,7 +31,6 @@ void nuclear_debil::setup() {
 	// load the texure
 	ofDisableArbTex();
 	ofLoadImage(texPartic, "media/images/dot.png");
-
 	
 	fpsAct = 370.0;
 	
@@ -133,7 +132,7 @@ void nuclear_debil::setup() {
     buttonSpeed2.btype=TYPE_ACC;
     
     //buttonCollide.set(centro.x-(dRad*0.9/2),centro.y-rMed-(dRad*0.9/2), dRad*0.9,dRad*0.9);
-    buttonCollide.set(309,5,57,143);
+    buttonCollide.set(309,5,143,57);
     buttonCollide.btype=TYPE_CRASH;
     buttonCollide.setup();
 
@@ -293,7 +292,7 @@ void nuclear_debil::update(float dt) {
 		box2d.setGravity(fuerza.x, fuerza.y);
 	}
 	else box2d.setGravity(0,0); 
-	
+
 	// Anillo Aceleracion
 	anillo.update();
 	
@@ -303,6 +302,7 @@ void nuclear_debil::update(float dt) {
 		neutrones[i].get()->update();		
 	}
 	for(int i=0; i<nucleos.size(); i++) {
+		nucleos[i].get()->addForce(ofVec2f(nucleos[i].get()->pos.x-W_WIDTH/2.0,nucleos[i].get()->pos.y-W_HEIGHT/2.0), -2.7);
 		nucleos[i].get()->update();
 	}
 	
@@ -364,7 +364,7 @@ void nuclear_debil::update(float dt) {
 
 //--------------------------------------------------------------
 void nuclear_debil::draw(){
-    ofColor colorCentro = ofColor::fromHsb(0, 0, 50+50*sin(ofGetElapsedTimef()/frecFondo*TWO_PI));
+    ofColor colorCentro = ofColor::fromHsb(0, 0, 30+30*sin(ofGetElapsedTimef()/frecFondo*TWO_PI));
     ofBackgroundGradient (colorCentro, ofColor::black, OF_GRADIENT_CIRCULAR);
  //   ofBackground(colorCentro);
     ofPushMatrix(); //colocamos el canvas en su posicion centrada
