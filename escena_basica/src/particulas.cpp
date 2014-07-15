@@ -75,7 +75,7 @@ void Particula::update() {
 }
 
 void Particula::updateTrail(ofPoint _pos) {
-	ofLogNotice("update pos: " + ofToString(trailV.size())+"/"+ofToString(tLifeMax));
+	//ofLogNotice("update pos: " + ofToString(trailV.size())+"/"+ofToString(tLifeMax));
 	trailV.push_back(pos);
 	if(trailV.size()>tLifeMax) {
 //		float rnd = ofRandom(1);

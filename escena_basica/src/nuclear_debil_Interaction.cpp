@@ -103,7 +103,7 @@ void nuclear_debil::mousePressed(int x, int y, int button) {
 	}
     
 	//anillo.interaccionAnillo(X_(x),y);
-	
+	cout << X_(x) << " " << y << endl;
 }
 
 //--------------------------------------------------------------

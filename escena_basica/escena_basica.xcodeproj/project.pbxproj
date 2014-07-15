@@ -942,7 +942,6 @@
 				F7016928196D863700D174E9 /* handShadow.h */,
 				F7016925196D84CB00D174E9 /* tangibleObject.h */,
 				F7016926196D84CB00D174E9 /* tangiblesHandler.h */,
-				F74B89B0196EF6E8005F3893 /* anilloButton.h */,
 			);
 			name = touchObj;
 			sourceTree = "<group>";
@@ -968,6 +967,7 @@
 		F74B89F4196F5295005F3893 /* nuclear_debil */ = {
 			isa = PBXGroup;
 			children = (
+				F74B89B0196EF6E8005F3893 /* anilloButton.h */,
 				E4B69E1F0A3A1BDC003C02F2 /* nuclear_debil.h */,
 				E4B69E1E0A3A1BDC003C02F2 /* nuclear_debil.cpp */,
 				F74B89B1196EFF27005F3893 /* nuclear_debil_Interaction.cpp */,
@@ -1517,13 +1517,13 @@
 					../../../addons/ofxBox2d/libs/triangle,
 					../../../addons/ofxBox2d/src,
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				OTHER_CPLUSPLUSFLAGS = (
 					"-D__MACOSX_CORE__",
 					"-lpthread",
 					"-mtune=native",
 				);
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx10.8;
 			};
 			name = Debug;
 		};
@@ -1562,13 +1562,13 @@
 					../../../addons/ofxBox2d/libs/triangle,
 					../../../addons/ofxBox2d/src,
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				OTHER_CPLUSPLUSFLAGS = (
 					"-D__MACOSX_CORE__",
 					"-lpthread",
 					"-mtune=native",
 				);
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx10.8;
 			};
 			name = Release;
 		};
@@ -1653,6 +1653,7 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_51)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_52)",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = "example-SimpleDebug";
 				USER_HEADER_SEARCH_PATHS = ../../../addons/ofxOsc/libs/oscpack/src/;
 				WRAPPER_EXTENSION = app;
@@ -1739,6 +1740,7 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_50)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_51)",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = "example-Simple";
 				USER_HEADER_SEARCH_PATHS = ../../../addons/ofxOsc/libs/oscpack/src/;
 				WRAPPER_EXTENSION = app;
