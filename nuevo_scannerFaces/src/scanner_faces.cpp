@@ -197,8 +197,8 @@ void scanner_faces::update_faceTracker() {
 		rightInner = tracker.getImagePoint(42),
 		rightOuter = tracker.getImagePoint(45);
 		
-		ofPolyline leftEye = tracker.getImageFeature(ofxFaceTracker::LEFT_EYE);
-		ofPolyline rightEye = tracker.getImageFeature(ofxFaceTracker::RIGHT_EYE);
+		leftEye = tracker.getImageFeature(ofxFaceTracker::LEFT_EYE);
+		rightEye = tracker.getImageFeature(ofxFaceTracker::RIGHT_EYE);
 		
 		ofVec2f leftCenter = leftEye.getBoundingBox().getCenter();
 		ofVec2f rightCenter = rightEye.getBoundingBox().getCenter();
@@ -206,8 +206,6 @@ void scanner_faces::update_faceTracker() {
 		float leftRadius = (leftCenter.distance(leftInner) + leftCenter.distance(leftOuter)) / 2;
 		float rightRadius = (rightCenter.distance(rightInner) + rightCenter.distance(rightOuter)) / 2;
 
-		
-		
 		// Preparar cuadritos en ojos
 		
 		// ModoII: Otra forma de hacer esto es con los puntos de imagen
@@ -240,7 +238,7 @@ void scanner_faces::update_faceTracker() {
 		
 		
 		// Mouth
-		ofPolyline featMouth = tracker.getObjectFeature(ofxFaceTracker::OUTER_MOUTH);
+		featMouth = tracker.getObjectFeature(ofxFaceTracker::OUTER_MOUTH);
 		ofRectangle mouthRectBox = featMouth.getBoundingBox();
 		ofVec2f
 		mULObj = ofVec2f(mouthRectBox.x,mouthRectBox.y),
@@ -259,7 +257,6 @@ void scanner_faces::update_faceTracker() {
 		mRect.addVertex(mDRObj + lowerBorder + rightDirection * outerBorder);
 		mRect.addVertex(mDLObj + lowerBorder + leftDirection * outerBorder);
 		
-		
 		ofPushMatrix();
 		ofSetupScreenOrtho(640, 480, OF_ORIENTATION_UNKNOWN, true, -1000, 1000);
 		ofScale(1, 1, -1);
@@ -274,24 +271,31 @@ void scanner_faces::update_faceTracker() {
 		// Dibujar fbo
 		fboFT.begin();
 		{
-			ofClear(0, 255);
+			ofClear(0, 100);
 			// Dibujar la mascara
 			//tracker.drawWireframe();
 			//faceSolid.draw();
-			drawFaceTracker();
+			// 	enum { FT_LINES, FT_WIREFRAME, FT_TEXTURE};
+			if(modoDrawFT==FT_LINES) drawFaceTracker();
+			else if(modoDrawFT==FT_WIREFRAME) {
+				tracker.getImageMesh().drawWireframe();
+//				ofMesh getObjectMesh() const;
+//				ofMesh getMeanObjectMesh() const;
+			}
+			else if(modoDrawFT==FT_TEXTURE) {
+				tracker.draw(true);
+			}
 		}
         fboFT.end();
 		
 	}
-	
 }
 
 
 void scanner_faces::draw() {
-	ofSetBackgroundColor(ofColor::black);
+	ofBackground(ofColor::black);
 	// Dibujar capas
 	ofSetColor(255);
-	
 	if(scnAct==SCN_WAITING) {
 		draw_ScnWait();
 	}
@@ -300,7 +304,6 @@ void scanner_faces::draw() {
 		// CONTENIDOS REDIMENSIONADOS Y CON FLIP_H
 		float hh = ofGetScreenHeight();
 		float ww = hh*cam.width/cam.height;
-		
 		
 		//		cam.draw((ofGetWidth()-ww)/2,(ofGetHeight()-hh)/2, ww,hh);
 		ofPushMatrix();
@@ -318,23 +321,32 @@ void scanner_faces::draw() {
 			// Este bloque debe ir enla zona de escenas 
 			// 
 			// la transicion será con shader
-			// 
-
+			//
+			
+			//	
 			if(scnAct==SCN_PRESCAN) {
 				// dibujar Haar finder
-				if(doDrawHaarFace && doHaarFace) draw_haarFinder();
+//				if(doDrawHaarFace && doHaarFace && show_HaarRect && !guidesFace) {
+				if(show_HaarRect && !guidesFace) {
+					draw_haarFinder();
+				}
+				// las guidelines las dibujare encima del marco
+				
+				
 			}
 			else if(scnAct==SCN_SCAN) {
 				// Aqui hay que dibujar el fbo con la transicion de scan
 				
-				// mientras tanto...
-				if(doDrawHaarFace && doHaarFace) {
-					draw_haarFinder();
-				}
+				
+				// mientras tanto dibujo todo
 				if(doFaceTracker && doDrawFaceTracker) {
 //					drawFaceTracker();
 					fboFT.draw(0,0);
 				}	
+				if(doDrawHaarFace && doHaarFace) {
+					draw_haarFinder();
+				}				
+				
 			}
 			else if(scnAct==SCN_FIN) {
 				if(doFaceTracker && doDrawFaceTracker) {
@@ -343,9 +355,59 @@ void scanner_faces::draw() {
 				}
 				
 			}
-	
+			
 			ofSetColor(255);
 			marco.draw();
+			
+			// guidelines
+//			drawGuideLines();
+			if(scnAct==SCN_PRESCAN) {
+				if(guidesFace) {
+					ofLogNotice("DIbujar Face");
+					ofPushStyle();
+					ofSetColor(ofColor::lime, 200);
+					ofSetLineWidth(1);
+
+					ofLine(marco.rect.x+marco.rect.width+marco.gap, faceRectAmpl.y, faceRectAmpl.x, faceRectAmpl.y);
+					ofLine(marco.rect.x+marco.rect.width+marco.gap, faceRectAmpl.y+faceRectAmpl.height, 
+						   faceRectAmpl.x, faceRectAmpl.y+faceRectAmpl.height);
+
+					ofLine(faceRectAmpl.x, faceRectAmpl.y, faceRectAmpl.x, marco.rect.y-marco.gap);
+					ofLine(faceRectAmpl.x+faceRectAmpl.width, faceRectAmpl.y, 
+						   faceRectAmpl.x+faceRectAmpl.width, marco.rect.y-marco.gap);
+					
+					ofSetLineWidth(2);
+					ofRect(faceRectAmpl);
+					
+					// data
+					
+					
+					ofPopStyle();
+				}
+				if(guidesEyes) {
+					ofPushStyle();
+					ofSetColor(ofColor::lightBlue, 220);
+					draw_featEnMarco(leftEye,15, true, true);
+					draw_featEnMarco(rightEye,15, true, true);
+					
+					ofPopStyle();
+				}
+				if(guidesBoca) {
+					ofPushStyle();
+					ofSetColor(ofColor::darkorange, 200);
+					//featMouth
+					ofPolyline featMouthImg = tracker.getImageFeature(ofxFaceTracker::OUTER_MOUTH);
+					draw_featEnMarco(featMouthImg, 15, false, false);
+//					ofRect(featMouthImg.getBoundingBox());
+					
+					ofPopStyle();	
+				}
+				if(guidesSkin) {
+					ofPushStyle();
+					
+					ofPopStyle();					
+				}
+			}
 			
 			// marco con la imagen para HaarViz
 			ofSetColor(255,0,255);
@@ -355,7 +417,6 @@ void scanner_faces::draw() {
 			
 		}
 		ofPopMatrix();
-		
 		
 		// MENSAJES E INFO EN PANTALLA
 		if(scnAct==SCN_PRESCAN) {
@@ -376,7 +437,10 @@ void scanner_faces::draw() {
 		
 		ofDrawBitmapStringHighlight("(w/s) haar: " + modos_haar[id_modo_haar_act], 10, 150);
 		ofDrawBitmapStringHighlight("#objs: " + ofToString(finder.size()), 10, 170);
+		
+		
 	}
+	
 	int hLin = 10;
 	ofDrawBitmapStringHighlight("(t) FullScreen", 10,hLin); hLin+=20;
 	ofDrawBitmapStringHighlight("(q) " + nombreEscena, 10,hLin); hLin+=20;
@@ -386,6 +450,9 @@ void scanner_faces::draw() {
 	ofDrawBitmapStringHighlight("(r) draw FaceTracker: " + ofToString(doDrawFaceTracker), 10,hLin); hLin+=20;
 	ofDrawBitmapStringHighlight("fr: " + ofToString(ofGetFrameRate()), 10,hLin); hLin+=20;
 	ofDrawBitmapStringHighlight("numCaras Acum: " + ofToString(contCaras), 10,hLin); hLin+=20;
+	ofDrawBitmapStringHighlight("nPersonaAct: " + ofToString(nPersonaAct), 10, hLin); hLin+=20;
+	ofDrawBitmapStringHighlight("nZonaAct: " + ofToString(nZonaAct), 10, hLin); hLin+=20;
+	ofDrawBitmapStringHighlight("(123) modo Draw FT: " + ofToString(modoDrawFT), 10, hLin); hLin+=20;
 	
 	// cuadrito esquina UR piloto cara_haar detectada
 	if(hayPersona()) {
@@ -405,6 +472,39 @@ void scanner_faces::draw() {
 	
 	
 }
+
+void scanner_faces::draw_featEnMarco(ofPolyline feat, int gap, bool uu, bool rr) {
+	
+	ofRectangle featRect;
+	featRect = feat.getBoundingBox();
+	featRect.x-=gap;
+	featRect.y-=gap;
+	featRect.width+=2*gap;
+	featRect.height+=2*gap;
+	ofSetLineWidth(1);
+	if(rr) {
+		ofLine(marco.rect.x-marco.gap, featRect.y, featRect.x, featRect.y);
+		ofLine(marco.rect.x-marco.gap, featRect.y+featRect.height, featRect.x, featRect.y+featRect.height);
+	}
+	else {
+		ofLine(marco.rect.x+marco.rect.width+marco.gap, featRect.y, featRect.x, featRect.y);
+		ofLine(marco.rect.x+marco.rect.width+marco.gap, featRect.y+featRect.height, featRect.x, featRect.y+featRect.height);
+	}
+	
+	if(uu) {
+		ofLine(featRect.x, featRect.y, featRect.x, marco.rect.y-marco.gap);
+		ofLine(featRect.x+marco.rect.width, featRect.y, featRect.x+marco.rect.width+marco.gap, featRect.y);
+	}
+	else {
+		ofLine(featRect.x, featRect.y, featRect.x, marco.rect.y+marco.rect.height+marco.gap);
+		ofLine(featRect.x+featRect.width, featRect.y, 
+			   featRect.x+featRect.width, marco.rect.y+marco.rect.height+marco.gap);
+	}
+	ofSetLineWidth(2.5);
+	ofRect(featRect);
+	
+}
+
 
 void scanner_faces::draw_haarFinder() {
 	//		finder.draw();
@@ -485,6 +585,17 @@ void scanner_faces::keyPressed(int key) {
 	else if(key == 't') ofToggleFullscreen();
 	
 	// Presets ObjectFinder
+	if(key=='1') {
+		modoDrawFT = FT_LINES;
+	}
+	else if(key=='2') {
+		modoDrawFT = FT_WIREFRAME;		
+	}
+	else if(key=='3') {
+		modoDrawFT = FT_TEXTURE;
+	}
+	
+		
 	if(key=='6') {
 		finder.setPreset(ObjectFinder::Fast);
 	}
@@ -522,26 +633,26 @@ void scanner_faces::keyPressed(int key) {
 	
 	else if(key=='i') {
 		// grabar imagen
-		if(hayPersona()) {
-			if(!swHaarEyes) {
-				faceImage.setFromPixels(cam.getPixels(), cam.width, cam.height, OF_IMAGE_COLOR );
-				faceImage.crop(faceRectAmpl.x, faceRectAmpl.y, faceRectAmpl.width, faceRectAmpl.height);
-			}
-			
-			saveScanImg(faceImage, nPersonaAct, nZonaAct);
-			
-			nZonaAct++;
-			if(nZonaAct==5) {
-				nPersonaAct++;
-				nZonaAct=0;
-			}
-		}
+		hacerFoto(); // Ya suma nZonaAct++ si se hace la foto
 	}
 	
 	
 }
 
 // - - - 
+
+void scanner_faces::hacerFoto() {
+	
+	if(hayPersona()) {
+		faceImage.setFromPixels(cam.getPixels(), cam.width, cam.height, OF_IMAGE_COLOR );
+		faceImage.crop(faceRectAmpl.x, faceRectAmpl.y, faceRectAmpl.width, faceRectAmpl.height);
+		saveScanImg(faceImage, nPersonaAct, nZonaAct);
+		nZonaAct++;
+	}				
+	
+}
+
+
 
 void scanner_faces::saveScanImg(ofImage &imgScan, int nPers, int nImg) {
 	
@@ -559,6 +670,14 @@ void scanner_faces::saveScanImg(ofImage &imgScan, int nPers, int nImg) {
 	
 }
 
+void scanner_faces::hacerFoto_haarViz() {
+
+	if(hayPersona()) {
+		faceImage.setFromPixels(cam.getPixels(), cam.width, cam.height, OF_IMAGE_COLOR );
+		faceImage.crop(rectHaar.x, rectHaar.y, rectHaar.width, rectHaar.height);
+		saveScanImg2HaarViz(faceImage, nPersonaAct);
+	}
+}
 
 
 void scanner_faces::saveScanImg2HaarViz(ofImage &imgScan, int nPers) {
@@ -568,6 +687,7 @@ void scanner_faces::saveScanImg2HaarViz(ofImage &imgScan, int nPers) {
 	ofToString(ofGetHours(),2,'0')+ofToString(ofGetMinutes(),2,'0');
 	nmImgScan += "_cara_"+ofToString(nPers,3,'0')+".png";
 	ofLogNotice("grabar:_"+nmImgScan);
+	
 	imgScan.saveImage(nmImgScan);
 	
 	snd_click.play();
