@@ -27,7 +27,7 @@ struct MensajeTime {
 //		ofRectangle rTmp = font.getStringBoundingBox(mensaje, ofGetWidth()/2, ofGetHeight()/6);
 //		font.drawString(mensaje + ofToString(rTmp), rTmp.x-rTmp.width/2, rTmp.y);
 		ofRectangle rTmp = font.getStringBoundingBox(mensaje, 0,0);
-		font.drawString(mensaje, ofGetWidth()/2-rTmp.width/2, 100);
+		font.drawString(mensaje, ofGetWidth()/2-rTmp.width/2, 50);
 //		ofRect(rTmp);
 		
 		
@@ -35,7 +35,7 @@ struct MensajeTime {
 //		ofRectangle rTmp1 = font.getStringBoundingBox(mensaje_1, rTmp.x, rTmp.y+rTmp.height);
 //		font.drawString(mensaje_1, rTmp1.x-rTmp1.width/2, rTmp1.y+30);
 		ofRectangle rTmp1 = font.getStringBoundingBox(mensaje_1, 0,0);
-		font.drawString(mensaje_1, ofGetWidth()/2-rTmp1.width/2, 180);
+		font.drawString(mensaje_1, ofGetWidth()/2-rTmp1.width/2, 145);
 //		ofRect(rTmp1);
 		
 		ofSetColor(200,200,0,180);
@@ -95,12 +95,20 @@ public:
 	ofMatrix4x4		rotationMatrix;
 	void			drawFaceTracker();
 
+	
+	enum { FT_LINES, FT_WIREFRAME, FT_TEXTURE};
+	int modoDrawFT;
+		
+	
+	
 	//
 	vector<ofColor> colores;
 	
 	// Test Haar Models
 	vector<string> modos_haar;
 	int id_modo_haar_act;
+	
+	
 	
 	
 	// ESCENA
@@ -177,8 +185,11 @@ public:
 	ofRectangle rectHaar;
 	ofPolyline	leftEye, rightEye, featMouth;	// guarda las features detectadas
 
+	
 	// flags para mostrar animaciones de analisis
 	bool guidesFace, guidesEyes, guidesBoca, guidesSkin;
+	void draw_featEnMarco(ofPolyline feat, int gap, bool uu, bool rr);
+	bool show_HaarRect;
 	
 	
 	// Fase fotos
@@ -187,6 +198,8 @@ public:
 	int		nFotoAct;
 	void	setupFotos();
 	
+	void	hacerFoto();
+	void	hacerFoto_haarViz();
 	
 	int tLastCambio;
 

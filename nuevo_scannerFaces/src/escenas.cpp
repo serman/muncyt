@@ -51,6 +51,12 @@ void scanner_faces::setupMensajes() {
 	mensajes_1.push_back("DE ROSTROS");
 	mensajes_peque.push_back("Si no lo desea \nretIrese de la cAmara");
 	tiempos.push_back(3000);
+
+	titles.push_back("analizador_1.5");
+	mensajes.push_back("ANALIZADOR");
+	mensajes_1.push_back("DE ROSTROS");
+	mensajes_peque.push_back(" ");
+	tiempos.push_back(1000);
 	
 	titles.push_back("analizador_2");
 	mensajes.push_back("ANALISIS");
@@ -148,6 +154,11 @@ void scanner_faces::setEscena(int idScena) {
 		guidesBoca = false;
 		guidesSkin = false;
 		
+		show_HaarRect = false;
+		
+//		enum { FT_LINES, FT_WIREFRAME, FT_TEXTURE};
+		modoDrawFT = FT_LINES;
+		
 		// apagar luces
 		setLight(false);
 		
@@ -177,18 +188,21 @@ void scanner_faces::setEscena(int idScena) {
 		
 		caraOut = true;
 		
+		show_HaarRect = false;
+		
+		nPersonaAct++;
+		nZonaAct = 0;
+		
 		// encender luces
 		setLight(true);
 		
 		// eliminar cosas y timers, eventos
-		
 		
 		// lanzar animaciones: timers y demás 
 		idMensajeAct = 0;
 		timerMsg.setup(mensajesT[idMensajeAct].tiempo, false);
 		timerMsg.startTimer();
 		ofAddListener(timerMsg.TIMER_REACHED, this, &scanner_faces::tiempo_Msg);	
-		
 		
 	} 
 	else if(idScena==SCN_SCAN) {
@@ -201,6 +215,8 @@ void scanner_faces::setEscena(int idScena) {
 		doDrawFaceTracker = true;
 
 		numErrores = 0;
+		
+		show_HaarRect = false;
 		
 		// encender luces (por si accedemos directos a la escena)
 		setLight(true);
@@ -225,6 +241,8 @@ void scanner_faces::setEscena(int idScena) {
 		doDrawFaceTracker = true;
 
 		numErrores = 0;
+
+		show_HaarRect = false;
 		
 		// encender luces (por si accedemos directos a la escena)
 		setLight(true);
@@ -382,17 +400,24 @@ void scanner_faces::tiempo_Msg(ofEventArgs &e) {
 		// lanzar nuevo timer o pasar de escena
 		if(idMensajeAct<mensajesT.size()) {
 			
+			
+			if(mensajesT[idMensajeAct].title=="analizador_2") {
+				show_HaarRect = true;
+			}
 			if(mensajesT[idMensajeAct].title=="mostrar_face") {
 				guidesFace=true;
-				ofLogNotice("MSTRAR FACE: TRUE");
+				// capturar para haarviz
+				hacerFoto_haarViz();
 			}
 			else if(mensajesT[idMensajeAct].title=="mostrar_eyes") {
 				guidesEyes=true;				
-				ofLogNotice("MSTRAR EYES: TRUE");
+				// foto 1
+				hacerFoto(); // Ya suma nZonaAct++ si se hace la foto
 			}
 			else if(mensajesT[idMensajeAct].title=="mostrar_boca") {
-				guidesBoca=true;				
-				ofLogNotice("MSTRAR BOCA: TRUE");
+				guidesBoca=true;
+				// foto 2
+				hacerFoto(); // Ya suma nZonaAct++ si se hace la foto				
 			}
 			
 			timerMsg.setup(mensajesT[idMensajeAct].tiempo, false);
@@ -410,6 +435,7 @@ void scanner_faces::tiempo_Msg(ofEventArgs &e) {
 	   
 	
 }
+
 
 void scanner_faces::tiempo_Scan(ofEventArgs &e) {
 	ofLogNotice("tiempo_Scan");
@@ -447,7 +473,6 @@ void scanner_faces::tiempo_Foto(ofEventArgs &e) {
 	
 	
 }
-
 
 
 
