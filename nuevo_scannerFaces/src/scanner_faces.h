@@ -12,11 +12,12 @@
 
 
 struct MensajeTime {
-	int tiempo;
-	string mensaje;
-	string mensaje_1;
-	string mensaje_peque;
-	ofPoint posMsg;
+	int		tiempo;
+	string	title;
+	string	mensaje;
+	string	mensaje_1;
+	string	mensaje_peque;
+	ofPoint	posMsg;
 	
 	void draw(ofTrueTypeFont font, ofTrueTypeFont fontPeque) {
 		
@@ -135,7 +136,7 @@ public:
 	void setupMensajes();
 	int idMensajeAct;
 	
-	ofTrueTypeFont	fontMensajes, fontMensajes_peque;
+	ofTrueTypeFont	fontMensajes, fontMensajes_peque, fontData;
 //	ofxFontStash	fontX_peq;
 	
 	// Control cambio de escena
@@ -174,7 +175,11 @@ public:
 	
 	int			WSCAN, HSCAN;
 	ofRectangle rectHaar;
+	ofPolyline	leftEye, rightEye, featMouth;	// guarda las features detectadas
 
+	// flags para mostrar animaciones de analisis
+	bool guidesFace, guidesEyes, guidesBoca, guidesSkin;
+	
 	
 	// Fase fotos
 	vector<ofPoint>	focusPts;

@@ -27,12 +27,16 @@ public:
 	
 	ofPath		borde;
 	
+	float		gap;
+	
 	Marco() {
 //		setFillColor(ofColor(127,127,127));
 		setFillColor(ofColor(0));
 		setFillAlpha(255);
 		
 		setupBorde();
+		
+		gap = 20;
 	}
 	
 	void setRect(ofRectangle _rect) {
@@ -72,7 +76,6 @@ public:
 		ofPopStyle();
 		
 		// dibujar marcas
-		float gap = 20;
 		int	  lTick = 4;
 		int	  sep = 4;
 		ofPushStyle();

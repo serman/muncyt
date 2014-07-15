@@ -3,6 +3,6 @@
 
 int main() {
 	ofAppGlutWindow window;
-	ofSetupOpenGL(&window, 1280, 720, OF_FULLSCREEN);
+	ofSetupOpenGL(&window, 1280, 800, OF_FULLSCREEN);
 	ofRunApp(new scanner_faces());
 }

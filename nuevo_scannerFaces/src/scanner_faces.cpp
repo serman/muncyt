@@ -197,8 +197,8 @@ void scanner_faces::update_faceTracker() {
 		rightInner = tracker.getImagePoint(42),
 		rightOuter = tracker.getImagePoint(45);
 		
-		ofPolyline leftEye = tracker.getImageFeature(ofxFaceTracker::LEFT_EYE);
-		ofPolyline rightEye = tracker.getImageFeature(ofxFaceTracker::RIGHT_EYE);
+		leftEye = tracker.getImageFeature(ofxFaceTracker::LEFT_EYE);
+		rightEye = tracker.getImageFeature(ofxFaceTracker::RIGHT_EYE);
 		
 		ofVec2f leftCenter = leftEye.getBoundingBox().getCenter();
 		ofVec2f rightCenter = rightEye.getBoundingBox().getCenter();
@@ -206,8 +206,6 @@ void scanner_faces::update_faceTracker() {
 		float leftRadius = (leftCenter.distance(leftInner) + leftCenter.distance(leftOuter)) / 2;
 		float rightRadius = (rightCenter.distance(rightInner) + rightCenter.distance(rightOuter)) / 2;
 
-		
-		
 		// Preparar cuadritos en ojos
 		
 		// ModoII: Otra forma de hacer esto es con los puntos de imagen
@@ -240,7 +238,7 @@ void scanner_faces::update_faceTracker() {
 		
 		
 		// Mouth
-		ofPolyline featMouth = tracker.getObjectFeature(ofxFaceTracker::OUTER_MOUTH);
+		featMouth = tracker.getObjectFeature(ofxFaceTracker::OUTER_MOUTH);
 		ofRectangle mouthRectBox = featMouth.getBoundingBox();
 		ofVec2f
 		mULObj = ofVec2f(mouthRectBox.x,mouthRectBox.y),
@@ -258,7 +256,6 @@ void scanner_faces::update_faceTracker() {
 		mRect.addVertex(mURObj + upperBorder + rightDirection * outerBorder);
 		mRect.addVertex(mDRObj + lowerBorder + rightDirection * outerBorder);
 		mRect.addVertex(mDLObj + lowerBorder + leftDirection * outerBorder);
-		
 		
 		ofPushMatrix();
 		ofSetupScreenOrtho(640, 480, OF_ORIENTATION_UNKNOWN, true, -1000, 1000);
@@ -281,17 +278,14 @@ void scanner_faces::update_faceTracker() {
 			drawFaceTracker();
 		}
         fboFT.end();
-		
 	}
-	
 }
 
 
 void scanner_faces::draw() {
-	ofSetBackgroundColor(ofColor::black);
+	ofBackground(ofColor::black);
 	// Dibujar capas
 	ofSetColor(255);
-	
 	if(scnAct==SCN_WAITING) {
 		draw_ScnWait();
 	}
@@ -300,7 +294,6 @@ void scanner_faces::draw() {
 		// CONTENIDOS REDIMENSIONADOS Y CON FLIP_H
 		float hh = ofGetScreenHeight();
 		float ww = hh*cam.width/cam.height;
-		
 		
 		//		cam.draw((ofGetWidth()-ww)/2,(ofGetHeight()-hh)/2, ww,hh);
 		ofPushMatrix();
@@ -318,23 +311,30 @@ void scanner_faces::draw() {
 			// Este bloque debe ir enla zona de escenas 
 			// 
 			// la transicion será con shader
-			// 
-
+			//
+			
+			//	
 			if(scnAct==SCN_PRESCAN) {
 				// dibujar Haar finder
 				if(doDrawHaarFace && doHaarFace) draw_haarFinder();
+				
+				// las guidelines las dibujare encima del marco
+				
+				
 			}
 			else if(scnAct==SCN_SCAN) {
 				// Aqui hay que dibujar el fbo con la transicion de scan
 				
-				// mientras tanto...
-				if(doDrawHaarFace && doHaarFace) {
-					draw_haarFinder();
-				}
+				
+				// mientras tanto dibujo todo
 				if(doFaceTracker && doDrawFaceTracker) {
 //					drawFaceTracker();
 					fboFT.draw(0,0);
 				}	
+				if(doDrawHaarFace && doHaarFace) {
+					draw_haarFinder();
+				}				
+				
 			}
 			else if(scnAct==SCN_FIN) {
 				if(doFaceTracker && doDrawFaceTracker) {
@@ -343,9 +343,69 @@ void scanner_faces::draw() {
 				}
 				
 			}
-	
+			
 			ofSetColor(255);
 			marco.draw();
+			
+			// guidelines
+//			drawGuideLines();
+			if(scnAct==SCN_PRESCAN) {
+				if(guidesFace) {
+					ofLogNotice("DIbujar Face");
+					ofPushStyle();
+					ofSetColor(ofColor::darkGreen, 200);
+					ofSetLineWidth(0.8);
+					ofLine(marco.rect.x, faceRectAmpl.y, faceRectAmpl.x, faceRectAmpl.y);
+					ofLine(marco.rect.x, faceRectAmpl.y+faceRectAmpl.height, faceRectAmpl.x, faceRectAmpl.y+faceRectAmpl.height);					
+
+					ofLine(marco.rect.x+marco.rect.width, faceRectAmpl.y, faceRectAmpl.x, faceRectAmpl.y);
+					ofLine(marco.rect.x+marco.rect.width, faceRectAmpl.y+faceRectAmpl.height, 
+						   faceRectAmpl.x, faceRectAmpl.y+faceRectAmpl.height);
+
+					ofSetLineWidth(2);
+					ofRect(faceRectAmpl);
+					
+					// data
+					
+					
+					ofPopStyle();
+				}
+				if(guidesEyes) {
+					ofPushStyle();
+					ofSetColor(ofColor::darkBlue, 200);
+					ofRectangle eyeRectL, eyeRectR;
+					eyeRectL = leftEye.getBoundingBox();
+					eyeRectR = rightEye.getBoundingBox();
+					//leftEye, leftEye
+					ofSetLineWidth(0.8);
+					ofLine(marco.rect.x, eyeRectL.y, eyeRectL.x, eyeRectL.y);
+					ofLine(marco.rect.x, eyeRectL.y+eyeRectL.height, eyeRectL.x, eyeRectL.y+eyeRectL.height);					
+					
+					ofLine(marco.rect.x+marco.rect.width, eyeRectL.y, eyeRectL.x, eyeRectL.y);
+					ofLine(marco.rect.x+marco.rect.width, eyeRectL.y+eyeRectL.height, 
+						   eyeRectL.x, eyeRectL.y+eyeRectL.height);
+					ofSetLineWidth(1.5);
+//					float mm = 10;
+//					ofRect(eyeRectL.x-mm,eyeRectL.y-mm,eyeRectL.x+eyeRectL.width+mm);
+					ofRect(eyeRectL);
+					//rightEye, 					
+					
+					ofPopStyle();
+				}
+				if(guidesBoca) {
+					ofPushStyle();
+					ofSetColor(ofColor::darkorange, 200);
+//featMouth
+					ofPopStyle();	
+				}
+				if(guidesSkin) {
+					ofPushStyle();
+					
+					ofPopStyle();					
+				}
+			}
+					
+
 			
 			// marco con la imagen para HaarViz
 			ofSetColor(255,0,255);
@@ -355,7 +415,6 @@ void scanner_faces::draw() {
 			
 		}
 		ofPopMatrix();
-		
 		
 		// MENSAJES E INFO EN PANTALLA
 		if(scnAct==SCN_PRESCAN) {
@@ -376,7 +435,10 @@ void scanner_faces::draw() {
 		
 		ofDrawBitmapStringHighlight("(w/s) haar: " + modos_haar[id_modo_haar_act], 10, 150);
 		ofDrawBitmapStringHighlight("#objs: " + ofToString(finder.size()), 10, 170);
+		
+		
 	}
+	
 	int hLin = 10;
 	ofDrawBitmapStringHighlight("(t) FullScreen", 10,hLin); hLin+=20;
 	ofDrawBitmapStringHighlight("(q) " + nombreEscena, 10,hLin); hLin+=20;
