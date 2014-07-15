@@ -56,7 +56,7 @@ void nuclear_debil::setup() {
 
 	radioInt = radioMuro;
 	radioExt = MIN(W_WIDTH, W_HEIGHT) / 2.0*0.98;
-
+    cout<< radioInt << " exterior " << radioExt << endl;
 	// Preparo el polyline
 	ofPoint centro = ofPoint(W_WIDTH/2.0, W_HEIGHT/2.0);
 	bordeLine.arc(centro, radioMuro, radioMuro, 0.0, 360.0, true, resol);
@@ -122,17 +122,25 @@ void nuclear_debil::setup() {
 //	ofRectangle anilloUI_R = ofRectangle(W_WIDTH-40,ofGetHeight()-40, 40,40);
 	float dRad = radioExt-radioInt;
 	float rMed = radioInt+dRad/2;
-	buttonSpeed1.set(centro.x-rMed-(dRad*0.9/2),centro.y-(dRad*0.9/2), dRad*0.9,dRad*0.9);
-
-	buttonSpeed2.set(centro.x+rMed-(dRad*0.9/2),centro.y-(dRad*0.9/2), dRad*0.9,dRad*0.9);
+	//buttonSpeed1.set(centro.x-rMed-(dRad*0.9/2),centro.y-(dRad*0.9/2), dRad*0.9,dRad*0.9);
+    buttonSpeed1.set(5, 314,57,143);
+    buttonSpeed1.setup();
+//	buttonSpeed2.set(centro.x+rMed-(dRad*0.9/2),centro.y-(dRad*0.9/2), dRad*0.9,dRad*0.9);
     buttonSpeed1.btype=TYPE_ACC;
+
+    buttonSpeed2.set(703,314,57,143);
+    buttonSpeed2.setup();
     buttonSpeed2.btype=TYPE_ACC;
-    buttonCollide.set(centro.x-(dRad*0.9/2),centro.y-rMed-(dRad*0.9/2), dRad*0.9,dRad*0.9);
+    
+    //buttonCollide.set(centro.x-(dRad*0.9/2),centro.y-rMed-(dRad*0.9/2), dRad*0.9,dRad*0.9);
+    buttonCollide.set(309,5,57,143);
     buttonCollide.btype=TYPE_CRASH;
+    buttonCollide.setup();
 
     touchElements.addObject(buttonSpeed1);
     touchElements.addObject(buttonSpeed2);
     touchElements.addObject(buttonCollide);
+
     // Lo paso a init_Escena()
 //    ofAddListener(buttonSpeed2.buttonEvent ,this, &nuclear_debil::onButtonPressed);
 //    ofAddListener(buttonSpeed1.buttonEvent ,this, &nuclear_debil::onButtonPressed);
@@ -445,6 +453,7 @@ void nuclear_debil::draw(){
 	if(swBlendModeADD) ofDisableBlendMode();
 
     // Botones para TUIO
+    
     touchElements.draw();
 	
 	// Mascara exterior
