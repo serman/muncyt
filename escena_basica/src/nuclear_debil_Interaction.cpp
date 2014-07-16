@@ -59,6 +59,11 @@ void nuclear_debil::keyPressed(int key) {
 		setModoParticulas(MODO_PATH);
 	}
 	else if(key=='i') {
+		// cambiar particulas a modo BOX2D
+		setModoParticulas(MODO_BOX2D);
+	}
+	
+	else if(key=='j') {
 		swDrawTRAILS = !swDrawTRAILS;
 	}
 }
@@ -120,7 +125,6 @@ void nuclear_debil::tuioAdded(ofxTuioCursor &tuioCursor){
 	ofPoint loc = ofPoint(tuioCursor.getX()*W_WIDTH,tuioCursor.getY()*W_HEIGHT);
 	//cout << "Point n" << tuioCursor.getSessionId() << " add at " << loc << endl;
     
-    
     // o1.touch(loc.x, loc.y,tuioCursor.getSessionId());
     // h1.touch(loc.x, loc.y,tuioCursor.getSessionId());
     
@@ -133,10 +137,9 @@ void nuclear_debil::tuioAdded(ofxTuioCursor &tuioCursor){
 
 void nuclear_debil::tuioUpdated(ofxTuioCursor &tuioCursor){
     int mx = W_WIDTH*tuioCursor.getX();
-    int my =    W_HEIGHT*tuioCursor.getY();
+    int my =  W_HEIGHT*tuioCursor.getY();
 	ofPoint loc = ofPoint(tuioCursor.getX()*W_WIDTH,tuioCursor.getY()*W_HEIGHT);
 	//cout << "Point n" << tuioCursor.getSessionId() << " updated at " << loc << endl;
-    
     
     //o1.slide(loc.x, loc.y,tuioCursor.getSessionId(),tuioCursor.getMotionAccel());
     // h1.slide(loc.x, loc.y,tuioCursor.getSessionId(),tuioCursor.getMotionAccel());
@@ -154,7 +157,6 @@ void nuclear_debil::tuioRemoved(ofxTuioCursor &tuioCursor){
     
     
     hands.removeObjectByTuioID(tuioCursor.getSessionId() );
-    
     touchElements.notifyTouchUp( tuioCursor.getSessionId() );
     
 }
@@ -167,7 +169,13 @@ void nuclear_debil::onButtonPressed(BUTTON_TYPE& mtype){
     }
     else if(mtype==TYPE_CRASH){
         cout <<" crash " << endl;
-    }
+		// Lanzarla con velocidad que tenga el anillo
+		
+		float vvVal = anillo.getVelocNeutronLanz();
+		float vvAng = HALF_PI;
+		
+		addNeutron(W_WIDTH/2.0,W_HEIGHT/2.0-radioInt*0.9,vvVal,vvAng);
+	}
+	
 }
-
 

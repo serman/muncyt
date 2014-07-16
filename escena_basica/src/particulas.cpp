@@ -72,10 +72,12 @@ void Particula::update() {
 	else if(modoDraw==MODO_BOX2D) {
 	}
 	
+	
 }
 
 void Particula::updateTrail(ofPoint _pos) {
 	//ofLogNotice("update pos: " + ofToString(trailV.size())+"/"+ofToString(tLifeMax));
+
 	trailV.push_back(pos);
 	if(trailV.size()>tLifeMax) {
 //		float rnd = ofRandom(1);
@@ -112,12 +114,12 @@ void Particula::draw() {
 		
 			this->radio = this->getRadius(); 
 			ofPushMatrix();
-		
+				float radioT = radio+ofRandom(2);
 				if(this->swExcitado) 			ofSetColor(colorExcitado, 255);
 				else							ofSetColor(color, 100);
 		
 				ofScale(escale,escale, 0);
-				tex.draw(-radio,-radio,2*radio,2*radio);
+				tex.draw(-radioT,-radioT,2*radioT,2*radioT);
 		
 //				if(this->swExcitado) {
 //					ofSetColor(255,0,0);

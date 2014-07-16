@@ -54,7 +54,7 @@ public:
             if(status_handIsOn ==true){
                 ofSetColor(ofColor::green);
                 //ofFill();
-                ofRect(x,y,width,height);
+                //ofRect(x,y,width,height);
                 
             }else{ //active bug hand is not on
                 ofSetColor(ofColor::blue);
@@ -71,8 +71,7 @@ public:
             img.draw(309,5);
         }
         else{ //derecha
-             img.draw(702,314);
-            
+			img.draw(702,314);
         }
         ofPopStyle();
         //
