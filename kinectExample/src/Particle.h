@@ -122,7 +122,6 @@ class Particle
             return false;
         }
         
-        
         if(abs(diff.x)>1){
         	diff.normalize();
         	applyForce(diff*acc);
@@ -148,6 +147,8 @@ class Particle
             acceleration.y = acceleration.y + dir.x;
         }
     }
+    
+
     
 };
 #endif

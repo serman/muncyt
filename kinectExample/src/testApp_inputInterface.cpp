@@ -78,15 +78,23 @@ void testApp::keyPressed (int key) {
 			kinect.close();
 			break;
 			
-		case '0':
-			kinect.setLed(ofxKinect::LED_OFF);
-			break;
 #endif
 		case 'm':
 			bDrawPoints=!bDrawPoints;
 			break;
-		case 'n':
-			explosion=!explosion;
+		case '1':
+			appStatuses["escena"]=EM;
+             cambioEscena();
+			break;
+        case '2':
+			appStatuses["escena"]=NUCLEAR_DEBIL;
+             cambioEscena();
+			break;
+        case '9':
+			appStatuses["em_ruido"]=true;
+			break;
+        case '8':
+			appStatuses["em_ruido"]=false;
 			break;
         case 'g':
             debug=!debug;
@@ -143,8 +151,8 @@ void testApp::keyPressed (int key) {
 	}
 	
 #ifndef EASYCAM
-    if(key=='1')	saveCameraPose();
-    else if(key=='2') 	loadCameraPose();
+    if(key=='Q')	saveCameraPose();
+    else if(key=='W') 	loadCameraPose();
 #endif
 	
 }

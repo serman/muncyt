@@ -141,6 +141,7 @@ public:
    	void	drawNoise();
     void    drawCVSilhouettes();
     bool	boolDrawNoise;
+    int     alphaNoise;
     int		alphaParticles;
 	
     int		alphaLines;
@@ -151,7 +152,9 @@ public:
 
     //test
     int maxForce;
+    void cambioEscena();
     
+    std::map<string, int> appStatuses;
     
 //********CV
     ofxCv::ContourFinder contourFinder;
@@ -167,4 +170,10 @@ public:
 	ofTessellator tessel;
 	ofMesh contornoTes;	// contorno teselado
     
+    enum  {EM, NUCLEAR_DEBIL, NUCLEAR_FUERTE, GRAVEDAD};
+    
+    int status_mode=EM;
+
+
+    void setupStatus();
 };

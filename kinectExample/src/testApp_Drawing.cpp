@@ -94,18 +94,17 @@ for(int y = 0; y < h; y += step) { //recorro los puntos bajando por las columnas
 
 
 void testApp::drawNoise(){
-    // ofSetColor(255);
-    
-    /**ofTexture mtexture;
-     mtexture.allocate(200, 200, GL_RGB);
-     ofImage mimage;mimage.loadImage("Vendeta.jpg");
-     mimage.getTextureReference().bind();**/
+    ofPushStyle();
+    ofFill();
+    ofSetColor(255,255,255,40);
+         ofSetColor(255,255,255,40);
     
     shader.begin();
-    
     shader.setUniform3f("iResolution", ofGetWidth(), ofGetHeight(),0);
     shader.setUniform1f("iGlobalTime", ofRandomf());
+        shader.setUniform1f("alpha", appStatuses["alpha_ruido"]);
     shader.setUniform2f("iMouse",ofGetMouseX(),ofGetMouseY());
+
     
     //mtexture.loadScreenData(600,600,200,200);
     //mtexture.loadData(mimage.getPixelsRef());
@@ -113,6 +112,7 @@ void testApp::drawNoise(){
     
     ofRect(0, 0, ofGetWidth(), ofGetHeight());
     shader.end();
+    ofPopStyle();
     //mimage.getTextureReference().unbind();
 }
 
