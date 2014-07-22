@@ -19,7 +19,7 @@
 //#define USE_TWO_KINECTS
 
 #define ASUS
-#define USEFILE
+//212#define USEFILE
 
 #ifndef ASUS
 	#include "ofxKinect.h"
@@ -176,4 +176,23 @@ public:
 
 
     void setupStatus();
+    // declaraciones
+//    bool	bAddPts;		// si a–ade puntos a la triangulacion
+//    bool	bSoloEnContorno;	// si muestra solo los triangulos de dentro del contorno
+//    ofMesh	triangContMesh;
+    ofMesh	triangContMesh_old;
+    int numPointsXtra = 100;
+    
+    // Colores
+    vector<ofColor> colorFluor;
+    void cargaColores();
+    
+    
+    bool bFill;
+    
+    int modoFill;
+    
+    bool bDrawOld;
+
+    
 };

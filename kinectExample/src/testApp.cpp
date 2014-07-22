@@ -137,11 +137,18 @@ void testApp::setup() {
 	setupStatus();
 	
 	setupParticles();
+    cargaColores();
+	bFill = false;
+    bSoloEnContorno = true;
+	bDrawOld = false;
+
 	setupGUI();
 	setupShader();
     
 
     myOSCrcv.setup();
+    
+    
     
 }
 
@@ -639,6 +646,22 @@ void testApp::exit() {
 	
 	
 }
+    
+void testApp::cargaColores() {
+    // paleta de colores fluor
+    // http://www.colourlovers.com/palette/970972/FLUOR
+    //
+    colorFluor.clear();
+    //	colorFluor.push_back(ofColor::red);	// rojo
+    //	colorFluor.push_back(ofColor::green);	// green
+    //	colorFluor.push_back(ofColor::blue);	// blue
+    colorFluor.push_back(ofColor::fromHex(0x0DE0FC));	// melting flowers
+    colorFluor.push_back(ofColor::fromHex(0x38FC48));	// Dead Nuclear
+    colorFluor.push_back(ofColor::fromHex(0xF938FC));	// Calcinha
+    colorFluor.push_back(ofColor::fromHex(0xFA00AB));	// ow!
+    colorFluor.push_back(ofColor::fromHex(0xDFFC00));	// Limei Green
+    
+}
 
 
 // CameraPose
@@ -656,6 +679,9 @@ void testApp::loadCameraPose() {
 	ofMatrix4x4 myMatrix;
 	fileRead >> myMatrix;
 	camera.setTransformMatrix(myMatrix);
-}	
+}
+    
+
+    
 #endif
 

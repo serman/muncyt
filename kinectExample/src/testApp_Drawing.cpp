@@ -20,7 +20,21 @@ if(resampledContour.size()>=3) {
     for(int i=0; i<resampledContour.size(); i++) {
         triangulation.addPoint(resampledContour[i]);
     }
+    if(bAddPts) {
+		ofRectangle bounds = resampledContour.getBoundingBox();
+
+		for(int i=0; i<numPointsXtra; i++) {
+			float px = bounds.x+ofRandom(bounds.width);
+			float py = bounds.y+ofRandom(bounds.height);
+			if( resampledContour.inside(ofPoint(px, py)) ){
+				triangulation.addPoint(ofPoint(px, py));
+			}
+		}
+	}
+
+    
     triangulation.triangulate();
+    triangContMesh_old = triangContMesh;
     triangContMesh.clear();
     
     triangContMesh.setMode(OF_PRIMITIVE_TRIANGLES);
@@ -32,18 +46,87 @@ if(resampledContour.size()>=3) {
         ofVec3f c = faces[i].getVertex(2);
         ofVec3f pm = (a+b+c)/3.0;
         
-        if( resampledContour.inside(ofPoint(pm.x,pm.y)) ) {
+       /* if( resampledContour.inside(ofPoint(pm.x,pm.y)) ) {
             triangContMesh.addVertex(a);
             triangContMesh.addVertex(b);
             triangContMesh.addVertex(c);
-        }
+        }*/
+        if( resampledContour.inside(ofPoint(pm.x,pm.y)) ) {
+			// supongo el area de imagen dividido en 10 franjas divididas a su vez en
+			// colorFluor.size() bandas de distinto color
+			float hBandaPpal = ofGetHeight()/10;
+			float hBanda = hBandaPpal/colorFluor.size();
+			
+			ofColor ctmpa, ctmpb, ctmpc;
+			if(modoFill==0) {
+				// RANDOM
+				ofColor ctmp = colorFluor[i%colorFluor.size()];
+				ctmpa = ctmp;
+				ctmpb = ctmp;
+				ctmpc = ctmp;
+			}
+			else if(modoFill==1) {
+				// asignar color segun la posicion del punto medio
+				int nBanda = floor(pm.y/hBanda);
+				ofColor ctmp = colorFluor[nBanda%colorFluor.size()];
+				ctmpa = ctmp;
+				ctmpb = ctmp;
+				ctmpc = ctmp;
+			}
+			else if(modoFill==2) {
+				int nBanda = floor(a.y/hBanda);
+				ctmpa = colorFluor[nBanda%colorFluor.size()];
+				nBanda = floor(b.y/hBanda);
+				ctmpb = colorFluor[nBanda%colorFluor.size()];
+				nBanda = floor(c.y/hBanda);
+				ctmpc = colorFluor[nBanda%colorFluor.size()];
+			}
+			triangContMesh.addVertex(a);
+			triangContMesh.addVertex(b);
+			triangContMesh.addVertex(c);
+			triangContMesh.addColor(ctmpa);
+			triangContMesh.addColor(ctmpb);
+			triangContMesh.addColor(ctmpc);
+		}
+        
+        
     }
+    
+    
+    // DIBUJAR
+    
     ofPushMatrix();
     ofTranslate(ofGetWidth(), ofGetHeight());
     ofRotateZ(180);
     ofScale(3,3,3);
-    triangContMesh.drawWireframe();
+    
+	if(doTriang) {
+		ofNoFill();
+		ofSetColor(ofColor::wheat);
+		ofNoFill();
+		if(!bSoloEnContorno) {
+			triangulation.draw();
+		}
+		else {
+			if(bFill)	{
+				triangContMesh.draw();
+				if(bDrawOld) {
+					ofEnableBlendMode(OF_BLENDMODE_ADD);
+					triangContMesh_old.draw();
+					ofDisableBlendMode();
+				}
+			}
+			else		triangContMesh.drawWireframe();
+		}
+		// tambien se puede dibujar con Mesh
+		// Mola porque se puede texturizar y aplicar vertex_shaders
+		// ofMesh triangulation.triangleMesh;
+	}
+    
+//    else triangContMesh.drawWireframe();
     ofPopMatrix();
+    
+
 }
 }
 
