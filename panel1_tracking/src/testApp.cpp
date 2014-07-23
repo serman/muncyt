@@ -3,7 +3,7 @@
 //--------------------------------------------------------------
 void testApp::setup(){
     setupStatus();
-    ofSetFrameRate(25);
+    ofSetFrameRate(20);
     adminMode=true;
     bg.loadImage("bg.jpg");
     ofSetBackgroundAuto(false);
@@ -273,7 +273,7 @@ void testApp::draw(){
         individualTextureSyphonServer.publishTexture(&sourceColorImg.getTextureReference());
         onlyBlobsImageSyphonServer.publishTexture(&fbo1.getTextureReference());
     }
-    if(appStatuses["debug"]) showDebug();
+    if(appStatuses["debug"] && adminMode) showDebug();
     if(appStatuses["sendTUIO"]==true){
         sendTUIO(&(blobTracker.trackedBlobs));
     };

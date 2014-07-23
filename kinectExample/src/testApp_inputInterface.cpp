@@ -57,7 +57,14 @@ void testApp::setupGUI() {
 	
 	gui1->addButton("reset",true);
 	
-	
+	gui1->addSpacer();
+    gui1->addToggle("bFill", &bFill);
+	gui1->addIntSlider("", 0, 2, &modoFill) ;
+    gui1->addToggle("bAddPts", &bAddPts);
+	gui1->addIntSlider("num Pts", 0, 500, &numPointsXtra) ;
+    gui1->addToggle("bDrawOld", &bDrawOld);
+    
+//case 'f': modoFill++; modoFill%=3;break;
 	
 	gui1->addSpacer();
 	
@@ -78,15 +85,23 @@ void testApp::keyPressed (int key) {
 			kinect.close();
 			break;
 			
-		case '0':
-			kinect.setLed(ofxKinect::LED_OFF);
-			break;
 #endif
 		case 'm':
 			bDrawPoints=!bDrawPoints;
 			break;
-		case 'n':
-			explosion=!explosion;
+		case '1':
+			appStatuses["escena"]=EM;
+             cambioEscena();
+			break;
+        case '2':
+			appStatuses["escena"]=NUCLEAR_DEBIL;
+             cambioEscena();
+			break;
+        case '9':
+			appStatuses["em_ruido"]=true;
+			break;
+        case '8':
+			appStatuses["em_ruido"]=false;
 			break;
         case 'g':
             debug=!debug;
@@ -139,12 +154,19 @@ void testApp::keyPressed (int key) {
 	            gui1->disable();
             else
 				gui1->enable();
+        case '3': doTriang=!doTriang;break;
+        case '4': doTessel=!doTessel; break;
+            
+//        case '5': bSoloEnContorno=!bSoloEnContorno;break;
+        case '6': bAddPts=!bAddPts;break;
+        case '7': bFill=!bFill;break;
+        case 'f': modoFill++; modoFill%=3;break;
 			
 	}
 	
 #ifndef EASYCAM
-    if(key=='1')	saveCameraPose();
-    else if(key=='2') 	loadCameraPose();
+    if(key=='Q')	saveCameraPose();
+    else if(key=='W') 	loadCameraPose();
 #endif
 	
 }

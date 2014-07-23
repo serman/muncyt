@@ -124,7 +124,7 @@ void setup() {
 
 void draw() {
 
-  println(xposition);
+ // println(xposition);
   //actualizacion del rectangulo
     if(stagesCounter>stopStage){ //fin de una etapa toca mover cuadradito
       stagesCounter=0;
@@ -387,12 +387,14 @@ void loadFile() {
 }
 
 void keyPressed( ){
-  //slowMotion(true);  
+    
   if(key== ' '  ){
     println("key pressed");
     showInterface =! showInterface;
     if(showInterface) cp5.setAutoDraw(true);
     else cp5.setAutoDraw(false);
+  }if(key== 's' ){
+   slowMotion(true); 
   }
   
 }

@@ -19,7 +19,7 @@
 //#define USE_TWO_KINECTS
 
 #define ASUS
-#define USEFILE
+//212#define USEFILE
 
 #ifndef ASUS
 	#include "ofxKinect.h"
@@ -141,6 +141,7 @@ public:
    	void	drawNoise();
     void    drawCVSilhouettes();
     bool	boolDrawNoise;
+    int     alphaNoise;
     int		alphaParticles;
 	
     int		alphaLines;
@@ -151,7 +152,9 @@ public:
 
     //test
     int maxForce;
+    void cambioEscena();
     
+    std::map<string, int> appStatuses;
     
 //********CV
     ofxCv::ContourFinder contourFinder;
@@ -166,5 +169,30 @@ public:
 	bool doTessel;
 	ofTessellator tessel;
 	ofMesh contornoTes;	// contorno teselado
+    
+    enum  {EM, NUCLEAR_DEBIL, NUCLEAR_FUERTE, GRAVEDAD};
+    
+    int status_mode=EM;
+
+
+    void setupStatus();
+    // declaraciones
+//    bool	bAddPts;		// si a–ade puntos a la triangulacion
+//    bool	bSoloEnContorno;	// si muestra solo los triangulos de dentro del contorno
+//    ofMesh	triangContMesh;
+    ofMesh	triangContMesh_old;
+    int numPointsXtra = 100;
+    
+    // Colores
+    vector<ofColor> colorFluor;
+    void cargaColores();
+    
+    
+    bool bFill;
+    
+    int modoFill;
+    
+    bool bDrawOld;
+
     
 };

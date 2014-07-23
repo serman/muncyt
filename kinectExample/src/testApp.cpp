@@ -111,7 +111,7 @@ void testApp::setup() {
     alphaParticles = 255;
 	particleMode=ESPEJO;
     boolDrawNoise = false;
-	
+	alphaNoise=255;
 	debug = true;
 	
     low=0.25;
@@ -134,43 +134,71 @@ void testApp::setup() {
 	camera.setCursorWorld(ofVec3f(0,0,-2000));
 	
 #endif
-	
+	setupStatus();
 	
 	setupParticles();
+    cargaColores();
+	bFill = false;
+    bSoloEnContorno = true;
+	bDrawOld = false;
+
 	setupGUI();
 	setupShader();
     
-    
+
     myOSCrcv.setup();
+    
+    
+    
 }
 
+void testApp::setupStatus(){
+     appStatuses["escena"]=EM;
+     appStatuses["em_ruido"]=true;
+     appStatuses["alpha_ruido"]=255;
+    
+   //  appStatuses["escena"]=escenas.EM;
+}
 
+void testApp::cambioEscena(){
+    if( appStatuses["escena"]==EM){
+        boolDrawNoise=true;
+        bDrawLinesH=false;
+        bDrawLinesV=false;
+        bDrawNativePointCloud=false;
+        bDrawContours=false;
+        bDrawPoints=true;
+    }else{
+        bDrawContours=true;
+        appStatuses["em_ruido"]=true;
+        boolDrawNoise=false;
+        bDrawNativePointCloud=false;
+        bDrawPoints=false;
+    }
+}
 
 
 //--------------------------------------------------------------
 void testApp::update() {
+    
+    if (appStatuses["em_ruido"]==false && appStatuses["escena"]==EM){
+        appStatuses["alpha_ruido"]-=5;
+        if(appStatuses["alpha_ruido"]<0) appStatuses["alpha_ruido"]=0;
+        particleMode=ESPEJO;
+       // cout << appStatuses["alpha_ruido"] <<endl;
+        
+    }
+    if(appStatuses["em_ruido"]==true){
+        appStatuses["alpha_ruido"]=255;
+    }
 	
 	#ifndef ASUS
 	kinect.update();
-	
 	// there is a new frame and we are connected
 	if(kinect.isFrameNew()) {
-		
-		
         if(bDrawPoints) {
-			// Si estamos utilizando particulas (dibujandolas), hacer update
 	        updateParticles();
-
-			/*
-			if(ofGetElapsedTimeMillis() % 10000 > 2000){
-				particleMode=ESPEJO;
-			}
-			else{
-				particleMode=NUBE; //NUBE
-			} 
-			*/
 		}
-		
 	}
     #else
         if (isReady)
@@ -184,12 +212,15 @@ void testApp::update() {
             //oniCamGrabber.
             if(depthGenerator.isUpdated==true){
 	            updateParticles();
-            	depthGenerator.isUpdated=false;
                 if(bDrawContours){
                     depthImg.setFromPixels( oniCamGrabber.getDepthPixels());
                     depthImg.update();
-                    resampledContour =getSmoothSilhouete1(contourFinder, depthImg, (float)speed/10)[0];
+                    
+                    vector<ofPolyline> v= getSmoothSilhouete1(contourFinder, depthImg, (float)speed/10);
+                    if(v.size()>0)
+                        resampledContour =v[0];
                 }
+              	depthGenerator.isUpdated=false;
             }
             rgbGenerator.update();
             
@@ -230,96 +261,83 @@ void testApp::updateParticles() {
     ofVec3f diff ;
     int pp=0;
     std::vector<Particle>::iterator p ;
-	
+
     for ( p = particles.begin() ; p != particles.end() ; p++ )
     {
-		
-#ifndef ASUS
-        if( kinect.getDistanceAt(p->_x, p->_y) > zMin  &&  kinect.getDistanceAt(p->_x, p->_y) < zMax ) {
+        if(false){
+           /* int px(p->_x*(1920/640));
+            int py(p->_y*(1080/480));
+            ofVec3f dst= ofVec3f(px,py,-1);
+//            dst=camera.screenToWorld((dst));
+            dst=dst * camera.getModelViewMatrix();
 
-            if(particleMode==ESPEJO){
-                p->stopAcc();
-             	mdestPoint= kinect.getWorldCoordinateAt(p->_x, p->_y);//getWorldCoordinateAt() returns the position in millimeters with kinect at the origin.
-                
-#else	
-        int distance=depthGenerator.currentRawPixels->getPixels()[p->_y * depthGenerator.width + p->_x];
-                  //cout << zMax;
-        if(distance> zMin && distance < zMax) {
-            pp++;
-            p->recentlyUsed=5;
-            if(particleMode==ESPEJO){
-               mdestPoint=  oniCamGrabber.convertDepthToWorld(p->_x, p->_y);
-#endif
-               // diff =   mdestPoint - p->position;
-                diff=ofVec3f(0,0,0);
-                p->steer(mdestPoint, true, speed, stopUmbral );
-                // p->rotateAround( diff, speed, stopUmbral*100 );
-                //p->gravityTowards(mdestPoint, stopUmbral, speed);
-                p->update();
+            */
 
-            }
-            else if(particleMode==NUBE) {
-
-                
-                    p->sandDown(accTest,-200);
-                    p->update();
-                
-               // p->position+=ofNoise( p->position.x,p->position.y,p->position.z)*30;
-            }
-			
-            if (bRealColors){
-                #ifndef ASUS
-                p->color=kinect.getColorAt((p->_x , p->_y));
-                #else
-                p->color= rgbGenerator.currentPixels->getColor(p->_x , p->_y) ;
-				#endif
-            }
-            else{
-            	p->color=ofColor(255,255,255,alphaParticles);
-            }
-            meshParticles.addVertex(p->position);
-           // meshParticles.addColor(ofColor::fromHsb(ofMap(p->_x, p->_y, zMin, zMax, 1, 360) , 255, 255, 50));
-            meshParticles.addColor(p->color);
+ //           p->steer(dst, true, speed, stopUmbral );
+//            p->update();
+        //    p->position=dst;
 
             
+            if(ofRandomf()>0.5)
+                p->color.set(0);
+            else
+                p->color.set(255);
             
-
-
-            //[p->_y * depthGenerator.width + p->_x]:
             
+                p->color=ofColor(255,0,0,255);
+                meshParticles.addVertex(p->position);
+                meshParticles.addColor(p->color);
             
         }else{
-           // meshParticles.addVertex(p->position);
-            if(!p->recentlyUsed>0){
-            	p->color=ofColor(255,0,0,40);
-            }else{
-                p->color=ofColor(255,0,0,255);
+    /**#ifndef ASUS
+            if( kinect.getDistanceAt(p->_x, p->_y) > zMin  &&  kinect.getDistanceAt(p->_x, p->_y) < zMax ) {if(particleMode==ESPEJO){ p->stopAcc();      	mdestPoint= kinect.getWorldCoordinateAt(p->_x, p->_y);
+    #else**/
+            int distance=depthGenerator.currentRawPixels->getPixels()[p->_y * depthGenerator.width + p->_x];
+                      //cout << zMax;
+            if(distance> zMin && distance < zMax) {
+                pp++;
+                p->recentlyUsed=5;
+                if(particleMode==ESPEJO){
+                   mdestPoint=  oniCamGrabber.convertDepthToWorld(p->_x, p->_y);
+    //#endif
+                    //diff=ofVec3f(0,0,0);
+                    p->steer(mdestPoint, true, speed, stopUmbral );
+                    p->update();
+
+                }
+                else if(particleMode==NUBE) {
+                        p->sandDown(accTest,-200);
+                        p->update();                
+                   // p->position+=ofNoise( p->position.x,p->position.y,p->position.z)*30;
+                }
+                
+                if (bRealColors){
+                    #ifndef ASUS
+                    p->color=kinect.getColorAt((p->_x , p->_y));
+                    #else
+                    p->color= rgbGenerator.currentPixels->getColor(p->_x , p->_y) ;
+                    #endif
+                }
+                else{
+                    p->color=ofColor(255,255,255,alphaParticles);
+                }
                 meshParticles.addVertex(p->position);
+               // meshParticles.addColor(ofColor::fromHsb(ofMap(p->_x, p->_y, zMin, zMax, 1, 360) , 255, 255, 50));
                 meshParticles.addColor(p->color);
-                p->recentlyUsed--;
-                /*
-                mdestPoint= ofVec3f(0,0,-10);
-                diff = mdestPoint- p->position;
-                if(diff.lengthSquared()<(stopUmbral)){
-                    p->stopAcc();
-                    p->velocity = ofVec3f(0,0,0);
-                    p->recentlyUsed=false;
+            }else{ // si las particulas est‡n mas lejos
+               // meshParticles.addVertex(p->position);
+                if(!p->recentlyUsed>0){
+                    p->color=ofColor(255,0,0,40);
                 }else{
-                diff.normalize();
-//                diff *= 2;
-               // p->addForce( diff );
-               // p->update();
-                p->color=ofColor(255,0,0,255);
-                meshParticles.addVertex(p->position);
-                meshParticles.addColor(p->color);
-				}*/
-            }
-            //meshParticles.addColor(ofColor(255,0,0,40));
+                    p->color=ofColor(255,0,0,255);
+                    meshParticles.addVertex(p->position);
+                    meshParticles.addColor(p->color);
+                    p->recentlyUsed--;
+                }
+            }//else modo ruido NO
+
         }
     }//end for all points within vector
-           // cout <<"particulas dentro: " << pp << "\n";
-    //if((ofGetFrameNum()%1==0))
-    //cout << " \n ----------------------------------------------- \n";
 
 }
 
@@ -331,8 +349,8 @@ void testApp::draw() {
 	ofBackground(colorfondo);
 //	ofBackground(10,10,10,100);
 
-	ofSetColor(255, 255, 255);
-    if(boolDrawNoise)  	drawNoise();
+	
+    
     ofEnableAlphaBlending();
 	
 #ifdef EASYCAM
@@ -355,22 +373,17 @@ void testApp::draw() {
    // ofTranslate(0, 0, 1000); //
 		
 		// Superponemos modos de dibujo en 3D
-    
+
 	    if(bDrawPoints) drawParticles();
 		if(bDrawLinesH) drawLinesH();
 		if(bDrawLinesV) drawLinesV();
     	if(bDrawNativePointCloud) drawPointCloud();
-		
-//		if(pulso==true){
-//			//drawPointCloud(stepCloudPoint);
-//			drawLinesV(stepLines);
-//			drawParticles();
-//		}
-//		else {
-////                drawPointCloud();
-//			drawLinesV(stepLines);
+		 //ofEllipse(camera.getCursorProjected().x,camera.getCursorProjected().y,camera.getCursorProjected().z,100,100);
+
 //		}
 	ofPopMatrix();
+    
+   
 #ifdef EASYCAM
 	easyCam.end();
 #else
@@ -386,11 +399,12 @@ void testApp::draw() {
 	ofRect(ofGetWidth()-ww,ofGetHeight()-hh,ww,hh);
 	ofSetColor(255,255,255);
 	kinect.drawDepth(ofGetWidth()-ww,ofGetHeight()-hh,ww,hh);
-#else
-    if(bDrawContours) drawCountours();
+//#else
+//    if(bDrawContours) drawCountours();
 #endif
     
  /** DIBUJO SILUETA **/
+    if(boolDrawNoise)  	drawNoise();
     if(bDrawContours){
         drawCVSilhouettes();
     }
@@ -399,15 +413,8 @@ void testApp::draw() {
 	
 }
 
-
-
-
-
-
-
-
 void testApp::setupShader(){
-	shader.load("", "shaders/myCrazyFragFile2.frag");
+	shader.load("", "shaders/whitenoise.frag");
 
 }
 
@@ -455,6 +462,7 @@ void testApp::resetParticles(){
     particles.clear();
     setupParticles();
 }
+
 
     
 void testApp::explosionParticles(){
@@ -638,6 +646,22 @@ void testApp::exit() {
 	
 	
 }
+    
+void testApp::cargaColores() {
+    // paleta de colores fluor
+    // http://www.colourlovers.com/palette/970972/FLUOR
+    //
+    colorFluor.clear();
+    //	colorFluor.push_back(ofColor::red);	// rojo
+    //	colorFluor.push_back(ofColor::green);	// green
+    //	colorFluor.push_back(ofColor::blue);	// blue
+    colorFluor.push_back(ofColor::fromHex(0x0DE0FC));	// melting flowers
+    colorFluor.push_back(ofColor::fromHex(0x38FC48));	// Dead Nuclear
+    colorFluor.push_back(ofColor::fromHex(0xF938FC));	// Calcinha
+    colorFluor.push_back(ofColor::fromHex(0xFA00AB));	// ow!
+    colorFluor.push_back(ofColor::fromHex(0xDFFC00));	// Limei Green
+    
+}
 
 
 // CameraPose
@@ -655,6 +679,9 @@ void testApp::loadCameraPose() {
 	ofMatrix4x4 myMatrix;
 	fileRead >> myMatrix;
 	camera.setTransformMatrix(myMatrix);
-}	
+}
+    
+
+    
 #endif
 

@@ -20,35 +20,22 @@ if(resampledContour.size()>=3) {
     for(int i=0; i<resampledContour.size(); i++) {
         triangulation.addPoint(resampledContour[i]);
     }
-	
-	// ******
-	
-	// add algunos puntos extra
-//	if(bAddPts) {
-//		ofRectangle bounds = resampled.getBoundingBox();
-//		
-//		for(int i=0; i<numPointsXtra; i++) {
-//			float px = bounds.x+ofRandom(bounds.width);
-//			float py = bounds.y+ofRandom(bounds.height);
-//			if( resampled.inside(ofPoint(px, py)) ){
-//				triangulation.addPoint(ofPoint(px, py));
-//			}
-//		}
-//	}
-	
-	
-	
-	// ******
-	
+    if(bAddPts) {
+		ofRectangle bounds = resampledContour.getBoundingBox();
+
+		for(int i=0; i<numPointsXtra; i++) {
+			float px = bounds.x+ofRandom(bounds.width);
+			float py = bounds.y+ofRandom(bounds.height);
+			if( resampledContour.inside(ofPoint(px, py)) ){
+				triangulation.addPoint(ofPoint(px, py));
+			}
+		}
+	}
+
+    
     triangulation.triangulate();
+    triangContMesh_old = triangContMesh;
 
-	/*
-	
-	triangContMesh_old = triangContMesh;
- 
-	*/	
-
-	
     triangContMesh.clear();
     triangContMesh.setMode(OF_PRIMITIVE_TRIANGLES);
     ofMesh tt = triangulation.triangleMesh;
@@ -59,20 +46,11 @@ if(resampledContour.size()>=3) {
         ofVec3f c = faces[i].getVertex(2);
         ofVec3f pm = (a+b+c)/3.0;
         
-		
-		// CAMBIAR ESTO:
         if( resampledContour.inside(ofPoint(pm.x,pm.y)) ) {
-            triangContMesh.addVertex(a);
-            triangContMesh.addVertex(b);
-            triangContMesh.addVertex(c);
-        }
-		
-		// ... POR ESTO:
-		/*
-		if( resampled.inside(ofPoint(pm.x,pm.y)) ) {
-			// supongo el area de imagen dividido en 10 franjas divididas a su vez en 
+			// supongo el area de imagen dividido en 10 franjas divididas a su vez en
 			// colorFluor.size() bandas de distinto color
-			float hBandaPpal = cam.height/10;
+			float hBandaPpal = ofGetHeight()/10;
+
 			float hBanda = hBandaPpal/colorFluor.size();
 			
 			ofColor ctmpa, ctmpb, ctmpc;
@@ -105,21 +83,19 @@ if(resampledContour.size()>=3) {
 			triangContMesh.addColor(ctmpa);
 			triangContMesh.addColor(ctmpb);
 			triangContMesh.addColor(ctmpc);
-		}		
-		*/
+		}
+        
+        
     }
-	
-	
-	// Dibujar sin mas la malla
+    
+    
+    // DIBUJAR
+    
     ofPushMatrix();
     ofTranslate(ofGetWidth(), ofGetHeight());
     ofRotateZ(180);
     ofScale(3,3,3);
-    triangContMesh.drawWireframe();
-    ofPopMatrix();
-	
-	// Dibujar mejor
-/*
+    
 	if(doTriang) {
 		ofNoFill();
 		ofSetColor(ofColor::wheat);
@@ -142,68 +118,9 @@ if(resampledContour.size()>=3) {
 		// Mola porque se puede texturizar y aplicar vertex_shaders
 		// ofMesh triangulation.triangleMesh;
 	}
-	*/
-
-	/* 
-	 // declaraciones
-	 bool	bAddPts;		// si añade puntos a la triangulacion
-	 bool	bSoloEnContorno;	// si muestra solo los triangulos de dentro del contorno
-	 ofMesh	triangContMesh;
-	 ofMesh	triangContMesh_old;
-	 int numPointsXtra = 100;
-	 
-	 // Colores
-	 vector<ofColor> colorFluor;
-	 void cargaColores();
-	 
-	 
-	 bool bFill;
-	 
-	 int modoFill;
-	 
-	 bool bDrawOld;
-	 
-	 
-	*/
-	
-	/*
-	 // setup
-	cargaColores();
-	bFill = false;
-	
-	bDrawOld = false;
-	
-	setupGUI();
-	
-	 
-	void testApp::cargaColores() {
-		// paleta de colores fluor
-		// http://www.colourlovers.com/palette/970972/FLUOR
-		//
-		colorFluor.clear();
-		//	colorFluor.push_back(ofColor::red);	// rojo
-		//	colorFluor.push_back(ofColor::green);	// green
-		//	colorFluor.push_back(ofColor::blue);	// blue
-		colorFluor.push_back(ofColor::fromHex(0x0DE0FC));	// melting flowers
-		colorFluor.push_back(ofColor::fromHex(0x38FC48));	// Dead Nuclear
-		colorFluor.push_back(ofColor::fromHex(0xF938FC));	// Calcinha
-		colorFluor.push_back(ofColor::fromHex(0xFA00AB));	// ow!
-		colorFluor.push_back(ofColor::fromHex(0xDFFC00));	// Limei Green
-		
-	}
-	 */
-	
-	
-	 
-	/* 
-	// UI
-	else if(key=='t') doTriang=!doTriang;
-	else if(key=='r') doTessel=!doTessel;
-	else if(key=='c') bSoloEnContorno=!bSoloEnContorno;
-	else if(key=='x') bAddPts=!bAddPts;
-	else if(key=='f') bFill=!bFill;	
-	*/
-	
+    
+//    else triangContMesh.drawWireframe();
+    ofPopMatrix();
 }
 }
 
@@ -254,18 +171,17 @@ for(int y = 0; y < h; y += step) { //recorro los puntos bajando por las columnas
 
 
 void testApp::drawNoise(){
-    // ofSetColor(255);
-    
-    /**ofTexture mtexture;
-     mtexture.allocate(200, 200, GL_RGB);
-     ofImage mimage;mimage.loadImage("Vendeta.jpg");
-     mimage.getTextureReference().bind();**/
+    ofPushStyle();
+    ofFill();
+    ofSetColor(255,255,255,40);
+         ofSetColor(255,255,255,40);
     
     shader.begin();
-    
     shader.setUniform3f("iResolution", ofGetWidth(), ofGetHeight(),0);
     shader.setUniform1f("iGlobalTime", ofRandomf());
+        shader.setUniform1f("alpha", appStatuses["alpha_ruido"]);
     shader.setUniform2f("iMouse",ofGetMouseX(),ofGetMouseY());
+
     
     //mtexture.loadScreenData(600,600,200,200);
     //mtexture.loadData(mimage.getPixelsRef());
@@ -273,6 +189,7 @@ void testApp::drawNoise(){
     
     ofRect(0, 0, ofGetWidth(), ofGetHeight());
     shader.end();
+    ofPopStyle();
     //mimage.getTextureReference().unbind();
 }
 
