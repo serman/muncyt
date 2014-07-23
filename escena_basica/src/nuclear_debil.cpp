@@ -171,7 +171,8 @@ void nuclear_debil::init_Escena() {
 	modoDrawParticulas = MODO_PARTIC;	
 	swDrawTRAILS = true;
 
-
+	anillo.reset_wAng();
+	
 	ofPoint centro = ofPoint(W_WIDTH/2.0, W_HEIGHT/2.0);
 
 	// crear cosas

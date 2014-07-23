@@ -100,6 +100,10 @@ public:
 		
 	}
 	
+	void reset_wAng() {
+		wAng = -0.1*TWO_PI/(60.0);
+	}
+	
 	void setUI(ofRectangle ctrl_decc, ofRectangle ctrl_acc) {
 		anilloUI_L = ctrl_decc;
 		anilloUI_R = ctrl_acc;

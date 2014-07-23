@@ -20,9 +20,36 @@ if(resampledContour.size()>=3) {
     for(int i=0; i<resampledContour.size(); i++) {
         triangulation.addPoint(resampledContour[i]);
     }
+	
+	// ******
+	
+	// add algunos puntos extra
+//	if(bAddPts) {
+//		ofRectangle bounds = resampled.getBoundingBox();
+//		
+//		for(int i=0; i<numPointsXtra; i++) {
+//			float px = bounds.x+ofRandom(bounds.width);
+//			float py = bounds.y+ofRandom(bounds.height);
+//			if( resampled.inside(ofPoint(px, py)) ){
+//				triangulation.addPoint(ofPoint(px, py));
+//			}
+//		}
+//	}
+	
+	
+	
+	// ******
+	
     triangulation.triangulate();
+
+	/*
+	
+	triangContMesh_old = triangContMesh;
+ 
+	*/	
+
+	
     triangContMesh.clear();
-    
     triangContMesh.setMode(OF_PRIMITIVE_TRIANGLES);
     ofMesh tt = triangulation.triangleMesh;
     vector<ofMeshFace> faces = tt.getUniqueFaces();
@@ -32,18 +59,151 @@ if(resampledContour.size()>=3) {
         ofVec3f c = faces[i].getVertex(2);
         ofVec3f pm = (a+b+c)/3.0;
         
+		
+		// CAMBIAR ESTO:
         if( resampledContour.inside(ofPoint(pm.x,pm.y)) ) {
             triangContMesh.addVertex(a);
             triangContMesh.addVertex(b);
             triangContMesh.addVertex(c);
         }
+		
+		// ... POR ESTO:
+		/*
+		if( resampled.inside(ofPoint(pm.x,pm.y)) ) {
+			// supongo el area de imagen dividido en 10 franjas divididas a su vez en 
+			// colorFluor.size() bandas de distinto color
+			float hBandaPpal = cam.height/10;
+			float hBanda = hBandaPpal/colorFluor.size();
+			
+			ofColor ctmpa, ctmpb, ctmpc;
+			if(modoFill==0) {
+				// RANDOM
+				ofColor ctmp = colorFluor[i%colorFluor.size()];
+				ctmpa = ctmp;
+				ctmpb = ctmp;
+				ctmpc = ctmp;
+			}
+			else if(modoFill==1) {
+				// asignar color segun la posicion del punto medio
+				int nBanda = floor(pm.y/hBanda);
+				ofColor ctmp = colorFluor[nBanda%colorFluor.size()];
+				ctmpa = ctmp;
+				ctmpb = ctmp;
+				ctmpc = ctmp;
+			}
+			else if(modoFill==2) {
+				int nBanda = floor(a.y/hBanda);
+				ctmpa = colorFluor[nBanda%colorFluor.size()];
+				nBanda = floor(b.y/hBanda);
+				ctmpb = colorFluor[nBanda%colorFluor.size()];
+				nBanda = floor(c.y/hBanda);
+				ctmpc = colorFluor[nBanda%colorFluor.size()];
+			}
+			triangContMesh.addVertex(a);
+			triangContMesh.addVertex(b);
+			triangContMesh.addVertex(c);
+			triangContMesh.addColor(ctmpa);
+			triangContMesh.addColor(ctmpb);
+			triangContMesh.addColor(ctmpc);
+		}		
+		*/
     }
+	
+	
+	// Dibujar sin mas la malla
     ofPushMatrix();
     ofTranslate(ofGetWidth(), ofGetHeight());
     ofRotateZ(180);
     ofScale(3,3,3);
     triangContMesh.drawWireframe();
     ofPopMatrix();
+	
+	// Dibujar mejor
+/*
+	if(doTriang) {
+		ofNoFill();
+		ofSetColor(ofColor::wheat);
+		ofNoFill();
+		if(!bSoloEnContorno) {
+			triangulation.draw();
+		}
+		else {
+			if(bFill)	{
+				triangContMesh.draw();
+				if(bDrawOld) {
+					ofEnableBlendMode(OF_BLENDMODE_ADD);
+					triangContMesh_old.draw();
+					ofDisableBlendMode();
+				}
+			}
+			else		triangContMesh.drawWireframe();
+		}
+		// tambien se puede dibujar con Mesh
+		// Mola porque se puede texturizar y aplicar vertex_shaders
+		// ofMesh triangulation.triangleMesh;
+	}
+	*/
+
+	/* 
+	 // declaraciones
+	 bool	bAddPts;		// si añade puntos a la triangulacion
+	 bool	bSoloEnContorno;	// si muestra solo los triangulos de dentro del contorno
+	 ofMesh	triangContMesh;
+	 ofMesh	triangContMesh_old;
+	 int numPointsXtra = 100;
+	 
+	 // Colores
+	 vector<ofColor> colorFluor;
+	 void cargaColores();
+	 
+	 
+	 bool bFill;
+	 
+	 int modoFill;
+	 
+	 bool bDrawOld;
+	 
+	 
+	*/
+	
+	/*
+	 // setup
+	cargaColores();
+	bFill = false;
+	
+	bDrawOld = false;
+	
+	setupGUI();
+	
+	 
+	void testApp::cargaColores() {
+		// paleta de colores fluor
+		// http://www.colourlovers.com/palette/970972/FLUOR
+		//
+		colorFluor.clear();
+		//	colorFluor.push_back(ofColor::red);	// rojo
+		//	colorFluor.push_back(ofColor::green);	// green
+		//	colorFluor.push_back(ofColor::blue);	// blue
+		colorFluor.push_back(ofColor::fromHex(0x0DE0FC));	// melting flowers
+		colorFluor.push_back(ofColor::fromHex(0x38FC48));	// Dead Nuclear
+		colorFluor.push_back(ofColor::fromHex(0xF938FC));	// Calcinha
+		colorFluor.push_back(ofColor::fromHex(0xFA00AB));	// ow!
+		colorFluor.push_back(ofColor::fromHex(0xDFFC00));	// Limei Green
+		
+	}
+	 */
+	
+	
+	 
+	/* 
+	// UI
+	else if(key=='t') doTriang=!doTriang;
+	else if(key=='r') doTessel=!doTessel;
+	else if(key=='c') bSoloEnContorno=!bSoloEnContorno;
+	else if(key=='x') bAddPts=!bAddPts;
+	else if(key=='f') bFill=!bFill;	
+	*/
+	
 }
 }
 
