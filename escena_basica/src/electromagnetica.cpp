@@ -33,35 +33,56 @@ void electromagnetica::setup(){
     n_ciclos=1;
     ofAddListener(gui1->newGUIEvent,this,&electromagnetica::guiEvent);
     
+    //magneticFieldSvg.load("magneticfield.svg");
+    
+    //updateMagneticField(100,0,0);
 }
 
 void electromagnetica::update(float d1){
     hands.update(); //actualiza la sombra de las manos
+    int singleWaveId= wavesm.getSingleWaveId();
+    int singleWaveIndex=-1;
+    if(singleWaveId!=-1){
+        for (int i=0; i< hands.objectsCol.size(); i++){
+            if(hands.objectsCol[i]->cursor_id== singleWaveId){
+                singleWaveIndex=i;
+            }
+        }
+    }
     //tuioClientEm.getMessage();
     
     wavesm.update(); //actualiza la onda  matematica
 
-   /* if(hands.objectsCol.size()==1){
+  /*  if(singleWaveIndex!=-1){
         //muevo particulas cerca de la mano: orbita
         // oculto el resto
         for(int i=0; i< meshParticles.getVertices().size(); i++){
-            if( particles[i].position.distanceSquared(ofPoint(hands.objectsCol[0]->x,hands.objectsCol[0]->y)) >10000){
-                meshParticles.getColors()[i].set(0);
-                
-            }else{ //color de ruido
+            if( particles[i].position.distanceSquared( ofPoint( hands.objectsCol[singleWaveIndex]->x, hands.objectsCol[singleWaveIndex]->y ) ) >10000 ){
                 if(ofRandomf()>0.5)
                     meshParticles.getColors()[i].set(0);
                 else
                     meshParticles.getColors()[i].set(255);
                 
                 ofPoint p= ofPoint(particles[i]._x,particles[i]._y,particles[i].position.z);
-                particles[i].gravityTowards(p, 30, 10);
+                particles[i].steer( p, true, 3, 8);
                 particles[i].update();
-                meshParticles.getVertices()[i].set(particles[i].position);
-            }            
+                
+            }else{ //color de ruido
+                ofPoint p1=((noiseShadow *)hands.objectsCol[singleWaveIndex])->getDstPoint(particles[i]._x, particles[i]._y);
+                particles[i].steer( p1, true, 4, 10);
+                
+                particles[i].update();
+                //ofPoint p= ofPoint(particles[i]._x,particles[i]._y,particles[i].position.z);
+                //particles[i].gravityTowards(p, 30, 10);
+                //particles[i].update();
+                meshParticles.getColors()[i].set(255);
+                }
+            meshParticles.getVertices()[i].set(particles[i].position);
+
         }
         
-    }else */if(wavesm.howManyWaves()==0){
+    }else*/
+    if(wavesm.howManyWaves()==0){
      //ruido puro
         for(int i=0; i< meshParticles.getVertices().size(); i++){
             //ofSeedRandom();
@@ -70,8 +91,15 @@ void electromagnetica::update(float d1){
             else
                 meshParticles.getColors()[i].set(255);
          
-            ofPoint p= ofPoint(particles[i]._x,particles[i]._y,particles[i].position.z);
-            particles[i].steer( p, true, 7, 10);
+            ofPoint p= ofPoint(particles[i]._x,particles[i]._y);
+            
+            if(singleWaveIndex!=-1 &&
+               p.distanceSquared( ofPoint( hands.objectsCol[singleWaveIndex]->x, hands.objectsCol[singleWaveIndex]->y ) ) <10000 ){
+                ofPoint p1=((noiseShadow *)hands.objectsCol[singleWaveIndex])->getDstPoint(particles[i]._x, particles[i]._y);
+                particles[i].steer( p1, true, 4, 10);
+            }else{
+                particles[i].steer( p, true, 7, 10);
+            }
             particles[i].update();
             meshParticles.getVertices()[i].set(particles[i].position);
         }
@@ -88,26 +116,42 @@ void electromagnetica::update(float d1){
         }
         int rows=W_WIDTH/options_sampling;
         
+        //check if there is any single cursor where we need to draw the magnetic field
+        ofPoint positionCursor;
+        if(singleWaveIndex!=-1){
+             positionCursor=ofPoint( hands.objectsCol[singleWaveIndex]->x, hands.objectsCol[singleWaveIndex]->y );
+        }
+        else  positionCursor=ofPoint(0,0);
+        
+        for(int i=0; i< meshAux.getVertices().size(); i++){
+            if(singleWaveIndex!=-1){
+                ofPoint p= ofPoint(particlesAux[i]._x,particlesAux[i]._y);
+                ofPoint p1=((noiseShadow *)hands.objectsCol[singleWaveIndex])->getDstPoint2(particlesAux[i]._x, particlesAux[i]._y);
+                particlesAux[i].steer( p1, true, 1, 10);
+                if(meshAux.getColors()[i].a<=250)
+                    meshAux.getColors()[i].a+=5;
+                particlesAux[i].update();
+                meshAux.getVertices()[i].set(particlesAux[i].position);
+            }
+            else{
+                if(meshAux.getColors()[i].a>=5)
+                    meshAux.getColors()[i].a-=5;
+            }
+        }
+        
         for(int i=0; i< meshParticles.getVertices().size(); i++){
+
             int index=i % puntos_ondas;
             trIndices num_onda= wavesm.num_onda(index);
             //particles[i]._x;
             ofPoint p= wavesm.waveslist[num_onda.n_wave].AbsPoints[num_onda.new_index];
             particles[i].steer(p , true, 5, 10);
-            particles[i].update();
-           /* if(ofRandomf()>0.5)
-                meshParticles.getColors()[i].set(0);
-            else
-                meshParticles.getColors()[i].set(255);
-            */
             int len=wavesm.waveslist[num_onda.n_wave].npuntos;
-            
             ofColor color1=ofColor::fromHsb( ofMap(len, 0, 768, 0,360),255,255) ;
             color1.a=200;
             meshParticles.getColors()[i].set(color1);
-            
+            particles[i].update();
             meshParticles.getVertices()[i].set(particles[i].position);
-            
         }
     }
   /*  for(int i =0; i<hands.objectsCol.size(); i++){
@@ -139,19 +183,26 @@ void electromagnetica::draw(){
         ofPushMatrix();
             ofSetColor(255);
             meshParticles.setMode(OF_PRIMITIVE_POINTS);
+                meshAux.setMode(OF_PRIMITIVE_POINTS);
             glPointSize(2);
             glEnable(GL_POINT_SMOOTH);	// Para que sean puntos redondos
             ofEnableDepthTest();
             meshParticles.draw();
+            meshAux.draw();
             ofDisableDepthTest();
             ofSetColor(255,0,0);
             ofFill();
         if(drawlines) wavesm.draw();
         ofPopMatrix();
         hands.draw();
+        ofPushMatrix();
+            //ofTranslate(200,200);
+       // drawEM();
+        ofPopMatrix();
     ofPopMatrix();
 
     showDebug();
+
     //wavesm.debugInfo();
 }
 
@@ -242,11 +293,6 @@ void electromagnetica::setupParticles(){
             //			float pz = ofRandom(0,5000);
             //			particles.push_back(Particle(ofVec3f(px,py,pz) ,ofColor(255,255,255) ,x,y));
 			
-			float ang1 = ofRandom(PI);
-			float ang2 = ofRandom(TWO_PI);
-			float rr = 100;
-			
-			float rrho = rr*sin(ang1);
             if(ofRandomf()>0.5)
             {
                 Particle mparticle=Particle(ofVec3f(x,y,3) ,ofColor(255,255,255) ,x,y);
@@ -266,7 +312,37 @@ void electromagnetica::setupParticles(){
     }
     
     cout<<"particulas"<<numParticles;
+    
+    for ( int y = -75 ; y < 70 ; y+=options_sampling ){
+        for ( int x = -75 ; x < 75 ; x+=options_sampling ){
+            //			particles.push_back(Particle(ofVec3f(0,0,0),ofColor(255,255,255) ,x,y));
+            //			float px = ofRandom(-1000,1000);
+            //			float py = ofRandom(-1000,1000);
+            //			float pz = ofRandom(0,5000);
+            //			particles.push_back(Particle(ofVec3f(px,py,pz) ,ofColor(255,255,255) ,x,y));
+
+            if(ofRandomf()>0.5)
+            {
+                Particle mparticle=Particle(ofVec3f(x+300,y+300,3) ,ofColor(255,255,255,0) ,x,y);
+                particlesAux.push_back(mparticle);
+                meshAux.addVertex(mparticle.position );
+                meshAux.addColor(mparticle.color);
+            }
+            else{
+                Particle mparticle=Particle(ofVec3f(x+300,y+300,3) ,ofColor(0,0,0,0) ,x,y);
+                particlesAux.push_back(mparticle);
+                meshAux.addVertex(mparticle.position );
+                meshAux.addColor(mparticle.color);
+                
+            }
+			numParticles++ ;
+        }
+    }
+
+    
 }
+
+
 
 void electromagnetica::resetParticles(){
     particles.clear();
@@ -310,6 +386,8 @@ void electromagnetica::tuioAdded(ofxTuioCursor &tuioCursor){
     hands.notifyTouch(loc.x, loc.y,tuioCursor.getSessionId());
     //mwave.addPoint(loc.x,loc.y,tuioCursor.getSessionId());
     wavesm.touch(loc.x, loc.y,tuioCursor.getSessionId());
+      //  updateMagneticField(100,loc.x,loc.y);
+
 }
 
 void electromagnetica::tuioUpdated(ofxTuioCursor &tuioCursor){
@@ -318,6 +396,7 @@ void electromagnetica::tuioUpdated(ofxTuioCursor &tuioCursor){
 
     hands.notifySlide(mx, my,tuioCursor.getSessionId(),tuioCursor.getMotionAccel());
     wavesm.slide(mx,  my,tuioCursor.getSessionId(),tuioCursor.getMotionAccel());
+  //  updateMagneticField(100,mx,my);
 }
 
 void electromagnetica::tuioRemoved(ofxTuioCursor &tuioCursor){
@@ -358,3 +437,49 @@ void electromagnetica::guiEvent(ofxUIEventArgs &e){
         }
     }
 }
+
+/*void electromagnetica::updateMagneticField(int length,int x1, int y1){
+    fieldLines.clear();
+    ofSetColor(0,255,0);
+    ofNoFill();
+   // ofRect(0,0,length,10);
+   // ofEllipse(length/2,-50, 80,100);
+
+    int tra_y=(magneticFieldSvg.getHeight()*0.6)/2;
+    int tra_x=(magneticFieldSvg.getWidth()*0.6)/2;
+        ofPoint pto=ofPoint(x1-tra_x,y1-tra_y);
+    for(int i=0; i< magneticFieldSvg.getNumPath(); i++){
+        ofPath path1=magneticFieldSvg.getPathAt(i);
+        
+        path1.scale(0.6,0.6);
+        path1.translate(pto);
+        fieldLines.push_back( path1.getOutline()[0].getResampledByCount(15));
+        //magneticFieldSvg.getPathAt(i).setColor(ofColor::red);
+    }
+    
+    //cout << magneticFieldSvg.getNumPath();
+   // magneticFieldSvg.draw();
+    
+}
+
+ofPoint electromagnetica::getDstPoint(int x1,int y1){
+    ofPoint mpoint=ofPoint(x1,y1);
+    int minDist=1000000000;
+    ofPoint returnPoint=ofPoint(0,0);
+    ofPoint tmpPoint;
+    for(int i=0; i<fieldLines.size();i++){
+        tmpPoint=fieldLines[i].getClosestPoint(mpoint);
+        if(tmpPoint.distance(mpoint)<minDist){
+            minDist=tmpPoint.distance(mpoint);
+            returnPoint=tmpPoint;
+        }
+    }
+    return returnPoint;
+}
+
+void electromagnetica::drawEM(){
+    ofSetColor(0,255,0);
+    for(int i=0; i<fieldLines.size();i++){
+        fieldLines[i].draw();
+    }
+}*/

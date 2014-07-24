@@ -146,6 +146,11 @@
 		F74B8A9A196F7AA7005F3893 /* ofxUIWidget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F74B8A6A196F7AA7005F3893 /* ofxUIWidget.cpp */; };
 		F74B8A9B196F7AA7005F3893 /* ofxUIWidgetWithLabel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F74B8A6D196F7AA7005F3893 /* ofxUIWidgetWithLabel.cpp */; };
 		F74B8AA519704992005F3893 /* ofxSceneManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F74B8AA319704992005F3893 /* ofxSceneManager.cpp */; };
+		F772532A197FF94200ADD13E /* ofxSvg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F772531F197FF94200ADD13E /* ofxSvg.cpp */; };
+		F772532B197FF94200ADD13E /* src_colors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7725324197FF94200ADD13E /* src_colors.cpp */; };
+		F772532C197FF94200ADD13E /* svgtiny.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7725325197FF94200ADD13E /* svgtiny.cpp */; };
+		F772532D197FF94200ADD13E /* svgtiny_gradient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7725327197FF94200ADD13E /* svgtiny_gradient.cpp */; };
+		F772532E197FF94200ADD13E /* svgtiny_list.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7725329197FF94200ADD13E /* svgtiny_list.cpp */; };
 		F7EBD16519334C43009805D5 /* cheapComm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7EBD16319334C43009805D5 /* cheapComm.cpp */; };
 		F7EBD19319334D11009805D5 /* ofxOscBundle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7EBD16C19334D11009805D5 /* ofxOscBundle.cpp */; };
 		F7EBD19419334D11009805D5 /* ofxOscMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7EBD16E19334D11009805D5 /* ofxOscMessage.cpp */; };
@@ -480,6 +485,14 @@
 		F74B8AA319704992005F3893 /* ofxSceneManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxSceneManager.cpp; sourceTree = "<group>"; };
 		F74B8AA419704992005F3893 /* ofxSceneManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxSceneManager.h; sourceTree = "<group>"; };
 		F74B8AA619721818005F3893 /* wavesManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wavesManager.h; sourceTree = "<group>"; };
+		F772531F197FF94200ADD13E /* ofxSvg.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxSvg.cpp; sourceTree = "<group>"; };
+		F7725320197FF94200ADD13E /* ofxSvg.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxSvg.h; sourceTree = "<group>"; };
+		F7725324197FF94200ADD13E /* src_colors.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = src_colors.cpp; sourceTree = "<group>"; };
+		F7725325197FF94200ADD13E /* svgtiny.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = svgtiny.cpp; sourceTree = "<group>"; };
+		F7725326197FF94200ADD13E /* svgtiny.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = svgtiny.h; sourceTree = "<group>"; };
+		F7725327197FF94200ADD13E /* svgtiny_gradient.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = svgtiny_gradient.cpp; sourceTree = "<group>"; };
+		F7725328197FF94200ADD13E /* svgtiny_internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = svgtiny_internal.h; sourceTree = "<group>"; };
+		F7725329197FF94200ADD13E /* svgtiny_list.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = svgtiny_list.cpp; sourceTree = "<group>"; };
 		F7EBD16319334C43009805D5 /* cheapComm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cheapComm.cpp; sourceTree = "<group>"; };
 		F7EBD16419334C43009805D5 /* cheapComm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cheapComm.h; sourceTree = "<group>"; };
 		F7EBD16A19334D11009805D5 /* ofxOsc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxOsc.h; sourceTree = "<group>"; };
@@ -836,6 +849,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				F772531D197FF94200ADD13E /* ofxSvg */,
 				7F386BE619713CD1003C9AF0 /* ofxAnimatable */,
 				F74B8A10196F7AA6005F3893 /* ofxUI */,
 				F74B89EC196F4EDD005F3893 /* ofxScreenCurtain */,
@@ -1140,6 +1154,55 @@
 			path = src;
 			sourceTree = "<group>";
 		};
+		F772531D197FF94200ADD13E /* ofxSvg */ = {
+			isa = PBXGroup;
+			children = (
+				F772531E197FF94200ADD13E /* src */,
+				F7725321197FF94200ADD13E /* libs */,
+			);
+			name = ofxSvg;
+			sourceTree = "<group>";
+		};
+		F772531E197FF94200ADD13E /* src */ = {
+			isa = PBXGroup;
+			children = (
+				F772531F197FF94200ADD13E /* ofxSvg.cpp */,
+				F7725320197FF94200ADD13E /* ofxSvg.h */,
+			);
+			name = src;
+			path = ../../../addons/ofxSvg/src;
+			sourceTree = "<group>";
+		};
+		F7725321197FF94200ADD13E /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				F7725322197FF94200ADD13E /* svgTiny */,
+			);
+			name = libs;
+			path = ../../../addons/ofxSvg/libs;
+			sourceTree = "<group>";
+		};
+		F7725322197FF94200ADD13E /* svgTiny */ = {
+			isa = PBXGroup;
+			children = (
+				F7725323197FF94200ADD13E /* src */,
+			);
+			path = svgTiny;
+			sourceTree = "<group>";
+		};
+		F7725323197FF94200ADD13E /* src */ = {
+			isa = PBXGroup;
+			children = (
+				F7725324197FF94200ADD13E /* src_colors.cpp */,
+				F7725325197FF94200ADD13E /* svgtiny.cpp */,
+				F7725326197FF94200ADD13E /* svgtiny.h */,
+				F7725327197FF94200ADD13E /* svgtiny_gradient.cpp */,
+				F7725328197FF94200ADD13E /* svgtiny_internal.h */,
+				F7725329197FF94200ADD13E /* svgtiny_list.cpp */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		F7EBD16619334C47009805D5 /* comm */ = {
 			isa = PBXGroup;
 			children = (
@@ -1335,6 +1398,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F772532B197FF94200ADD13E /* src_colors.cpp in Sources */,
 				F7EBD19E19334D11009805D5 /* OscTypes.cpp in Sources */,
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* nuclear_debil.cpp in Sources */,
@@ -1342,6 +1406,7 @@
 				F74B8A92196F7AA7005F3893 /* ofxUISuperCanvas.cpp in Sources */,
 				F7EBD19319334D11009805D5 /* ofxOscBundle.cpp in Sources */,
 				7FFD07A31913A0450022FA53 /* b2CollideCircle.cpp in Sources */,
+				F772532D197FF94200ADD13E /* svgtiny_gradient.cpp in Sources */,
 				7FFD07A41913A0450022FA53 /* b2CollideEdge.cpp in Sources */,
 				F74B8A9B196F7AA7005F3893 /* ofxUIWidgetWithLabel.cpp in Sources */,
 				F74B8A75196F7AA7005F3893 /* ofxUICanvas.cpp in Sources */,
@@ -1410,6 +1475,7 @@
 				F7EBD19B19334D11009805D5 /* OscOutboundPacketStream.cpp in Sources */,
 				F74B8A70196F7AA7005F3893 /* ofxUI2DGraph.cpp in Sources */,
 				7FFD07C41913A0450022FA53 /* b2FrictionJoint.cpp in Sources */,
+				F772532E197FF94200ADD13E /* svgtiny_list.cpp in Sources */,
 				7FFD07C51913A0450022FA53 /* b2GearJoint.cpp in Sources */,
 				F74B8A0D196F6F6C005F3893 /* gravedad.cpp in Sources */,
 				F74B8A83196F7AA7005F3893 /* ofxUILabelToggle.cpp in Sources */,
@@ -1428,11 +1494,13 @@
 				F74B8A81196F7AA7005F3893 /* ofxUILabel.cpp in Sources */,
 				7FFD07CE1913A0450022FA53 /* b2WheelJoint.cpp in Sources */,
 				7FFD07CF1913A0450022FA53 /* b2Rope.cpp in Sources */,
+				F772532A197FF94200ADD13E /* ofxSvg.cpp in Sources */,
 				7FFD07D01913A0450022FA53 /* del_impl.cpp in Sources */,
 				F74B8A8A196F7AA7005F3893 /* ofxUIRangeSlider.cpp in Sources */,
 				F74B8A80196F7AA7005F3893 /* ofxUIImageToggle.cpp in Sources */,
 				7FFD07D11913A0450022FA53 /* ofxBox2d.cpp in Sources */,
 				F7EBD19519334D11009805D5 /* ofxOscParameterSync.cpp in Sources */,
+				F772532C197FF94200ADD13E /* svgtiny.cpp in Sources */,
 				7FFD07D21913A0450022FA53 /* ofxBox2dBaseShape.cpp in Sources */,
 				7FFD07D31913A0450022FA53 /* ofxBox2dCircle.cpp in Sources */,
 				F74B8A74196F7AA7005F3893 /* ofxUIButton.cpp in Sources */,
@@ -1523,7 +1591,7 @@
 					"-lpthread",
 					"-mtune=native",
 				);
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx10.8;
 			};
 			name = Debug;
 		};
@@ -1568,7 +1636,7 @@
 					"-lpthread",
 					"-mtune=native",
 				);
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx10.8;
 			};
 			name = Release;
 		};
