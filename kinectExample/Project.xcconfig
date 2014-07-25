@@ -5,6 +5,10 @@ OF_PATH = ../../..
 //THIS HAS ALL THE HEADER AND LIBS FOR OF CORE
 #include "../../../libs/openFrameworksCompiled/project/osx/CoreOF.xcconfig"
 
+ADDONS_PATH = $(OF_PATH)/addons
+OFX_MSGP_LIBS = "$(ADDONS_PATH)/ofxMessagePack/lib/msgpack_osx.a"
+OFX_MSGP_HEADERS = "$(ADDONS_PATH)/ofxMessagePack/include/"
+
 //ICONS - NEW IN 0072 
 ICON_NAME_DEBUG = icon-debug.icns
 ICON_NAME_RELEASE = icon.icns
@@ -13,5 +17,5 @@ ICON_FILE_PATH = $(OF_PATH)/libs/openFrameworksCompiled/project/osx/
 //IF YOU WANT AN APP TO HAVE A CUSTOM ICON - PUT THEM IN YOUR DATA FOLDER AND CHANGE ICON_FILE_PATH to:
 //ICON_FILE_PATH = bin/data/
 
-OTHER_LDFLAGS = $(OF_CORE_LIBS) 
-HEADER_SEARCH_PATHS = $(OF_CORE_HEADERS)
+OTHER_LDFLAGS = $(OF_CORE_LIBS) $(OFX_MSGP_LIBS)
+HEADER_SEARCH_PATHS = $(OF_CORE_HEADERS) $(OFX_MSGP_HEADERS)

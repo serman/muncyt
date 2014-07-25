@@ -7,7 +7,11 @@
 #include "ofxUI.h"
 #include "cheapCommRcv.h"
 #include "ofxDelaunay.h"
-
+//#include "serialized.h"
+//#include "ofxMsgPacker.h"
+//#include "ofxMsgUnPacker.h"
+#include <msgpack.hpp>
+#include "sendContour.h"
 //#define EASYCAM
 
 #ifndef EASYCAM
@@ -19,7 +23,7 @@
 //#define USE_TWO_KINECTS
 
 #define ASUS
-//212#define USEFILE
+#define USEFILE
 
 #ifndef ASUS
 	#include "ofxKinect.h"
@@ -193,6 +197,7 @@ public:
     int modoFill;
     
     bool bDrawOld;
+    sendContour sender;
 
     
 };

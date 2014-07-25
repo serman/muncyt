@@ -148,7 +148,7 @@ void testApp::setup() {
 
     myOSCrcv.setup();
     
-    
+    sender.setup();
     
 }
 
@@ -217,8 +217,11 @@ void testApp::update() {
                     depthImg.update();
                     
                     vector<ofPolyline> v= getSmoothSilhouete1(contourFinder, depthImg, (float)speed/10);
-                    if(v.size()>0)
+                    if(v.size()>0){
                         resampledContour =v[0];
+                        sender.send(v[0]);
+                    }
+                   // msgpack::pack(sbuf, v[0]);
                 }
               	depthGenerator.isUpdated=false;
             }
