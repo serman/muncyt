@@ -46,7 +46,6 @@ void oscEvent(OscMessage oscMsg) {
     // Llega bang (sin datos de interés)
     // Ejemplo de animacion:
     // - Cambiar color fondo a uno con brillo y saturacion a 100
-    setBckColor();
   }
  
   if(oscMsg.addrPattern().equals("/modo")) {

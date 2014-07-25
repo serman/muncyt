@@ -35,8 +35,8 @@ if(resampledContour.size()>=3) {
     
     triangulation.triangulate();
     triangContMesh_old = triangContMesh;
+
     triangContMesh.clear();
-    
     triangContMesh.setMode(OF_PRIMITIVE_TRIANGLES);
     ofMesh tt = triangulation.triangleMesh;
     vector<ofMeshFace> faces = tt.getUniqueFaces();
@@ -46,15 +46,11 @@ if(resampledContour.size()>=3) {
         ofVec3f c = faces[i].getVertex(2);
         ofVec3f pm = (a+b+c)/3.0;
         
-       /* if( resampledContour.inside(ofPoint(pm.x,pm.y)) ) {
-            triangContMesh.addVertex(a);
-            triangContMesh.addVertex(b);
-            triangContMesh.addVertex(c);
-        }*/
         if( resampledContour.inside(ofPoint(pm.x,pm.y)) ) {
 			// supongo el area de imagen dividido en 10 franjas divididas a su vez en
 			// colorFluor.size() bandas de distinto color
 			float hBandaPpal = ofGetHeight()/10;
+
 			float hBanda = hBandaPpal/colorFluor.size();
 			
 			ofColor ctmpa, ctmpb, ctmpc;
@@ -125,8 +121,6 @@ if(resampledContour.size()>=3) {
     
 //    else triangContMesh.drawWireframe();
     ofPopMatrix();
-    
-
 }
 }
 
