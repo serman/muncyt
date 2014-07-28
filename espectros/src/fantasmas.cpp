@@ -26,14 +26,14 @@ void fantasmas::setup(){
         setupSequences();
     
     
-        ofAddListener(finishedRecordingEvent,this, &fantasmas::onRecordingFinished);
+
     
      gui2 = new ofxUICanvas(1038,583, 295,285);
     vector<string> vnames; vnames.push_back("0"); vnames.push_back("1"); vnames.push_back("2");
     gui2->addLabel("VERTICAL RADIO", OFX_UI_FONT_MEDIUM);
     ofxUIRadio *radio = gui2->addRadio("VR", vnames, OFX_UI_ORIENTATION_HORIZONTAL);
     radio->activateToggle("0");
-    ofAddListener(gui2->newGUIEvent,this,&fantasmas::gui2Event);
+
     gui2->addIntSlider("maxFrame", 0, 49, &maxFrame);
     gui2->addLabel("GRABACION", OFX_UI_FONT_MEDIUM);
     gui2->addToggle("grabacion", false);
@@ -339,4 +339,29 @@ void fantasmas::gui2Event(ofxUIEventArgs &e)
             appStatuses["mode"]=MOSAIC;
         else appStatuses["mode"]=CAPTURE;
     }
+}
+
+
+//scene notifications
+void fantasmas::sceneWillAppear( ofxScene * fromScreen ){  // reset our scene when we appear
+    init_Escena();
+};
+
+
+//scene notifications
+void fantasmas::sceneWillDisappear( ofxScene * toScreen ){
+    gui2->disable();
+	exit_Escena();
+};
+
+void fantasmas::init_Escena(){
+        gui2->enable();
+        ofAddListener(gui2->newGUIEvent,this,&fantasmas::gui2Event);
+        ofAddListener(finishedRecordingEvent,this, &fantasmas::onRecordingFinished);
+}
+
+void fantasmas::exit_Escena(){
+    ofRemoveListener(finishedRecordingEvent,this, &fantasmas::onRecordingFinished);
+    ofRemoveListener(gui2->newGUIEvent,this,&fantasmas::gui2Event);
+    
 }

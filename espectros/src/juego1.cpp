@@ -24,3 +24,22 @@ void juego1::update(float f){
     
     
 }
+
+
+//scene notifications
+void juego1::sceneWillAppear( ofxScene * fromScreen ){  // reset our scene when we appear
+    init_Escena();
+};
+
+
+//scene notifications
+void juego1::sceneWillDisappear( ofxScene * toScreen ){
+	exit_Escena();
+};
+
+void juego1::init_Escena(){
+}
+
+void juego1::exit_Escena(){
+    
+}

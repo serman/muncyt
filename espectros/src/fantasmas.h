@@ -30,6 +30,12 @@ class fantasmas : public ofxScene{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
+
+        void sceneWillAppear( ofxScene * fromScreen );
+        void sceneWillDisappear( ofxScene * toScreen );
+        void init_Escena();
+        void exit_Escena();
+    
     
     	ofxSyphonClient *mSyphonClient;
         ofxSyphonClient *mSyphonClient2;
@@ -81,4 +87,6 @@ class fantasmas : public ofxScene{
     void gui2Event(ofxUIEventArgs &e);
     int currentImg=0;
     int maxFrame=50;
+    
+    
 };

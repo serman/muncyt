@@ -26,3 +26,22 @@ void glitch::update(float f){
 
     
 }
+
+
+//scene notifications
+void glitch::sceneWillAppear( ofxScene * fromScreen ){  // reset our scene when we appear
+    init_Escena();
+};
+
+
+//scene notifications
+void glitch::sceneWillDisappear( ofxScene * toScreen ){
+	exit_Escena();
+};
+
+void glitch::init_Escena(){
+   }
+
+void glitch::exit_Escena(){
+      
+}

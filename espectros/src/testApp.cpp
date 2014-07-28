@@ -35,8 +35,15 @@ void testApp::setup(){
     glitch *mglitch=new glitch();
     mglitch->setTuioClient(&tuioClient);
     mglitch->setSyphonClients(&mSyphonClient, &mSyphonClient2);
+	sceneManager->addScene( mglitch, SCENE_2);
+
     
-	sceneManager->addScene( mglitch, SCENE_1);
+    faces *mfaces=new faces();
+    mfaces->setTuioClient(&tuioClient);
+    mfaces->setSyphonClients(&mSyphonClient, &mSyphonClient2);
+	sceneManager->addScene( mfaces, SCENE_3);
+    
+    
     
 	sceneManager->setDrawDebug(true);
 	sceneManager->setCurtainDropTime(1.0);

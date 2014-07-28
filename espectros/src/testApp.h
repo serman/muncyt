@@ -19,6 +19,9 @@
 /*** ESCENAS **/
 #include "fantasmas.h"
 #include "glitch.h"
+#include "faces.h"
+#include "generativo1.h"
+#include "juego1.h"
 
 class testApp : public ofBaseApp{
     

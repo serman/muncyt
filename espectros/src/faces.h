@@ -51,7 +51,10 @@ public:
      void	tuioRemoved(ofxTuioCursor & tuioCursor);
      void	tuioUpdated(ofxTuioCursor & tuioCursor);
      */
-    
+    void sceneWillAppear( ofxScene * fromScreen );
+    void sceneWillDisappear( ofxScene * toScreen );
+    void init_Escena();
+    void exit_Escena();
 private:
     
 };
