@@ -14,13 +14,13 @@ struct trIndices{
     
     int n_wave;
     int new_index;
+
 };
 
 class wavesManager : public tangibleObject{
     public:
     vector<waves> waveslist;
     waves *singleWave;
-    
     int howManyWaves(){
         return countCurrentWaves();
     }
@@ -133,6 +133,13 @@ class wavesManager : public tangibleObject{
             }
         }
         
+    }
+    
+    int getSingleWaveId(){
+        if(singleWave->isHalf()==true){
+            return singleWave->getSinglePointID();
+        }
+        else return -1;
     }
 
 

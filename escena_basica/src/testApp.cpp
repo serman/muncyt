@@ -17,8 +17,9 @@ void testApp::setup(){
 	
 	sceneManager = ofxSceneManager::instance();
 	sceneManager->addScene( new menu(), SCENE_0);
+	sceneManager->addScene( new electromagnetica(), SCENE_2);
 	sceneManager->addScene( new nuclear_debil(), SCENE_1);
-    sceneManager->addScene( new electromagnetica(), SCENE_2);
+
 	sceneManager->addScene( new nuclear_fuerte(), SCENE_3);
     sceneManager->addScene( new gravedad(), SCENE_4);
 	

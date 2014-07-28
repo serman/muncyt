@@ -24,6 +24,7 @@
 #include "noiseShadow.h"
 #include "ofxTuio.h"
 #include "wavesManager.h"
+#include "ofxSvg.h"
 
 // -------------------------------------------------
 
@@ -33,7 +34,9 @@
 class electromagnetica : public ofxScene {
 public:
     vector<Particle> particles ;
+    vector<Particle> particlesAux ;
     ofMesh meshParticles;
+    ofMesh meshAux;
     int numParticles;
 	void setup();
 	
@@ -75,7 +78,11 @@ public:
     vector<ofColor> colours;
     bool drawlines;
     void guiEvent(ofxUIEventArgs &e);
-        
+/*    void updateMagneticField( int ,int, int);
+  ofxSVG magneticFieldSvg;
+    vector<ofPolyline> fieldLines;
+    ofPoint getDstPoint(int, int);
+    void drawEM();*/
 };
 
 #endif /* defined(__escena_basica__electromagnetica__) */
