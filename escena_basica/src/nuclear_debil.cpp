@@ -89,14 +89,6 @@ void nuclear_debil::setup() {
 	velocNeutronDestroy = velocNeutronLim*0.7;
 	velocNeutronLanz = 120;
 
-	// Lo paso a init_Escena()
-//	modoDrawParticulas = MODO_PARTIC;
-//	ofLogVerbose("Add nucleos");
-//	// add some nucleos
-//	int nCircs = 60 + floor(  ofRandom(20) );
-//	for(int i =0; i<nCircs; i++) {
-//		addNucleo(centro.x+ofRandom(-1,1), centro.y+ofRandom(-1,1), rNucleo);
-//	}
 	
 	cargaSounds();
 	
@@ -112,7 +104,6 @@ void nuclear_debil::setup() {
 	
 
 // Acelerador Exterior - - - 
-	// Anillo(ofVec2f _pos, float rInt, float rExt);
 	anillo = Anillo(ofVec2f(centro.x,centro.y), radioInt, radioExt);
 	anillo.setTexture(texPartic);
 	
@@ -140,13 +131,6 @@ void nuclear_debil::setup() {
     touchElements.addObject(buttonSpeed2);
     touchElements.addObject(buttonCollide);
 
-    // Lo paso a init_Escena()
-//    ofAddListener(buttonSpeed2.buttonEvent ,this, &nuclear_debil::onButtonPressed);
-//    ofAddListener(buttonSpeed1.buttonEvent ,this, &nuclear_debil::onButtonPressed);
-//    ofAddListener(buttonCollide.buttonEvent ,this, &nuclear_debil::onButtonPressed);
-    
-	//anillo.setUI(anilloUI_L, anilloUI_R);
-	
 	
 // Otros - - - - - 
 	swBlendModeADD = false;
@@ -239,7 +223,7 @@ void nuclear_debil::cargaSounds() {
 
 //--------------------------------------------------------------
 void nuclear_debil::update(float dt) {
-	
+
 	// 
 	box2d.update();	
 

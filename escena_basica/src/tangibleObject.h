@@ -4,7 +4,6 @@
 //
 //  Created by Sergio Galan on 7/8/14.
 //
-//
 
 #include <ofMain.h>
 #ifndef example_tangibleObject_h

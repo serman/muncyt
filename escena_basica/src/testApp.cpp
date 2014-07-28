@@ -16,6 +16,7 @@ void testApp::setup(){
 	///////////////////////////////////////
 	
 	sceneManager = ofxSceneManager::instance();
+	sceneManager->addScene( new menu(), SCENE_0);
 	sceneManager->addScene( new nuclear_debil(), SCENE_1);
     sceneManager->addScene( new electromagnetica(), SCENE_2);
 	sceneManager->addScene( new nuclear_fuerte(), SCENE_3);
@@ -34,7 +35,12 @@ void testApp::update(){
 	tuioClient.getMessage();
 	float dt = 0.016666666;
 	sceneManager->update( dt );
-		
+
+	
+	//
+	// sceneManager->goToScene(SCENE_1, true); /* true >> regardless of curtain state (so u can change state while curtain is moving)*/	
+	//
+	
 }
 
 
@@ -66,11 +72,12 @@ void testApp::mousePressed( int x, int y, int button ){
 	sceneManager->mousePressed(x, y, button);
 }
 
-void testApp::keyPressed(int key){
-	
+void testApp::keyPressed(int key){	
+	if (key == '0') sceneManager->goToScene(SCENE_0);
 	if (key == '1') sceneManager->goToScene(SCENE_1, true); /* true >> regardless of curtain state (so u can change state while curtain is moving)*/
 	if (key == '2') sceneManager->goToScene(SCENE_2);
 	//if (key == '3') sceneManager->goToScene(SCENE_3);
+	//if (key == '4') sceneManager->goToScene(SCENE_4);
     sceneManager->keyPressed(key);
 }
 

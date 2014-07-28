@@ -4,6 +4,7 @@
 #include "ofxAnimatableFloat.h"
 
 #include "ofxSceneManager.h"
+#include "menu.h"
 #include "nuclear_debil.h"
 #include "electromagnetica.h"
 #include "nuclear_fuerte/nuclear_fuerte.h"
@@ -12,7 +13,7 @@
 
 class testApp : public ofBaseApp{
 
-	enum Scenes{ SCENE_1 = 1, SCENE_2, SCENE_3,SCENE_4 };
+	enum Scenes{ SCENE_0 = 0, SCENE_1, SCENE_2, SCENE_3,SCENE_4 };
 	
 	public:
 		void setup();

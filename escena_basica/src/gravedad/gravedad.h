@@ -33,6 +33,18 @@ public:
     
 	void mousePressed( int x, int y, int button );
 
+	
+	
+	//
+	// Cosas para incorporacion a Prog_PPal, a TUIO...
+	//
+	void init_Escena();
+	void exit_Escena();
+	void sceneWillAppear( ofxScene * fromScreen );
+    void sceneWillDisappear( ofxScene * toScreen );
+//	tangiblesHandler hands;			// hands
+//	tangiblesHandler touchElements;	// Habrá 4 touchElements
+	
     
 };
 
