@@ -28,7 +28,7 @@ class menu : public ofxScene { //ofBaseApp {
 public:
 	
 	void setup();
-	void update();
+	void update(float d1);
 	void draw();
 	
 	void keyPressed(int key);

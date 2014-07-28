@@ -210,7 +210,7 @@ void menu::addBox(ofPoint _pos) {
 
 
 //--------------------------------------------------------------
-void menu::update() {
+void menu::update(float d1) {
 	
 	ofLogNotice("Update");
 	if(bAddCircle) {
