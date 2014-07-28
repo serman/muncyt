@@ -12,7 +12,7 @@
 #include <iostream>
 #define IMAGES 1
 
-#endif /* defined(__mainScreen__mosaicRecorder__) */
+
 
 #include "ofMain.h"
 #include "ofxXmlSettings.h";
@@ -26,7 +26,8 @@
 #define VIDEOSIZE_X 100
 #define VIDEOSIZE_Y 140
 
-    static ofEvent<int> finishedRecordingEvent;
+static ofEvent<int> finishedRecordingEvent;
+
 class mosaicRecorder {
 public:
 
@@ -177,3 +178,5 @@ private:
 
     
 };
+
+#endif /* defined(__mainScreen__mosaicRecorder__) */

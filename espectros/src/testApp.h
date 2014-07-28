@@ -12,13 +12,17 @@
 
 
 #include "ofxSceneManager.h"
-#include "fantasmas.h"
 
 #include "ofxTuio.h"
 #include "ofxSyphon.h"
+
+/*** ESCENAS **/
+#include "fantasmas.h"
+#include "glitch.h"
+
 class testApp : public ofBaseApp{
     
-	enum Scenes{ SCENE_1= 0, SCENE_2, SCENE_3,SCENE_4 };
+	enum Scenes{ SCENE_1= 0, SCENE_2, SCENE_3, SCENE_4 };
 	
 public:
     void setup();

@@ -117,6 +117,10 @@
 		F77253B819866CBC00ADD13E /* ofxAnimatableFloat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F77253B119866CBC00ADD13E /* ofxAnimatableFloat.cpp */; };
 		F77253B919866CBC00ADD13E /* ofxAnimatableOfColor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F77253B319866CBC00ADD13E /* ofxAnimatableOfColor.cpp */; };
 		F77253BA19866CBC00ADD13E /* ofxAnimatableOfPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F77253B519866CBC00ADD13E /* ofxAnimatableOfPoint.cpp */; };
+		F77253BE1986A39600ADD13E /* glitch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F77253BC1986A39600ADD13E /* glitch.cpp */; };
+		F77253C51986AE4000ADD13E /* faces.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F77253C31986AE4000ADD13E /* faces.cpp */; };
+		F77253CA1986AF0200ADD13E /* generativo1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F77253C81986AF0200ADD13E /* generativo1.cpp */; };
+		F77253CD1986AF3400ADD13E /* juego1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F77253CB1986AF3400ADD13E /* juego1.cpp */; };
 		F8D05F7C7F785CE323983B47 /* ofxUITextInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06C7032F68D99A145A53CB6F /* ofxUITextInput.cpp */; };
 		F9C20834354ACC8337320B8C /* ofxUIMultiImageToggle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C5ED4467DFF0AC3482E9362 /* ofxUIMultiImageToggle.cpp */; };
 		FB09C6B2A1DA0EA217240CB8 /* ofxCvGrayscaleImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 057122A817D12571F8C0C7A4 /* ofxCvGrayscaleImage.cpp */; };
@@ -468,6 +472,14 @@
 		F77253B419866CBC00ADD13E /* ofxAnimatableOfColor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxAnimatableOfColor.h; sourceTree = "<group>"; };
 		F77253B519866CBC00ADD13E /* ofxAnimatableOfPoint.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxAnimatableOfPoint.cpp; sourceTree = "<group>"; };
 		F77253B619866CBC00ADD13E /* ofxAnimatableOfPoint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxAnimatableOfPoint.h; sourceTree = "<group>"; };
+		F77253BC1986A39600ADD13E /* glitch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = glitch.cpp; sourceTree = "<group>"; };
+		F77253BD1986A39600ADD13E /* glitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glitch.h; sourceTree = "<group>"; };
+		F77253C31986AE4000ADD13E /* faces.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = faces.cpp; sourceTree = "<group>"; };
+		F77253C41986AE4000ADD13E /* faces.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = faces.h; sourceTree = "<group>"; };
+		F77253C81986AF0200ADD13E /* generativo1.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = generativo1.cpp; sourceTree = "<group>"; };
+		F77253C91986AF0200ADD13E /* generativo1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = generativo1.h; sourceTree = "<group>"; };
+		F77253CB1986AF3400ADD13E /* juego1.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = juego1.cpp; sourceTree = "<group>"; };
+		F77253CC1986AF3400ADD13E /* juego1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = juego1.h; sourceTree = "<group>"; };
 		F773691B194206B000548CEA /* moveAndRecord.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = moveAndRecord.h; sourceTree = "<group>"; };
 		F773697D1946950300548CEA /* ofxImageSequenceRecorder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxImageSequenceRecorder.h; sourceTree = "<group>"; };
 		F773697F1946954100548CEA /* mosaicRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mosaicRecorder.h; sourceTree = "<group>"; };
@@ -1039,6 +1051,10 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				F77253C71986AED800ADD13E /* juego1 */,
+				F77253C61986AEC200ADD13E /* generativo1 */,
+				F77253BF1986ADD200ADD13E /* faces */,
+				F77253BB1986A37200ADD13E /* glitch */,
 				F772539B198669AC00ADD13E /* fantasmas */,
 				F703441A196645DC00E68607 /* customTuio */,
 				F70E3F3F191C5D6C0050DEB7 /* cheapComm.cpp */,
@@ -1387,6 +1403,42 @@
 			path = ../../../addons/ofxAnimatable/src;
 			sourceTree = "<group>";
 		};
+		F77253BB1986A37200ADD13E /* glitch */ = {
+			isa = PBXGroup;
+			children = (
+				F77253BC1986A39600ADD13E /* glitch.cpp */,
+				F77253BD1986A39600ADD13E /* glitch.h */,
+			);
+			name = glitch;
+			sourceTree = "<group>";
+		};
+		F77253BF1986ADD200ADD13E /* faces */ = {
+			isa = PBXGroup;
+			children = (
+				F77253C31986AE4000ADD13E /* faces.cpp */,
+				F77253C41986AE4000ADD13E /* faces.h */,
+			);
+			name = faces;
+			sourceTree = "<group>";
+		};
+		F77253C61986AEC200ADD13E /* generativo1 */ = {
+			isa = PBXGroup;
+			children = (
+				F77253C81986AF0200ADD13E /* generativo1.cpp */,
+				F77253C91986AF0200ADD13E /* generativo1.h */,
+			);
+			name = generativo1;
+			sourceTree = "<group>";
+		};
+		F77253C71986AED800ADD13E /* juego1 */ = {
+			isa = PBXGroup;
+			children = (
+				F77253CB1986AF3400ADD13E /* juego1.cpp */,
+				F77253CC1986AF3400ADD13E /* juego1.h */,
+			);
+			name = juego1;
+			sourceTree = "<group>";
+		};
 		F773697B1946950300548CEA /* ofxImageSequenceRecorder */ = {
 			isa = PBXGroup;
 			children = (
@@ -1529,6 +1581,7 @@
 				63020F16C7E8DED980111241 /* ofxCvImage.cpp in Sources */,
 				D3301F6A0B43BB293ED97C1D /* ofxCvShortImage.cpp in Sources */,
 				72A929D3561B8232A182ABFC /* ofxOscBundle.cpp in Sources */,
+				F77253C51986AE4000ADD13E /* faces.cpp in Sources */,
 				5864AD82E20F15536D054EA3 /* ofxOscMessage.cpp in Sources */,
 				4ADB88E2FB52E76A471065DE /* ofxOscParameterSync.cpp in Sources */,
 				F70E3F65191C63AA0050DEB7 /* ofxXmlSettings.cpp in Sources */,
@@ -1561,6 +1614,7 @@
 				DF0C851B244C4C867CEA8806 /* ofxUICircleSlider.cpp in Sources */,
 				9BE4AE0AA2B8C436BDFE9D4D /* ofxUIDragableLabelButton.cpp in Sources */,
 				F392A99D83698FC099127880 /* ofxUIDropDownList.cpp in Sources */,
+				F77253BE1986A39600ADD13E /* glitch.cpp in Sources */,
 				084025DA517D8329301FE1B6 /* ofxUIEventArgs.cpp in Sources */,
 				7252706DA14C1BE63950ADDA /* ofxUIFPS.cpp in Sources */,
 				22030CBDCC25D815E7ED6757 /* ofxUIFPSSlider.cpp in Sources */,
@@ -1599,9 +1653,11 @@
 				5AE95ADB5549701423B6DA48 /* ofxUITabBar.cpp in Sources */,
 				C961BE22AB9A8CCF037FC18F /* ofxUITextArea.cpp in Sources */,
 				F8D05F7C7F785CE323983B47 /* ofxUITextInput.cpp in Sources */,
+				F77253CA1986AF0200ADD13E /* generativo1.cpp in Sources */,
 				F772539A1986692900ADD13E /* testApp.cpp in Sources */,
 				F70E3F92191C6D050050DEB7 /* ETF.cpp in Sources */,
 				04C82720B149CE576B8CBB06 /* ofxUIToggle.cpp in Sources */,
+				F77253CD1986AF3400ADD13E /* juego1.cpp in Sources */,
 				F70E3F68191C63AA0050DEB7 /* tinyxmlparser.cpp in Sources */,
 				E3A1109F67D711D6C256031E /* ofxUIToggleMatrix.cpp in Sources */,
 				F70E3F9C191C6D050050DEB7 /* Utilities.cpp in Sources */,

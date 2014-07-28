@@ -1,6 +1,7 @@
 #include "testApp.h"
 //#include "consts.h"
 
+
 void testApp::setup(){
     
 	ofSetFrameRate(60);
@@ -14,6 +15,7 @@ void testApp::setup(){
 	ofAddListener(tuioClient.cursorRemoved,this, &testApp::tuioRemoved);
 	ofAddListener(tuioClient.cursorUpdated,this, &testApp::tuioUpdated);
 	///////////////////////////////////////
+
 	
 	sceneManager = ofxSceneManager::instance();
 
@@ -30,6 +32,12 @@ void testApp::setup(){
     
 	sceneManager->addScene( mfantasmas, SCENE_1);
 	
+    glitch *mglitch=new glitch();
+    mglitch->setTuioClient(&tuioClient);
+    mglitch->setSyphonClients(&mSyphonClient, &mSyphonClient2);
+    
+	sceneManager->addScene( mglitch, SCENE_1);
+    
 	sceneManager->setDrawDebug(true);
 	sceneManager->setCurtainDropTime(1.0);
 	sceneManager->setCurtainStayTime(0.0);
