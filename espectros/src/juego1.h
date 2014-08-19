@@ -18,9 +18,14 @@
 #include "ofxTuio.h"
 #include <ofMath.h>
 #include "ofxScene.h"
+#include "ofxBox2d.h"
+#include "ofMain.h"
+#include "ofxCv.h"
 
-
-
+#define SCREEN_W 768
+#define SCREEN_H 384
+#define VIDEO_W 640
+#define VIDEO_H 480
 
 class juego1 : public ofxScene{
     
@@ -44,22 +49,61 @@ public:
     }
     
     void setSyphonClients( ofxSyphonClient *mSyphonClient_,ofxSyphonClient *mSyphonClient2_ ){
-        cout << "settings syphon client" <<endl;
         mSyphonClient=mSyphonClient_;
         mSyphonClient2=mSyphonClient2_;
     }
     
-    /*    void	tuioAdded(ofxTuioCursor & tuioCursor);
-     void	tuioRemoved(ofxTuioCursor & tuioCursor);
-     void	tuioUpdated(ofxTuioCursor & tuioCursor);
-     */
+    void	tuioAdded(ofxTuioCursor & tuioCursor);
+    void	tuioRemoved(ofxTuioCursor & tuioCursor);
+    void	tuioUpdated(ofxTuioCursor & tuioCursor);
+     
     void sceneWillAppear( ofxScene * fromScreen );
     void sceneWillDisappear( ofxScene * toScreen );
     void init_Escena();
     void exit_Escena();
+    void keyPressed(int key);
+    void keyReleased(int key);
+    void showDebug()    ;
+
 private:
+    ofxBox2d                            box2d;
+    vector		<ofPtr<ofxBox2dRect> >	circles;		  //	default box2d circles
+    void addObstacle();
+    void addObstacle(ofPoint p1, int m_id);
+    void updateObstacle(ofPoint p1, int m_id);
+    void removeObstacle(int);
+        void hideObstacle(int);
+    void throwBall();
+    ofxBox2dCircle ball ;
+    void drawControls();
+    ofVec2f throwDirection;
+    int throwForce;
+    int amountForce;
+    bool forceDecrease;
+    ofxBox2dRect goal;
+    void contactStart(ofxBox2dContactArgs &e);
+    bool isGoal;
+    void moveGoal();
+    ofPoint convertPoint(float, float);
+    /** escalado video ajuste pantala */
+    float VIDEO_scale=SCREEN_W/640;
+    float VIDEO_offset=((VIDEO_scale*480)-SCREEN_H)/2;
+    std::map<string, int> appStatuses;
+    ofPixels gray;
+	ofImage edge;
     
+    ofPixels remoteBlobImgPxl;
+    ofImage feedImg;
+
 };
+
+typedef enum tipos {BALL=1, GOAL =2, OBSTACLE} tipoObj;
+enum game_status{WAIT, PLAYING, WIN};
+typedef struct  {
+    tipoObj tipo;
+    int id ;
+    bool isHidden;
+} datoObjeto;
 
 
 
