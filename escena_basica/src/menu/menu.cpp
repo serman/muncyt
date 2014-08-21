@@ -14,7 +14,6 @@ void menu::setup() {
 	box2d.setGravity(0, 0);
 	box2d.setFPS(30.0);
 
-	
 	bola.loadImage("images/dot.png");
 	ladoPart1 = 5;
 	ladoPart2 = 10;
@@ -44,6 +43,14 @@ void menu::setup() {
 	
 	minDisInt = 25;
 	
+	// fbos
+	// fbos
+	fbo1.allocate(ofGetHeight()/2,ofGetHeight()/2);
+	fbo2.allocate(ofGetHeight()/2,ofGetHeight()/2);
+	fbo3.allocate(ofGetHeight()/2,ofGetHeight()/2);
+	fbo4.allocate(ofGetHeight()/2,ofGetHeight()/2);	
+	
+	
 	//
 	// crear Botones TUIO
 	//
@@ -67,7 +74,8 @@ void menu::setup() {
 	touchElements.addObject(button3);
 	touchElements.addObject(button4);
 
-//	init_escena();
+	
+	init_Escena();
 	ofLogNotice("menu - SETUP - fin");
 	
 }
@@ -86,6 +94,16 @@ void menu::init_Escena() {
 	
 	bDraw4Forces = true;
 	fRed = true;
+	
+
+	// fbos:
+	// limpiarlas
+	fbo1.begin();	ofClear(255,255,255,0);	fbo1.end();
+	fbo2.begin();	ofClear(255,255,255,0);	fbo2.end();
+	fbo3.begin();	ofClear(255,255,255,0);	fbo3.end();
+	fbo4.begin();	ofClear(255,255,255,0);	fbo4.end();	
+	
+	bDrawFbos = false;
 	
 	
 	// addListeners
@@ -134,7 +152,7 @@ void menu::initParticles() {
 		addCircle(ofPoint(ofGetWidth()/2+ofRandom(100), ofGetHeight()/2+ofRandom(100)));
 		
 		// rectangulos
-		addBox(ofPoint(ofGetWidth()/2+ofRandom(100), ofGetHeight()/2+ofRandom(100)));
+//		addBox(ofPoint(ofGetWidth()/2+ofRandom(100), ofGetHeight()/2+ofRandom(100)));
 	}
 	ptoMed_circles = ptoMedio(circles);
 	ptoMed_boxes = ptoMedio(boxes);
@@ -241,8 +259,8 @@ void menu::update(float d1) {
 			for(int i=0; i<circles.size(); i++) {
 				float dis1 = ptoMed_circles.distance(circles[i].get()->getPosition());
 				float dis2 = ptoMed_boxes.distance(circles[i].get()->getPosition());
-				if(dis1 > minDisInt) boxes[i].get()->addRepulsionForce(ptoMed_circles, 2*(ncircles/ntot)/dis1);
-				if(dis2 > minDisInt) boxes[i].get()->addAttractionPoint(ptoMed_boxes, 2*(nboxes/ntot)/dis2);
+				if(dis1 > minDisInt) circles[i].get()->addRepulsionForce(ptoMed_circles, 2*(ncircles/ntot)/dis1);
+				if(dis2 > minDisInt) circles[i].get()->addAttractionPoint(ptoMed_boxes, 2*(nboxes/ntot)/dis2);
 			}
 			for(int i=0; i<boxes.size(); i++) {
 				float dis1 = ptoMed_boxes.distance(boxes[i].get()->getPosition());
@@ -264,35 +282,6 @@ void menu::update(float d1) {
 		
 		// o poner los tuios impares con atraccion y los impares con repulsion (<<== probemos esta)
 		interaccion_point(mouse, isMousePressed);
-		
-//		float fFuerza = 5.0;
-//		if(mouse.distance(centro)<distConf) {
-//			if(isMousePressed) {
-//				for(int i=0; i<circles.size(); i++) {
-//					float dis = mouse.distance(circles[i].get()->getPosition());
-//					if(dis < minDis) circles[i].get()->addRepulsionForce(mouse, 0.2f*fFuerza/dis);//3, 9);
-//					else circles[i].get()->addAttractionPoint(mouse, 4.2*fFuerza/dis);//4.0);
-//				}
-//				for(int i=0; i<boxes.size(); i++) {
-//					float dis = mouse.distance(boxes[i].get()->getPosition());
-//					if(dis < minDis) boxes[i].get()->addRepulsionForce(mouse, 1.8*fFuerza/dis);
-//					else boxes[i].get()->addRepulsionForce(mouse, 1.9*fFuerza/dis);//4.0);
-//				}
-//			}
-//			else {
-//				for(int i=0; i<circles.size(); i++) {
-//					float dis = mouse.distance(circles[i].get()->getPosition());
-//					if(dis < minDis) circles[i].get()->addAttractionPoint(mouse, 1.5*fFuerza/dis);//3, 9);
-//					else circles[i].get()->addRepulsionForce(mouse, 0.9*fFuerza/dis);//4.0);
-//				}
-//				for(int i=0; i<boxes.size(); i++) {
-//					float dis = mouse.distance(boxes[i].get()->getPosition());
-//					if(dis < minDis) boxes[i].get()->addAttractionPoint(mouse, 1.8*fFuerza/dis);
-//					else boxes[i].get()->addAttractionPoint(mouse, 1.9*fFuerza/dis);//4.0);
-//				}
-//			}
-//		}
-		
 		
 		
 		// = Fuerza de confinamiento
@@ -316,75 +305,131 @@ void menu::update(float d1) {
 
 //--------------------------------------------------------------
 void menu::draw() {
-	if(bDraw4Forces) {
-		draw4Forces();
-	}
+	ofBackground(ofColor::black);
+
+	// clear fbos
+	if(bDrawFbos) {
+		ofVec2f centroScreen = ofVec2f(ofGetWidth()/2, ofGetHeight()/2);
+		ofSetColor(255,255,255);
+		
+		fbo1.begin();	ofBackground(0,0,0); ofEnableAlphaBlending();	fbo1.end();
+		fbo2.begin();	ofBackground(0,0,0); ofEnableAlphaBlending();	fbo2.end();
+		fbo3.begin();	ofBackground(0,0,0); ofEnableAlphaBlending();	fbo3.end();
+		fbo4.begin();	ofBackground(0,0,0); ofEnableAlphaBlending();	fbo4.end();	
+		
+		draw4Forces_fbos();
+		
+		fbo1.begin();	ofDisableAlphaBlending();	fbo1.end();
+		fbo2.begin();	ofDisableAlphaBlending();	fbo2.end();
+		fbo3.begin();	ofDisableAlphaBlending();	fbo3.end();
+		fbo4.begin();	ofDisableAlphaBlending();	fbo4.end();
+		
+		fbo1.draw(centroScreen.x, centroScreen.y);
+		fbo2.draw(centroScreen.x-fbo2.getWidth(), centroScreen.y);
+		fbo3.draw(centroScreen.x-fbo3.getWidth(), centroScreen.y-fbo3.getHeight());
+		fbo4.draw(centroScreen.x, centroScreen.y-fbo4.getHeight());
+		
+	}	
 	else {
-		ofEnableAlphaBlending();
-		for(int i=0; i<circles.size()-1; i++) {
-			ofFill();
-	//		ofSetHexColor(0xf6c738);
-	//		circles[i].get()->draw();
-			
-			ofVec2f pos = circles[i].get()->getPosition();
-			float rr = 3*circles[i].get()->getRadius();
-			ofPushMatrix();
-			ofPushStyle();
-			ofTranslate(pos.x,pos.y,0);
-			ofSetColor(ofColor::royalBlue, 200);
-			bola.draw(-rr,-rr,2*rr,2*rr);
-			ofPopStyle();
-			ofPopMatrix();
+		if(bDraw4Forces) {
+			draw4Forces();
 		}
-		
-		for(int i=0; i<boxes.size(); i++) {
-			ofFill();
-	//		ofSetHexColor(0xBF2545);
-	//		boxes[i].get()->draw();
-			
-			ofVec2f pos = boxes[i].get()->getPosition();
-			float rr = 3*boxes[i].get()->getHeight();
-			ofPushMatrix();
-			ofPushStyle();
-			ofTranslate(pos.x,pos.y,0);
-			ofSetColor(ofColor::red, 180);
-			bola.draw(-rr,-rr,2*rr,2*rr);
-			ofPopStyle();
-			ofPopMatrix();
-			
+		else {
+			draw2Colors();
 		}
-		
-		// ptos Medios
-		ofPushStyle();
-		ofSetLineWidth(4);
-		ofSetColor(ofColor::royalBlue);
-		ofLine(ptoMed_circles.x-10, ptoMed_circles.y, ptoMed_circles.x+10, ptoMed_circles.y);
-		ofLine(ptoMed_circles.x, ptoMed_circles.y-10, ptoMed_circles.x, ptoMed_circles.y+10);
-		ofSetColor(ofColor::red);
-		ofLine(ptoMed_boxes.x-10, ptoMed_boxes.y, ptoMed_boxes.x+10, ptoMed_boxes.y);
-		ofLine(ptoMed_boxes.x, ptoMed_boxes.y-10, ptoMed_boxes.x, ptoMed_boxes.y+10);
-		ofPopStyle();
-		
-		// draw the ground
-		//box2d.drawGround();
-		
-		ofDisableAlphaBlending();
-
 	}
-
+	
+	ofPushStyle();
 	borde.draw();
+	ofPopStyle();
 	
-	
+	ofPushStyle();
 	string info = "";
 	info += "Press [c] for circles\n";
 	info += "Press [b] for blocks\n";
 	info += "(4) draw 4Forces: "+ofToString(bDraw4Forces)+"\n";
+	info += "(r) Modo Fuerza Color: "+ofToString(fRed)+"\n";
+	info += "(f) Modo FBOs: "+ofToString(bDrawFbos)+"\n";
 	info += "Total Bodies: "+ofToString(box2d.getBodyCount())+"\n";
 	info += "Total Joints: "+ofToString(box2d.getJointCount())+"\n\n";
 	info += "FPS: "+ofToString(ofGetFrameRate(), 1)+"\n";
 	ofSetHexColor(0x444342);
 	ofDrawBitmapString(info, 30, 30);
+	ofPopStyle();
 }
+
+void menu::draw2Colors() {
+	ofEnableAlphaBlending();
+	for(int i=0; i<circles.size()-1; i++) {
+		ofFill();
+		//		ofSetHexColor(0xf6c738);
+		//		circles[i].get()->draw();
+		
+		ofVec2f pos = circles[i].get()->getPosition();
+		float rr = 3*circles[i].get()->getRadius();
+		ofPushMatrix();
+		ofPushStyle();
+		ofTranslate(pos.x,pos.y,0);
+		ofSetColor(ofColor::royalBlue, 200);
+		bola.draw(-rr,-rr,2*rr,2*rr);
+		ofPopStyle();
+		ofPopMatrix();
+	}
+	
+	for(int i=0; i<boxes.size(); i++) {
+		ofFill();
+		//		ofSetHexColor(0xBF2545);
+		//		boxes[i].get()->draw();
+		
+		ofVec2f pos = boxes[i].get()->getPosition();
+		float rr = 3*boxes[i].get()->getHeight();
+		ofPushMatrix();
+		ofPushStyle();
+		ofTranslate(pos.x,pos.y,0);
+		ofSetColor(ofColor::red, 180);
+		bola.draw(-rr,-rr,2*rr,2*rr);
+		ofPopStyle();
+		ofPopMatrix();
+		
+	}
+	
+	// ptos Medios
+	ofPushStyle();
+	ofSetLineWidth(4);
+	ofSetColor(ofColor::royalBlue);
+	ofLine(ptoMed_circles.x-10, ptoMed_circles.y, ptoMed_circles.x+10, ptoMed_circles.y);
+	ofLine(ptoMed_circles.x, ptoMed_circles.y-10, ptoMed_circles.x, ptoMed_circles.y+10);
+	ofSetColor(ofColor::red);
+	ofLine(ptoMed_boxes.x-10, ptoMed_boxes.y, ptoMed_boxes.x+10, ptoMed_boxes.y);
+	ofLine(ptoMed_boxes.x, ptoMed_boxes.y-10, ptoMed_boxes.x, ptoMed_boxes.y+10);
+	ofPopStyle();
+	
+	// draw the ground
+	//box2d.drawGround();
+	
+	ofDisableAlphaBlending();	
+}
+
+void menu::draw4Forces_fbos() {
+	
+	//	ofEnableAlphaBlending();
+	for(int i=0; i<circles.size()-1; i++) {		
+		ofVec2f pos = circles[i].get()->getPosition();
+		float rr = circles[i].get()->getRadius();
+		float ang = circles[i].get()->getRotation();
+		drawBola4_fbos(pos, rr, ang*RAD_TO_DEG);		
+	}
+	
+	for(int i=0; i<boxes.size(); i++) {
+		ofVec2f pos = boxes[i].get()->getPosition();
+		float rr = boxes[i].get()->getHeight();
+		float ang = boxes[i].get()->getRotation();
+		drawBola4_fbos(pos, rr, ang*RAD_TO_DEG);		
+	}	
+	
+	//	ofDisableAlphaBlending();
+}
+
 
 void menu::draw4Forces() {
 	
@@ -403,9 +448,147 @@ void menu::draw4Forces() {
 		drawBola4(pos, rr, ang*RAD_TO_DEG);		
 	}	
 	
-	
 	ofDisableAlphaBlending();
 }
+
+void menu::drawBola4_fbos(ofVec2f pos, float radius, float rot) {
+	ofPushStyle();
+	
+	ofVec2f vx = ofVec2f(1,0);
+	ofVec2f centroScreen = ofVec2f(ofGetWidth()/2, ofGetHeight()/2);
+	ofVec2f posCentro =  pos-centroScreen;
+	float angulo = vx.angle(posCentro);
+	while(angulo<0) {angulo+=360.0;}
+	
+	//	ofPushMatrix();
+	//	ofPushStyle();
+	//	ofFill();
+	//	ofTranslate(pos.x,pos.y,0);
+	if(angulo>=0 && angulo<90) {
+		float rr = 2*radius;
+		fbo1.begin();
+		
+		ofPushMatrix();
+		ofPushStyle();
+		ofFill();
+		ofTranslate(posCentro.x,posCentro.y,0);
+		
+		ofSetColor(ofColor::royalBlue, 200);
+		bola.draw(-rr,-rr,2*rr,2*rr);
+		ofTranslate(-posCentro.x,-posCentro.y,0);
+		ofSetColor(ofColor::royalBlue, 80);
+		ofSetLineWidth(0.2);
+		ofLine(0,0,  posCentro.length()*cos(angulo*DEG_TO_RAD), posCentro.length()*sin(angulo*DEG_TO_RAD));
+		ofPolyline arco;
+		arco.arc(ofPoint(0,0), posCentro.length(), posCentro.length(),0, 90);
+		arco.draw();
+		
+		ofPopStyle();
+		ofPopMatrix();
+		
+		fbo1.end();
+	}
+	
+	else if(angulo>=90 && angulo<180) {
+		float rr = 6*radius;
+		fbo2.begin();
+		
+		ofPushMatrix();
+		ofPushStyle();
+		ofFill();
+		ofTranslate(fbo2.getWidth()+posCentro.x,posCentro.y,0);
+		
+		ofSetColor(ofColor::green, 200);
+		bola.draw(-rr,-rr,2*rr,2*rr);
+		
+		ofPopStyle();
+		ofPopMatrix();
+		
+		fbo2.end();
+	}
+	else if(angulo>=180 && angulo<270) {
+		fbo3.begin();
+		ofPushMatrix();
+		ofPushStyle();
+		ofFill();
+		ofTranslate(fbo3.getWidth()+posCentro.x,fbo3.getHeight()+posCentro.y,0);
+		
+		//			ofSetColor(ofColor::deepPink, 200);
+		//			bola.draw(-rr,-rr,2*rr,2*rr);
+		ofSetColor(150 + ofRandom(155));
+		ofCircle(0,0,radius/8);
+		
+		ofPopStyle();
+		ofPopMatrix();
+		
+		fbo3.end();
+	}
+	else if(angulo>=270 && angulo<360) {
+		fbo4.begin();
+		ofPushMatrix();
+		ofPushStyle();
+		ofFill();
+		ofTranslate(posCentro.x,fbo4.getHeight()+posCentro.y,0);
+		
+		ofEnableBlendMode(OF_BLENDMODE_ADD);
+		
+		if(fRed) {
+			// bolas rojas, con simetria
+			
+			float rr = 2*radius;
+			ofSetColor(ofColor::red, 150);
+			//		ofSetColor(ofColor::darkBlue  , 150);
+			bola.draw(-rr,-rr,2*rr,2*rr);
+			
+			ofPushMatrix();
+			ofTranslate(-pos.x, -pos.y, 0);
+			ofTranslate(ofGetWidth()/2, ofGetHeight()/2, 0);
+			float rot = 2*(315-angulo);
+			ofRotate(rot);
+			ofTranslate(posCentro.x, posCentro.y,0);
+			ofSetColor(ofColor::darkRed  , 150);
+			rr = 2*radius;
+			bola.draw(-rr,-rr,2*rr,2*rr);
+			ofPopMatrix();
+		}
+		else {
+			// 3 bolas color
+			
+			float rr = 0.7*radius;
+			ofRotate(rot);
+			ofSetColor(ofColor::red, 150);
+			//		ofSetColor(ofColor::darkBlue  , 150);
+			ofPushMatrix();
+			ofTranslate(radius,0,0);
+			bola.draw(-rr,-rr,2*rr,2*rr);
+			ofPopMatrix();
+			
+			ofSetColor(ofColor::blue, 150);
+			ofPushMatrix();
+			ofRotateZ(120);
+			ofTranslate(radius,0,0);
+			bola.draw(-rr,-rr,2*rr,2*rr);
+			ofPopMatrix();
+			
+			ofSetColor(ofColor::green, 150);
+			ofPushMatrix();
+			ofRotateZ(240);
+			ofTranslate(radius,0,0);
+			bola.draw(-rr,-rr,2*rr,2*rr);
+			ofPopMatrix();
+			
+		}
+		ofDisableBlendMode();
+		
+		ofPopStyle();
+		ofPopMatrix();
+		fbo4.end();
+	}
+
+	ofPopStyle();
+	
+}
+
 
 void menu::drawBola4(ofVec2f pos, float radius, float rot) {
 	ofVec2f vx = ofVec2f(1,0);

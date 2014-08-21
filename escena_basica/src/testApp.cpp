@@ -47,24 +47,30 @@ void testApp::update(){
 
 void testApp::draw(){
 
+	ofPushStyle();
 	sceneManager->draw();
+	ofPopStyle();
 	
-	ofSetColor(255,0,0);
-	ofDrawBitmapString( "press 1, 2, or 3 to change scene", ofGetWidth() - 290, ofGetHeight() - 10);
-
-    borde.clear();
-    borde.setFillColor(ofColor::black);
-    
-    borde.setPolyWindingMode(OF_POLY_WINDING_ODD);
-    borde.setMode(ofPath::POLYLINES);
-        borde.setCircleResolution(100);
-    ofPushMatrix(); //colocamos el canvas en su posicion centrada
-    ofTranslate((ofGetWidth()-W_WIDTH)/2, 0);
-    borde.rectangle(-100,0,W_WIDTH+200, W_HEIGHT+100);
-    borde.circle(W_WIDTH/2, W_HEIGHT/2, W_HEIGHT/2);
-
-    borde.draw();
-    ofPopMatrix();
+//	ofPushStyle();
+//	ofSetColor(255,0,0);
+//	ofDrawBitmapString( "press 0, 1, 2, or 3 to change scene.", ofGetWidth() - 290, ofGetHeight() - 10);
+//	ofPopStyle();
+//
+//	ofPushStyle();
+//    borde.clear();
+//    borde.setFillColor(ofColor::black);
+//    
+//    borde.setPolyWindingMode(OF_POLY_WINDING_ODD);
+//    borde.setMode(ofPath::POLYLINES);
+//        borde.setCircleResolution(100);
+//    ofPushMatrix(); //colocamos el canvas en su posicion centrada
+//    ofTranslate((ofGetWidth()-W_WIDTH)/2, 0);
+//    borde.rectangle(-100,0,W_WIDTH+200, W_HEIGHT+100);
+//    borde.circle(W_WIDTH/2, W_HEIGHT/2, W_HEIGHT/2);
+//
+//    borde.draw();
+//    ofPopMatrix();
+//	ofPopStyle();
 }
 
 

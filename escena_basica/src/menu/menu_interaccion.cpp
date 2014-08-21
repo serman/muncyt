@@ -60,6 +60,8 @@ void menu::keyPressed(int key) {
 	}
 	else if(key == '4') bDraw4Forces = !bDraw4Forces;
 	else if(key=='r') fRed=!fRed;
+
+	if(key=='f') bDrawFbos=!bDrawFbos;
 	
 	isKeyPressed = true;
 }
