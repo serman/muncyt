@@ -6,7 +6,7 @@ using namespace ofxCv;
 using namespace cv;
 
 void fantasmas::setup(){
-    ofSetFrameRate(20);
+
     setupStatus();
     myOSCcomm.setup();
     //Syphon client
@@ -15,8 +15,9 @@ void fantasmas::setup(){
     fbo.allocate(640, 480, GL_RGBA);
     //fboGeneral.allocate(640, 480, GL_RGB);
     remoteBlobImgPxl.allocate(640,480,OF_PIXELS_RGBA);
+    
    // cameraImg.allocate(640, 480,OF_IMAGE_COLOR );
-    //mPlayer.setup();
+   //mPlayer.setup();
     
 
     moveandrecord.setup();
@@ -115,7 +116,8 @@ void fantasmas::setupStatus(){
 //--------------------------------------------------------------
 void fantasmas::update(float d){
   //  mPlayer.update();
-    tuioclient->getMessage();
+
+ //   tuioclient->getMessage();
 
     if(appStatuses["mode"]==CAPTURE){
         ofxTuioCursor* blobToRecord=moveandrecord.detectBlobinMouse(tuioclient->getTuioCursors(),ofGetMouseX(),ofGetMouseY());
@@ -350,7 +352,7 @@ void fantasmas::sceneWillAppear( ofxScene * fromScreen ){  // reset our scene wh
 
 //scene notifications
 void fantasmas::sceneWillDisappear( ofxScene * toScreen ){
-    gui2->disable();
+    
 	exit_Escena();
 };
 
@@ -358,10 +360,12 @@ void fantasmas::init_Escena(){
         gui2->enable();
         ofAddListener(gui2->newGUIEvent,this,&fantasmas::gui2Event);
         ofAddListener(finishedRecordingEvent,this, &fantasmas::onRecordingFinished);
+        ofSetFrameRate(20);
 }
 
 void fantasmas::exit_Escena(){
     ofRemoveListener(finishedRecordingEvent,this, &fantasmas::onRecordingFinished);
     ofRemoveListener(gui2->newGUIEvent,this,&fantasmas::gui2Event);
+    gui2->disable();
     
 }

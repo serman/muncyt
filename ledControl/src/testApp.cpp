@@ -19,7 +19,7 @@ void testApp::setup(){
     gui1 = new ofxUICanvas(500, 500, 524,250);
     
     
-    gui1->addIntSlider("pixel", 0, 120, &ledNumber);
+    gui1->addIntSlider("pixel", 0, 150, &ledNumber);
     gui1->addIntSlider("red", 0, 255, &redc);
     gui1->addIntSlider("green", 0, 255, &greenc);
     gui1->addIntSlider("blue", 0, 255, &bluec);

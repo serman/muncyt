@@ -31,6 +31,9 @@ public:
     
     ofFbo fbo; // with alpha
     ofFbo fboGeneral; // with alpha
+    ofFbo fboGlitches;
+    ofPixels remoteBlobImgPxl;
+    
     ofPixels cameraPixels;
     ofImage cameraImg;
     
@@ -50,11 +53,19 @@ public:
      void	tuioRemoved(ofxTuioCursor & tuioCursor);
      void	tuioUpdated(ofxTuioCursor & tuioCursor);
      */
-    
+
+
+
     void sceneWillAppear( ofxScene * fromScreen );
     void sceneWillDisappear( ofxScene * toScreen );
     void init_Escena();
     void exit_Escena();
+    
+    void drawBigPixels();
+    void drawBigPixels(int x1, int y1, int sizex, int sizey);
+    
+    void drawSectionAlpha();
+    
 private:
     
 };

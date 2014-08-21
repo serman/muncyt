@@ -76,7 +76,7 @@ void testApp::update(){
         vidPlayer.update();
         isNewFrame = vidPlayer.isFrameNew();
     #endif
-    
+#ifndef TESTMODE
     if (isNewFrame){
         appStatuses["isCameraReady"]=true;
         #ifdef _USE_LIVE_VIDEO
@@ -112,8 +112,9 @@ void testApp::update(){
         //blobTracker.setBg(grayBg);
         blobTracker.update(grayImage, blobThreshold,minBlobSize,maxBlobSize);
 
+
 	}    
-	
+#endif
 //CUENTA CANTIDAD DE MOVIMIENTO
 #ifdef CANTIDADMOVIMIENTO
    previousImg-=grayImage;
@@ -132,12 +133,14 @@ void testApp::update(){
     
     previousImg=grayImage;*/
 #endif
+    
+#ifndef TESTMODE
     setMaskedImageBlobs();
     
     
     //myComm.sendBlobs( blobTracker.trackedBlobs);
 	blobTracker.setFiltersParam(amplify, smooth);
-
+#endif
     
 
 }
@@ -248,7 +251,7 @@ void testApp::draw(){
     
 #ifndef TESTMODE
     sourceColorImg.draw(59,169,480,360); //img original
-	
+ #endif
 // fbo1 contiene  las imagenes con la mascara ya aplicada.
     fbo1.begin();
 	ofClear(0, 0, 0, 0);    //ofSetColor(255,255,255,255);
@@ -257,18 +260,18 @@ void testApp::draw(){
     fbo1.end();
     //fbo1.draw(50,50);
     //maskMaker.drawScrollingMask(sourceColorImg.getTextureReference(), contourMaskOF.getTextureReference(), 0, 255);
-    
+ #ifndef TESTMODE
     ofSetColor(0, 255, 123, 100);
     ofSetColor(255,255,255,255);
     contourMaskOF.draw(766,275,480,360); //masked image
-    
+#endif
 
     ofSetColor(0);
     ofRect(1391,139,320,240);
         ofSetColor(255,255,255,255);
     	blobTracker.draw(57,602,480,360);//img + blobs}
    // 	maskedImageOF.draw(1391,139,320,240);
- #endif
+
     if(appStatuses["syphonEnabled"]==true && appStatuses["isCameraReady"]){
         individualTextureSyphonServer.publishTexture(&sourceColorImg.getTextureReference());
         onlyBlobsImageSyphonServer.publishTexture(&fbo1.getTextureReference());
