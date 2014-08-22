@@ -78,6 +78,9 @@ void testApp::draw(){
 void testApp::mousePressed( int x, int y, int button ){
 	sceneManager->mousePressed(x, y, button);
 }
+void testApp::mouseReleased( int x, int y, int button ){
+	sceneManager->mouseReleased(x, y, button);
+}
 
 void testApp::keyPressed(int key){	
 	if (key == '0') sceneManager->goToScene(SCENE_0);

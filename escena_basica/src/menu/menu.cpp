@@ -75,7 +75,7 @@ void menu::setup() {
 	touchElements.addObject(button4);
 
 	
-	init_Escena();
+//	init_Escena();
 	ofLogNotice("menu - SETUP - fin");
 	
 }
@@ -93,8 +93,9 @@ void menu::init_Escena() {
 	initParticles();
 	
 	bDraw4Forces = true;
-	fRed = true;
-	
+	fRed = false;
+
+	swFuerzaDensidad = false;
 
 	// fbos:
 	// limpiarlas
@@ -104,6 +105,13 @@ void menu::init_Escena() {
 	fbo4.begin();	ofClear(255,255,255,0);	fbo4.end();	
 	
 	bDrawFbos = false;
+	
+	// rangos angulares de los sectores
+//	delete[] rangosAngDeg;
+	rangosAngDeg [0] = 0;
+	rangosAngDeg [1] = 90;
+	rangosAngDeg [2] = 180;
+	rangosAngDeg [3] = 270;
 	
 	
 	// addListeners
@@ -117,8 +125,7 @@ void menu::init_Escena() {
     ofAddListener(button2.buttonEvent ,this, &menu::onButtonPressed);
     ofAddListener(button3.buttonEvent ,this, &menu::onButtonPressed);
     ofAddListener(button4.buttonEvent ,this, &menu::onButtonPressed);
-	
-	
+		
 	ofLogNotice("menu - init_escena - fin");
 	
 }
@@ -127,6 +134,8 @@ void menu::exit_Escena() {
 	ofLogNotice("menu - exit_escena - ini");
 	
 	// borrar objetos
+	
+	
 	
 	
 	// quitar listeners
@@ -145,14 +154,15 @@ void menu::exit_Escena() {
 
 
 void menu::initParticles() {
+	ofLogNotice("oooooooooo ----- initParticles()");
 	// add objects
 	removeParticles();	// primero borrar las que pudiera haber, porsiaca.
-	for (int i=0; i<200; i++) {
+	for (int i=0; i<150; i++) {
 		// circulos
 		addCircle(ofPoint(ofGetWidth()/2+ofRandom(100), ofGetHeight()/2+ofRandom(100)));
 		
 		// rectangulos
-//		addBox(ofPoint(ofGetWidth()/2+ofRandom(100), ofGetHeight()/2+ofRandom(100)));
+		addBox(ofPoint(ofGetWidth()/2+ofRandom(100), ofGetHeight()/2+ofRandom(100)));
 	}
 	ptoMed_circles = ptoMedio(circles);
 	ptoMed_boxes = ptoMedio(boxes);
@@ -163,6 +173,7 @@ void menu::initParticles() {
 }
 
 void menu::removeParticles() {
+	ofLogNotice("oooooooooo ----- removeParticles()");
 	for(int i=circles.size()-1; i>0; i--) {
 		circles[i].get()->destroy();
 	}
@@ -224,13 +235,11 @@ void menu::addBox(ofPoint _pos) {
 	rect.get()->setup(box2d.getWorld(), _pos.x, _pos.y, w, h);
 	boxes.push_back(rect);
 }
-				  
-
-
+	
 //--------------------------------------------------------------
 void menu::update(float d1) {
 	
-	ofLogNotice("Update");
+//	ofLogNotice("Update");
 	if(bAddCircle) {
 		ofLogNotice("Update-AddCircle");
 		addCircle(ofPoint(ofGetMouseX(),ofGetMouseY()));
@@ -255,7 +264,7 @@ void menu::update(float d1) {
 		// - calcular la fuerza ejercida sobre cada particula por todos los grupos de particulas
 		ptoMed_circles = ptoMedio(circles);
 		ptoMed_boxes = ptoMedio(boxes);
-		if(true) {
+		if(swFuerzaDensidad) {
 			for(int i=0; i<circles.size(); i++) {
 				float dis1 = ptoMed_circles.distance(circles[i].get()->getPosition());
 				float dis2 = ptoMed_boxes.distance(circles[i].get()->getPosition());
@@ -300,8 +309,6 @@ void menu::update(float d1) {
 	bAddBox=false;
 
 }
-
-
 
 //--------------------------------------------------------------
 void menu::draw() {
@@ -350,10 +357,13 @@ void menu::draw() {
 	info += "(4) draw 4Forces: "+ofToString(bDraw4Forces)+"\n";
 	info += "(r) Modo Fuerza Color: "+ofToString(fRed)+"\n";
 	info += "(f) Modo FBOs: "+ofToString(bDrawFbos)+"\n";
+	info += "(d) Fuerza Densidad: "+ofToString(swFuerzaDensidad)+"\n";
+	info += "(m) mousePressed: " + ofToString(isMousePressed)+"\n";
 	info += "Total Bodies: "+ofToString(box2d.getBodyCount())+"\n";
 	info += "Total Joints: "+ofToString(box2d.getJointCount())+"\n\n";
 	info += "FPS: "+ofToString(ofGetFrameRate(), 1)+"\n";
-	ofSetHexColor(0x444342);
+//	ofSetHexColor(0x444342);
+	ofSetHexColor(0xAAAAAA);
 	ofDrawBitmapString(info, 30, 30);
 	ofPopStyle();
 }
@@ -432,8 +442,9 @@ void menu::draw4Forces_fbos() {
 
 
 void menu::draw4Forces() {
-	
+//	ofLogNotice("draw4Forces-->Inicio");
 	ofEnableAlphaBlending();
+	
 	for(int i=0; i<circles.size()-1; i++) {		
 		ofVec2f pos = circles[i].get()->getPosition();
 		float rr = circles[i].get()->getRadius();
@@ -449,6 +460,7 @@ void menu::draw4Forces() {
 	}	
 	
 	ofDisableAlphaBlending();
+//	ofLogNotice("draw4Forces-->Exit");
 }
 
 void menu::drawBola4_fbos(ofVec2f pos, float radius, float rot) {
@@ -543,8 +555,8 @@ void menu::drawBola4_fbos(ofVec2f pos, float radius, float rot) {
 			ofPushMatrix();
 			ofTranslate(-pos.x, -pos.y, 0);
 			ofTranslate(ofGetWidth()/2, ofGetHeight()/2, 0);
-			float rot = 2*(315-angulo);
-			ofRotate(rot);
+			float rotSim = 2*(315-angulo);
+			ofRotate(rotSim);
 			ofTranslate(posCentro.x, posCentro.y,0);
 			ofSetColor(ofColor::darkRed  , 150);
 			rr = 2*radius;
@@ -555,7 +567,7 @@ void menu::drawBola4_fbos(ofVec2f pos, float radius, float rot) {
 			// 3 bolas color
 			
 			float rr = 0.7*radius;
-			ofRotate(rot);
+			ofRotate(rot/20.0);
 			ofSetColor(ofColor::red, 150);
 			//		ofSetColor(ofColor::darkBlue  , 150);
 			ofPushMatrix();
@@ -601,13 +613,15 @@ void menu::drawBola4(ofVec2f pos, float radius, float rot) {
 	ofPushStyle();
 	ofFill();
 	ofTranslate(pos.x,pos.y,0);
-	if(angulo>=0 && angulo<90) {
+	if(angulo>=rangosAngDeg[0] && angulo<rangosAngDeg[1]) {
+//		ofLogNotice("drawBola4-->UNO");
 		float rr = 2*radius;
 		ofSetColor(ofColor::royalBlue, 200);
 		bola.draw(-rr,-rr,2*rr,2*rr);
 		ofTranslate(-posCentro.x,-posCentro.y,0);
 		ofSetColor(ofColor::royalBlue, 80);
 		ofSetLineWidth(0.2);
+//		ofLine(0,0,  posCentro.length()*cos(angulo*DEG_TO_RAD), posCentro.length()*sin(angulo*DEG_TO_RAD));
 		ofLine(0,0,  posCentro.length()*cos(angulo*DEG_TO_RAD), posCentro.length()*sin(angulo*DEG_TO_RAD));
 		ofPolyline arco;
 		arco.arc(ofPoint(0,0), posCentro.length(), posCentro.length(),0, 90);
@@ -615,18 +629,23 @@ void menu::drawBola4(ofVec2f pos, float radius, float rot) {
 		
 	}
 	
-	else if(angulo>=90 && angulo<180) {
+	else if(angulo>=rangosAngDeg[1] && angulo<rangosAngDeg[2]) {
+//		ofLogNotice("drawBola4-->DOS");
 		float rr = 6*radius;
 		ofSetColor(ofColor::green, 200);
 		bola.draw(-rr,-rr,2*rr,2*rr);
 	}
-	else if(angulo>=180 && angulo<270) {
+	
+	else if(angulo>=rangosAngDeg[2] && angulo<rangosAngDeg[3]) {
+//		ofLogNotice("drawBola4-->TRES");
 		//			ofSetColor(ofColor::deepPink, 200);
 		//			bola.draw(-rr,-rr,2*rr,2*rr);
-		ofSetColor(150 + ofRandom(155));
+		ofSetColor(150 + ofRandom(105));
 		ofCircle(0,0,radius/8);
 	}
-	else if(angulo>=270 && angulo<360) {
+	
+	else if(angulo>=rangosAngDeg[3] && angulo<(rangosAngDeg[0]+360)) {
+//		ofLogNotice("drawBola4-->CUATRO");
 		ofEnableBlendMode(OF_BLENDMODE_ADD);
 
 		if(fRed) {

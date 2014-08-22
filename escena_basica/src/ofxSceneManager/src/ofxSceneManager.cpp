@@ -105,8 +105,10 @@ void ofxSceneManager::draw(){
 			ofxScene * s = scenesToDraw[i];
 			s->draw();
 			if (drawDebugInfo){
+				ofPushMatrix();
 				ofSetColor(255, 0, 0);
 				s->drawDebug();
+				ofPopMatrix();
 			}
 		}
 		
@@ -259,10 +261,12 @@ void ofxSceneManager::mouseDragged(int x, int y, int button){
 }
 
 void ofxSceneManager::mousePressed(int x, int y, int button){	
+	ofLogNotice("ofxSceneManager::mousePressed");
 	if (currentScene != NULL) currentScene->mousePressed( x, y, button );
 }
 
 void ofxSceneManager::mouseReleased(int x, int y, int button){	
+	ofLogNotice("ofxSceneManager::mouseReleased");
 	if (currentScene != NULL) currentScene->mouseReleased( x, y, button );
 }
 

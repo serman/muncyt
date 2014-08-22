@@ -80,6 +80,8 @@ public:
 	ofVec2f ptoMedio(vector <ofPtr<ofxBox2dRect> > shapes);
 	ofVec2f ptoMed_circles, ptoMed_boxes;
 	
+	bool	swFuerzaDensidad;
+	
 	bool	isKeyPressed;
 	bool	isMousePressed;
 	
@@ -99,13 +101,16 @@ public:
 	float minDisInt;
 
 	// Interaccion Mouse y TUIO
-	void interaccion_point(ofVec2f ptF, bool isTipoA);
+	void interaccion_point(ofVec2f ptF, bool isNeg);
 	
 	bool fRed;	// para representar uno de los secotroes como partics rojas o partics RGB
 
 	// fbos
 	ofFbo	fbo1, fbo2, fbo3, fbo4;
 	bool	bDrawFbos;
+	
+	// rangos angulares
+	float rangosAngDeg [4];
 	
 };
 
