@@ -290,7 +290,10 @@ void menu::update(float d1) {
 		// 
 		
 		// o poner los tuios impares con atraccion y los impares con repulsion (<<== probemos esta)
-		interaccion_point(mouse, isMousePressed);
+		interaccion_point(mouse, !	isMousePressed);
+		
+		// interaccion TUIOS
+		
 		
 		
 		// = Fuerza de confinamiento
@@ -308,6 +311,36 @@ void menu::update(float d1) {
 	bAddCircle=false;
 	bAddBox=false;
 
+	// - - - - TUIOS - - - - 
+    //tuioClient.getMessage();
+
+	// botones (tangibleHandler's ==> touchElements)
+//    buttonCollide.update_prev(anillo.getParticlePosition());
+//    buttonSpeed1.update_prev(anillo.getParticlePosition());
+//    buttonSpeed2.update_prev(anillo.getParticlePosition());
+    
+//	touchElements.update();
+	
+	// cursores recibidos
+    hands.update();
+	
+	// recorrer el vector de cursores que hay en hands (tangiblesHandler) e interactuar si esta dentro del círculo
+//	int ttAct = ofGetElapsedTimeMillis();
+//	float sqLim = (radioInt*radioInt)*0.9;
+//	int limTime = floor(1000/ofGetFrameRate())+20;
+	for(int i=0; i<hands.objectsCol.size(); i++) {
+		//		ofLogNotice("handShadow num: " + ofToString(i));
+		handShadow * h = (handShadow *) hands.objectsCol[i];
+		ofLogNotice("Id: " + ofToString(h->cursor_id) + "  x,y: " + ofToString(h->x)+"/"+ofToString(h->y)+ "   age: " + ofToString(h->age));
+
+		bool bPar = false;
+		if(h->cursor_id%2 == 0)		   bPar = true;
+		   
+		interaccion_point(ofPoint(h->x,h->y), bPar);
+		
+	}
+	
+	
 }
 
 //--------------------------------------------------------------
@@ -345,6 +378,17 @@ void menu::draw() {
 			draw2Colors();
 		}
 	}
+
+
+    // Botones para TUIO
+//		touchElements.draw();
+	
+	// TUIOS
+	//    tuioClient.drawCursors();	
+    ofPushMatrix(); //colocamos el canvas en su posicion centrada
+	ofTranslate((ofGetWidth()-W_WIDTH)/2, 0);
+    hands.draw();
+	ofPopMatrix();
 	
 	ofPushStyle();
 	borde.draw();

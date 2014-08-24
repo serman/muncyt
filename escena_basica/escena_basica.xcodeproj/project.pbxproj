@@ -566,8 +566,8 @@
 		7F307A8619811704000DCABB /* menu */ = {
 			isa = PBXGroup;
 			children = (
-				7F307A8819811704000DCABB /* menu.cpp */,
 				7F307A8919811704000DCABB /* menu.h */,
+				7F307A8819811704000DCABB /* menu.cpp */,
 				7F307A9A1981795C000DCABB /* menu_interaccion.cpp */,
 				7F307AA11981B498000DCABB /* menuButton.h */,
 			);

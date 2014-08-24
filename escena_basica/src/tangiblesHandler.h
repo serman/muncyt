@@ -52,6 +52,7 @@ public:
     }
 
     void draw(){
+//		ofLogNotice("hands_draw()");
         for(int i=0; i<objectsCol.size();i++){
             objectsCol[i]->draw();
         }

@@ -48,17 +48,17 @@ void menu::interaccion_point(ofVec2f ptF, bool isNeg) {
 		else {
 			// Atrae boxes y repele circulos
 			for(int i=0; i<circles.size(); i++) {
-				float dis = ptF.distance(circles[i].get()->getPosition());
-//				float dis2 = ptF.squareDistance(circles[i].get()->getPosition());
-				if(dis < minDis) 
-//				if(dis2 < minDis2) 
-					circles[i].get()->addAttractionPoint(ptF, ff*1.2*fFuerza/dis);//3, 9);
+//				float dis = ptF.distance(circles[i].get()->getPosition());
+				float dis2 = ptF.squareDistance(circles[i].get()->getPosition());
+//				if(dis < minDis) 
+				if(dis2 < minDis2) 
+					circles[i].get()->addAttractionPoint(ptF, ff*1.2*fFuerza/dis2);//3, 9);
 				else 
-					circles[i].get()->addRepulsionForce(ptF, ff*1.8*fFuerza/dis);//4.0);
+					circles[i].get()->addRepulsionForce(ptF, ff*1.8*fFuerza/dis2);//4.0);
 			}
 			for(int i=0; i<boxes.size(); i++) {
 				float dis = ptF.distance(boxes[i].get()->getPosition());
-//				float dis2 = ptF.squareDistance(boxes[i].get()->getPosition());
+				float dis2 = ptF.squareDistance(boxes[i].get()->getPosition());
 				if(dis < minDis) 
 //				if(dis2 < minDis2) 
 					boxes[i].get()->addRepulsionForce(ptF, ff*1.4*fFuerza/dis);
@@ -142,8 +142,10 @@ void menu::resized(int w, int h){
 // - - - - - TUIOs - - - - - 
 
 void menu::tuioAdded(ofxTuioCursor &tuioCursor){
-	ofPoint loc = ofPoint(tuioCursor.getX()*W_WIDTH,tuioCursor.getY()*W_HEIGHT);
-	//cout << "Point n" << tuioCursor.getSessionId() << " add at " << loc << endl;
+    int mx = W_WIDTH*tuioCursor.getX();
+    int my = W_HEIGHT*tuioCursor.getY();
+	ofPoint loc = ofPoint(mx,my);
+	cout << "Point n" << tuioCursor.getSessionId() << " add at " << loc << endl;
     
     handShadow *h1 = new handShadow();
     h1->setup();
@@ -156,15 +158,17 @@ void menu::tuioUpdated(ofxTuioCursor &tuioCursor){
     int mx = W_WIDTH*tuioCursor.getX();
     int my = W_HEIGHT*tuioCursor.getY();
 	ofPoint loc = ofPoint(mx,my);
-	//cout << "Point n" << tuioCursor.getSessionId() << " updated at " << loc << endl;
+	cout << "Point n" << tuioCursor.getSessionId() << " updated at " << loc << endl;
     
     hands.notifySlide(loc.x, loc.y,tuioCursor.getSessionId(),tuioCursor.getMotionAccel());
     touchElements.notifySlide(loc.x, loc.y,tuioCursor.getSessionId(),tuioCursor.getMotionAccel());
 }
 
 void menu::tuioRemoved(ofxTuioCursor &tuioCursor){
-	ofPoint loc = ofPoint(tuioCursor.getX()*W_WIDTH,tuioCursor.getY()*W_HEIGHT);
-    //cout << "Point n" << tuioCursor.getSessionId() << " remove at " << loc << endl;
+    int mx = W_WIDTH*tuioCursor.getX();
+    int my = W_HEIGHT*tuioCursor.getY();
+	ofPoint loc = ofPoint(mx,my);
+    cout << "Point n" << tuioCursor.getSessionId() << " remove at " << loc << endl;
     /*
      if(id_slider1==tuioCursor.getSessionId()) id_slider1=NULL;
      if(id_jumpingRect==tuioCursor.getSessionId()) id_jumpingRect=NULL;
