@@ -53,8 +53,9 @@ public:
     void	tuioAdded(ofxTuioCursor & tuioCursor);
 	void	tuioRemoved(ofxTuioCursor & tuioCursor);
 	void	tuioUpdated(ofxTuioCursor & tuioCursor);
-
+	
     void    onButtonPressed(BUTTON_TYPE1 &mtype);
+	
 	
 	// End add cosas - - - 
 
@@ -62,6 +63,10 @@ public:
 	void	draw4Forces();	
 	bool	bDraw4Forces;
 	void	drawBola4(ofVec2f pos, float radius, float rot=0);
+	void	drawBola4_fbos(ofVec2f pos, float radius, float rot=0);
+	void	draw4Forces_fbos();	
+
+	void	draw2Colors();	
 	
 	ofxBox2d                                box2d;			  //	the box2d world
 	vector		<ofPtr<ofxBox2dCircle> >	circles;		  //	default box2d circles
@@ -75,6 +80,8 @@ public:
 	ofVec2f ptoMedio(vector <ofPtr<ofxBox2dCircle> > shapes);
 	ofVec2f ptoMedio(vector <ofPtr<ofxBox2dRect> > shapes);
 	ofVec2f ptoMed_circles, ptoMed_boxes;
+	
+	bool	swFuerzaDensidad;
 	
 	bool	isKeyPressed;
 	bool	isMousePressed;
@@ -95,10 +102,17 @@ public:
 	float minDisInt;
 
 	// Interaccion Mouse y TUIO
-	void interaccion_point(ofVec2f ptF, bool isTipoA);
+	void interaccion_point(ofVec2f ptF, bool isNeg);
 	
 	bool fRed;	// para representar uno de los secotroes como partics rojas o partics RGB
 
+	// fbos
+	ofFbo	fbo1, fbo2, fbo3, fbo4;
+	bool	bDrawFbos;
+	
+	// rangos angulares
+	float rangosAngDeg [4];
+	
 };
 
 #endif /* defined(__escena_basica__menu__) */

@@ -35,30 +35,32 @@ public:
             if(alpha>0) alpha-=10; else alpha=0;
         }
         
-        int size=20;
-        
-        if(age >0 ){
-            size=MIN(70,size+((ofGetElapsedTimeMillis()-age)/300));
-        }
+//        int size=20;
+//        
+//        if(age >0 ){
+//            size=MIN(70,size+((ofGetElapsedTimeMillis()-age)/300));
+//        }
        /* mesh.clear();
         for(int i=0; i<6; i++)
-            mesh.addVertex(ofVec3f( ofRandom(size),ofRandom(size) ));*/
+            mesh.addVertex(ofVec3f( ofRandom(size),ofRandom(size) ));
+		*/
     }
     
     void draw(){
+		ofLogNotice("draw handShadow");
         ofEnableAlphaBlending();
-        ofSetColor (200,0,0,alpha);
+        ofSetColor (200,0,0);//,alpha);
         ofEllipse( x, y,40, 40);
         //movidillas
-        ofPushMatrix();
-
-        mcolor.set(0,200,0,alpha);
-        ofSetColor(mcolor);
-        ofTranslate(x-15, y-15);
-      /*  mesh.setMode(OF_PRIMITIVE_LINES);
-        mesh.draw();
-        ofDisableAlphaBlending();*/
-        ofPopMatrix();
+//        ofPushMatrix();
+//
+//        mcolor.set(0,200,0,alpha);
+//        ofSetColor(mcolor);
+//        ofTranslate(x-15, y-15);
+//      /*  mesh.setMode(OF_PRIMITIVE_LINES);
+//        mesh.draw();
+//        ofDisableAlphaBlending();*/
+//        ofPopMatrix();
       //  cout << alpha;
     };
     

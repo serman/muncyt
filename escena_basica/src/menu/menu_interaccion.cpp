@@ -10,34 +10,61 @@
 
 //--------------------------------------------------------------
 
-void menu::interaccion_point(ofVec2f ptF, bool isTipoA) {
-	float minDis = (isTipoA)? 300 : 200;
+void menu::interaccion_point(ofVec2f ptF, bool isNeg) {
+	float minDis = (isNeg)? 400 : 200;
+	
+	float minDis2 = minDis*minDis;
+	
+	float ff = 1.0;
 
 	float fFuerza = 5.0;
 	if(ptF.distance(centro)<distConf) {
-		if(isTipoA) {
+//	if(ptF.squareDistance(centro)<distConf) {
+		if(isNeg) {
+			// Atrae circulos y repele boxes
 			for(int i=0; i<circles.size(); i++) {
-				float dis = ptF.distance(circles[i].get()->getPosition());
-				if(dis < minDis) circles[i].get()->addRepulsionForce(ptF, 0.2f*fFuerza/dis);//3, 9);
-					else circles[i].get()->addAttractionPoint(ptF, 4.2*fFuerza/dis);//4.0);
-						}
+//				float dis = ptF.distance(circles[i].get()->getPosition());
+				float dis2 = ptF.squareDistance(circles[i].get()->getPosition());
+//				if(dis < minDis) 
+//				if(dis2 < minDis2) 
+//					circles[i].get()->addRepulsionForce(ptF, ff*1.4f*fFuerza/dis2);//3, 9);
+//				else 
+//					circles[i].get()->addAttractionPoint(ptF, ff*2.2*fFuerza/dis2);//4.0);
+				
+				circles[i].get()->addAttractionPoint(ptF, ff*2.2*fFuerza/dis2);//4.0);
+				
+			}
 			for(int i=0; i<boxes.size(); i++) {
 				float dis = ptF.distance(boxes[i].get()->getPosition());
-				if(dis < minDis) boxes[i].get()->addRepulsionForce(ptF, 1.8*fFuerza/dis);
-					else boxes[i].get()->addRepulsionForce(ptF, 1.9*fFuerza/dis);//4.0);
-						}
+				float dis2 = dis*dis;//ptF.squareDistance(boxes[i].get()->getPosition());
+//				if(dis < minDis) 
+//				if(dis2 < minDis2) 
+//					boxes[i].get()->addAttractionPoint(ptF, ff*1.2*fFuerza/dis2);
+//				else 
+//					boxes[i].get()->addRepulsionForce(ptF, ff*0.8*fFuerza/dis2);//4.0);
+				boxes[i].get()->addRepulsionForce(ptF, ff*0.8*fFuerza/dis2);//4.0);
+			}
 		}
 		else {
+			// Atrae boxes y repele circulos
 			for(int i=0; i<circles.size(); i++) {
-				float dis = ptF.distance(circles[i].get()->getPosition());
-				if(dis < minDis) circles[i].get()->addAttractionPoint(ptF, 1.5*fFuerza/dis);//3, 9);
-					else circles[i].get()->addRepulsionForce(ptF, 0.9*fFuerza/dis);//4.0);
-						}
+//				float dis = ptF.distance(circles[i].get()->getPosition());
+				float dis2 = ptF.squareDistance(circles[i].get()->getPosition());
+//				if(dis < minDis) 
+				if(dis2 < minDis2) 
+					circles[i].get()->addAttractionPoint(ptF, ff*1.2*fFuerza/dis2);//3, 9);
+				else 
+					circles[i].get()->addRepulsionForce(ptF, ff*1.8*fFuerza/dis2);//4.0);
+			}
 			for(int i=0; i<boxes.size(); i++) {
 				float dis = ptF.distance(boxes[i].get()->getPosition());
-				if(dis < minDis) boxes[i].get()->addAttractionPoint(ptF, 1.8*fFuerza/dis);
-					else boxes[i].get()->addAttractionPoint(ptF, 1.9*fFuerza/dis);//4.0);
-						}
+				float dis2 = ptF.squareDistance(boxes[i].get()->getPosition());
+				if(dis < minDis) 
+//				if(dis2 < minDis2) 
+					boxes[i].get()->addRepulsionForce(ptF, ff*1.4*fFuerza/dis);
+				else 
+					boxes[i].get()->addAttractionPoint(ptF, ff*2.2*fFuerza/dis);//4.0);
+			}
 		}
 	}
 
@@ -60,6 +87,10 @@ void menu::keyPressed(int key) {
 	}
 	else if(key == '4') bDraw4Forces = !bDraw4Forces;
 	else if(key=='r') fRed=!fRed;
+
+	else if(key=='f') bDrawFbos=!bDrawFbos;
+	else if(key=='d') swFuerzaDensidad=!swFuerzaDensidad;
+	else if(key=='m') isMousePressed=!isMousePressed;
 	
 	isKeyPressed = true;
 }
@@ -87,6 +118,7 @@ void menu::mousePressed(int x, int y, int button) {
 //--------------------------------------------------------------
 void menu::mouseReleased(int x, int y, int button) {
 	isMousePressed = false;
+	ofLogNotice("menu - mouseReleased");
 }
 
 //--------------------------------------------------------------
@@ -110,8 +142,10 @@ void menu::resized(int w, int h){
 // - - - - - TUIOs - - - - - 
 
 void menu::tuioAdded(ofxTuioCursor &tuioCursor){
-	ofPoint loc = ofPoint(tuioCursor.getX()*W_WIDTH,tuioCursor.getY()*W_HEIGHT);
-	//cout << "Point n" << tuioCursor.getSessionId() << " add at " << loc << endl;
+    int mx = W_WIDTH*tuioCursor.getX();
+    int my = W_HEIGHT*tuioCursor.getY();
+	ofPoint loc = ofPoint(mx,my);
+	cout << "Point n" << tuioCursor.getSessionId() << " add at " << loc << endl;
     
     handShadow *h1 = new handShadow();
     h1->setup();
@@ -124,15 +158,17 @@ void menu::tuioUpdated(ofxTuioCursor &tuioCursor){
     int mx = W_WIDTH*tuioCursor.getX();
     int my = W_HEIGHT*tuioCursor.getY();
 	ofPoint loc = ofPoint(mx,my);
-	//cout << "Point n" << tuioCursor.getSessionId() << " updated at " << loc << endl;
+	cout << "Point n" << tuioCursor.getSessionId() << " updated at " << loc << endl;
     
     hands.notifySlide(loc.x, loc.y,tuioCursor.getSessionId(),tuioCursor.getMotionAccel());
     touchElements.notifySlide(loc.x, loc.y,tuioCursor.getSessionId(),tuioCursor.getMotionAccel());
 }
 
 void menu::tuioRemoved(ofxTuioCursor &tuioCursor){
-	ofPoint loc = ofPoint(tuioCursor.getX()*W_WIDTH,tuioCursor.getY()*W_HEIGHT);
-    //cout << "Point n" << tuioCursor.getSessionId() << " remove at " << loc << endl;
+    int mx = W_WIDTH*tuioCursor.getX();
+    int my = W_HEIGHT*tuioCursor.getY();
+	ofPoint loc = ofPoint(mx,my);
+    cout << "Point n" << tuioCursor.getSessionId() << " remove at " << loc << endl;
     /*
      if(id_slider1==tuioCursor.getSessionId()) id_slider1=NULL;
      if(id_jumpingRect==tuioCursor.getSessionId()) id_jumpingRect=NULL;

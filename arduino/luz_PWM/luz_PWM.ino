@@ -7,7 +7,7 @@
  This example code is in the public domain.
  */
 
-int MAXBRILLO = 80;
+int MAXBRILLO = 180;
 int led = 6;           // the pin that the LED is attached to
 int brightness = 0;    // how bright the LED is
 int fadeAmount = 5;    // how many points to fade the LED by
@@ -31,6 +31,6 @@ void loop()  {
     fadeAmount = -fadeAmount ; 
   }     
   // wait for 30 milliseconds to see the dimming effect    
-  delay(30);                            
+  delay(100);                            
 }
 
