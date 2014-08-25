@@ -1,13 +1,13 @@
 //
-//  juego1.h
+//  juego2.h
 //  mainScreen
 //
 //  Created by Sergio Galan on 7/28/14.
 //
 //
 
-#ifndef __mainScreen__juego1__
-#define __mainScreen__juego1__
+#ifndef __mainScreen__juego2__
+#define __mainScreen__juego2__
 
 #include <iostream>
 #include "ofxUI.h"
@@ -20,14 +20,15 @@
 #include "ofxScene.h"
 #include "ofxBox2d.h"
 #include "ofMain.h"
-#include "ofxCv.h"
+#include "cv.h"
+#include <math.h> 
 
 #define SCREEN_W 768
 #define SCREEN_H 384
 #define VIDEO_W 640
 #define VIDEO_H 480
 
-class juego1 : public ofxScene{
+class juego2 : public ofxScene{
     
 public:
     void setup();
@@ -56,7 +57,7 @@ public:
     void	tuioAdded(ofxTuioCursor & tuioCursor);
     void	tuioRemoved(ofxTuioCursor & tuioCursor);
     void	tuioUpdated(ofxTuioCursor & tuioCursor);
-     
+    
     void sceneWillAppear( ofxScene * fromScreen );
     void sceneWillDisappear( ofxScene * toScreen );
     void init_Escena();
@@ -64,26 +65,23 @@ public:
     void keyPressed(int key);
     void keyReleased(int key);
     void showDebug()    ;
-
+    
 private:
     ofxBox2d                            box2d;
-    vector		<ofPtr<ofxBox2dRect> >	circles;		  //	default box2d circles
+    vector		<ofPtr<ofxBox2dCircle> >	circles;		  //	default box2d circles
     void addObstacle();
     void addObstacle(ofPoint p1, int m_id);
     void updateObstacle(ofPoint p1, int m_id);
     void removeObstacle(int);
-        void hideObstacle(int);
-    void throwBall();
-    ofxBox2dCircle ball ;
+    void hideObstacle(int);
+
+    ofxBox2dCircle player;
     void drawControls();
-    ofVec2f throwDirection;
-    int throwForce;
-    int amountForce;
-    bool forceDecrease;
-    ofxBox2dRect goal;
+    void reset();
+
     void contactStart(ofxBox2dContactArgs &e);
-    bool isGoal;
-    void moveGoal();
+
+
     ofPoint convertPoint(float, float);
     /** escalado video ajuste pantala */
     float VIDEO_scale=SCREEN_W/640;
@@ -95,6 +93,18 @@ private:
     ofPixels remoteBlobImgPxl;
     ofImage feedImg;
     
+    int getDistance(){
+        int minDist=100000000;
+      /*  for(int i=0; i< allPolis.size(); i++){
+            ofPoint p= poli.getClosestPoint(player.getPosition());
+            
+            int d= round( p.distance(player.getPosition()));
+            if(d<minDist)
+        }*/
+    }
+    std::vector<ofPoint> newPoints;
+    ofPoint prevPos;
+    ofPolyline poli;
     typedef enum tipos {BALL=1, GOAL =2, OBSTACLE} tipoObj;
     enum game_status{WAIT, PLAYING, WIN};
     typedef struct  {
@@ -102,11 +112,26 @@ private:
         int id ;
         bool isHidden;
     } datoObjeto;
+    
+    enum moveDir{LEFT,RIGHT,UP,DOWN,NONE};
+    
+        void move(int);
+    int movingSpeed =4;
 
-
+    int distanceToLine=0;
+    ofImage mask1;
+    ofImage mask1gray;
+    ofFbo maskFbo;
+    
+    bool    fillthis=false;
+    ofxCv::ContourFinder contourFinder;
+    float threshold=125;
+    ofPoint findRegionToPaint();
+    int currentKey=NONE;
+    int previousKey=NONE;
+    bool startProcessing=false;
+    bool prepareReset = false;
 };
 
 
-
-
-#endif /* defined(__mainScreen__juego1__) */
+#endif /* defined(__mainScreen__juego2__) */
