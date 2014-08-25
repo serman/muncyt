@@ -50,19 +50,24 @@ void testApp::setup(){
     mjuego->setTuioClient(&tuioClient);
     mjuego->setSyphonClients(&mSyphonClient, &mSyphonClient2);
     
+    juego2 *mjuego2=new juego2();
+    mjuego2->setTuioClient(&tuioClient);
+    mjuego2->setSyphonClients(&mSyphonClient, &mSyphonClient2);
+  
     
 	sceneManager->addScene( mglitch, SCENE_2);
     sceneManager->addScene( mjuego, SCENE_3);
+        sceneManager->addScene( mjuego2, SCENE_4);
     sceneManager->addScene( mfantasmas, SCENE_1);
 //	sceneManager->addScene( mfaces, SCENE_3);
 
 
     
-    sceneManager->goToScene(SCENE_3);
+    sceneManager->goToScene(SCENE_4);
 	sceneManager->setDrawDebug(true);
-	sceneManager->setCurtainDropTime(1.0);
+	sceneManager->setCurtainDropTime(0.2);
 	sceneManager->setCurtainStayTime(0.0);
-	sceneManager->setCurtainRiseTime(1.0);
+	sceneManager->setCurtainRiseTime(0.2);
 	sceneManager->setOverlapUpdate(true);
 
     

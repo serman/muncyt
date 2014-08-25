@@ -22,6 +22,7 @@
 #include "faces.h"
 #include "generativo1.h"
 #include "juego1.h"
+#include "juego2.h"
 
 class testApp : public ofBaseApp{
     

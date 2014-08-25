@@ -176,6 +176,9 @@
 		F7775B23199B8D99008C334D /* b2Rope.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7775AE6199B8D99008C334D /* b2Rope.cpp */; };
 		F7775B24199B8D99008C334D /* del_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7775AEA199B8D99008C334D /* del_impl.cpp */; };
 		F7775B2C199D09FD008C334D /* juego1_red.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7775B2A199D09FD008C334D /* juego1_red.cpp */; };
+		F7A657C319A5655D004E0E78 /* juego2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7A657C119A5655D004E0E78 /* juego2.cpp */; };
+		F7A657C619A56591004E0E78 /* juego2_red.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7A657C419A56591004E0E78 /* juego2_red.cpp */; };
+		F7A657C919A60F65004E0E78 /* pyl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7A657C719A60F65004E0E78 /* pyl.cpp */; };
 		F8D05F7C7F785CE323983B47 /* ofxUITextInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06C7032F68D99A145A53CB6F /* ofxUITextInput.cpp */; };
 		F9C20834354ACC8337320B8C /* ofxUIMultiImageToggle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C5ED4467DFF0AC3482E9362 /* ofxUIMultiImageToggle.cpp */; };
 		FB09C6B2A1DA0EA217240CB8 /* ofxCvGrayscaleImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 057122A817D12571F8C0C7A4 /* ofxCvGrayscaleImage.cpp */; };
@@ -656,6 +659,11 @@
 		F7775AED199B8D99008C334D /* triangle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = triangle.h; sourceTree = "<group>"; };
 		F7775AEE199B8D99008C334D /* triangle_impl.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = triangle_impl.hpp; sourceTree = "<group>"; };
 		F7775B2A199D09FD008C334D /* juego1_red.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = juego1_red.cpp; sourceTree = "<group>"; };
+		F7A657C119A5655D004E0E78 /* juego2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = juego2.cpp; sourceTree = "<group>"; };
+		F7A657C219A5655D004E0E78 /* juego2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = juego2.h; sourceTree = "<group>"; };
+		F7A657C419A56591004E0E78 /* juego2_red.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = juego2_red.cpp; sourceTree = "<group>"; };
+		F7A657C719A60F65004E0E78 /* pyl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pyl.cpp; sourceTree = "<group>"; };
+		F7A657C819A60F65004E0E78 /* pyl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pyl.h; sourceTree = "<group>"; };
 		F7FBC56859535E597B24BB91 /* NetworkingUtils.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = NetworkingUtils.h; path = ../../../addons/ofxOsc/libs/oscpack/src/ip/NetworkingUtils.h; sourceTree = SOURCE_ROOT; };
 		F886EBA3F8F05C7F74633933 /* devmem2d.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = devmem2d.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/gpu/devmem2d.hpp; sourceTree = SOURCE_ROOT; };
 		F9A4454B00CCFD7265D3CA85 /* ofxUILabelButton.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUILabelButton.cpp; path = ../../../addons/ofxUI/src/ofxUILabelButton.cpp; sourceTree = SOURCE_ROOT; };
@@ -1225,6 +1233,7 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				F7A657C019A56535004E0E78 /* juego2 */,
 				F77253C71986AED800ADD13E /* juego1 */,
 				F77253C61986AEC200ADD13E /* generativo1 */,
 				F77253BF1986ADD200ADD13E /* faces */,
@@ -1845,6 +1854,18 @@
 			path = triangle;
 			sourceTree = "<group>";
 		};
+		F7A657C019A56535004E0E78 /* juego2 */ = {
+			isa = PBXGroup;
+			children = (
+				F7A657C119A5655D004E0E78 /* juego2.cpp */,
+				F7A657C719A60F65004E0E78 /* pyl.cpp */,
+				F7A657C819A60F65004E0E78 /* pyl.h */,
+				F7A657C219A5655D004E0E78 /* juego2.h */,
+				F7A657C419A56591004E0E78 /* juego2_red.cpp */,
+			);
+			name = juego2;
+			sourceTree = "<group>";
+		};
 		F9F05170CB9BDF47DA2B6E6A /* include */ = {
 			isa = PBXGroup;
 			children = (
@@ -2017,6 +2038,7 @@
 				F70E3F93191C6D050050DEB7 /* fdog.cpp in Sources */,
 				F1E8DE8734BA6F69A5112FA8 /* ofxUIBaseDraws.cpp in Sources */,
 				F70E3F41191C5D6C0050DEB7 /* cheapComm.cpp in Sources */,
+				F7A657C619A56591004E0E78 /* juego2_red.cpp in Sources */,
 				C381F2B7CFD84C0E540EB4BC /* ofxUIBiLabelSlider.cpp in Sources */,
 				F77253B719866CBC00ADD13E /* ofxAnimatable.cpp in Sources */,
 				F70E3F98191C6D050050DEB7 /* Helpers.cpp in Sources */,
@@ -2042,6 +2064,7 @@
 				FBD0CD0AFE3849C14E829CAF /* ofxUIImageSampler.cpp in Sources */,
 				F7775AFF199B8D99008C334D /* b2CircleShape.cpp in Sources */,
 				F7775AF3199B8D99008C334D /* ofxBox2dJoint.cpp in Sources */,
+				F7A657C919A60F65004E0E78 /* pyl.cpp in Sources */,
 				F7775B2C199D09FD008C334D /* juego1_red.cpp in Sources */,
 				26874B150C8535AEA0F24C8C /* ofxUIImageSlider.cpp in Sources */,
 				FB8AA9FA6535767BE31806BC /* ofxUIImageToggle.cpp in Sources */,
@@ -2075,6 +2098,7 @@
 				43BADBB2FE0F17D34B57A705 /* ofxUIScrollableCanvas.cpp in Sources */,
 				F7775B0C199B8D99008C334D /* b2World.cpp in Sources */,
 				740A58CBFDFE578C83A349AF /* ofxUISlider.cpp in Sources */,
+				F7A657C319A5655D004E0E78 /* juego2.cpp in Sources */,
 				ADE7C2AFC51E3F7E5E389026 /* ofxUISortableList.cpp in Sources */,
 				BFEFCE32DAFE10A8EB519F6C /* ofxUISpacer.cpp in Sources */,
 				52AFF80A869790144ACCC9BA /* ofxUISpectrum.cpp in Sources */,
