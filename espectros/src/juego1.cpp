@@ -43,6 +43,7 @@ void juego1::setup(){
     appStatuses["game_status"]=PLAYING;
     appStatuses["win_timer"]=0;
     appStatuses["hold_key"]=false;
+      ofBackground(0,0,0);
 
 }
 /*
@@ -65,7 +66,7 @@ void juego1::draw(){
     ofxCv::Canny(gray, edge, ofGetMouseX(), ofGetMouseY(), 3);
     edge.update();
     ofFill();
-    ofBackground(0,0,0);
+  //  ofBackground(0,0,0);
 
     ofPushMatrix();
 

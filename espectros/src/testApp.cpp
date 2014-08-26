@@ -5,10 +5,10 @@
 void testApp::setup(){
     
 	ofSetFrameRate(60);
-	ofEnableAlphaBlending();
+	//ofEnableAlphaBlending();
 	ofSetVerticalSync(true);
 	ofBackground(32, 32, 32);
-	ofEnableSmoothing();
+	//ofEnableSmoothing();
     
     tuioClient.start(3333);
     ofAddListener(tuioClient.cursorAdded,this,   &testApp::tuioAdded);
@@ -21,31 +21,27 @@ void testApp::setup(){
 
     mSyphonClient.setup();
     mSyphonClient.set("CameraOutput","");
-    
+   
     mSyphonClient2.setup();
     mSyphonClient2.set("onlyBlobs","");
     
-
-
 
     
     
 //	sceneManager->addScene( new electromagnetica(), SCENE_2);
     fantasmas *mfantasmas=new fantasmas();
-    mfantasmas->setTuioClient(&tuioClient);
+     mfantasmas->setTuioClient(&tuioClient);
     mfantasmas->setSyphonClients(&mSyphonClient, &mSyphonClient2);
-    
-
 	
     glitch *mglitch=new glitch();
     mglitch->setTuioClient(&tuioClient);
     mglitch->setSyphonClients(&mSyphonClient, &mSyphonClient2);
-
+/*
     
-  /*  faces *mfaces=new faces();
+   faces *mfaces=new faces();
     mfaces->setTuioClient(&tuioClient);
     mfaces->setSyphonClients(&mSyphonClient, &mSyphonClient2);
-    */
+  */
     juego1 *mjuego=new juego1();
     mjuego->setTuioClient(&tuioClient);
     mjuego->setSyphonClients(&mSyphonClient, &mSyphonClient2);
@@ -54,16 +50,15 @@ void testApp::setup(){
     mjuego2->setTuioClient(&tuioClient);
     mjuego2->setSyphonClients(&mSyphonClient, &mSyphonClient2);
   
-    
-	sceneManager->addScene( mglitch, SCENE_2);
-    sceneManager->addScene( mjuego, SCENE_3);
-        sceneManager->addScene( mjuego2, SCENE_4);
-    sceneManager->addScene( mfantasmas, SCENE_1);
+    sceneManager->addScene( mjuego2, SCENE_3);
+	sceneManager->addScene( mglitch, SCENE_1);
+    sceneManager->addScene( mjuego, SCENE_2);
+    sceneManager->addScene( mfantasmas, SCENE_0);
 //	sceneManager->addScene( mfaces, SCENE_3);
 
 
     
-    sceneManager->goToScene(SCENE_4);
+    //sceneManager->goToScene(SCENE_4);
 	sceneManager->setDrawDebug(true);
 	sceneManager->setCurtainDropTime(0.2);
 	sceneManager->setCurtainStayTime(0.0);
@@ -75,9 +70,7 @@ void testApp::setup(){
 
 void testApp::update(){
 	tuioClient.getMessage();
-	float dt = 0.016666666;
-	sceneManager->update( dt );
-	
+	sceneManager->update(  0.016666666 );
 }
 
 
@@ -86,7 +79,7 @@ void testApp::draw(){
 	sceneManager->draw();
 	ofPushStyle();
 	ofSetColor(255,0,0);
-	ofDrawBitmapString( "press 1, 2, or 3 to change scene", ofGetWidth() - 290, ofGetHeight() - 10);
+	ofDrawBitmapString( "press 1, 2, 3 or 4 to change scene", ofGetWidth() - 290, ofGetHeight() - 10);
 	ofPopStyle();
 
 }
@@ -98,7 +91,7 @@ void testApp::mousePressed( int x, int y, int button ){
 }
 
 void testApp::keyPressed(int key){
-	//if (key == '0') sceneManager->goToScene(SCENE_0);
+    if (key == '0') sceneManager->goToScene(SCENE_0);
 	if (key == '1') sceneManager->goToScene(SCENE_1); /* true >> regardless of curtain state (so u can change state while curtain is moving)*/
 	if (key == '2') sceneManager->goToScene(SCENE_2);
 	if (key == '3') sceneManager->goToScene(SCENE_3);

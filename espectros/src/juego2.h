@@ -22,6 +22,7 @@
 #include "ofMain.h"
 #include "cv.h"
 #include <math.h> 
+#include "enemy.h"
 
 #define SCREEN_W 768
 #define SCREEN_H 384
@@ -80,7 +81,7 @@ private:
     void reset();
 
     void contactStart(ofxBox2dContactArgs &e);
-
+    void drawEnemies();
 
     ofPoint convertPoint(float, float);
     /** escalado video ajuste pantala */
@@ -88,7 +89,8 @@ private:
     float VIDEO_offset=((VIDEO_scale*480)-SCREEN_H)/2;
     std::map<string, int> appStatuses;
     ofPixels gray;
-	ofImage edge;
+    ofImage imgRecortada;
+
     
     ofPixels remoteBlobImgPxl;
     ofImage feedImg;
@@ -105,14 +107,9 @@ private:
     std::vector<ofPoint> newPoints;
     ofPoint prevPos;
     ofPolyline poli;
-    typedef enum tipos {BALL=1, GOAL =2, OBSTACLE} tipoObj;
-    enum game_status{WAIT, PLAYING, WIN};
-    typedef struct  {
-        tipoObj tipo;
-        int id ;
-        bool isHidden;
-    } datoObjeto;
     
+
+    enum game_status{WAIT, PLAYING, WIN};
     enum moveDir{LEFT,RIGHT,UP,DOWN,NONE};
     
         void move(int);
@@ -131,6 +128,14 @@ private:
     int previousKey=NONE;
     bool startProcessing=false;
     bool prepareReset = false;
+    
+    void drawBgRegion();
+    void drawNewArea();
+    void explode(ofPoint);
+    void drawExplode();
+    ofPolyline l;
+    int start, end;
+    bool drawExplodeb;
 };
 
 

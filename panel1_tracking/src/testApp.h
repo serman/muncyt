@@ -43,7 +43,7 @@ class testApp : public ofBaseApp{
         ofxCvShortImage		floatBgImg;
 	    ofxCvGrayscaleImage grayBg; //
         ofImage maskedImageOF;
-        ofImage blobImgOF_min;
+  
     ofImage contourMaskOF;
     	void setMaskedImageBlobs();
 	    bool adminMode;
@@ -84,6 +84,7 @@ class testApp : public ofBaseApp{
     	void gui2Event(ofxUIEventArgs &e);
         void blobAdded(ofxBlob &_blob);
         void blobDeleted(ofxBlob &_blob);
+    void setupGui();
 	    void cleanBackgrounds();
         string textString;
     	ofxSyphonServer individualTextureSyphonServer;
@@ -99,7 +100,6 @@ class testApp : public ofBaseApp{
     	ofxOscSender	TUIOSocket;
     	void setupTUIO();
     ofxSimpleMask maskMaker;
-    ofImage mimage;
     ofFbo fbo1;
     
 };

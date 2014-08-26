@@ -73,6 +73,7 @@
 		F73625981923B6C800964804 /* ofxVideoRecorder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F73625961923B6C800964804 /* ofxVideoRecorder.cpp */; };
 		F76B4A79BD8DE4854141CB47 /* fdog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2D8249D46647E3C51769CDE /* fdog.cpp */; };
 		F79985521964DACF00A7AC7C /* ofxSimpleMask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F79985501964DACF00A7AC7C /* ofxSimpleMask.cpp */; };
+		F7A657CE19AB6C7D004E0E78 /* testApp_tuioxtra.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7A657CC19AB6C7D004E0E78 /* testApp_tuioxtra.cpp */; };
 		F7B27DAB191333760022B207 /* ofxUI2DGraph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7B27D4E191333760022B207 /* ofxUI2DGraph.cpp */; };
 		F7B27DAC191333760022B207 /* ofxUI2DPad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7B27D50191333760022B207 /* ofxUI2DPad.cpp */; };
 		F7B27DAD191333760022B207 /* ofxUIBaseDraws.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7B27D52191333760022B207 /* ofxUIBaseDraws.cpp */; };
@@ -372,6 +373,7 @@
 		F73625971923B6C800964804 /* ofxVideoRecorder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxVideoRecorder.h; sourceTree = "<group>"; };
 		F79985501964DACF00A7AC7C /* ofxSimpleMask.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxSimpleMask.cpp; sourceTree = "<group>"; };
 		F79985511964DACF00A7AC7C /* ofxSimpleMask.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxSimpleMask.h; sourceTree = "<group>"; };
+		F7A657CC19AB6C7D004E0E78 /* testApp_tuioxtra.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testApp_tuioxtra.cpp; sourceTree = "<group>"; };
 		F7AFF65E192D7CAA00EA59D5 /* descartes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = descartes.h; sourceTree = "<group>"; };
 		F7B27D4D191333760022B207 /* ofxUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxUI.h; sourceTree = "<group>"; };
 		F7B27D4E191333760022B207 /* ofxUI2DGraph.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxUI2DGraph.cpp; sourceTree = "<group>"; };
@@ -1121,6 +1123,7 @@
 				F736258E192247A000964804 /* mosaicRecorder.h */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */,
+				F7A657CC19AB6C7D004E0E78 /* testApp_tuioxtra.cpp */,
 				F7AFF65E192D7CAA00EA59D5 /* descartes.h */,
 				E4B69E1F0A3A1BDC003C02F2 /* testApp.h */,
 				F7F0BE8E191A6F680095B0B9 /* cheapComm.cpp */,
@@ -1587,6 +1590,7 @@
 				C4782ECC372420ACE0615B74 /* OscPrintReceivedElements.cpp in Sources */,
 				0546D1A38E13BD319CC9755B /* OscReceivedElements.cpp in Sources */,
 				879A251454401BC0B6E4F238 /* OscTypes.cpp in Sources */,
+				F7A657CE19AB6C7D004E0E78 /* testApp_tuioxtra.cpp in Sources */,
 				F7B27DC1191333760022B207 /* ofxUIMultiImageButton.cpp in Sources */,
 				F7B27DB7191333760022B207 /* ofxUIImage.cpp in Sources */,
 				C16A3B5BB70A675BCDA0E8A3 /* ofxBlobTracker.cpp in Sources */,

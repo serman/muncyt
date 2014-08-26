@@ -16,7 +16,7 @@ void glitch::setup(){
     remoteBlobImgPxl.allocate(640,480,OF_PIXELS_RGBA);
     fboGlitches.begin();
     ofClear(0,255);
-    fboGlitches.begin();
+    fboGlitches.end();
     
 }
 

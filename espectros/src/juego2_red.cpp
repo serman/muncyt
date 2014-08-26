@@ -97,8 +97,7 @@ ofPoint juego2::convertPoint(float x1, float y1){
             poli.addVertex(prevPos);
             
         }
-        else{ //estoy sobre un punto blanco
-            
+        else{ //estoy sobre un punto blanco            
             if(appStatuses["isOnContour"]==false){ //antes estaba fuera  del contorno ya
                 appStatuses["isOnContour"]=true;
                 poli.addVertex(p);
@@ -140,6 +139,34 @@ ofPoint juego2::findRegionToPaint(){
         
     }
     return ofPoint(-1,-1);
+}
+
+void juego2::explode(ofPoint d){
+//    ofPoint d=ofPoint(ofRandom(0,SCREEN_W),SCREEN_H);
+    l.clear();
+    l.addVertex(player.getPosition());
+    l.lineTo(d);
+    for(int i=1;i<95;i+=5){
+        l.insertVertex(l.getPointAtPercent((float)i/100),floor(i/5)+1);
+    }
+    drawExplodeb=true;
+    start=0;
+    end=2;
+}
+
+void juego2::drawExplode(){
+    ofSetLineWidth(2);
+    ofSetColor(255, 0,0);
+    if(l.size()<1) return;
+    for(int i=start; i<end; i++){
+        ofLine(l.getVertices()[i],l.getVertices()[i+1]);
+    }
+    end++;
+    if(end>=l.size()-1) {
+        end=l.size()-1;
+        start+=1;
+        if(start>=l.size()-2) drawExplodeb=false;
+    }    
 }
 
 
