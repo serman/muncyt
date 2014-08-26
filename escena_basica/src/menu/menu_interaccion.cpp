@@ -11,13 +11,13 @@
 //--------------------------------------------------------------
 
 void menu::interaccion_point(ofVec2f ptF, bool isNeg) {
-	float minDis = (isNeg)? 400 : 200;
+	float minDis = ofGetHeight()/3.0;// (isNeg)? 400 : 200;
 	
 	float minDis2 = minDis*minDis;
 	
 	float ff = 1.0;
 
-	float fFuerza = 5.0;
+	float fFuerza = 45.0;
 	if(ptF.distance(centro)<distConf) {
 //	if(ptF.squareDistance(centro)<distConf) {
 		if(isNeg) {
@@ -42,28 +42,29 @@ void menu::interaccion_point(ofVec2f ptF, bool isNeg) {
 //					boxes[i].get()->addAttractionPoint(ptF, ff*1.2*fFuerza/dis2);
 //				else 
 //					boxes[i].get()->addRepulsionForce(ptF, ff*0.8*fFuerza/dis2);//4.0);
-				boxes[i].get()->addRepulsionForce(ptF, ff*0.8*fFuerza/dis2);//4.0);
+				boxes[i].get()->addRepulsionForce(ptF, ff*0.9*fFuerza/dis2);//4.0);
 			}
 		}
 		else {
+			// Mouse Pressed
 			// Atrae boxes y repele circulos
 			for(int i=0; i<circles.size(); i++) {
 //				float dis = ptF.distance(circles[i].get()->getPosition());
 				float dis2 = ptF.squareDistance(circles[i].get()->getPosition());
 //				if(dis < minDis) 
-				if(dis2 < minDis2) 
-					circles[i].get()->addAttractionPoint(ptF, ff*1.2*fFuerza/dis2);//3, 9);
-				else 
-					circles[i].get()->addRepulsionForce(ptF, ff*1.8*fFuerza/dis2);//4.0);
+//				if(dis2 < minDis2) 
+//					circles[i].get()->addAttractionPoint(ptF, ff*1.2*fFuerza/dis2);//3, 9);
+//				else 
+					circles[i].get()->addRepulsionForce(ptF, ff*0.8*fFuerza/dis2);//4.0);
 			}
 			for(int i=0; i<boxes.size(); i++) {
 				float dis = ptF.distance(boxes[i].get()->getPosition());
 				float dis2 = ptF.squareDistance(boxes[i].get()->getPosition());
-				if(dis < minDis) 
-//				if(dis2 < minDis2) 
-					boxes[i].get()->addRepulsionForce(ptF, ff*1.4*fFuerza/dis);
-				else 
-					boxes[i].get()->addAttractionPoint(ptF, ff*2.2*fFuerza/dis);//4.0);
+//				if(dis < minDis) 
+				if(dis2 < minDis2) 
+//					boxes[i].get()->addRepulsionForce(ptF, ff*1.4*fFuerza/dis);
+//				else 
+					boxes[i].get()->addAttractionPoint(ptF, ff*2.2*fFuerza/dis2);//4.0);
 			}
 		}
 	}
@@ -141,10 +142,24 @@ void menu::resized(int w, int h){
 
 // - - - - - TUIOs - - - - - 
 
-void menu::tuioAdded(ofxTuioCursor &tuioCursor){
-    int mx = W_WIDTH*tuioCursor.getX();
+ofPoint menu::transf_PosTUIO(ofxTuioCursor & tuioCursor) {
+
+    int mx = W_WIDTH*tuioCursor.getX() + (ofGetWidth()-W_WIDTH)/2.0;
     int my = W_HEIGHT*tuioCursor.getY();
-	ofPoint loc = ofPoint(mx,my);
+//	ofPoint loc = ofPoint(mx,my);
+
+	return ofPoint(mx,my);
+}
+
+void menu::tuioAdded(ofxTuioCursor &tuioCursor){
+//    int mx = W_WIDTH*tuioCursor.getX();
+////    int mx = W_WIDTH*(tuioCursor.getX()+0.5);
+//    int my = W_HEIGHT*tuioCursor.getY();
+//	ofPoint loc = ofPoint(mx,my);
+
+	ofPoint loc = transf_PosTUIO(tuioCursor);
+
+	
 	cout << "Point n" << tuioCursor.getSessionId() << " add at " << loc << endl;
     
     handShadow *h1 = new handShadow();
@@ -155,19 +170,25 @@ void menu::tuioAdded(ofxTuioCursor &tuioCursor){
 }
 
 void menu::tuioUpdated(ofxTuioCursor &tuioCursor){
-    int mx = W_WIDTH*tuioCursor.getX();
-    int my = W_HEIGHT*tuioCursor.getY();
-	ofPoint loc = ofPoint(mx,my);
+	//    int mx = W_WIDTH*tuioCursor.getX();
+	////    int mx = W_WIDTH*(tuioCursor.getX()+0.5);
+	//    int my = W_HEIGHT*tuioCursor.getY();
+	//	ofPoint loc = ofPoint(mx,my);
+	
+	ofPoint loc = transf_PosTUIO(tuioCursor);
 	cout << "Point n" << tuioCursor.getSessionId() << " updated at " << loc << endl;
     
-    hands.notifySlide(loc.x, loc.y,tuioCursor.getSessionId(),tuioCursor.getMotionAccel());
+    hands.notifySlide(loc.x, loc.y, tuioCursor.getSessionId(),tuioCursor.getMotionAccel());
     touchElements.notifySlide(loc.x, loc.y,tuioCursor.getSessionId(),tuioCursor.getMotionAccel());
 }
 
 void menu::tuioRemoved(ofxTuioCursor &tuioCursor){
-    int mx = W_WIDTH*tuioCursor.getX();
-    int my = W_HEIGHT*tuioCursor.getY();
-	ofPoint loc = ofPoint(mx,my);
+	//    int mx = W_WIDTH*tuioCursor.getX();
+	////    int mx = W_WIDTH*(tuioCursor.getX()+0.5);
+	//    int my = W_HEIGHT*tuioCursor.getY();
+	//	ofPoint loc = ofPoint(mx,my);
+	
+	ofPoint loc = transf_PosTUIO(tuioCursor);
     cout << "Point n" << tuioCursor.getSessionId() << " remove at " << loc << endl;
     /*
      if(id_slider1==tuioCursor.getSessionId()) id_slider1=NULL;

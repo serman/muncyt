@@ -299,11 +299,11 @@ void menu::update(float d1) {
 		// = Fuerza de confinamiento
 		for(int i=0; i<circles.size(); i++) {
 			float dis = centro.distance(circles[i].get()->getPosition());
-			if(dis > distConf) circles[i].get()->addAttractionPoint(centro, 0.9);//3, 9);
+			if(dis > distConf) circles[i].get()->addAttractionPoint(centro, 0.5);//3, 9);
 		}
 		for(int i=0; i<boxes.size(); i++) {
 			float dis = centro.distance(boxes[i].get()->getPosition());
-			if(dis > distConf) boxes[i].get()->addAttractionPoint(centro, 0.9);//3, 9);
+			if(dis > distConf) boxes[i].get()->addAttractionPoint(centro, 0.5);//3, 9);
 		}
 	
 	}
@@ -385,10 +385,10 @@ void menu::draw() {
 	
 	// TUIOS
 	//    tuioClient.drawCursors();	
-    ofPushMatrix(); //colocamos el canvas en su posicion centrada
-	ofTranslate((ofGetWidth()-W_WIDTH)/2, 0);
+//    ofPushMatrix(); //colocamos el canvas en su posicion centrada
+//	ofTranslate((ofGetWidth()-W_WIDTH)/2, 0);
     hands.draw();
-	ofPopMatrix();
+//	ofPopMatrix();
 	
 	ofPushStyle();
 	borde.draw();

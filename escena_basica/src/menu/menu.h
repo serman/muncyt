@@ -54,6 +54,8 @@ public:
 	void	tuioRemoved(ofxTuioCursor & tuioCursor);
 	void	tuioUpdated(ofxTuioCursor & tuioCursor);
 	
+	ofPoint transf_PosTUIO(ofxTuioCursor & tuioCursor);
+	
     void    onButtonPressed(BUTTON_TYPE1 &mtype);
 	
 	
