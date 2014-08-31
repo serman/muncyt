@@ -410,6 +410,7 @@
 		F7736968194634E500548CEA /* extendedDepthSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = extendedDepthSource.h; sourceTree = "<group>"; };
 		F7A515A81975740000028875 /* testApp_Drawing.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testApp_Drawing.cpp; sourceTree = "<group>"; };
 		F7A515AB197574C100028875 /* testApp_inputInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testApp_inputInterface.cpp; sourceTree = "<group>"; };
+		F7A657D619B0C62E004E0E78 /* particleClouds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = particleClouds.h; sourceTree = "<group>"; };
 		F7C16FFD192B76E20034A5CB /* ofxUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxUI.h; sourceTree = "<group>"; };
 		F7C16FFE192B76E20034A5CB /* ofxUI2DGraph.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxUI2DGraph.cpp; sourceTree = "<group>"; };
 		F7C16FFF192B76E20034A5CB /* ofxUI2DGraph.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxUI2DGraph.h; sourceTree = "<group>"; };
@@ -1027,6 +1028,7 @@
 				F767CA4D195CFFF1004401E8 /* cvFunctions.cpp */,
 				F772533019819DC600ADD13E /* sendContour.h */,
 				F772537B1981E91A00ADD13E /* rcvContour.h */,
+				F7A657D619B0C62E004E0E78 /* particleClouds.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;

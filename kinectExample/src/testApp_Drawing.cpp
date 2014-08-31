@@ -134,16 +134,7 @@ incrDistance+=1;
 mesh.setMode(OF_PRIMITIVE_POINTS);
 for(int y = 0; y < h; y += step) { //recorro los puntos bajando por las columnas
     for(int x = 0; x < w; x += step) { //recorro columnas
-#ifndef ASUS
-        if(kinect.getDistanceAt(x, y) > zMin
-           && kinect.getDistanceAt(x, y) < zMax) {
-            ofVec2f p2= ofVec2f(x,y);
-            
-            mesh.addColor(ofColor(255,255,255,ofMap(mouseX,1,ofGetWidth(),100,255 ) ) );
-            ofVec3f vtmp = kinect.getWorldCoordinateAt(x , y);
-            mesh.addVertex(vtmp);
-            
-#else
+
             int distance=depthGenerator.currentRawPixels->getPixels()[y * depthGenerator.width +x];
             if(distance> zMin && distance < zMax) {
                 ofVec2f p2   = ofVec2f(x,y);
@@ -151,7 +142,6 @@ for(int y = 0; y < h; y += step) { //recorro los puntos bajando por las columnas
                 mesh.addColor(ofColor(255,255,255,ofMap(mouseX,1,ofGetWidth(),100,255 ) ) );
                 mesh.addVertex(vtmp);
                 
-#endif
                 //}
                 
                 // lineMesh1.addColor(ofColor::yellowGreen );

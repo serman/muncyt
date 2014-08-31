@@ -5,37 +5,11 @@
 
 //--------------------------------------------------------------
 void testApp::setup() {
+    //particleCloud(oniCamGrabber,depthGenerator);
 	ofSetLogLevel(OF_LOG_VERBOSE);
 	
     ofSetFullscreen(true);
-    #ifndef ASUS
-	// enable depth->video image calibration
-	kinect.setRegistration(true);
-    
-	kinect.init();
-	//kinect.init(true); // shows infrared instead of RGB video image
-	//kinect.init(false, false); // disable video image (faster fps)
-	
-	kinect.open();		// opens first available kinect
-	//kinect.open("A00362A08602047A");	// open a kinect using it's unique serial #
-	
-	// print the intrinsic IR sensor values
-	if(kinect.isConnected()) {
-		ofLogNotice() << "sensor-emitter dist: " << kinect.getSensorEmitterDistance() << "cm";
-		ofLogNotice() << "sensor-camera dist:  " << kinect.getSensorCameraDistance() << "cm";
-		ofLogNotice() << "zero plane pixel size: " << kinect.getZeroPlanePixelSize() << "mm";
-		ofLogNotice() << "zero plane dist: " << kinect.getZeroPlaneDistance() << "mm";
-	}
-	
-	colorImg.allocate(IRCAMERAWIDTH, IRCAMERAHEIGHT);
-	//grayImage.allocate(IRCAMERAWIDTH, IRCAMERAHEIGHT);
-	grayThreshNear.allocate(IRCAMERAWIDTH, IRCAMERAHEIGHT);
-	grayThreshFar.allocate(IRCAMERAWIDTH, IRCAMERAHEIGHT);
-    // zero the tilt on startup
-	angle = 0;
-	kinect.setCameraTiltAngle(angle);
-	
-    #else
+
     oniSettings.width = IRCAMERAWIDTH;
 	oniSettings.height = IRCAMERAHEIGHT;
 	oniSettings.fps = 30;
@@ -92,9 +66,6 @@ void testApp::setup() {
     
     //depthGenerator.videoStream.setMirroringEnabled(true);
 	ofLogVerbose() << "testApp started";
-    
-    #endif
-
 	
 	ofSetFrameRate(60);
 	
@@ -105,11 +76,8 @@ void testApp::setup() {
 
 	// init variables
 	explosion = false;
-	numParticles = 0;
-    speed = 1.0;
-    stopUmbral = 10000;
-    alphaParticles = 255;
-	particleMode=ESPEJO;
+    
+	particleCloud.particleMode=ESPEJO;
     boolDrawNoise = false;
 	alphaNoise=255;
 	debug = true;
@@ -123,20 +91,17 @@ void testApp::setup() {
 	
     incrDistance=0;
 	
+    particleCloud.setup(oniSettings.width, oniSettings.height, zMin, zMax, &oniCamGrabber, &depthGenerator);
+    
 	
 	// setupCam
 	// fijar posicion y orientacion (ofNode, Target, lookAt...)
 #ifdef EASYCAM	
 	easyCam.setAutoDistance(true);
-#else 
-//	camera.setMouseActions(false);
-//	camera.removeListeners();
+#else
 	camera.setCursorWorld(ofVec3f(0,0,-2000));
-	
 #endif
-	setupStatus();
-	
-	setupParticles();
+	setupStatus();	
     cargaColores();
 	bFill = false;
     bSoloEnContorno = true;
@@ -184,7 +149,7 @@ void testApp::update() {
     if (appStatuses["em_ruido"]==false && appStatuses["escena"]==EM){
         appStatuses["alpha_ruido"]-=5;
         if(appStatuses["alpha_ruido"]<0) appStatuses["alpha_ruido"]=0;
-        particleMode=ESPEJO;
+        particleCloud.particleMode=ESPEJO;
        // cout << appStatuses["alpha_ruido"] <<endl;
         
     }
@@ -192,15 +157,7 @@ void testApp::update() {
         appStatuses["alpha_ruido"]=255;
     }
 	
-	#ifndef ASUS
-	kinect.update();
-	// there is a new frame and we are connected
-	if(kinect.isFrameNew()) {
-        if(bDrawPoints) {
-	        updateParticles();
-		}
-	}
-    #else
+
         if (isReady)
         {
             oniCamGrabber.update();
@@ -208,15 +165,13 @@ void testApp::update() {
             grayImage.updateTexture();
             
 // IMAGEN DE PRODUNFIDAD
-
             //oniCamGrabber.
             if(depthGenerator.isUpdated==true){
-	            updateParticles();
+	            particleCloud.updateParticles();
                 if(bDrawContours){
                     depthImg.setFromPixels( oniCamGrabber.getDepthPixels());
-                    depthImg.update();
-                    
-                    vector<ofPolyline> v= getSmoothSilhouete1(contourFinder, depthImg, (float)speed/10);
+                    depthImg.update();                    
+                    vector<ofPolyline> v= getSmoothSilhouete1(contourFinder, depthImg, (float)0.1/10);
                     if(v.size()>0){
                         resampledContour =v[0];
                         sender.send(v[0]);
@@ -228,7 +183,7 @@ void testApp::update() {
             rgbGenerator.update();
             
         }
-    #endif
+
 	
     
     int response=myOSCrcv.update();
@@ -241,7 +196,7 @@ void testApp::update() {
         ofLog() << "explosin"<< endl;
         lastExplosionTime=ofGetElapsedTimeMillis();
         setRandomBG();
-        explosionParticles();
+        particleCloud.explosionParticles();
         
     }
 
@@ -258,93 +213,8 @@ void testApp::fadeBG() {
 
 }
 
-void testApp::updateParticles() {
-    meshParticles.clear();
-    ofVec3f mdestPoint;
-    ofVec3f diff ;
-    int pp=0;
-    std::vector<Particle>::iterator p ;
 
-    for ( p = particles.begin() ; p != particles.end() ; p++ )
-    {
-        if(false){
-           /* int px(p->_x*(1920/640));
-            int py(p->_y*(1080/480));
-            ofVec3f dst= ofVec3f(px,py,-1);
-//            dst=camera.screenToWorld((dst));
-            dst=dst * camera.getModelViewMatrix();
 
-            */
-
- //           p->steer(dst, true, speed, stopUmbral );
-//            p->update();
-        //    p->position=dst;
-
-            
-            if(ofRandomf()>0.5)
-                p->color.set(0);
-            else
-                p->color.set(255);
-            
-            
-                p->color=ofColor(255,0,0,255);
-                meshParticles.addVertex(p->position);
-                meshParticles.addColor(p->color);
-            
-        }else{
-    /**#ifndef ASUS
-            if( kinect.getDistanceAt(p->_x, p->_y) > zMin  &&  kinect.getDistanceAt(p->_x, p->_y) < zMax ) {if(particleMode==ESPEJO){ p->stopAcc();      	mdestPoint= kinect.getWorldCoordinateAt(p->_x, p->_y);
-    #else**/
-            int distance=depthGenerator.currentRawPixels->getPixels()[p->_y * depthGenerator.width + p->_x];
-                      //cout << zMax;
-            if(distance> zMin && distance < zMax) {
-                pp++;
-                p->recentlyUsed=5;
-                if(particleMode==ESPEJO){
-                   mdestPoint=  oniCamGrabber.convertDepthToWorld(p->_x, p->_y);
-    //#endif
-                    //diff=ofVec3f(0,0,0);
-                    p->steer(mdestPoint, true, speed, stopUmbral );
-                    p->update();
-
-                }
-                else if(particleMode==NUBE) {
-                        p->sandDown(accTest,-200);
-                        p->update();                
-                   // p->position+=ofNoise( p->position.x,p->position.y,p->position.z)*30;
-                }
-                
-                if (bRealColors){
-                    #ifndef ASUS
-                    p->color=kinect.getColorAt((p->_x , p->_y));
-                    #else
-                    p->color= rgbGenerator.currentPixels->getColor(p->_x , p->_y) ;
-                    #endif
-                }
-                else{
-                    p->color=ofColor(255,255,255,alphaParticles);
-                }
-                meshParticles.addVertex(p->position);
-               // meshParticles.addColor(ofColor::fromHsb(ofMap(p->_x, p->_y, zMin, zMax, 1, 360) , 255, 255, 50));
-                meshParticles.addColor(p->color);
-            }else{ // si las particulas est‡n mas lejos
-               // meshParticles.addVertex(p->position);
-                if(!p->recentlyUsed>0){
-                    p->color=ofColor(255,0,0,40);
-                }else{
-                    p->color=ofColor(255,0,0,255);
-                    meshParticles.addVertex(p->position);
-                    meshParticles.addColor(p->color);
-                    p->recentlyUsed--;
-                }
-            }//else modo ruido NO
-
-        }
-    }//end for all points within vector
-
-}
-
-// - - - - - - - - - - - - - - - - - - -- -- -- -- -- -- -- -- -- -- -- -- -- --- --- --- --- --- ---
 
 void testApp::draw() {
 
@@ -377,7 +247,7 @@ void testApp::draw() {
 		
 		// Superponemos modos de dibujo en 3D
 
-	    if(bDrawPoints) drawParticles();
+	    if(bDrawPoints) particleCloud.drawParticles();
 		if(bDrawLinesH) drawLinesH();
 		if(bDrawLinesV) drawLinesV();
     	if(bDrawNativePointCloud) drawPointCloud();
@@ -391,19 +261,6 @@ void testApp::draw() {
 	easyCam.end();
 #else
 	camera.end();
-#endif	
-    
-#ifndef ASUS
-	// Dibujar imagen Profundidad
-	float ww = 300;
-	float hh = (float)300/kinect.width * kinect.height;
-	ofNoFill();
-	ofSetColor(0,0,255);
-	ofRect(ofGetWidth()-ww,ofGetHeight()-hh,ww,hh);
-	ofSetColor(255,255,255);
-	kinect.drawDepth(ofGetWidth()-ww,ofGetHeight()-hh,ww,hh);
-//#else
-//    if(bDrawContours) drawCountours();
 #endif
     
  /** DIBUJO SILUETA **/
@@ -422,76 +279,9 @@ void testApp::setupShader(){
 }
 
 
-
-
-void testApp::setupParticles(){
-   //particles.clear() ;
-#ifndef ASUS
-    int w= kinect.width;
-    int h= kinect.height;
-#else
-    int w= oniSettings.width;
-    int h= oniSettings.height;
-#endif
-	int    sampling=2;
-    //Loop through all the rows
-
-	numParticles = 0;
-    //Loop through all the columns
-	// Distribuir las particulas por la escena
-    for ( int y = 0 ; y < h ; y+=sampling ){
-        for ( int x = 0 ; x < w ; x+=sampling ){
-//			particles.push_back(Particle(ofVec3f(0,0,0),ofColor(255,255,255) ,x,y));
-//			float px = ofRandom(-1000,1000);
-//			float py = ofRandom(-1000,1000);
-//			float pz = ofRandom(0,5000);
-//			particles.push_back(Particle(ofVec3f(px,py,pz) ,ofColor(255,255,255) ,x,y));
-			
-			float ang1 = ofRandom(PI);
-			float ang2 = ofRandom(TWO_PI);
-			float rr = 100;
-			
-			float rrho = rr*sin(ang1);
-			
-			particles.push_back(Particle(ofVec3f(rrho*cos(ang2),rrho*sin(ang2),-rr*cos(ang1)-1500) ,ofColor(255,255,255) ,x,y));
-			numParticles++ ;
-        }
-    }
-    
-    cout<<"particulas"<<numParticles;
-}
-
-void testApp::resetParticles(){
-    particles.clear();
-    setupParticles();
-}
-
-
-    
-void testApp::explosionParticles(){
-    ofVec3f centroEscena = ofVec3f(0,0,2500);
-	for(int i=0; i<particles.size(); i++) {
-        ofVec3f dir = particles[i].position - centroEscena;
-        dir.normalize();
-        dir*=1000;
-        particles[i].applyForce(dir);
-    }
-}
-
- 
-    
-void testApp::drawParticles(){
-    meshParticles.setMode(OF_PRIMITIVE_POINTS);
-    glPointSize(2);
-	glEnable(GL_POINT_SMOOTH);	// Para que sean puntos redondos
-	ofEnableDepthTest();
-	meshParticles.draw();
-	ofDisableDepthTest();
-}
-
 void testApp::showDebug(){
     ofDrawBitmapString("Framerate " + ofToString(ofGetFrameRate()), 20, 20);
-    if(particleMode==NUBE)
+    if(particleCloud.particleMode==NUBE)
 	    ofDrawBitmapString("MODO NUBE " , 20, 50);
     else
     	ofDrawBitmapString("MODO ESPEJO " , 20, 50);
@@ -529,14 +319,11 @@ void testApp::drawLinesH(float step){
 		bool bLastValid = false;
 		int _xStep = step;
 		for(int x = 0; x < w; x += step) { //recorro columnas
-#ifndef ASUS
-			if(kinect.getDistanceAt(x, y) > zMin && kinect.getDistanceAt(x, y) < zMax) {
-                ofVec3f vtmp = kinect.getWorldCoordinateAt(x , y);
-#else
+
             int distance=depthGenerator.currentRawPixels->getPixels()[y * depthGenerator.width +x];
             if(distance> zMin && distance < zMax) {
                 ofVec3f vtmp=oniCamGrabber.convertDepthToWorld(x,y);
-#endif
+
                 ofPoint _lastPoint = vtmp ;
 //                float dist = abs(vtmp.z - lastPoint.z) ;
 //                if (  dist < 30  )
@@ -572,13 +359,9 @@ void testApp::drawLinesH(float step){
 
 void testApp::drawLinesV(float step){
     
-#ifndef ASUS
-    int w= kinect.width;
-    int h= kinect.height;
-#else
+
     int w= oniSettings.width;
     int h= oniSettings.height;
-#endif
     incrDistance+=1;
     std::vector<ofPolyline> lineMesh;
     ofColor col ;
@@ -594,17 +377,12 @@ void testApp::drawLinesV(float step){
 		bool bLastValid = false;
 //		int _xStep = step;
 		for(int y = 0; y < h; y += step) { // recorro columnas
-#ifndef ASUS
-			if(kinect.getDistanceAt(x, y) > zMin && kinect.getDistanceAt(x, y) < zMax) {
-                ofVec3f vtmp = kinect.getWorldCoordinateAt(x , y);
-#else
+
             int distance=depthGenerator.currentRawPixels->getPixels()[y * depthGenerator.width +x];
             if(distance> zMin && distance < zMax) {
 	            ofVec3f vtmp=oniCamGrabber.convertDepthToWorld(x,y);
-#endif
-//                ofPoint _lastPoint = vtmp ;
-//                float dist = abs(vtmp.z - lastPoint.z) ;
-//                if (  dist < 30  )
+
+
 				float dist2 = vtmp.squareDistance(lastPoint);
                 if (  dist2 < distanciaLineasK  )
                 {
@@ -638,11 +416,8 @@ void testApp::drawLinesV(float step){
 //--------------------------------------------------------------
 void testApp::exit() {
 //	kinect.setCameraTiltAngle(0); // zero the tilt on exit
-#ifndef ASUS
-	kinect.close();
-#else
+
     oniCamGrabber.close();
-#endif
 	//gui1->saveSettings("gui_kinect.xml");
     
 	delete gui1;

@@ -15,11 +15,11 @@
 
 void testApp::setupGUI() {
 	gui1 = new ofxUICanvas(0,100,400,800);
-	
-	gui1->addSlider("speed", 0.0f, 200, &speed);
-	gui1->addIntSlider("stopUmbral", 1, 300, &stopUmbral) ;
+
+    gui1->addSlider("speed", 0.0f, 200,  &(particleCloud.speed));
+	gui1->addIntSlider("stopUmbral", 1, 300,  &(particleCloud.stopUmbral)) ;
 	gui1->addIntSlider("maxForce", 0, 20, &maxForce) ;
-    gui1->addSlider("Acceleration", 1.05f, 3, &accTest);
+    gui1->addSlider("Acceleration", 1.05f, 3,  &(particleCloud.acceleration));
 	gui1->addSpacer();
 	gui1->addButton("save",true);
 	gui1->addButton("load",true);
@@ -29,7 +29,7 @@ void testApp::setupGUI() {
 	names.push_back("NUBE");
 	names.push_back("ESPEJO");
 	gui1->addRadio("MODO_Partics", names, OFX_UI_ORIENTATION_HORIZONTAL);
-	gui1->addIntSlider("alpha Particles", 1, 255, &alphaParticles) ;
+	gui1->addIntSlider("alpha Particles", 1, 255, &(particleCloud.alphaParticles)) ;
 	gui1->addIntSlider("alpha Lines", 1, 255, &alphaLines) ;
 	gui1->addIntSlider("Distance Lines", 50, 600, &distanciaLineasK) ;
 	gui1->addToggle("noise", &boolDrawNoise);
@@ -74,18 +74,7 @@ void testApp::setupGUI() {
 
 void testApp::keyPressed (int key) {
 	switch (key) {
-#ifndef ASUS
-		case 'o':
-			kinect.setCameraTiltAngle(angle); // go back to prev tilt
-			kinect.open();
-			break;
-			
-		case 'c':
-			kinect.setCameraTiltAngle(0); // zero the tilt
-			kinect.close();
-			break;
-			
-#endif
+
 		case 'm':
 			bDrawPoints=!bDrawPoints;
 			break;
@@ -107,25 +96,12 @@ void testApp::keyPressed (int key) {
             debug=!debug;
 			gui1->toggleVisible();
 			break;
-        case 'p':
+/*        case 'p':
             if(particleMode==NUBE)
                 particleMode=ESPEJO;
             else particleMode=NUBE;
-            break;
-#ifndef ASUS
-		case OF_KEY_UP:
-			angle++;
-			if(angle>30) angle=30;
-			kinect.setCameraTiltAngle(angle);
-			break;
-			
-		case OF_KEY_DOWN:
-			angle--;
-			if(angle<-30) angle=-30;
-            
-			kinect.setCameraTiltAngle(angle);
-            break;
-#else
+            break;*/
+
         case 'r':
             if(oniCamrecorder.isRecording==true)
                 oniCamrecorder.stopRecording();
@@ -134,7 +110,7 @@ void testApp::keyPressed (int key) {
             break;
             
             
-#endif
+
 			
             
         case 'e':
@@ -212,7 +188,7 @@ void testApp::guiEvent(ofxUIEventArgs &e)
     if(name == "reset")
     {
 		ofLogNotice("reset");
-        resetParticles();
+        particleCloud.resetParticles();
     }
 	else if(name == "save")
     {
@@ -235,7 +211,7 @@ void testApp::guiEvent(ofxUIEventArgs &e)
     {
 		ofxUIRadio *  wr = (ofxUIRadio *) e.widget;
 		ofLogNotice("MODO_Partics. " + wr ->getActiveName() + " = " + ofToString(wr->getValue()));
-		particleMode = wr->getValue();
+		particleCloud.particleMode = wr->getValue();
         //		gui1->loadSettings("./config/gui/gui_kinect.xml");
     }
     else if(name=="RangoZ"){

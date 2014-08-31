@@ -3,7 +3,7 @@
 #include "ofMain.h"
 #include "ofxOpenCv.h"
 #include "ofxCv.h"
-#include "Particle.h"
+#include "particleClouds.h"
 #include "ofxUI.h"
 #include "cheapCommRcv.h"
 #include "ofxDelaunay.h"
@@ -22,16 +22,13 @@
 // uncomment this to read from two kinects simultaneously
 //#define USE_TWO_KINECTS
 
-#define ASUS
 #define USEFILE
 
-#ifndef ASUS
-	#include "ofxKinect.h"
-#else
+
 	#include "ofxOpenNI2Grabber.h"
 	#include "ofxOpenNI2Recorder.h"
 	#include "extendedDepthSource.h"
-#endif
+
 
 #define IRCAMERAWIDTH 640
 #define IRCAMERAHEIGHT 480
@@ -61,16 +58,14 @@ public:
     void setRandomBG();
     void fadeBG();
 	
-#ifndef ASUS
-	ofxKinect kinect;
-#else
+
     ofxOpenNI2Grabber oniCamGrabber;
     ofxOpenNI2GrabberSettings oniSettings;
 	ofxOpenNI2Recorder oniCamrecorder;
     extendedDepthSource depthGenerator;
     RGBSource rgbGenerator;
     bool isReady;
-#endif
+
 	bool	pulso;
 	bool	bDrawPoints;
 	bool	bDrawLinesH, bDrawLinesV,bDrawNativePointCloud;
@@ -96,10 +91,6 @@ public:
 
 	
 	int angle;
-    //int particlesSize=640*480;
-    //ofxParticle3D particles[particlesSize];
-	 vector<Particle> particles ;
-	// used for viewing the point cloud
 	
 #ifdef EASYCAM
 	ofEasyCam easyCam;
@@ -118,23 +109,12 @@ public:
     int    incrDistance;
     ofImage Img;
     ofMesh mesh;
-    ofMesh meshParticles;
+
 	bool explosion;
 
     //function
-    void	setupParticles();
-	void	drawParticles();
-    void	updateParticles();
-	void    resetParticles();
-    void    drawCountours();
-    void 	explosionParticles();
-    int		numParticles;
-    enum	{NUBE, ESPEJO};
-    int		particleMode;
     
-    float	speed;
-    float accTest;
-    int		stopUmbral;
+    void    drawCountours();
     
     int		stepCloudPoint;
 	int		stepLines;
@@ -146,7 +126,6 @@ public:
     void    drawCVSilhouettes();
     bool	boolDrawNoise;
     int     alphaNoise;
-    int		alphaParticles;
 	
     int		alphaLines;
 	ofColor colorfondo;
@@ -199,5 +178,6 @@ public:
     bool bDrawOld;
     sendContour sender;
 
+    particleClouds particleCloud;
     
 };

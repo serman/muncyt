@@ -11,7 +11,7 @@
 
 #include "DepthSource.h"
 
-#endif
+
 
 
 class extendedDepthSource: public DepthSource{
@@ -28,3 +28,5 @@ private:
     }
     
 };
+
+#endif
