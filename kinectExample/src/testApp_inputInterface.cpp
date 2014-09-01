@@ -30,10 +30,6 @@ void testApp::setupGUI() {
    
 	gui1->addIntSlider("alpha Lines", 1, 255, &alphaLines) ;
 	gui1->addIntSlider("Distance Lines", 50, 600, &distanciaLineasK) ;
-	gui1->addToggle("noise", &boolDrawNoise);
-	
-	gui1->addSpacer();
-	
 	gui1->addIntSlider("stepPointCloud", 1,5, &stepCloudPoint);
 	gui1->addIntSlider("stepLines", 2,10, &stepLines);
 	
@@ -43,7 +39,7 @@ void testApp::setupGUI() {
 
 #ifdef TESTMODE
 	gui1->addSpacer();
-	
+    gui1->addToggle("noise", &boolDrawNoise);
 	gui1->addToggle("DrawPoints", &bDrawPoints);
 	gui1->addToggle("DrawLinesH", &bDrawLinesH);
 	gui1->addToggle("DrawLinesV", &bDrawLinesV);
@@ -64,7 +60,6 @@ void testApp::setupGUI() {
 	gui1->addSpacer();
 	
 	gui1->addButton("reset",true);
-	
 	gui1->addSpacer();
     
     
@@ -114,10 +109,10 @@ void testApp::keyPressed (int key) {
 			gui1->saveSettings("/config/gui/gui_kinect.xml");
 			break;
         case ' ':
-            if(gui1->isEnabled() )
-	            gui1->disable();
+            if(guiTabBar->isEnabled() )
+	            guiTabBar->disable();
             else
-				gui1->enable();
+				guiTabBar->enable();
  			
 	}
 	

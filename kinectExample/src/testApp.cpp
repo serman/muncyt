@@ -71,13 +71,12 @@ void testApp::setup() {
 	colorfondo=ofColor::black;
 	
 	// start from the front
-//	bDrawPointCloud = true;
-
-	// init variables
-	//explosion = false;
+#ifdef TESTMODE
+    boolDrawNoise = false;
+    boolDrawNoise = false
+#endif
     
 	particleCloud.particleMode=ESPEJO;
-    boolDrawNoise = false;
 	alphaNoise=255;
 	debug = true;
 	
@@ -127,16 +126,35 @@ void testApp::cambioEscena(){
 
 //--------------------------------------------------------------
 void testApp::update() {
-    
-	
-
     if (isReady)
     {
         oniCamGrabber.update();
+/// ACTUALIZACION CONTINUA
+        switch(appStatuses["escena"]){
+            case EM:
+                particleCloud.updateParticles();
+                break;
+                
+            case GRAVEDAD:
+
+                break;
+                
+            case NUCLEAR_DEBIL:
+
+                break;
+                
+            case NUCLEAR_FUERTE:
+                
+                break;
+                
+        }
+//ACTUALIZACION SÓLO CUANDO HAY IMAGEN NUEVA
+        
+        
         if(depthGenerator.isUpdated==true){ // OJO ESTA ACTUALIZACION SOLO OCURRE CUANDO HAY IMAGEN NUEVA
             switch(appStatuses["escena"]){
                 case EM:
-                    particleCloud.updateParticles();
+                   // particleCloud.updateParticles();
                 break;
                 
                 case GRAVEDAD:
@@ -228,7 +246,7 @@ void testApp::draw() {
         if(bDrawContours){
             mcontour.draw();
         }
-        if(debug) showDebug();
+    
     #else
         switch(appStatuses["escena"]){
             case EM:
@@ -248,7 +266,7 @@ void testApp::draw() {
                 break;
         }
     #endif
-	
+	if(debug) showDebug();
 }
 
 
