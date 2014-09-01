@@ -1,8 +1,6 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxOpenCv.h"
-#include "ofxCv.h"
 #include "particleClouds.h"
 #include "ofxUI.h"
 #include "cheapCommRcv.h"
@@ -12,18 +10,17 @@
 //#include "ofxMsgUnPacker.h"
 #include <msgpack.hpp>
 #include "sendContour.h"
+#include "contours.h"
+
 //#define EASYCAM
 
 #ifndef EASYCAM
 	#include "ofxGrabCam.h"
 #endif
-//#include "ofxGrabCam.h"
 
-// uncomment this to read from two kinects simultaneously
-//#define USE_TWO_KINECTS
 
 #define USEFILE
-
+//#define TESTMODE
 
 	#include "ofxOpenNI2Grabber.h"
 	#include "ofxOpenNI2Recorder.h"
@@ -33,8 +30,7 @@
 #define IRCAMERAWIDTH 640
 #define IRCAMERAHEIGHT 480
 
-using namespace ofxCv;
-using namespace cv;
+
 class testApp : public ofBaseApp {
 public:
 	
@@ -67,27 +63,30 @@ public:
     bool isReady;
 
 	bool	pulso;
+#ifdef TESTMODE
 	bool	bDrawPoints;
 	bool	bDrawLinesH, bDrawLinesV,bDrawNativePointCloud;
     bool 	bDrawContours;
-    bool 	bRealColors;
+    bool bDrawPointCloud;
+    bool	boolDrawNoise;
+#endif
+   // bool 	bRealColors;
 
 	int 	distanciaLineasK;
 	// GUI
 	void		setupGUI();
    	ofxUICanvas *gui1;
+    ofxUITabBar *guiTabBar;
     
 	void		grabarScreen();
-	
+	void drawAxis();
 	ofxCvColorImage colorImg;
 	
-	ofxCvColorImage grayImage; // grayscale depth image
+	//ofxCvColorImage grayImage; // grayscale depth image
 	ofxCvGrayscaleImage grayThreshNear; // the near thresholded image
 	ofxCvGrayscaleImage grayThreshFar; // the far thresholded image
-	
-	
     bool debug;
-	bool bDrawPointCloud;
+    
 
 	
 	int angle;
@@ -99,10 +98,7 @@ public:
 	void saveCameraPose();
 	void loadCameraPose();
 #endif
-	
-    
-    
-    // zMax
+
     float zMin, zMax;
 
     float low;
@@ -110,11 +106,9 @@ public:
     ofImage Img;
     ofMesh mesh;
 
-	bool explosion;
+	//bool explosion;
 
     //function
-    
-    void    drawCountours();
     
     int		stepCloudPoint;
 	int		stepLines;
@@ -123,61 +117,34 @@ public:
     ofShader shader;
     void	setupShader();
    	void	drawNoise();
-    void    drawCVSilhouettes();
-    bool	boolDrawNoise;
+
+    
     int     alphaNoise;
 	
     int		alphaLines;
 	ofColor colorfondo;
     long lastExplosionTime;
+
     //osc
     cheapCommRcv myOSCrcv;
+    void parseOSC(int );
 
     //test
-    int maxForce;
     void cambioEscena();
     
     std::map<string, int> appStatuses;
     
 //********CV
-    ofxCv::ContourFinder contourFinder;
-    ofPolyline resampledContour;
-    ofImage depthImg;
-    bool doTriang;
-	ofxDelaunay triangulation;
-	bool	bAddPts;		// si a–ade puntos a la triangulacion
-	bool	bSoloEnContorno;	// si muestra solo los triangulos de dentro del contorno
-	ofMesh	triangContMesh;
-	
-	bool doTessel;
-	ofTessellator tessel;
-	ofMesh contornoTes;	// contorno teselado
-    
+   
     enum  {EM, NUCLEAR_DEBIL, NUCLEAR_FUERTE, GRAVEDAD};
     
     int status_mode=EM;
 
-
     void setupStatus();
-    // declaraciones
-//    bool	bAddPts;		// si a–ade puntos a la triangulacion
-//    bool	bSoloEnContorno;	// si muestra solo los triangulos de dentro del contorno
-//    ofMesh	triangContMesh;
-    ofMesh	triangContMesh_old;
-    int numPointsXtra = 100;
     
-    // Colores
-    vector<ofColor> colorFluor;
-    void cargaColores();
-    
-    
-    bool bFill;
-    
-    int modoFill;
-    
-    bool bDrawOld;
     sendContour sender;
 
     particleClouds particleCloud;
+    contours mcontour;
     
 };

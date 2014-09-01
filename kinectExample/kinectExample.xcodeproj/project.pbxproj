@@ -40,9 +40,6 @@
 		E7E077E815D3B6510020DFD4 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E077E715D3B6510020DFD4 /* QTKit.framework */; };
 		E7F985F815E0DEA3003869B5 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7F985F515E0DE99003869B5 /* Accelerate.framework */; };
 		F4135EEFC911E9ED211FB6F9 /* core.c in Sources */ = {isa = PBXBuildFile; fileRef = CF528C0E8DBFF5C31E8D6529 /* core.c */; };
-		F73625A819277CD900964804 /* ofxParticle2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F73625A419277CD900964804 /* ofxParticle2D.cpp */; };
-		F73625A919277CD900964804 /* ofxParticle3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F73625A619277CD900964804 /* ofxParticle3D.cpp */; };
-		F767CA4E195CFFF1004401E8 /* cvFunctions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F767CA4D195CFFF1004401E8 /* cvFunctions.cpp */; };
 		F767CA58195D04BD004401E8 /* ofxDelaunay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F767CA52195D04BD004401E8 /* ofxDelaunay.cpp */; };
 		F767CA59195D04BD004401E8 /* Delaunay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F767CA56195D04BD004401E8 /* Delaunay.cpp */; };
 		F772533E1981A11800ADD13E /* ofxTCPClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F77253361981A11800ADD13E /* ofxTCPClient.cpp */; };
@@ -304,12 +301,7 @@
 		ECC34C470C60F0A2AE2761B1 /* random.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = random.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/random.h; sourceTree = SOURCE_ROOT; };
 		F070AF5E3926EB2CB7A15D1B /* params.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = params.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/params.h; sourceTree = SOURCE_ROOT; };
 		F7269F96AC34A2B44A680D03 /* ofxCvFloatImage.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxCvFloatImage.h; path = ../../../addons/ofxOpenCv/src/ofxCvFloatImage.h; sourceTree = SOURCE_ROOT; };
-		F73625A419277CD900964804 /* ofxParticle2D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ofxParticle2D.cpp; path = src/ofxParticle2D.cpp; sourceTree = "<group>"; };
-		F73625A519277CD900964804 /* ofxParticle2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxParticle2D.h; path = src/ofxParticle2D.h; sourceTree = "<group>"; };
-		F73625A619277CD900964804 /* ofxParticle3D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ofxParticle3D.cpp; path = src/ofxParticle3D.cpp; sourceTree = "<group>"; };
-		F73625A719277CD900964804 /* ofxParticle3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxParticle3D.h; path = src/ofxParticle3D.h; sourceTree = "<group>"; };
 		F73625AA192842BC00964804 /* Particle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Particle.h; sourceTree = "<group>"; };
-		F767CA4D195CFFF1004401E8 /* cvFunctions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cvFunctions.cpp; sourceTree = "<group>"; };
 		F767CA52195D04BD004401E8 /* ofxDelaunay.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxDelaunay.cpp; sourceTree = "<group>"; };
 		F767CA53195D04BD004401E8 /* ofxDelaunay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxDelaunay.h; sourceTree = "<group>"; };
 		F767CA56195D04BD004401E8 /* Delaunay.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Delaunay.cpp; sourceTree = "<group>"; };
@@ -411,6 +403,7 @@
 		F7A515A81975740000028875 /* testApp_Drawing.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testApp_Drawing.cpp; sourceTree = "<group>"; };
 		F7A515AB197574C100028875 /* testApp_inputInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testApp_inputInterface.cpp; sourceTree = "<group>"; };
 		F7A657D619B0C62E004E0E78 /* particleClouds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = particleClouds.h; sourceTree = "<group>"; };
+		F7BCE62B19B3CFB800ECB37E /* contours.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = contours.h; sourceTree = "<group>"; };
 		F7C16FFD192B76E20034A5CB /* ofxUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxUI.h; sourceTree = "<group>"; };
 		F7C16FFE192B76E20034A5CB /* ofxUI2DGraph.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxUI2DGraph.cpp; sourceTree = "<group>"; };
 		F7C16FFF192B76E20034A5CB /* ofxUI2DGraph.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxUI2DGraph.h; sourceTree = "<group>"; };
@@ -511,7 +504,6 @@
 		F7C1708D192B81A30034A5CB /* tinyxml.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tinyxml.h; sourceTree = "<group>"; };
 		F7C1708E192B81A30034A5CB /* tinyxmlerror.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlerror.cpp; sourceTree = "<group>"; };
 		F7C1708F192B81A30034A5CB /* tinyxmlparser.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlparser.cpp; sourceTree = "<group>"; };
-		F7E3C03A195C2DDD00D7724A /* cvFunctions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cvFunctions.h; sourceTree = "<group>"; };
 		F7E3C03D195C349F00D7724A /* ofxCv.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxCv.h; sourceTree = "<group>"; };
 		F7E3C03F195C349F00D7724A /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		F7E3C043195C349F00D7724A /* ETF.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ETF.h; sourceTree = "<group>"; };
@@ -1016,16 +1008,14 @@
 			isa = PBXGroup;
 			children = (
 				F7EBD1A619335856009805D5 /* cheampCommRcv */,
-				F736259F19277CD900964804 /* ofxParticles */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */,
+				F7BCE62B19B3CFB800ECB37E /* contours.h */,
 				F7A515AB197574C100028875 /* testApp_inputInterface.cpp */,
 				F7A515A81975740000028875 /* testApp_Drawing.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* testApp.h */,
 				F73625AA192842BC00964804 /* Particle.h */,
 				F7736968194634E500548CEA /* extendedDepthSource.h */,
-				F7E3C03A195C2DDD00D7724A /* cvFunctions.h */,
-				F767CA4D195CFFF1004401E8 /* cvFunctions.cpp */,
 				F772533019819DC600ADD13E /* sendContour.h */,
 				F772537B1981E91A00ADD13E /* rcvContour.h */,
 				F7A657D619B0C62E004E0E78 /* particleClouds.h */,
@@ -1076,18 +1066,6 @@
 				65726280742CD54BF368BDB8 /* libusb-1.0 */,
 			);
 			name = libs;
-			sourceTree = "<group>";
-		};
-		F736259F19277CD900964804 /* ofxParticles */ = {
-			isa = PBXGroup;
-			children = (
-				F73625A419277CD900964804 /* ofxParticle2D.cpp */,
-				F73625A519277CD900964804 /* ofxParticle2D.h */,
-				F73625A619277CD900964804 /* ofxParticle3D.cpp */,
-				F73625A719277CD900964804 /* ofxParticle3D.h */,
-			);
-			name = ofxParticles;
-			path = "ofxParticles-master";
 			sourceTree = "<group>";
 		};
 		F767CA50195D04BD004401E8 /* ofxDelaunay */ = {
@@ -1917,7 +1895,6 @@
 				F7C17068192B76E30034A5CB /* ofxUIImageButton.cpp in Sources */,
 				ACE7DC9A3223ED5EE1B80074 /* cameras.c in Sources */,
 				F7C17071192B76E30034A5CB /* ofxUIMultiImageButton.cpp in Sources */,
-				F73625A919277CD900964804 /* ofxParticle3D.cpp in Sources */,
 				F7C1707D192B76E30034A5CB /* ofxUISuperCanvas.cpp in Sources */,
 				F7C1707C192B76E30034A5CB /* ofxUISpectrum.cpp in Sources */,
 				F7C17080192B76E30034A5CB /* ofxUITextInput.cpp in Sources */,
@@ -1932,7 +1909,6 @@
 				F7C17070192B76E30034A5CB /* ofxUIMovingGraph.cpp in Sources */,
 				F7C17082192B76E30034A5CB /* ofxUIToggleMatrix.cpp in Sources */,
 				F7C17062192B76E30034A5CB /* ofxUIDragableLabelButton.cpp in Sources */,
-				F73625A819277CD900964804 /* ofxParticle2D.cpp in Sources */,
 				F7E3C064195C34A000D7724A /* fdog.cpp in Sources */,
 				F7C1705F192B76E30034A5CB /* ofxUIButton.cpp in Sources */,
 				F767CA59195D04BD004401E8 /* Delaunay.cpp in Sources */,
@@ -1966,7 +1942,6 @@
 				F7C1707B192B76E30034A5CB /* ofxUISpacer.cpp in Sources */,
 				F7EBD1DC193358F3009805D5 /* OscReceivedElements.cpp in Sources */,
 				F7C17061192B76E30034A5CB /* ofxUICircleSlider.cpp in Sources */,
-				F767CA4E195CFFF1004401E8 /* cvFunctions.cpp in Sources */,
 				F7EBD1D2193358F3009805D5 /* ofxOscBundle.cpp in Sources */,
 				F7C17075192B76E30034A5CB /* ofxUIRangeSlider.cpp in Sources */,
 				F7C17065192B76E30034A5CB /* ofxUIFPS.cpp in Sources */,

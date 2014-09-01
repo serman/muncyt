@@ -14,22 +14,20 @@
 
 
 void testApp::setupGUI() {
+    guiTabBar = new ofxUITabBar();
+    
 	gui1 = new ofxUICanvas(0,100,400,800);
+    gui1->setName("General");
+    
+    particleCloud.setUI(guiTabBar);
+    mcontour.setUI(guiTabBar);
 
-    gui1->addSlider("speed", 0.0f, 200,  &(particleCloud.speed));
-	gui1->addIntSlider("stopUmbral", 1, 300,  &(particleCloud.stopUmbral)) ;
-	gui1->addIntSlider("maxForce", 0, 20, &maxForce) ;
-    gui1->addSlider("Acceleration", 1.05f, 3,  &(particleCloud.acceleration));
 	gui1->addSpacer();
 	gui1->addButton("save",true);
 	gui1->addButton("load",true);
 	gui1->addSpacer();
 	
-    vector<string> names;
-	names.push_back("NUBE");
-	names.push_back("ESPEJO");
-	gui1->addRadio("MODO_Partics", names, OFX_UI_ORIENTATION_HORIZONTAL);
-	gui1->addIntSlider("alpha Particles", 1, 255, &(particleCloud.alphaParticles)) ;
+   
 	gui1->addIntSlider("alpha Lines", 1, 255, &alphaLines) ;
 	gui1->addIntSlider("Distance Lines", 50, 600, &distanciaLineasK) ;
 	gui1->addToggle("noise", &boolDrawNoise);
@@ -42,50 +40,48 @@ void testApp::setupGUI() {
 	gui1->addSpacer();
 	
 	gui1->addRangeSlider("RangoZ", 100, 4000, &zMin, &zMax);
-	
+
+#ifdef TESTMODE
 	gui1->addSpacer();
 	
 	gui1->addToggle("DrawPoints", &bDrawPoints);
 	gui1->addToggle("DrawLinesH", &bDrawLinesH);
 	gui1->addToggle("DrawLinesV", &bDrawLinesV);
     gui1->addToggle("DrawNativePointCloud", &bDrawNativePointCloud);
-	gui1->addToggle("Explosion", &explosion);
+	//gui1->addToggle("Explosion", &explosion);
     gui1->addToggle("bDrawContours", &bDrawContours);
-    gui1->addToggle("camera Colours", &bRealColors);
+    //gui1->addToggle("camera Colours", &bRealColors);
     
+#else
+    vector<string> names;
+    names.push_back("EM");
+    names.push_back("DEBIL");
+    names.push_back("FUERTE");
+    names.push_back("GRAVEDAD");
+    gui1->addRadio("MODO", names, OFX_UI_ORIENTATION_HORIZONTAL);
+    
+#endif
 	gui1->addSpacer();
 	
 	gui1->addButton("reset",true);
 	
 	gui1->addSpacer();
-    gui1->addToggle("bFill", &bFill);
-	gui1->addIntSlider("", 0, 2, &modoFill) ;
-    gui1->addToggle("bAddPts", &bAddPts);
-	gui1->addIntSlider("num Pts", 0, 500, &numPointsXtra) ;
-    gui1->addToggle("bDrawOld", &bDrawOld);
+    
     
 //case 'f': modoFill++; modoFill%=3;break;
 	
 	gui1->addSpacer();
 	
+    
 	ofAddListener(gui1->newGUIEvent,this,&testApp::guiEvent);
+    guiTabBar->addCanvas(gui1);
+   // guiTabBar->toggleVisible();
+    
     
 }
 
 void testApp::keyPressed (int key) {
 	switch (key) {
-
-		case 'm':
-			bDrawPoints=!bDrawPoints;
-			break;
-		case '1':
-			appStatuses["escena"]=EM;
-             cambioEscena();
-			break;
-        case '2':
-			appStatuses["escena"]=NUCLEAR_DEBIL;
-             cambioEscena();
-			break;
         case '9':
 			appStatuses["em_ruido"]=true;
 			break;
@@ -96,11 +92,6 @@ void testApp::keyPressed (int key) {
             debug=!debug;
 			gui1->toggleVisible();
 			break;
-/*        case 'p':
-            if(particleMode==NUBE)
-                particleMode=ESPEJO;
-            else particleMode=NUBE;
-            break;*/
 
         case 'r':
             if(oniCamrecorder.isRecording==true)
@@ -108,10 +99,7 @@ void testApp::keyPressed (int key) {
             else
                 oniCamrecorder.startRecording();
             break;
-            
-            
-
-			
+        
             
         case 'e':
             zMax+=10;
@@ -130,14 +118,7 @@ void testApp::keyPressed (int key) {
 	            gui1->disable();
             else
 				gui1->enable();
-        case '3': doTriang=!doTriang;break;
-        case '4': doTessel=!doTessel; break;
-            
-//        case '5': bSoloEnContorno=!bSoloEnContorno;break;
-        case '6': bAddPts=!bAddPts;break;
-        case '7': bFill=!bFill;break;
-        case 'f': modoFill++; modoFill%=3;break;
-			
+ 			
 	}
 	
 #ifndef EASYCAM
@@ -207,11 +188,12 @@ void testApp::guiEvent(ofxUIEventArgs &e)
 #endif
 		
     }
-	else if(name == "MODO_Partics")
+	else if(name == "MODO")
     {
 		ofxUIRadio *  wr = (ofxUIRadio *) e.widget;
-		ofLogNotice("MODO_Partics. " + wr ->getActiveName() + " = " + ofToString(wr->getValue()));
-		particleCloud.particleMode = wr->getValue();
+		ofLogNotice("MODO" + wr ->getActiveName() + " = " + ofToString(wr->getValue()));
+        status_mode=wr->getValue();
+        appStatuses["escena"]=wr->getValue();
         //		gui1->loadSettings("./config/gui/gui_kinect.xml");
     }
     else if(name=="RangoZ"){

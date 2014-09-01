@@ -10,6 +10,7 @@
 #include "ofxOpenNI2Grabber.h"
 #include "ofxOpenNI2Recorder.h"
 #include "extendedDepthSource.h"
+#include "ofxUI.h"
 
 #ifndef kinectExample_particleClouds_h
 #define kinectExample_particleClouds_h
@@ -107,7 +108,7 @@ public:
 //                    if (bRealColors){
 //                        p->color= rgbGenerator.currentPixels->getColor(p->_x , p->_y) ;
 //                    }
-                    p->color=ofColor(255,255,255,alphaParticles);                   
+                    p->color=ofColor(255,255,255,alphaParticles);
                     meshParticles.addVertex(p->position);
                     meshParticles.addColor(p->color);
                 }else{ // si las particulas están mas lejos
@@ -148,6 +149,40 @@ public:
         particles.clear();
         setupParticles();
     }
+    
+    void setUI(ofxUITabBar *guiTabBar ){
+        gui = new ofxUICanvas(0,100,400,800);
+        gui->setName("Particles" );
+        gui->addSlider("speed", 0.0f, 200,  &(speed));
+        gui->addIntSlider("stopUmbral", 1, 300,  &(stopUmbral)) ;
+
+        gui->addSlider("Acceleration", 1.05f, 3,  &(acceleration));
+        vector<string> names;
+        names.push_back("NUBE");
+        names.push_back("ESPEJO");
+        gui->addRadio("MODO_Partics", names, OFX_UI_ORIENTATION_HORIZONTAL);
+        gui->addIntSlider("alpha Particles", 1, 255, &(alphaParticles)) ;
+        ofAddListener(gui->newGUIEvent,this,&particleClouds::guiEvent);
+        
+        guiTabBar->addCanvas(gui);
+        
+    }
+    
+    void guiEvent(ofxUIEventArgs &e)
+    {
+        string name = e.widget->getName();
+        int kind = e.widget->getKind();
+        
+        if(name == "MODO_Partics")
+        {
+            ofxUIRadio *  wr = (ofxUIRadio *) e.widget;
+            ofLogNotice("MODO_Partics. " + wr ->getActiveName() + " = " + ofToString(wr->getValue()));
+            particleMode = wr->getValue();
+            //		gui1->loadSettings("./config/gui/gui_kinect.xml");
+        }
+
+    }
+    
     int		particleMode;
     float zMin, zMax;
     float speed;
@@ -164,6 +199,7 @@ private:
     int sampling;
     vector<Particle> particles ;
     ofMesh meshParticles;
+    ofxUICanvas *gui;
 
     ofxOpenNI2Grabber *oniCamGrabber;
     extendedDepthSource *depthGenerator;

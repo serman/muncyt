@@ -39,8 +39,10 @@ public:
      //   for(unsigned int i=0; i<stroke.size(); i++){
      //       message+=ofToString(stroke[i].x)+"|"+ofToString(stroke[i].y)+"[/p]";
       //  }
-        serializeContour(mline);
-        udpConnection.Send(sbuf.data(),sbuf.size());
+        if(mline.size()>0){
+            serializeContour(mline);
+            udpConnection.Send(sbuf.data(),sbuf.size());
+        }
      //   udpConnection.S
     }
     
