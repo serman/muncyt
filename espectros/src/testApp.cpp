@@ -50,9 +50,10 @@ void testApp::setup(){
     mjuego2->setTuioClient(&tuioClient);
     mjuego2->setSyphonClients(&mSyphonClient, &mSyphonClient2);
   
+    sceneManager->addScene( mjuego, SCENE_2);
     sceneManager->addScene( mjuego2, SCENE_3);
 	sceneManager->addScene( mglitch, SCENE_1);
-    sceneManager->addScene( mjuego, SCENE_2);
+    
     sceneManager->addScene( mfantasmas, SCENE_0);
 //	sceneManager->addScene( mfaces, SCENE_3);
 

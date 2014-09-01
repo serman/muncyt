@@ -12,7 +12,7 @@ void juego1::setup(){
 	
     box2d.init();
 
-	box2d.setGravity(0, 8);
+	box2d.setGravity(0, 10);
 	box2d.createBounds(0,0,SCREEN_W,SCREEN_H);
     //box2d.createGround(0,SCREEN_H,SCREEN_W,SCREEN_H);
   	box2d.setFPS(30.0);
@@ -28,7 +28,7 @@ void juego1::setup(){
     datoObjeto *pelota= new datoObjeto;
     pelota->tipo=BALL;
 
-    ball.setPhysics(0.2, 0.53, 0.8);
+    ball.setPhysics(0.2, 0.95, 0.8);
     ball.setup(box2d.getWorld(),0, SCREEN_H-100, 20);
 //    ball.setData(new string("ball"));
     ball.setData(pelota);
@@ -43,6 +43,9 @@ void juego1::setup(){
     appStatuses["game_status"]=PLAYING;
     appStatuses["win_timer"]=0;
     appStatuses["hold_key"]=false;
+    appStatuses["timeleft"]=10000;
+    appStatuses["lastTimeRead"];
+    appStatuses["level"]=0;
       ofBackground(0,0,0);
 
 }
@@ -102,15 +105,6 @@ void juego1::draw(){
         appStatuses["game_status"]=WIN;
         
     }
-/*    list<ofxTuioCursor*>::iterator tobj;
-    list<ofxTuioCursor*> objectList = tuioclient->getTuioCursors();
-    for (tobj=objectList.begin(); tobj != objectList.end(); tobj++) {
-        ofxTuioCursor *blob = (*tobj);
-        ofSetColor(255,0,0);
-       // ofEllipse( blob->getX()*SCREEN_W, blob->getY()*480*VIDEO_scale-VIDEO_offset,9,9);
-        //cout << "blob size" << blobTracker.trackedBlobs.size() << "\n";
-    }
-  */
     ofPopMatrix();
     showDebug();
  
@@ -141,9 +135,14 @@ void juego1::update(float f){
             if(amountForce<0 || amountForce>200)forceDecrease=!forceDecrease;
         }
         else amountForce=0;
+        int dif= ofGetElapsedTimeMillis()-appStatuses["lastTimeRead"] ;
+        appStatuses["time"]-=dif;
+        appStatuses["lastTimeRead"]= ofGetElapsedTimeMillis();
     }
-
 }
+
+
+
 void juego1::showDebug(){
     ofDrawBitmapString("Framerate " + ofToString(ofGetFrameRate()), 20, 40);
 }
@@ -152,17 +151,21 @@ void juego1::showDebug(){
 void juego1::addObstacle(){
     float r = ofRandom(4, 20);		// a random radius 4px - 20px
     circles.push_back(ofPtr<ofxBox2dRect>(new ofxBox2dRect));
-    circles.back().get()->setPhysics(0.0, 0.53, 0.7);
+    circles.back().get()->setPhysics(0.0, 3.5, 0.7);
     circles.back().get()->setup(box2d.getWorld(), ofGetMouseX(), ofGetMouseY(), 40, 10);
+    datoObjeto *obstacle;
+    obstacle = new datoObjeto;
+    obstacle->tipo=BALL;
+    obstacle->id=1;
     
+    circles.back().get()->setData(obstacle);
 }
 
 void juego1::addObstacle(ofPoint p1, int m_id){
     float r = ofRandom(5, 6);		// a random radius 4px - 20px
     circles.push_back(ofPtr<ofxBox2dRect>(new ofxBox2dRect) );
-    circles.back().get()->setPhysics(0.0, 0.53, 0.7);
+    circles.back().get()->setPhysics(0.0, 3.5, 0.7);
     circles.back().get()->setup(box2d.getWorld(), p1.x+15, p1.y+50, 20, 70);
-    
     
     datoObjeto *obstacle;
     obstacle = new datoObjeto;
@@ -193,9 +196,7 @@ void juego1::hideObstacle( int m_id){
 
 
 void juego1::removeObstacle(int m_id){
-    
     vector<ofPtr<ofxBox2dRect> >::iterator tobj;
-
     for ( tobj =  circles.begin();
           tobj != circles.end();
           tobj++ ) {
@@ -205,7 +206,6 @@ void juego1::removeObstacle(int m_id){
             circles.erase(tobj);
               break;
           }
-        
     }
 }
 
@@ -288,8 +288,7 @@ void juego1::drawControls(){
     ofPushMatrix();
     ofTranslate(0,SCREEN_H);
    // ofSetColor(0,136,136);
-    ofSetColor(0,184, 0);
-    ofSetColor(183,248, 26);
+    ofSetColor(255, 100, 0);
     ofLine(0,0, throwDirection.x, throwDirection.y);
     ofPopMatrix();
 

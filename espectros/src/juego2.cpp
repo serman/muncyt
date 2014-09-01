@@ -242,13 +242,9 @@ void juego2::showDebug(){
     ofDrawBitmapString("contornos " + ofToString(contourFinder.size()),800,100);
     if(fillthis) ofDrawBitmapString ("FILL THIS",800,150);
     ofDrawBitmapString("vertices poli " + ofToString(poli.size() ), 800,170);
-    // contourFinder.draw();
-   /* for (int i=0; i<contourFinder.size(); i++){
-        ofPath path;
-        ofPolyline l= contourFinder.getPolyline(i);
-        ofSetColor(20+20*i, 50+20*i, 20*i);
-        l.draw();
-    }*/
+    
+    
+    ofDrawBitmapString("Area contorno: " + ofToString( calcMarcador() )+" %" , 800,190);
 }
 
 
@@ -437,5 +433,12 @@ void juego2::reset(){
 void juego2::keyReleased(int key){
     currentKey=NONE;
     
+    
+}
+
+int juego2::calcMarcador(){
+    if(contourFinder.size()>0)
+    return     99- floor((contourFinder.getContourArea(0)*100)/(SCREEN_H*SCREEN_W-SCREEN_H*2-SCREEN_W*2));
+    else return 0;
     
 }

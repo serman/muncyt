@@ -136,6 +136,7 @@ private:
     ofPolyline l;
     int start, end;
     bool drawExplodeb;
+    int calcMarcador();
 };
 
 

@@ -9,6 +9,21 @@
 #ifndef mainScreen_gameAdmin_h
 #define mainScreen_gameAdmin_h
 
-
+class gameAdmin{
+public:
+    void setLevel(){
+    }
+    
+    void endLevel(){
+        
+    }
+    
+    void update(){
+        
+    }
+    
+private:
+    
+};
 
 #endif
