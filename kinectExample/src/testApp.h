@@ -11,6 +11,8 @@
 #include <msgpack.hpp>
 #include "sendContour.h"
 #include "contours.h"
+#include "gridView.h"
+#include "ofxPostProcessing.h"
 
 //#define EASYCAM
 
@@ -48,8 +50,8 @@ public:
 	void windowResized(int w, int h);
     void guiEvent(ofxUIEventArgs &e);
 
-	void	drawLinesH(float step = 5.0);
-	void	drawLinesV(float step = 5.0);
+//	void	drawLinesH(float step = 5.0);
+//	void	drawLinesV(float step = 5.0);
     void	showDebug();
     void setRandomBG();
     void fadeBG();
@@ -86,6 +88,7 @@ public:
 	ofxCvGrayscaleImage grayThreshNear; // the near thresholded image
 	ofxCvGrayscaleImage grayThreshFar; // the far thresholded image
     bool debug;
+    
     
 
 	
@@ -146,5 +149,20 @@ public:
 
     particleClouds particleCloud;
     contours mcontour;
-    
+    gridView mgrid;
+    ofVec3f tr, tl, bl, br;
+    ofMesh mesh1;
+    ofLight light;
+    int lx,ly,lz=0;
+    ofxPostProcessing post;
+    void
+    setLightOri(ofLight &light, ofVec3f rot)
+    {
+        ofVec3f xax(1, 0, 0);
+        ofVec3f yax(0, 1, 0);
+        ofVec3f zax(0, 0, 1);
+        ofQuaternion q;
+        q.makeRotate(rot.x, xax, rot.y, yax, rot.z, zax);
+        light.setOrientation(q);
+    }
 };

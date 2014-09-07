@@ -76,7 +76,7 @@ void testApp::setup() {
     boolDrawNoise = false
 #endif
     
-	particleCloud.particleMode=ESPEJO;
+	particleCloud.cloudState=ESPEJO;
 	alphaNoise=255;
 	debug = true;
 	
@@ -88,7 +88,7 @@ void testApp::setup() {
 	
     incrDistance=0;
 	
-    particleCloud.setup(oniSettings.width, oniSettings.height, zMin, zMax, &oniCamGrabber, &depthGenerator);
+
     
 	
 	// setupCam
@@ -97,6 +97,7 @@ void testApp::setup() {
 	easyCam.setAutoDistance(true);
 #else
 	camera.setCursorWorld(ofVec3f(0,0,-2000));
+
 #endif
 	setupStatus();
 	setupGUI();
@@ -105,11 +106,38 @@ void testApp::setup() {
     mcontour.setup(&oniCamGrabber);
     myOSCrcv.setup();
     sender.setup();
+    mgrid.setup(oniSettings.width, oniSettings.height, &zMin, &zMax, &oniCamGrabber, &depthGenerator);
+    particleCloud.setup(oniSettings.width, oniSettings.height, &zMin, &zMax, &oniCamGrabber, &depthGenerator,&camera);
+    
+    //gui1->loadSettings("./config/gui/gui_kinect.xml");
+    guiTabBar->loadSettings("./config/gui/","espejo_");
+#ifndef EASYCAM
+    loadCameraPose();
+#endif
+    appStatuses["escena"]=EM;
+    //http://stackoverflow.com/questions/12018710/calculate-near-far-plane-vertices-using-three-frustum
+ 
+    light.setup();
+    light.setAmbientColor(ofColor(230, 230, 250));
+    ofDisableLighting();
+    
+    post.init(ofGetWidth(), ofGetHeight());
+    post.init(ofGetWidth(), ofGetHeight());
+    post.createPass<ZoomBlurPass>()->setEnabled(false);
+    post.createPass<BloomPass>()->setEnabled(false);
+    post.createPass<ContrastPass>()->setEnabled(false);
+    post.createPass<BleachBypassPass>()->setEnabled(false);
+    post.createPass<ToonPass>()->setEnabled(false);
+    post.createPass<FakeSSSPass>()->setEnabled(false);
+    post.createPass<LimbDarkeningPass>()->setEnabled(false);
+    post.createPass<VerticalTiltShifPass>()->setEnabled(false);
+    post.createPass<ConvolutionPass>()->setEnabled(false);
+
     
 }
 
 void testApp::setupStatus(){
-     appStatuses["escena"]=EM;
+     appStatuses["escena"]=GRAVEDAD;
      appStatuses["em_ruido"]=true;
      appStatuses["alpha_ruido"]=255;
     
@@ -136,7 +164,7 @@ void testApp::update() {
                 break;
                 
             case GRAVEDAD:
-
+                mgrid.update();
                 break;
                 
             case NUCLEAR_DEBIL:
@@ -159,12 +187,12 @@ void testApp::update() {
                 
                 case GRAVEDAD:
                         mcontour.update();
-                        sender.send(mcontour.v[0]);
+                       // sender.send(mcontour.v[0]);
                 break;
                       
                 case NUCLEAR_DEBIL:
                         mcontour.update();
-                        sender.send(mcontour.v[0]);
+                       // sender.send(mcontour.v[0]);
                 break;
                     
                 case NUCLEAR_FUERTE:
@@ -193,15 +221,19 @@ void testApp::draw() {
 #ifdef EASYCAM
 	easyCam.begin();
 #else
-	camera.begin();
+	//camera.begin();
+    post.begin(camera);
 #endif
-
+    
     
     //Things to be drawn in 3D
 	ofPushMatrix();
         ofScale(1, 1, -1);
 		// the projected points are 'upside down' and 'backwards'
         drawAxis();
+    //ofDrawAxis(1000);
+   // ofDrawGridPlane(100);
+   // ofDrawGrid(300);
 
 		
 		// Superponemos modos de dibujo en 3D
@@ -212,14 +244,17 @@ void testApp::draw() {
 		if(bDrawLinesV) drawLinesV();
     	if(bDrawNativePointCloud) drawPointCloud();
 #else
+        light.setPosition(lx, ly, lz);
+    light.draw();
+    
         switch(appStatuses["escena"]){
+                
             case EM:
                 particleCloud.drawParticles();
             break;
                 
             case GRAVEDAD:
-                drawLinesH();
-                drawLinesV();
+                mgrid.draw(&camera);
             break;
                 
             case NUCLEAR_DEBIL:
@@ -230,14 +265,76 @@ void testApp::draw() {
                 
                 break;
         }
+ /*    cout << "fov"<< ofToString(camera.getFov())<<endl;
+    cout << "aspect"<< ofToString(camera.getAspectRatio())<<endl;
+        cout << "near clip"<< ofToString(camera.getNearClip())<<endl;
+    
+   float hNear = 2 * tan(camera.getFov()*PI / 360) * camera.getNearClip(); // height
+    float wNear = hNear * 0.56; // width
+    tr=ofVec3f( wNear / 2, hNear / 2, -camera.getNearClip() );
+    tl=ofVec3f( -wNear / 2, hNear / 2, -camera.getNearClip() );
+    bl=ofVec3f( -wNear / 2, -hNear / 2, -camera.getNearClip() );
+    br=ofVec3f( -wNear / 2, -hNear / 2, -camera.getNearClip() );
+    
+    tr=camera.cameraToWorld(tr);
+    tl=camera.cameraToWorld(tl);
+    bl=camera.cameraToWorld(bl);
+    br=camera.cameraToWorld(br);/
+    
+    ofVec3f lookat=camera.getLookAtDir();
+    ofVec3f v1=camera.getUpDir();
+    
+    ofVec3f v2= lookat*v1;
+    v1=v1*700;
+    v2=v2*700;
+    ofPoint X=ofPoint(0,0,1000);
+    ofPoint X2=ofPoint(X.x+v1.x, X.y+v1.y, X.z+v1.z);
+    ofPoint X3=ofPoint(X.x+v1.x+v2.x, X.y+v1.y+v2.y, X.z+v1.z+v2.z);
+    ofPoint X4=ofPoint(X.x+v2.x, X.y+v2.y, X.z+v2.z);
+    //tr.z+=50;
+    //tl.z+=50;
+    ofMesh m1;
+    glPointSize(30);
+    glBegin(GL_QUADS);
+    //m1.setMode(OF_PRIMITIVE_LINE_LOOP);
+    glVertex3f(X.x, X.y, X.z);
+    glVertex3f(X.x+v1.x, X.y+v1.y, X.z+v1.z);
+    glVertex3f(X.x+v1.x+v2.x, X.y+v1.y+v2.y, X.z+v1.z+v2.z);
+    glVertex3f(X.x+v2.x, X.y+v2.y, X.z+v2.z);
+    glEnd();
+    
+    m1.addVertex(X);m1.addColor(ofColor::pink);
+    m1.addVertex(X2);m1.addColor(ofColor::green);
+    m1.addVertex(X3);m1.addColor(ofColor::blue);
+    m1.addVertex(X4);m1.addColor(ofColor::pink);
+    
+
+    
+    
+    m1.setMode(OF_PRIMITIVE_POINTS);
+        m1.addVertex(tl);
+    m1.addColor(ofColor::red);
+        m1.addVertex(tr);
+        m1.addColor(ofColor::yellow);
+        m1.addVertex(br);
+            m1.addColor(ofColor::green);
+        m1.addVertex(bl);
+            m1.addColor(ofColor::pink);
+    mesh1.setMode(OF_PRIMITIVE_LINES);*/
+    //ofSetColor(ofColor::pink);
+   //  ofEnableDepthTest();
+   // m1.draw();
+   // ofDisableDepthTest();
+
 #endif
 	ofPopMatrix();
-    
-   
+
+
 #ifdef EASYCAM
 	easyCam.end();
 #else
-	camera.end();
+//	camera.end();
+    post.end();
 #endif
     
  /** DIBUJADO EN 2D  **/
@@ -297,11 +394,16 @@ void testApp::showDebug(){
     ofPushMatrix();
     ofTranslate(ofGetWidth()-300,0);
     ofDrawBitmapString("Framerate " + ofToString(ofGetFrameRate()), 20, 20);
-    if(particleCloud.particleMode==NUBE)
-	    ofDrawBitmapString("MODO NUBE " , 20, 50);
-    else
-    	ofDrawBitmapString("MODO ESPEJO " , 20, 50);
-	ofPopMatrix();
+
+    for (unsigned i = 0; i < post.size(); ++i)
+    {
+        if (post[i]->getEnabled()) ofSetColor(0, 255, 255);
+        else ofSetColor(255, 0, 0);
+        ostringstream oss;
+        oss << i << ": " << post[i]->getName() << (post[i]->getEnabled()?" (on)":" (off)");
+        ofDrawBitmapString(oss.str(), 10, 20 * (i + 2));
+    }
+    ofPopMatrix();
 }
 
 //--------------------------------------------------------------

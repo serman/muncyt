@@ -10,9 +10,6 @@
 
 //--------------------------------------------------------------
 
-
-
-
 void testApp::setupGUI() {
     guiTabBar = new ofxUITabBar();
     
@@ -21,17 +18,14 @@ void testApp::setupGUI() {
     
     particleCloud.setUI(guiTabBar);
     mcontour.setUI(guiTabBar);
+    mgrid.setUI(guiTabBar);
 
 	gui1->addSpacer();
 	gui1->addButton("save",true);
 	gui1->addButton("load",true);
 	gui1->addSpacer();
-	
-   
-	gui1->addIntSlider("alpha Lines", 1, 255, &alphaLines) ;
+    
 	gui1->addIntSlider("Distance Lines", 50, 600, &distanciaLineasK) ;
-	gui1->addIntSlider("stepPointCloud", 1,5, &stepCloudPoint);
-	gui1->addIntSlider("stepLines", 2,10, &stepLines);
 	
 	gui1->addSpacer();
 	
@@ -55,6 +49,10 @@ void testApp::setupGUI() {
     names.push_back("FUERTE");
     names.push_back("GRAVEDAD");
     gui1->addRadio("MODO", names, OFX_UI_ORIENTATION_HORIZONTAL);
+    gui1->addIntSlider("lx", -700, 700, &lx) ;
+    gui1->addIntSlider("ly", -700, 700, &ly) ;
+    gui1->addIntSlider("lz", -700, 700, &lz) ;
+
     
 #endif
 	gui1->addSpacer();
@@ -77,12 +75,6 @@ void testApp::setupGUI() {
 
 void testApp::keyPressed (int key) {
 	switch (key) {
-        case '9':
-			appStatuses["em_ruido"]=true;
-			break;
-        case '8':
-			appStatuses["em_ruido"]=false;
-			break;
         case 'g':
             debug=!debug;
 			gui1->toggleVisible();
@@ -94,7 +86,14 @@ void testApp::keyPressed (int key) {
             else
                 oniCamrecorder.startRecording();
             break;
-        
+        case 'm':
+            mgrid.setVibration();
+        break;
+        case 'l':
+            if(light.getIsEnabled()) light.disable();
+            else light.enable();
+            
+            break;
             
         case 'e':
             zMax+=10;
@@ -106,15 +105,22 @@ void testApp::keyPressed (int key) {
 			grabarScreen();
 			break;
 		case 'v':
-			gui1->saveSettings("/config/gui/gui_kinect.xml");
+			guiTabBar->saveSettings("./config/gui/","espejo_");
 			break;
+        case 'k':
+            camera.toggleMouseActions();
+            break;
         case ' ':
             if(guiTabBar->isEnabled() )
 	            guiTabBar->disable();
             else
 				guiTabBar->enable();
- 			
+            break;
+
+
 	}
+    unsigned idx = key - '0';
+    if (idx < post.size()) post[idx]->setEnabled(!post[idx]->getEnabled());
 	
 #ifndef EASYCAM
     if(key=='Q')	saveCameraPose();
@@ -146,7 +152,9 @@ void testApp::mouseDragged(int x, int y, int button)
 
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button)
-{}
+{
+
+}
 
 //--------------------------------------------------------------
 void testApp::mouseReleased(int x, int y, int button)
@@ -169,15 +177,15 @@ void testApp::guiEvent(ofxUIEventArgs &e)
 	else if(name == "save")
     {
         cout << "save";
-		gui1->saveSettings("./config/gui/gui_kinect.xml");
+					guiTabBar->saveSettings("./config/gui/","espejo_");
 #ifndef EASYCAM
-		saveCameraPose();
+		//saveCameraPose();
 #endif
     }
 	else if(name == "load")
     {
         cout << "load";
-		gui1->loadSettings("./config/gui/gui_kinect.xml");
+		guiTabBar->loadSettings("./config/gui/","espejo_");
 #ifndef EASYCAM
 		loadCameraPose();
 #endif

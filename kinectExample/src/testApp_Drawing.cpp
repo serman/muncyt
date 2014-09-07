@@ -72,7 +72,7 @@ void testApp::drawNoise(){
 }
 
 
-void testApp::drawLinesH(float step){
+/*void testApp::drawLinesH(float step){
     
 	int w = IRCAMERAWIDTH;
 	int h = IRCAMERAHEIGHT;
@@ -182,7 +182,7 @@ void testApp::drawLinesV(float step){
         line.setStrokeWidth( 1);
         line.draw();
 	}
-}
+}*/
 
 void testApp::drawAxis(){
 
@@ -190,7 +190,7 @@ void testApp::drawAxis(){
     ofLine(0, 0, 2000, 0);
     ofSetColor (ofColor::white);
     ofLine(0, 0, 0, 2000);
-    ofSetColor (ofColor::yellow);
+    ofSetColor (ofColor::yellow); //z
     ofLine(0, 0, 0, 0, 0, 3000);
 }
 

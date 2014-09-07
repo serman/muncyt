@@ -14,17 +14,18 @@
 
 #ifndef kinectExample_particleClouds_h
 #define kinectExample_particleClouds_h
-#define SAMPLING 2
+#define SAMPLING 3
 enum	{FUERTE, DEBIL, EM, GRAVEDAD};
-  enum	{NUBE, ESPEJO};
+  enum	{RUIDO=0, ESPEJO,DESAPARECE};
 class particleClouds{
 public:
+    ofCamera *cam;
 // http://stackoverflow.com/questions/1701416/initialization-of-reference-member-requires-a-temporary-variable-c
 // there is no default constructor
    // particleClouds(ofxOpenNI2Grabber &g, extendedDepthSource &s ) : oniCamGrabber(g),depthGenerator(s)  {
     particleClouds(){
         sampling=SAMPLING;
-        particleMode=ESPEJO;
+        cloudState=ESPEJO;
         mode=EM;
     }
     
@@ -35,7 +36,7 @@ public:
    
     //only call once but have to call it
 
-    void setup(int _w, int _h, float _zMin, float _zMax, ofxOpenNI2Grabber *_oniCamGrabber, extendedDepthSource *_depthGenerator){
+    void setup(int _w, int _h, float *_zMin, float *_zMax, ofxOpenNI2Grabber *_oniCamGrabber, extendedDepthSource *_depthGenerator, ofCamera *_cam){
         w=_w;
         h=_h;
         oniCamGrabber=_oniCamGrabber;
@@ -46,6 +47,7 @@ public:
         speed = 1.0;
         stopUmbral = 10000;
         alphaParticles = 255;
+        cam=_cam;
         setupParticles();
     }
     void setupParticles(){
@@ -53,18 +55,33 @@ public:
         //int h= oniSettings.height;
 
         particles.clear();
-        int    sampling=2;
+        int    sampling=SAMPLING;
         //Loop through all the rows
         numParticles = 0;
         //Loop through all the columns
         // Distribuir las particulas por la escena
         for ( int y = 0 ; y < h ; y+=sampling ){
-            for ( int x = 0 ; x < w ; x+=sampling ){
-                float ang1 = ofRandom(PI);
+            for ( int x = w ; x > 0 ; x-=sampling ){
+              /*  float ang1 = ofRandom(PI);
                 float ang2 = ofRandom(TWO_PI);
                 float rr = 100;
                 float rrho = rr*sin(ang1);
-                particles.push_back(Particle(ofVec3f(rrho*cos(ang2),rrho*sin(ang2),-rr*cos(ang1)-1500) ,ofColor(255,255,255) ,x,y));
+                particles.push_back(Particle(ofVec3f(rrho*cos(ang2),rrho*sin(ang2),-rr*cos(ang1)-1500) ,ofColor(255,255,255) ,x,y));*/
+              //  ofVec3f p2=cam->screenToWorld(ofVec3f(x,y,0));
+                ofVec3f v=ofVec3f(x,y,0);
+#ifdef TESTMODE
+                v.rotate(rotateX,ofVec3f(1,0,0));
+                v.rotate(rotateZ,ofVec3f(0,0,1));
+                v.x+=tranX;
+                v.y+=tranY;
+                v.z+=tranZ;
+#else
+                v.rotate(-1.82,ofVec3f(0,0,1));
+                v.x+=-450;
+                v.y+=-229;
+                v.z+=757;
+#endif
+                particles.push_back(Particle(v ,ofColor(255,255,255) ,x,y));
                 numParticles++ ;
             }
         }
@@ -72,15 +89,68 @@ public:
     }
     
     void updateParticles(){
+#ifdef TESTMODE
+//        setupParticles();
+#endif
+            if(mode==DEBIL){
+                updateDEBIL();
+                
+            }else if(mode==EM) updateEM();
+    }
+    
+    void updateEM(){
         meshParticles.clear();
         ofVec3f mdestPoint;
         ofVec3f diff ;
-        int pp=0;
         std::vector<Particle>::iterator p ;
-        
         for ( p = particles.begin() ; p != particles.end() ; p++ )
         {
-            if(mode==DEBIL){
+            if(cloudState==RUIDO){
+                p->steer(p->spawnPoint, false, speed, stopUmbral );
+                p->update();
+                    p->color=ofColor(255,255,255,ofRandom(0,200));
+            }else if(cloudState==ESPEJO){
+                int distance=depthGenerator->currentRawPixels->getPixels()[p->_y * depthGenerator->width + p->_x];
+                if(distance> *zMin && distance < *zMax) {
+                    p->recentlyUsed=5;
+                        mdestPoint=  oniCamGrabber->convertDepthToWorld(p->_x, p->_y);
+                        p->steer(mdestPoint, true, speed, stopUmbral );
+                        p->update();
+                        p->color=ofColor(255,255,255,255);
+                }else{ // si las particulas están mas lejos
+                    /*
+                    if(!p->recentlyUsed>0){
+                        p->color=ofColor(255,0,0,0);
+                    }else{
+                        p->color=ofColor(255,0,0,255);
+                        p->recentlyUsed--;
+                    }*/
+                    p->steer(p->spawnPoint, true, speed, stopUmbral );
+                    p->update();
+                    p->color=ofColor(255,255,255,ofRandom(0,160));
+                }//ESPEJO
+            }else if(cloudState==DESAPARECE){
+                p->sandDown(acceleration,-200);
+                p->update();
+                    //p->position+=ofNoise( p->position.x,p->position.y,p->position.z)*30;
+                    //   p->color=ofColor(255,255,255,alphaParticles);
+                
+                p->color=ofColor(255,255,255,alphaParticles);
+            }
+            meshParticles.addVertex(p->position);
+            meshParticles.addColor(p->color);
+        }//end for all points within vector
+       
+    } //end updateEM
+    
+    
+    void updateDEBIL(){
+        meshParticles.clear();
+        ofVec3f mdestPoint;
+        ofVec3f diff ;
+        std::vector<Particle>::iterator p ;
+        for ( p = particles.begin() ; p != particles.end() ; p++ )
+        {
                 if(ofRandomf()>0.5)
                     p->color.set(0);
                 else
@@ -88,51 +158,24 @@ public:
                 p->color=ofColor(255,0,0,255);
                 meshParticles.addVertex(p->position);
                 meshParticles.addColor(p->color);
-                
-            }else if(mode==EM){
-                int distance=depthGenerator->currentRawPixels->getPixels()[p->_y * depthGenerator->width + p->_x];
-                if(distance> zMin && distance < zMax) {
-                    pp++;
-                    p->recentlyUsed=5;
-                    if(particleMode==ESPEJO){
-                        mdestPoint=  oniCamGrabber->convertDepthToWorld(p->_x, p->_y);
-                        p->steer(mdestPoint, true, speed, stopUmbral );
-                        p->update();
-                        
-                    }
-                    else if(particleMode==NUBE) {
-                        p->sandDown(acceleration,-200);
-                        p->update();
-                        // p->position+=ofNoise( p->position.x,p->position.y,p->position.z)*30;
-                    }                    
-//                    if (bRealColors){
-//                        p->color= rgbGenerator.currentPixels->getColor(p->_x , p->_y) ;
-//                    }
-                    p->color=ofColor(255,255,255,alphaParticles);
-                    meshParticles.addVertex(p->position);
-                    meshParticles.addColor(p->color);
-                }else{ // si las particulas están mas lejos
-                    // meshParticles.addVertex(p->position);
-                    if(!p->recentlyUsed>0){
-                        p->color=ofColor(255,0,0,40);
-                    }else{
-                        p->color=ofColor(255,0,0,255);
-                        meshParticles.addVertex(p->position);
-                        meshParticles.addColor(p->color);
-                        p->recentlyUsed--;
-                    }
-                }//else modo ruido NO
-            }
-        }//end for all points within vector
+        }
     }
+
     
     void drawParticles(){
+       // ofPushMatrix();
+
+       /* ofRotateX(rotateX);
+        ofRotateY(rotateY);
+        ofRotateZ(rotateZ);
+        ofTranslate(tranX,tranY,tranZ);*/
         meshParticles.setMode(OF_PRIMITIVE_POINTS);
-        glPointSize(2);
-        glEnable(GL_POINT_SMOOTH);	// Para que sean puntos redondos
+        glPointSize(4);
+        //glEnable(GL_POINT_SMOOTH);	// Para que sean puntos redondos
         ofEnableDepthTest();
         meshParticles.draw();
         ofDisableDepthTest();
+//        ofPopMatrix();
     }
     
     void explosionParticles(){
@@ -153,13 +196,20 @@ public:
     void setUI(ofxUITabBar *guiTabBar ){
         gui = new ofxUICanvas(0,100,400,800);
         gui->setName("Particles" );
-        gui->addSlider("speed", 0.0f, 200,  &(speed));
+        gui->addSlider("speed", 0.0f, 30,  &(speed));
         gui->addIntSlider("stopUmbral", 1, 300,  &(stopUmbral)) ;
 
         gui->addSlider("Acceleration", 1.05f, 3,  &(acceleration));
+        gui->addSlider("rotateY",-360.0f, 360.0f,  &(rotateY));
+        gui->addSlider("rotateZ", -360.0f, 360.0f,  &(rotateZ));
+                gui->addSlider("rotateX", -360.0f, 360.0f,  &(rotateX));
+        gui->addSlider("tranX", -1800.0f, 1800.0f,  &(tranX));
+                gui->addSlider("tranY", -1800.0f, 1800.0f,  &(tranY));
+                gui->addSlider("tranZ", -2800.0f, 2800.0f,  &(tranZ));
         vector<string> names;
-        names.push_back("NUBE");
+        names.push_back("RUIDO");
         names.push_back("ESPEJO");
+        names.push_back("DESAPARECE");
         gui->addRadio("MODO_Partics", names, OFX_UI_ORIENTATION_HORIZONTAL);
         gui->addIntSlider("alpha Particles", 1, 255, &(alphaParticles)) ;
         ofAddListener(gui->newGUIEvent,this,&particleClouds::guiEvent);
@@ -177,19 +227,23 @@ public:
         {
             ofxUIRadio *  wr = (ofxUIRadio *) e.widget;
             ofLogNotice("MODO_Partics. " + wr ->getActiveName() + " = " + ofToString(wr->getValue()));
-            particleMode = wr->getValue();
+            cloudState = wr->getValue();
             //		gui1->loadSettings("./config/gui/gui_kinect.xml");
         }
 
     }
     
-    int		particleMode;
-    float zMin, zMax;
+    int		cloudState;
+    float *zMin, *zMax;
     float speed;
     float acceleration;
     int stopUmbral;
     int alphaParticles;
     bool bRealColors;
+    float rotateY=0; float rotateZ=0; float rotateX=0;
+    float tranX=0;
+        float tranY=0;
+        float tranZ=0;
 
 private:
     int numParticles;

@@ -10,7 +10,7 @@
 #ifndef _PARTICLE
 #define _PARTICLE
 
-#define MAX_SPEED 30.f
+#define MAX_SPEED 20.f
 #define MAX_STEER 0.9f
 #include "ofMain.h"
 
@@ -28,7 +28,7 @@ class Particle
         recentlyUsed=0;
     };
     
-    Particle( ofVec3f _position , ofColor _color, int mx, int my )
+    Particle( ofVec3f _position , ofColor _color, int mx, int my , int mz=0)
     {
         position = _position ;
         color = _color ;
@@ -36,9 +36,9 @@ class Particle
         spawnPoint = _position ;
         _x=mx;
         _y=my;
+        _z=mz;
         recentlyUsed=0;
     };
-    
     
     ofVec3f position , velocity ;
     ofVec3f acceleration ;          //smoothing applied to velocity
@@ -46,6 +46,7 @@ class Particle
     ofColor color ;
     int _x;
     int _y;
+    int _z;
     char recentlyUsed;
     
     void applyForce(float a_x, float a_y, float a_z) {

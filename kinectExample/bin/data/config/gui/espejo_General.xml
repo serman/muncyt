@@ -12,12 +12,12 @@
 <Widget>
     <Kind>2</Kind>
     <Name>EM</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
     <Name>DEBIL</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -28,4 +28,19 @@
     <Kind>2</Kind>
     <Name>GRAVEDAD</Name>
     <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>42</Kind>
+    <Name>lx</Name>
+    <Value>-99</Value>
+</Widget>
+<Widget>
+    <Kind>42</Kind>
+    <Name>ly</Name>
+    <Value>-228</Value>
+</Widget>
+<Widget>
+    <Kind>42</Kind>
+    <Name>lz</Name>
+    <Value>671</Value>
 </Widget>
