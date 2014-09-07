@@ -12,6 +12,8 @@
 class gridView{
     
 public:
+    enum {INIT, END, GRID, BLACKHOLE};
+    int status=GRID;
     void setup(int _w, int _h, float *_zMin, float *_zMax, ofxOpenNI2Grabber *_oniCamGrabber, extendedDepthSource *_depthGenerator){
         w=_w;
         h=_h;
@@ -27,18 +29,20 @@ public:
         fbo.begin();
         ofClear(0, 0, 0, 0);
         fbo.end();
-
     }
     
     void update(){
-        counter++;
-        if(amplitude>0) amplitude-=0.5;
-        if(elong_current>elong_goal ){
-            elong_current-=0.01;
-            
+        switch(status){
+            case GRID:
+                counter++;
+                if(amplitude>0) amplitude-=0.5;
+                if(elong_current>elong_goal ){
+                    elong_current-=0.01;
+                }
+                else if(elong_current<elong_goal)
+                    elong_current+=0.01;
+            break;
         }
-        else if(elong_current<elong_goal)
-            elong_current+=0.01;
         
     }
     
@@ -157,7 +161,8 @@ public:
     
     void draw(ofCamera *cam){
 
-       
+       if(status!=GRID)
+           return;
        // fbo.begin();
        // ofClear(0,0,0,0);
       //  ofSetMatrixMode(OF_MATRIX_PROJECTION);
@@ -236,8 +241,34 @@ public:
         gui1->addIntSlider("Distance Lines", 50, 600, &distanciaLineasK) ;
         gui1->addIntSlider("stepLines", 2,10, &stepLines);
         gui1->addSlider("elongation", 0.3,3, &elong_goal);
+        
+        vector<string> names;
+        names.push_back("INIT");
+        names.push_back("END");
+        names.push_back("GRID");
+        names.push_back("BLACKHOLE");
+        
+        gui1->addRadio("MODO_grid", names, OFX_UI_ORIENTATION_HORIZONTAL);
+        ofAddListener(gui1->newGUIEvent,this,&gridView::guiEvent);
+
+        
         guiTabBar->addCanvas(gui1);
     }
+    
+    void guiEvent(ofxUIEventArgs &e)
+    {
+        string name = e.widget->getName();
+        int kind = e.widget->getKind();
+        
+        if(name == "MODO_grid")
+        {
+            ofxUIRadio *  wr = (ofxUIRadio *) e.widget;
+            ofLogNotice("MODO_grid. " + wr ->getActiveName() + " = " + ofToString(wr->getValue()));
+            status = wr->getValue();
+        }
+        
+    }
+
     
     void setVibration(){
         amplitude=60;

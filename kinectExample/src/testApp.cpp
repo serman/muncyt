@@ -114,7 +114,8 @@ void testApp::setup() {
 #ifndef EASYCAM
     loadCameraPose();
 #endif
-    appStatuses["escena"]=EM;
+    loadScreenId();
+    
     //http://stackoverflow.com/questions/12018710/calculate-near-far-plane-vertices-using-three-frustum
  
     light.setup();
@@ -188,9 +189,10 @@ void testApp::update() {
                 break;
                 
                 case GRAVEDAD:
-                    mcontour.update();
-                    mtunnel.update();
-                       // sender.send(mcontour.v[0]);
+                    mcontour.update();                    
+                    if(mgrid.status==mgrid.BLACKHOLE){
+                        sender.send(mcontour.v[0]);
+                    }
                 break;
                       
                 case NUCLEAR_DEBIL:
@@ -247,9 +249,7 @@ void testApp::draw() {
 		if(bDrawLinesV) drawLinesV();
     	if(bDrawNativePointCloud) drawPointCloud();
 #else
-        light.setPosition(lx, ly, lz);
-    light.draw();
-    
+    post.begin();
         switch(appStatuses["escena"]){
                 
             case EM:
@@ -257,8 +257,12 @@ void testApp::draw() {
             break;
                 
             case GRAVEDAD:
-                mgrid.draw(&camera);
-                mtunnel.draw();
+                if(mgrid.status==mgrid.GRID){
+                    mgrid.draw(&camera);
+                }
+                else if(mgrid.status==mgrid.BLACKHOLE){
+                    mtunnel.draw();
+                }
             break;
                 
             case NUCLEAR_DEBIL:
@@ -269,6 +273,7 @@ void testApp::draw() {
                 
                 break;
         }
+    post.end();
  /*    cout << "fov"<< ofToString(camera.getFov())<<endl;
     cout << "aspect"<< ofToString(camera.getAspectRatio())<<endl;
         cout << "near clip"<< ofToString(camera.getNearClip())<<endl;
@@ -355,11 +360,17 @@ void testApp::draw() {
                 break;
                 
             case GRAVEDAD:
-
-                break;
+                if(mgrid.status==mgrid.BLACKHOLE){
+                    if(mcontour.v.size()>0 && mcontour.v[0].size()>0){
+                        mcontour.draw(&(mcontour.v[0])); // TODO REPLACE WITH THE OTHER CONTOUR
+                    }
+                }
+            break;
                 
             case NUCLEAR_DEBIL:
-                mcontour.draw();
+
+                    mcontour.draw();
+
                 break;
                 
             case NUCLEAR_FUERTE:
@@ -434,7 +445,14 @@ void testApp::loadCameraPose() {
 	fileRead >> myMatrix;
 	camera.setTransformMatrix(myMatrix);
 }
-    
+
+void testApp::loadScreenId(){
+    ofFile fileRead("./config/id.txt");
+    int id;
+    fileRead >> id;
+    SCREEN_ID=id;
+    ofLogVerbose()<<"SCREEN ID:" << id<<endl;
+}
 
     
 #endif

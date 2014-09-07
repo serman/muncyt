@@ -80,7 +80,8 @@ public:
 	void draw() {
 
 		ofPushMatrix();
-        		glEnable(GL_DEPTH_TEST);
+        
+        glEnable(GL_DEPTH_TEST);
    		ofNoFill();
 
 		enableFog(fogNear, fogFar);
@@ -105,8 +106,6 @@ public:
 			tunnelSegment.addVertex(segmentOffset + v0);
 			tunnelSegment.addVertex(segmentOffset + v1);
 		}
-		
-
 		
 		ofVec2f lerpOrientation = ofVec2f().interpolate(getOrientation(rotationChange * (1 + moveWhole)), moveFraction);
 		ofRotateX(-lerpOrientation.x);

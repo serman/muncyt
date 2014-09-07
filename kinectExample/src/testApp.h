@@ -90,7 +90,6 @@ public:
 	ofxCvGrayscaleImage grayThreshFar; // the far thresholded image
     bool debug;
     
-    
 
 	
 	int angle;
@@ -157,8 +156,10 @@ public:
     ofLight light;
     int lx,ly,lz=0;
     ofxPostProcessing post;
-    void
-    setLightOri(ofLight &light, ofVec3f rot)
+    int SCREEN_ID;
+    void loadScreenId();
+    
+    void setLightOri(ofLight &light, ofVec3f rot)
     {
         ofVec3f xax(1, 0, 0);
         ofVec3f yax(0, 1, 0);

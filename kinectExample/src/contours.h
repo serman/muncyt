@@ -27,25 +27,29 @@ public:
         v= getSmoothSilhouete1(contourFinder, depthImg, (float)0.1/10);
         if(v.size()>0){
             resampledContour =v[0];
+        }
     }
-    }
-    void draw(){
+    
+    void draw(ofPolyline *mcontour=NULL ){
+        //NIAPILLA. SI NO LE PASAS NADA DIBUJA POR DEFECTO LA SILUETA LOCAL. SI LE PASAS OTRO POLILINE ( EL REMOTO)
+        //LO DIBUJA
+        if(mcontour==NULL)
+            mcontour=&resampledContour;
         ofFill();
         ofSetColor(255,255,255);
         ofSetColor(255, 255, 0);
         ofSetLineWidth(2);
-        if(resampledContour.size()>=3) {
+        if(mcontour->size()>=3) {
             triangulation.reset();
-            for(int i=0; i<resampledContour.size(); i++) {
-                triangulation.addPoint(resampledContour[i]);
+            for(int i=0; i<mcontour->size(); i++) {
+                triangulation.addPoint((*mcontour)[i]);
             }
             if(bAddPts) {
-                ofRectangle bounds = resampledContour.getBoundingBox();
-                
+                ofRectangle bounds = mcontour->getBoundingBox();
                 for(int i=0; i<numPointsXtra; i++) {
                     float px = bounds.x+ofRandom(bounds.width);
                     float py = bounds.y+ofRandom(bounds.height);
-                    if( resampledContour.inside(ofPoint(px, py)) ){
+                    if( mcontour->inside(ofPoint(px, py)) ){
                         triangulation.addPoint(ofPoint(px, py));
                     }
                 }
@@ -65,7 +69,7 @@ public:
                 ofVec3f c = faces[i].getVertex(2);
                 ofVec3f pm = (a+b+c)/3.0;
                 
-                if( resampledContour.inside(ofPoint(pm.x,pm.y)) ) {
+                if( mcontour->inside(ofPoint(pm.x,pm.y)) ) {
                     // supongo el area de imagen dividido en 10 franjas divididas a su vez en
                     // colorFluor.size() bandas de distinto color
                     float hBandaPpal = ofGetHeight()/10;
@@ -144,6 +148,10 @@ public:
 
     }
     
+    void drawRemote(){
+        
+    }
+    
     void setup(ofxOpenNI2Grabber *_oniCamGrabber){
         cargaColores();
         bFill = false;
@@ -202,7 +210,7 @@ private:
 	bool	bSoloEnContorno;	// si muestra solo los triangulos de dentro del contorno
 	ofMesh	triangContMesh;
     ofxCv::ContourFinder contourFinder;
-    ofPolyline resampledContour;
+    ofPolyline resampledContour; //local contour
     
 	bool doTessel;
 	ofTessellator tessel;
