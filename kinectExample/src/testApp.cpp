@@ -132,6 +132,8 @@ void testApp::setup() {
     post.createPass<LimbDarkeningPass>()->setEnabled(false);
     post.createPass<VerticalTiltShifPass>()->setEnabled(false);
     post.createPass<ConvolutionPass>()->setEnabled(false);
+    
+    mtunnel.setup();
 
     
 }
@@ -186,7 +188,8 @@ void testApp::update() {
                 break;
                 
                 case GRAVEDAD:
-                        mcontour.update();
+                    mcontour.update();
+                    mtunnel.update();
                        // sender.send(mcontour.v[0]);
                 break;
                       
@@ -255,6 +258,7 @@ void testApp::draw() {
                 
             case GRAVEDAD:
                 mgrid.draw(&camera);
+                mtunnel.draw();
             break;
                 
             case NUCLEAR_DEBIL:

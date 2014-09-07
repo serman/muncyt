@@ -13,6 +13,7 @@
 #include "contours.h"
 #include "gridView.h"
 #include "ofxPostProcessing.h"
+#include "tunnel.h"
 
 //#define EASYCAM
 
@@ -150,6 +151,7 @@ public:
     particleClouds particleCloud;
     contours mcontour;
     gridView mgrid;
+    tunnel   mtunnel;
     ofVec3f tr, tl, bl, br;
     ofMesh mesh1;
     ofLight light;

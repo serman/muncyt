@@ -17,7 +17,7 @@
 <Widget>
     <Kind>2</Kind>
     <Name>DEBIL</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -27,7 +27,7 @@
 <Widget>
     <Kind>2</Kind>
     <Name>GRAVEDAD</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>42</Kind>

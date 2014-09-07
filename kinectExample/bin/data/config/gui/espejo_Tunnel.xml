@@ -1,0 +1,50 @@
+<Widget>
+    <Kind>42</Kind>
+    <Name>fogNear</Name>
+    <Value>400</Value>
+</Widget>
+<Widget>
+    <Kind>42</Kind>
+    <Name>fogFar</Name>
+    <Value>2984</Value>
+</Widget>
+<Widget>
+    <Kind>42</Kind>
+    <Name>tunnelLength</Name>
+    <Value>20</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>tunnelSeparation</Name>
+    <Value>887.755065918</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>tunnelRadius</Name>
+    <Value>278.061218262</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>rotationChange</Name>
+    <Value>0.050000001</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>xRotation</Name>
+    <Value>10.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>yRotation</Name>
+    <Value>10.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>moveSpeed</Name>
+    <Value>4017.856933594</Value>
+</Widget>
+<Widget>
+    <Kind>42</Kind>
+    <Name>circleResolution</Name>
+    <Value>27</Value>
+</Widget>

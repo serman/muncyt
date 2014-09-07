@@ -19,6 +19,7 @@ void testApp::setupGUI() {
     particleCloud.setUI(guiTabBar);
     mcontour.setUI(guiTabBar);
     mgrid.setUI(guiTabBar);
+    mtunnel.setUI(guiTabBar);
 
 	gui1->addSpacer();
 	gui1->addButton("save",true);
