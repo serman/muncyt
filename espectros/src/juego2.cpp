@@ -29,7 +29,6 @@ void juego2::setup(){
     //    ball.setData(new string("ball"));
     player.setData(jugador);
     fbo.allocate(SCREEN_W, SCREEN_H, GL_RGBA);
-    fboGeneral.allocate(640, 480, GL_RGBA);
     appStatuses["game_status"]=PLAYING;
     appStatuses["win_timer"]=0;
     appStatuses["hold_key"]=false;
@@ -143,7 +142,6 @@ void juego2::drawBgRegion(){
     fbo.end();
     fbo.readToPixels(remoteBlobImgPxl);
     //  remoteBlobImgPxl.update();
-    
     //Paso las imagenes originales a openCV
     cv::Mat fullimageCV;
     fullimageCV=ofxCv::toCv(remoteBlobImgPxl);
@@ -388,10 +386,12 @@ void juego2::keyPressed(int key){
     else if(key=='w'){
         previousKey=currentKey;
         currentKey=UP;
+        cout << 'w' <<endl;
     }
     else if(key=='s'){
         previousKey=currentKey;
         currentKey=DOWN;;
+        cout << 's' <<endl;
     }
     
     else if(key=='f')

@@ -49,7 +49,6 @@ class fantasmas : public ofxScene{
 	    cheapComm myOSCcomm;
     //32 bits red, 32 bits green, 32 bits blue, from 0 to 1 in 'infinite' steps
     ofFbo fbo; // with alpha
-    ofFbo fboGeneral; // with alpha
     ofPixels cameraPixels;
     ofImage cameraImg;
     

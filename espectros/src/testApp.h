@@ -23,7 +23,7 @@
 #include "generativo1.h"
 #include "juego1.h"
 #include "juego2.h"
-
+#include "joy2key.h"
 class testApp : public ofBaseApp{
     
 	enum Scenes{ SCENE_0= 0, SCENE_1, SCENE_2, SCENE_3 };
@@ -50,4 +50,5 @@ public:
 
     ofxSyphonClient mSyphonClient;
     ofxSyphonClient mSyphonClient2;
+    joy2key j2key;
 };

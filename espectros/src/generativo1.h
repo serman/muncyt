@@ -30,7 +30,6 @@ public:
     ofxSyphonClient *mSyphonClient2;
     
     ofFbo fbo; // with alpha
-    ofFbo fboGeneral; // with alpha
     ofPixels cameraPixels;
     ofImage cameraImg;
     

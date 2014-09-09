@@ -16,7 +16,7 @@ void cheapComm::setup(){
     string dst="localhost";
 	myosc.setup(dst, serverRecvPort);
 	int maxServerMessages = 38;
-
+    
 
 }
 

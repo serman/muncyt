@@ -9,7 +9,7 @@
 void juego1::setup(){
     
 	ofSetLogLevel(OF_LOG_NOTICE);
-	
+	ofDisableArbTex();
     box2d.init();
 
 	box2d.setGravity(0, 10);
@@ -39,7 +39,6 @@ void juego1::setup(){
     isGoal=false;
     
     fbo.allocate(SCREEN_W, SCREEN_H, GL_RGBA);
-    fboGeneral.allocate(640, 480, GL_RGBA);
     appStatuses["game_status"]=PLAYING;
     appStatuses["win_timer"]=0;
     appStatuses["hold_key"]=false;
@@ -47,6 +46,7 @@ void juego1::setup(){
     appStatuses["lastTimeRead"];
     appStatuses["level"]=0;
       ofBackground(0,0,0);
+    filter=new SobelEdgeDetectionFilter(VIDEO_W, VIDEO_H);
 
 }
 /*
@@ -58,16 +58,16 @@ void juego1::draw(){
     fbo.begin();
         ofClear(0, 0, 0, 0);
         //  IMPORTANTE ESTOY DIBUJANDO SOBRE UN FBO DE TAMAÑO DEFINIDO CON LO QUE AL PINTAR FUERA NO SE VE
-        mSyphonClient2->drawSubsection(0,0,SCREEN_W,SCREEN_H,0,VIDEO_offset,640,SCREEN_H);
+        mSyphonClient->drawSubsection(0,0,SCREEN_W,SCREEN_H,0,VIDEO_offset,640,SCREEN_H);
     fbo.end();
     /*convertColor(cam, gray, CV_RGB2GRAY);
     Canny(gray, edge, mouseX, mouseY, 3);
     edge.update();*/
-    fbo.readToPixels(remoteBlobImgPxl);
+    //fbo.readToPixels(remoteBlobImgPxl);
     //feedImg.setFromPixels(remoteBlobImgPxl);
-    ofxCv::convertColor(remoteBlobImgPxl,gray , CV_RGB2GRAY);
-    ofxCv::Canny(gray, edge, ofGetMouseX(), ofGetMouseY(), 3);
-    edge.update();
+       // ofxCv::convertColor(remoteBlobImgPxl,gray , CV_RGB2GRAY);
+       // ofxCv::Canny(gray, edge, ofGetMouseX(), ofGetMouseY(), 3);
+       // edge.update();
     ofFill();
   //  ofBackground(0,0,0);
 
@@ -76,7 +76,11 @@ void juego1::draw(){
     ofTranslate(200,200); //PINTO EN LA ZONA D ELA PANTALLA QUE QUIERO
     ofRect(-2,-2,SCREEN_W+5,SCREEN_H+5);
     ofSetColor(0,184, 0);
-    edge.draw(0,0);
+  //  edge.draw(0,0);
+    filter->begin() ;
+    fbo.draw(0, 0);
+    filter->end() ;
+
     /*ofPushMatrix();
     ofTranslate(0,-VIDEO_offset);
     ofPopMatrix();*/
@@ -307,22 +311,22 @@ void juego1::drawControls(){
 void juego1::keyPressed(int key){
     if(key=='o')
         addObstacle();
-    else if(key=='t')
+    else if(key=='e')
         appStatuses["hold_key"]=true;
-    else if(key=='a'){
+    else if(key=='w'){
         throwDirection.rotate(-1);
     }
-    else if(key=='d'){
+    else if(key=='s'){
         throwDirection.rotate(1);
     }
-    else if(key=='m'){
+    else if(key=='t'){
         moveGoal();
     }
     
 }
 
 void juego1::keyReleased(int key){
-    if(key=='t'){
+    if(key=='e'){
         throwBall();
         appStatuses["hold_key"]=false;
     }

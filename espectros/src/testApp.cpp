@@ -25,7 +25,7 @@ void testApp::setup(){
     mSyphonClient2.setup();
     mSyphonClient2.set("onlyBlobs","");
     
-
+    j2key.setup();
     
     
 //	sceneManager->addScene( new electromagnetica(), SCENE_2);
@@ -70,6 +70,7 @@ void testApp::setup(){
 }
 
 void testApp::update(){
+    j2key.update();
 	tuioClient.getMessage();
 	sceneManager->update(  0.016666666 );
 }

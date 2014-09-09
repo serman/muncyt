@@ -21,6 +21,7 @@
 #include "ofxBox2d.h"
 #include "ofMain.h"
 #include "ofxCv.h"
+#include "ofxFilterLibrary.h"
 
 #define SCREEN_W 768
 #define SCREEN_H 384
@@ -38,7 +39,6 @@ public:
     ofxSyphonClient *mSyphonClient2;
     
     ofFbo fbo; // with alpha
-    ofFbo fboGeneral; // with alpha
     ofPixels cameraPixels;
     ofImage cameraImg;
     
@@ -94,7 +94,7 @@ private:
     
     ofPixels remoteBlobImgPxl;
     ofImage feedImg;
-    
+        AbstractFilter *filter;
     typedef enum tipos {BALL=1, GOAL =2, OBSTACLE} tipoObj;
     enum game_status{WAIT, PLAYING, WIN};
     typedef struct  {
