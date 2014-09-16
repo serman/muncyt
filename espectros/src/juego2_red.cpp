@@ -152,6 +152,7 @@ void juego2::explode(ofPoint d){
     drawExplodeb=true;
     start=0;
     end=2;
+    mparticles.addEmitter(player.getPosition().x,player.getPosition().y);
 }
 
 void juego2::drawExplode(){

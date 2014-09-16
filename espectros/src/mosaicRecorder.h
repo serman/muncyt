@@ -15,7 +15,7 @@
 
 
 #include "ofMain.h"
-#include "ofxXmlSettings.h";
+#include "ofxXmlSettings.h"
 
 #ifndef IMAGES
 	#include "ofxVideoSaver.h"

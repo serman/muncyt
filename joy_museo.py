@@ -151,7 +151,7 @@ while done==False:
             except :
                 print "another exception"
             pygame.time.wait(25)
-#        continue        
+        continue        
         textPrint.unindent()
             
         buttons = joystick.get_numbuttons()
@@ -193,7 +193,7 @@ while done==False:
     # ALL CODE TO DRAW SHOULD GO ABOVE THIS COMMENT
     
     # Go ahead and update the screen with what we've drawn.
-    pygame.display.flip()
+    #pygame.display.flip()
 
     
     

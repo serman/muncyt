@@ -22,7 +22,8 @@
 #include "ofMain.h"
 #include "ofxCv.h"
 #include "ofxFilterLibrary.h"
-
+#include "effects.h"
+#include "tr1/boost_shared_ptr.h"
 #define SCREEN_W 768
 #define SCREEN_H 384
 #define VIDEO_W 640
@@ -64,13 +65,15 @@ public:
     void keyPressed(int key);
     void keyReleased(int key);
     void showDebug()    ;
+    void setupUI();
 
 private:
     ofxBox2d                            box2d;
     vector		<ofPtr<ofxBox2dRect> >	circles;		  //	default box2d circles
     void addObstacle();
-    void addObstacle(ofPoint p1, int m_id);
+    void addObstacle(ofPoint p1, int m_id,  float w=0.05, float h=0.05);
     void updateObstacle(ofPoint p1, int m_id);
+     void updateObstacle(ofPoint p1, int m_id, float, float);
     void removeObstacle(int);
         void hideObstacle(int);
     void throwBall();
@@ -84,6 +87,7 @@ private:
     void contactStart(ofxBox2dContactArgs &e);
     bool isGoal;
     void moveGoal();
+    void randomMoveGoal();
     ofPoint convertPoint(float, float);
     /** escalado video ajuste pantala */
     float VIDEO_scale=SCREEN_W/640;
@@ -92,18 +96,40 @@ private:
     ofPixels gray;
 	ofImage edge;
     
+    ofxUICanvas *gui2;
+    void gui2Event(ofxUIEventArgs &);
     ofPixels remoteBlobImgPxl;
     ofImage feedImg;
         AbstractFilter *filter;
     typedef enum tipos {BALL=1, GOAL =2, OBSTACLE} tipoObj;
-    enum game_status{WAIT, PLAYING, WIN};
+    enum game_status{WAIT, PLAYING, WIN,LOSE,WINWIN};
+    enum game_sub_status{THROW, BOUNCING};
     typedef struct  {
         tipoObj tipo;
         int id ;
         bool isHidden;
     } datoObjeto;
 
-
+    effectsHandler eff;
+    
+    void reset();
+    void setLevel();
+    
+    
+    //Parametros tocables float density, float bounce, float friction)
+    float ballDensity=0.89;
+    float ballBounce=0.65;
+    float ballFriction=0.8;
+    
+    float enemyDensity=0.0; //static object
+    float enemyBounce=1.5;
+    float enemyFriction=0.7;
+    
+    float gravityY=10.0;
+    
+    float goalHeight=80;
+    bool goalDown=false;
+    
 };
 
 

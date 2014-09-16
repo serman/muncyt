@@ -61,6 +61,8 @@ void juego2::setup(){
     threshold=254;
     contourFinder.setThreshold(threshold);
     contourFinder.findContours(mask1);
+    createBigEnemy();
+    
 }
 
 
@@ -71,14 +73,16 @@ void juego2::update(float f){
         move(currentKey);
                
         if(prepareReset) {
-            //explode();
             reset();
         prepareReset=false;
         }
        // threshold = ofMap(ofGetMouseX(), 0, ofGetWidth(), 0, 255);
         //if(startProcessing);
             //contourFinder.findContours(mask1); // no hace falta pasar el contour finder todo el rato solo cuando se cierra
+        mparticles.update();
     }
+    ofPoint p1=newPosition();
+    bigEnemy.setPosition(p1);
     
     
 }
@@ -123,8 +127,10 @@ void juego2::draw(){
                 appStatuses["game_status"]=PLAYING;
             }
         }
-        if(drawExplodeb)
+        if(drawExplodeb){
             drawExplode();
+            mparticles.draw();
+        }
     ofPopMatrix();
 
 
@@ -232,6 +238,8 @@ void juego2::drawEnemies(){
         }
 	}
     ofDisableBlendMode();
+    enemy *menemy=(enemy *)bigEnemy.getData();
+    menemy->draw(bigEnemy.getPosition().x, bigEnemy.getPosition().y);
 }
 
 void juego2::showDebug(){
@@ -289,6 +297,18 @@ void juego2::hideObstacle( int m_id){
             mdata->isHidden=true;
         }
     }
+}
+
+void juego2::createBigEnemy(){
+    
+    bigEnemy.setPhysics(0.1, 1, 0.7);
+    bigEnemy.setup(box2d.getWorld(), ofRandom(SCREEN_W), ofRandom(SCREEN_H), 10);
+    enemy *obstacle;
+    obstacle= new enemy();
+    obstacle->tipo=OBSTACLE;
+    obstacle->id=1;
+    obstacle->create();
+    bigEnemy.setData(obstacle);
 }
 
 

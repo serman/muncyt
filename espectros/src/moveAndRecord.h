@@ -10,7 +10,7 @@
 #define panel1_tracking_moveAndRecord_h
 #include "ofMain.h"
 #include <math.h>
-#include "ofxXmlSettings.h";
+#include "ofxXmlSettings.h"
 #endif
 #define RECORDINGTIME 5000
 #define RECTANGLESIZE 128

@@ -3,7 +3,7 @@
 //--------------------------------------------------------------
 void testApp::setup(){
     setupStatus();
-    ofSetFrameRate(30);
+    ofSetFrameRate(19);
     adminMode=true;
     bg.loadImage("bg.jpg");
     ofSetBackgroundAuto(false);

@@ -15,7 +15,6 @@
 
 #define MAX_SEQUENCES 3
 class fantasmas : public ofxScene{
-
 	public:
 		void setup();
 		void update(float );

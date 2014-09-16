@@ -23,6 +23,7 @@
 #include "cv.h"
 #include <math.h> 
 #include "enemy.h"
+#include "particleSourceHandler.h"
 
 #define SCREEN_W 768
 #define SCREEN_H 384
@@ -136,7 +137,19 @@ private:
     int start, end;
     bool drawExplodeb;
     int calcMarcador();
-    
+ ParticleSourceHandler mparticles;
+    ofxBox2dCircle bigEnemy;
+    float xoff=0;
+    float yoff=1;
+    ofPoint newPosition(){
+        ofPoint p1;
+        xoff+=0.01;
+        yoff+=0.01;
+        p1.x=ofNoise(xoff,yoff)*768;
+        p1.y=ofNoise(yoff,yoff)*384;
+        return p1;
+    }
+    void createBigEnemy();
 
 };
 

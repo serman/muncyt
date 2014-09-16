@@ -29,7 +29,8 @@ void fantasmas::setup(){
     
 
     
-     gui2 = new ofxUICanvas(1038,583, 295,285);
+     gui2 = new ofxUICanvas(500,0, 295,285);
+    gui2->disable();
     vector<string> vnames; vnames.push_back("0"); vnames.push_back("1"); vnames.push_back("2");
     gui2->addLabel("VERTICAL RADIO", OFX_UI_FONT_MEDIUM);
     ofxUIRadio *radio = gui2->addRadio("VR", vnames, OFX_UI_ORIENTATION_HORIZONTAL);

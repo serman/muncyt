@@ -138,12 +138,13 @@ public:
 					float maccel =  m.getArgAsFloat(6);
 					float mwidth =  m.getArgAsFloat(7);
 					float mheight =  m.getArgAsFloat(8);
-
+                    //if (sid%3==0)
+                    //    cout << sid << " : " << mheight*480  <<endl;
 					list<ofxTuioCursor*>::iterator tit;
 					for (tit=cursorList.begin(); tit != cursorList.end(); tit++)
 						if((*tit)->getSessionId()==sid) break;
 
-					if (tit == cursorList.end()) {
+					if (tit == cursorList.end()) { //parte de cursor added
 						int fid = (int)(cursorList.size());
 
 						if ((int)(cursorList.size())<=maxFingerID) {
@@ -162,13 +163,18 @@ public:
 						ofxTuioCursor *addCursor = new ofxTuioCursor(sid,fid,xpos,ypos);
                         addCursor->width=mwidth;
                         addCursor->height=mheight;
+                       // if (sid%3==0)
+                       //     cout << sid << " : " << addCursor->height*480 << "repeticio" <<endl;
+                        
 						cursorList.push_back(addCursor);
 
 						ofNotifyEvent(cursorAdded, *(cursorList.back()), this);
-
+                            //cursor updated
 					} else if ( ((*tit)->getX()!=xpos) || ((*tit)->getY()!=ypos) || ((*tit)->getXSpeed()!=xspeed) || ((*tit)->getYSpeed()!=yspeed) || ((*tit)->getMotionAccel()!=maccel) ) {
 						(*tit)->update(xpos,ypos,xspeed,yspeed,maccel);
-
+                        (*tit)->width=mwidth;
+                        (*tit)->height=mheight;
+                        
 						ofNotifyEvent(cursorUpdated, **tit, this);
 					}
 				} else if( m.getArgAsString( 0 ) == "alive" ){

@@ -238,6 +238,9 @@
 		F7B132C019BE0D430078B97C /* XYDerivativeFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7B1327519BE0D430078B97C /* XYDerivativeFilter.cpp */; };
 		F7B132C119BE0D430078B97C /* ZoomBlurFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7B1327719BE0D430078B97C /* ZoomBlurFilter.cpp */; };
 		F7B132C219BE0D430078B97C /* ParametricObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7B1328619BE0D430078B97C /* ParametricObject.cpp */; };
+		F7B132CD19BF48380078B97C /* particle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7B132C519BF48380078B97C /* particle.cpp */; };
+		F7B132CE19BF48380078B97C /* ParticleEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7B132C719BF48380078B97C /* ParticleEmitter.cpp */; };
+		F7B132D019BF48380078B97C /* particleSourceHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7B132CB19BF48380078B97C /* particleSourceHandler.cpp */; };
 		F8D05F7C7F785CE323983B47 /* ofxUITextInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06C7032F68D99A145A53CB6F /* ofxUITextInput.cpp */; };
 		F9C20834354ACC8337320B8C /* ofxUIMultiImageToggle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C5ED4467DFF0AC3482E9362 /* ofxUIMultiImageToggle.cpp */; };
 		FB09C6B2A1DA0EA217240CB8 /* ofxCvGrayscaleImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 057122A817D12571F8C0C7A4 /* ofxCvGrayscaleImage.cpp */; };
@@ -718,6 +721,7 @@
 		F7775AED199B8D99008C334D /* triangle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = triangle.h; sourceTree = "<group>"; };
 		F7775AEE199B8D99008C334D /* triangle_impl.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = triangle_impl.hpp; sourceTree = "<group>"; };
 		F7775B2A199D09FD008C334D /* juego1_red.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = juego1_red.cpp; sourceTree = "<group>"; };
+		F79B33DF19C231E000837E99 /* effects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = effects.h; sourceTree = "<group>"; };
 		F7A657C119A5655D004E0E78 /* juego2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = juego2.cpp; sourceTree = "<group>"; };
 		F7A657C219A5655D004E0E78 /* juego2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = juego2.h; sourceTree = "<group>"; };
 		F7A657C419A56591004E0E78 /* juego2_red.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = juego2_red.cpp; sourceTree = "<group>"; };
@@ -856,6 +860,12 @@
 		F7B1328619BE0D430078B97C /* ParametricObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ParametricObject.cpp; sourceTree = "<group>"; };
 		F7B1328719BE0D430078B97C /* ParametricObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ParametricObject.h; sourceTree = "<group>"; };
 		F7B132C319BE8A480078B97C /* joy2key.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = joy2key.h; path = ../joy2key.h; sourceTree = "<group>"; };
+		F7B132C519BF48380078B97C /* particle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = particle.cpp; sourceTree = "<group>"; };
+		F7B132C619BF48380078B97C /* Particle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Particle.h; sourceTree = "<group>"; };
+		F7B132C719BF48380078B97C /* ParticleEmitter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ParticleEmitter.cpp; sourceTree = "<group>"; };
+		F7B132C819BF48380078B97C /* ParticleEmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParticleEmitter.h; sourceTree = "<group>"; };
+		F7B132CB19BF48380078B97C /* particleSourceHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = particleSourceHandler.cpp; sourceTree = "<group>"; };
+		F7B132CC19BF48380078B97C /* particleSourceHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = particleSourceHandler.h; sourceTree = "<group>"; };
 		F7FBC56859535E597B24BB91 /* NetworkingUtils.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = NetworkingUtils.h; path = ../../../addons/ofxOsc/libs/oscpack/src/ip/NetworkingUtils.h; sourceTree = SOURCE_ROOT; };
 		F886EBA3F8F05C7F74633933 /* devmem2d.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = devmem2d.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/gpu/devmem2d.hpp; sourceTree = SOURCE_ROOT; };
 		F9A4454B00CCFD7265D3CA85 /* ofxUILabelButton.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUILabelButton.cpp; path = ../../../addons/ofxUI/src/ofxUILabelButton.cpp; sourceTree = SOURCE_ROOT; };
@@ -1811,6 +1821,7 @@
 			isa = PBXGroup;
 			children = (
 				F77253CB1986AF3400ADD13E /* juego1.cpp */,
+				F79B33DF19C231E000837E99 /* effects.h */,
 				F77253CC1986AF3400ADD13E /* juego1.h */,
 				F7775B2A199D09FD008C334D /* juego1_red.cpp */,
 				F7A657D319AEBADC004E0E78 /* gameAdmin.h */,
@@ -2052,11 +2063,12 @@
 		F7A657C019A56535004E0E78 /* juego2 */ = {
 			isa = PBXGroup;
 			children = (
+				F7B132C419BF48100078B97C /* particles */,
 				F7A657C119A5655D004E0E78 /* juego2.cpp */,
+				F7A657C219A5655D004E0E78 /* juego2.h */,
 				F7A657D219AC9CFC004E0E78 /* enemy.h */,
 				F7A657C719A60F65004E0E78 /* pyl.cpp */,
 				F7A657C819A60F65004E0E78 /* pyl.h */,
-				F7A657C219A5655D004E0E78 /* juego2.h */,
 				F7A657C419A56591004E0E78 /* juego2_red.cpp */,
 			);
 			name = juego2;
@@ -2224,6 +2236,19 @@
 			path = parameters;
 			sourceTree = "<group>";
 		};
+		F7B132C419BF48100078B97C /* particles */ = {
+			isa = PBXGroup;
+			children = (
+				F7B132C519BF48380078B97C /* particle.cpp */,
+				F7B132C619BF48380078B97C /* Particle.h */,
+				F7B132C719BF48380078B97C /* ParticleEmitter.cpp */,
+				F7B132C819BF48380078B97C /* ParticleEmitter.h */,
+				F7B132CB19BF48380078B97C /* particleSourceHandler.cpp */,
+				F7B132CC19BF48380078B97C /* particleSourceHandler.h */,
+			);
+			name = particles;
+			sourceTree = "<group>";
+		};
 		F9F05170CB9BDF47DA2B6E6A /* include */ = {
 			isa = PBXGroup;
 			children = (
@@ -2340,6 +2365,7 @@
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				F7775AFB199B8D99008C334D /* b2Distance.cpp in Sources */,
 				F7775B1A199B8D99008C334D /* b2Joint.cpp in Sources */,
+				F7B132CD19BF48380078B97C /* particle.cpp in Sources */,
 				F7B132AA19BE0D430078B97C /* HarrisCornerDetectionFilter.cpp in Sources */,
 				F7B132A919BE0D430078B97C /* GrayscaleFilter.cpp in Sources */,
 				F7775AF2199B8D99008C334D /* ofxBox2dEdge.cpp in Sources */,
@@ -2359,9 +2385,11 @@
 				E212C821D1064B92DD953A42 /* ofxCvHaarFinder.cpp in Sources */,
 				63020F16C7E8DED980111241 /* ofxCvImage.cpp in Sources */,
 				F7775AFD199B8D99008C334D /* b2TimeOfImpact.cpp in Sources */,
+				F7B132CE19BF48380078B97C /* ParticleEmitter.cpp in Sources */,
 				F7B132A519BE0D430078B97C /* FilterChain.cpp in Sources */,
 				F7B1329219BE0D430078B97C /* BrightnessFilter.cpp in Sources */,
 				D3301F6A0B43BB293ED97C1D /* ofxCvShortImage.cpp in Sources */,
+				F7B132D019BF48380078B97C /* particleSourceHandler.cpp in Sources */,
 				72A929D3561B8232A182ABFC /* ofxOscBundle.cpp in Sources */,
 				F7775AFA199B8D99008C334D /* b2Collision.cpp in Sources */,
 				F77253C51986AE4000ADD13E /* faces.cpp in Sources */,
