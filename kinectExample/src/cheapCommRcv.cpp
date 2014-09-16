@@ -18,7 +18,6 @@ void cheapCommRcv::setup(){
 	remotePosition=0;
 	remoteSpeed=0;
 
-
 }
 
 int cheapCommRcv::update(){

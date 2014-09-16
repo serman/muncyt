@@ -20,7 +20,7 @@ void testApp::setupGUI() {
     mcontour.setUI(guiTabBar);
     mgrid.setUI(guiTabBar);
     mtunnel.setUI(guiTabBar);
-
+    mrayoSil.setUI(guiTabBar);
 	gui1->addSpacer();
 	gui1->addButton("save",true);
 	gui1->addButton("load",true);

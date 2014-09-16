@@ -79,6 +79,8 @@
 		F77369651945D5A600548CEA /* libMWClosestPoint.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F77369531945D5A600548CEA /* libMWClosestPoint.a */; };
 		F77369661945D5A600548CEA /* libOpenNI2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F77369541945D5A600548CEA /* libOpenNI2.a */; };
 		F77369671945D5A600548CEA /* libXnLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F77369551945D5A600548CEA /* libXnLib.a */; };
+		F781326A19C84EDA004A38E3 /* rayoSilueta.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F781326819C84EDA004A38E3 /* rayoSilueta.cpp */; };
+		F781326D19C84F14004A38E3 /* utilsGeom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F781326C19C84F14004A38E3 /* utilsGeom.cpp */; };
 		F7A515AA1975740000028875 /* testApp_Drawing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7A515A81975740000028875 /* testApp_Drawing.cpp */; };
 		F7A515AD197574C100028875 /* testApp_inputInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7A515AB197574C100028875 /* testApp_inputInterface.cpp */; };
 		F7C1705B192B76E30034A5CB /* ofxUI2DGraph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7C16FFE192B76E20034A5CB /* ofxUI2DGraph.cpp */; };
@@ -474,6 +476,10 @@
 		F773695D1945D5A600548CEA /* 55-primesense-usb.rules */ = {isa = PBXFileReference; lastKnownFileType = text; path = "55-primesense-usb.rules"; sourceTree = "<group>"; };
 		F773695E1945D5A600548CEA /* README.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		F7736968194634E500548CEA /* extendedDepthSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = extendedDepthSource.h; sourceTree = "<group>"; };
+		F781326819C84EDA004A38E3 /* rayoSilueta.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = rayoSilueta.cpp; sourceTree = "<group>"; };
+		F781326919C84EDA004A38E3 /* rayoSilueta.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rayoSilueta.h; sourceTree = "<group>"; };
+		F781326B19C84F14004A38E3 /* ParticleX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParticleX.h; sourceTree = "<group>"; };
+		F781326C19C84F14004A38E3 /* utilsGeom.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = utilsGeom.cpp; sourceTree = "<group>"; };
 		F7A515A81975740000028875 /* testApp_Drawing.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testApp_Drawing.cpp; sourceTree = "<group>"; };
 		F7A515AB197574C100028875 /* testApp_inputInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testApp_inputInterface.cpp; sourceTree = "<group>"; };
 		F7A657D619B0C62E004E0E78 /* particleClouds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = particleClouds.h; sourceTree = "<group>"; };
@@ -1083,6 +1089,7 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				F781326719C84E85004A38E3 /* RayoSilueta */,
 				F74CAC5519BCAEB80037FCEA /* tunnel.h */,
 				F7EBD1A619335856009805D5 /* cheampCommRcv */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
@@ -1530,6 +1537,17 @@
 				F773695E1945D5A600548CEA /* README.txt */,
 			);
 			path = udev_rules_for_xtion_pro;
+			sourceTree = "<group>";
+		};
+		F781326719C84E85004A38E3 /* RayoSilueta */ = {
+			isa = PBXGroup;
+			children = (
+				F781326B19C84F14004A38E3 /* ParticleX.h */,
+				F781326C19C84F14004A38E3 /* utilsGeom.cpp */,
+				F781326819C84EDA004A38E3 /* rayoSilueta.cpp */,
+				F781326919C84EDA004A38E3 /* rayoSilueta.h */,
+			);
+			name = RayoSilueta;
 			sourceTree = "<group>";
 		};
 		F7C16FFB192B76E20034A5CB /* ofxUI */ = {
@@ -2011,6 +2029,7 @@
 				F74CAAC119BBC9520037FCEA /* SSAOPass.cpp in Sources */,
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				F77253401981A11800ADD13E /* ofxTCPServer.cpp in Sources */,
+				F781326A19C84EDA004A38E3 /* rayoSilueta.cpp in Sources */,
 				F7C17093192B81A30034A5CB /* tinyxmlparser.cpp in Sources */,
 				F7E3C06B195C34A000D7724A /* RunningBackground.cpp in Sources */,
 				F7C1705D192B76E30034A5CB /* ofxUIBaseDraws.cpp in Sources */,
@@ -2105,6 +2124,7 @@
 				F7C1707B192B76E30034A5CB /* ofxUISpacer.cpp in Sources */,
 				F7EBD1DC193358F3009805D5 /* OscReceivedElements.cpp in Sources */,
 				F7C17061192B76E30034A5CB /* ofxUICircleSlider.cpp in Sources */,
+				F781326D19C84F14004A38E3 /* utilsGeom.cpp in Sources */,
 				F7EBD1D2193358F3009805D5 /* ofxOscBundle.cpp in Sources */,
 				F74CAABB19BBC9520037FCEA /* NoiseWarpPass.cpp in Sources */,
 				F74CAAB819BBC9520037FCEA /* KaleidoscopePass.cpp in Sources */,

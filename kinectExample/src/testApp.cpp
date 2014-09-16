@@ -106,6 +106,7 @@ void testApp::setup() {
     mcontour.setup(&oniCamGrabber);
     myOSCrcv.setup();
     sender.setup();
+    mrayoSil.setup();
     mgrid.setup(oniSettings.width, oniSettings.height, &zMin, &zMax, &oniCamGrabber, &depthGenerator);
     particleCloud.setup(oniSettings.width, oniSettings.height, &zMin, &zMax, &oniCamGrabber, &depthGenerator,&camera);
     
@@ -171,7 +172,9 @@ void testApp::update() {
                 break;
                 
             case NUCLEAR_DEBIL:
-
+                        mcontour.update();
+                        mrayoSil.update();
+                        mrayoSil.setSilueta(mcontour.v[0]);
                 break;
                 
             case NUCLEAR_FUERTE:
@@ -181,7 +184,6 @@ void testApp::update() {
         }
 //ACTUALIZACION SÓLO CUANDO HAY IMAGEN NUEVA
         
-        
         if(depthGenerator.isUpdated==true){ // OJO ESTA ACTUALIZACION SOLO OCURRE CUANDO HAY IMAGEN NUEVA
             switch(appStatuses["escena"]){
                 case EM:
@@ -189,19 +191,20 @@ void testApp::update() {
                 break;
                 
                 case GRAVEDAD:
-                    mcontour.update();                    
+                    mcontour.update();
                     if(mgrid.status==mgrid.BLACKHOLE){
                         sender.send(mcontour.v[0]);
                     }
                 break;
                       
                 case NUCLEAR_DEBIL:
-                        mcontour.update();
                        // sender.send(mcontour.v[0]);
+
+
                 break;
                     
                 case NUCLEAR_FUERTE:
-
+                       mcontour.update();
                 break;
                     
             }
@@ -368,13 +371,11 @@ void testApp::draw() {
             break;
                 
             case NUCLEAR_DEBIL:
-
-                    mcontour.draw();
-
-                break;
+                mrayoSil.draw();
+            break;
                 
             case NUCLEAR_FUERTE:
-                
+                    mcontour.draw();
                 break;
         }
     #endif

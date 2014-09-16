@@ -14,7 +14,7 @@
 #include "gridView.h"
 #include "ofxPostProcessing.h"
 #include "tunnel.h"
-
+#include "rayoSilueta.h"
 //#define EASYCAM
 
 #ifndef EASYCAM
@@ -151,6 +151,7 @@ public:
     contours mcontour;
     gridView mgrid;
     tunnel   mtunnel;
+    rayoSilueta mrayoSil;
     ofVec3f tr, tl, bl, br;
     ofMesh mesh1;
     ofLight light;
