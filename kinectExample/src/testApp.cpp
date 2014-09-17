@@ -130,7 +130,7 @@ void testApp::setup() {
     post.createPass<ContrastPass>()->setEnabled(false);
     post.createPass<BleachBypassPass>()->setEnabled(false);
     post.createPass<ToonPass>()->setEnabled(false);
-    post.createPass<FakeSSSPass>()->setEnabled(false);
+    post.createPass<GodRaysPass>()->setEnabled(false);
     post.createPass<LimbDarkeningPass>()->setEnabled(false);
     post.createPass<VerticalTiltShifPass>()->setEnabled(false);
     post.createPass<ConvolutionPass>()->setEnabled(false);
@@ -252,7 +252,7 @@ void testApp::draw() {
 		if(bDrawLinesV) drawLinesV();
     	if(bDrawNativePointCloud) drawPointCloud();
 #else
-    post.begin();
+  //  post.begin();
         switch(appStatuses["escena"]){
                 
             case EM:
@@ -276,7 +276,7 @@ void testApp::draw() {
                 
                 break;
         }
-    post.end();
+    //post.end();
  /*    cout << "fov"<< ofToString(camera.getFov())<<endl;
     cout << "aspect"<< ofToString(camera.getAspectRatio())<<endl;
         cout << "near clip"<< ofToString(camera.getNearClip())<<endl;
@@ -371,11 +371,15 @@ void testApp::draw() {
             break;
                 
             case NUCLEAR_DEBIL:
+                post.begin();
                 mrayoSil.draw();
+                post.end();
             break;
                 
             case NUCLEAR_FUERTE:
+                post.begin();
                     mcontour.draw();
+                post.end();
                 break;
         }
     #endif
