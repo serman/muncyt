@@ -29,15 +29,25 @@ void testApp::setup(){
 	sceneManager->setCurtainRiseTime(1.0);
 	sceneManager->setOverlapUpdate(true);
     //sceneManager->goToScene(SCENE_2);
+	
+	
+	// OSC
+	myComm.setup();
+	ofAddListener(eventoOSC, this, &testApp::eventoOSC_Recibido  );
 
 }
+
+void testApp::eventoOSC_Recibido(oscData &valor) {
+	ofLogNotice("testApp::eventoOSC_Recibido: " + ofToString(valor.tipoOSCDato));
+	myComm.recibirEventoOSC(valor);
+}
+
 
 void testApp::update(){
 	tuioClient.getMessage();
 	float dt = 0.016666666;
 	sceneManager->update( dt );
 
-	
 	//
 	// sceneManager->goToScene(SCENE_1, true); /* true >> regardless of curtain state (so u can change state while curtain is moving)*/	
 	//
@@ -88,7 +98,19 @@ void testApp::keyPressed(int key){
 	if (key == '2') sceneManager->goToScene(SCENE_2);
 	//if (key == '3') sceneManager->goToScene(SCENE_3);
 	//if (key == '4') sceneManager->goToScene(SCENE_4);
+	
+	if(key=='x') {
+		
+		ofLogNotice("testApp::keyPressed   'x'   notifyEvent EXPLOSION");
+		oscData mydata;
+		mydata.tipoOSCDato = EXPLOSION;
+		ofNotifyEvent( eventoOSC, mydata, this);
+		
+	}
+	
     sceneManager->keyPressed(key);
+	
+	
 }
 
 

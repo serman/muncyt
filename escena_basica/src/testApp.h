@@ -11,9 +11,11 @@
 #include "gravedad/gravedad.h"
 #include "ofxTuio.h"
 
+#include "cheapComm.h"
+
 class testApp : public ofBaseApp{
 
-	enum Scenes{ SCENE_0 = 0, SCENE_1, SCENE_2, SCENE_3,SCENE_4 };
+	enum Scenes{ SCENE_0 = 0, SCENE_1, SCENE_2, SCENE_3, SCENE_4 };
 	
 	public:
 		void setup();
@@ -28,11 +30,20 @@ class testApp : public ofBaseApp{
 		void windowResized(int w, int h);
 	
 		ofxSceneManager *		sceneManager;
+	
+		// TUIOs
         ofxTuioClient tuioClient;
     
         void tuioAdded(ofxTuioCursor &tuioCursor);
         void tuioUpdated(ofxTuioCursor &tuioCursor);
         void tuioRemoved(ofxTuioCursor &tuioCursor);
-    ofPath borde;
     
+		ofPath borde;
+	
+	
+		// Comunicacion OSC
+		cheapComm myComm;
+	
+  
+		void eventoOSC_Recibido(oscData &valor);
 };

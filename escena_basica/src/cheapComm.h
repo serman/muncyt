@@ -11,20 +11,24 @@
 
 #include <iostream>
 #include "ofxOsc.h"
-#endif /* defined(__panel1_tracking__cheapComm__) */
+#include "consts.h"
 
+static ofEvent	<oscData>	eventoOSC;
 
 class cheapComm {
 	public:
         cheapComm();    
 	    void setup();
+
+		void recibirEventoOSC( oscData &mydata );
+	
 		void sendPosition( float sector, float speed );
     	void sendExplosion();
 
 	    ofxOscSender myosc;
     	
     private:
-        
-    
-
+	
 };
+
+#endif /* defined(__panel1_tracking__cheapComm__) */

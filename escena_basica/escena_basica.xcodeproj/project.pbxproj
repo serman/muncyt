@@ -20,7 +20,6 @@
 		7F5FFFFE192A035000CA8725 /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7F5FFFF8192A035000CA8725 /* tinyxmlerror.cpp */; };
 		7F5FFFFF192A035000CA8725 /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7F5FFFF9192A035000CA8725 /* tinyxmlparser.cpp */; };
 		7F93F38C19186382004761F3 /* Efectos.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7F93F38B19186382004761F3 /* Efectos.cpp */; };
-		7FB6BF6119389C2700C396A4 /* tuioComm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7FB6BF6019389C2700C396A4 /* tuioComm.cpp */; };
 		7FFD07A21913A0450022FA53 /* b2BroadPhase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7FFD07231913A0450022FA53 /* b2BroadPhase.cpp */; };
 		7FFD07A31913A0450022FA53 /* b2CollideCircle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7FFD07251913A0450022FA53 /* b2CollideCircle.cpp */; };
 		7FFD07A41913A0450022FA53 /* b2CollideEdge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7FFD07261913A0450022FA53 /* b2CollideEdge.cpp */; };
@@ -228,8 +227,6 @@
 		7FB6BF4619389B7C00C396A4 /* ofxTuioCursor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTuioCursor.h; sourceTree = "<group>"; };
 		7FB6BF4719389B7C00C396A4 /* ofxTuioObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTuioObject.h; sourceTree = "<group>"; };
 		7FB6BF4819389B7C00C396A4 /* ofxTuioPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTuioPoint.h; sourceTree = "<group>"; };
-		7FB6BF5F19389C2700C396A4 /* tuioComm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tuioComm.h; sourceTree = "<group>"; };
-		7FB6BF6019389C2700C396A4 /* tuioComm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tuioComm.cpp; sourceTree = "<group>"; };
 		7FFD07211913A0450022FA53 /* Box2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Box2D.h; sourceTree = "<group>"; };
 		7FFD07231913A0450022FA53 /* b2BroadPhase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = b2BroadPhase.cpp; sourceTree = "<group>"; };
 		7FFD07241913A0450022FA53 /* b2BroadPhase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2BroadPhase.h; sourceTree = "<group>"; };
@@ -1226,8 +1223,6 @@
 			children = (
 				F7EBD16319334C43009805D5 /* cheapComm.cpp */,
 				F7EBD16419334C43009805D5 /* cheapComm.h */,
-				7FB6BF5F19389C2700C396A4 /* tuioComm.h */,
-				7FB6BF6019389C2700C396A4 /* tuioComm.cpp */,
 			);
 			name = comm;
 			sourceTree = "<group>";
@@ -1550,7 +1545,6 @@
 				F74B89F3196F5090005F3893 /* testApp.cpp in Sources */,
 				F74B8A87196F7AA7005F3893 /* ofxUIMultiImageToggle.cpp in Sources */,
 				7F5F0007192A689200CA8725 /* nuclear_debil_xml.cpp in Sources */,
-				7FB6BF6119389C2700C396A4 /* tuioComm.cpp in Sources */,
 				7F386C3A19713CD2003C9AF0 /* ofxAnimatable.cpp in Sources */,
 				7F386C3B19713CD2003C9AF0 /* ofxAnimatableFloat.cpp in Sources */,
 				7F386C3C19713CD2003C9AF0 /* ofxAnimatableOfColor.cpp in Sources */,

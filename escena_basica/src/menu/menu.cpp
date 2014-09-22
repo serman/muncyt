@@ -571,7 +571,7 @@ void menu::drawBola4_fbos(ofVec2f pos, float radius, float rot) {
 		
 		//			ofSetColor(ofColor::deepPink, 200);
 		//			bola.draw(-rr,-rr,2*rr,2*rr);
-		ofSetColor(150 + ofRandom(155));
+		ofSetColor(155 + ofRandom(100));
 		ofCircle(0,0,radius/8);
 		
 		ofPopStyle();

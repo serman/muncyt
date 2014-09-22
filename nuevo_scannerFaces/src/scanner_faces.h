@@ -233,7 +233,6 @@ public:
 	
 	ofSoundPlayer	snd_click;
 	
-	
 	// Enviar orden a Arduino para que encienda/apague la luz
 	void setLight(bool swlight);
 	

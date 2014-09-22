@@ -10,8 +10,6 @@
 
 #include "ofxXmlSettings.h"
 #include "cheapComm.h"
-//#include "ofxTuio.h"
-#include "tuioComm.h"
 #include "tangiblesHandler.h"
 #include "handShadow.h"
 #include "anilloButton.h"
@@ -166,8 +164,8 @@ public:
 	void GrabaConfig();
 	void CargaConfig();
         
-    //Comunicacion
-    cheapComm myComm;
+//    //Comunicacion
+//    cheapComm myComm;
 	
 	// TUIO
     void	tuioAdded(ofxTuioCursor & tuioCursor);

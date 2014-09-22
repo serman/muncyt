@@ -138,7 +138,7 @@ void nuclear_debil::setup() {
 	frecFondo = 4.0;
 
 	// Esto deber’a ser comœn a todas las escenas
-	myComm.setup();
+//	myComm.setup();
 	
 	//setupTuio();
 	
@@ -293,7 +293,12 @@ void nuclear_debil::update(float dt) {
 	
     //Envio OSC
 	if(ofGetFrameNum()%10 ==0){
-        myComm.sendPosition(anillo.angT, anillo.wAng);
+        // myComm.sendPosition(anillo.angT, anillo.wAng);
+		
+		// lanzar evento que lo recoge el myComm de arriba
+//		oscData mydata;
+//		mydata.tipoOSCDato = EXPLOSION;
+//		ofNotifyEvent( eventoOSC, mydata, this);
     }
 	
 	
