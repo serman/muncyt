@@ -70,7 +70,10 @@ public:
 	
 	void init_Escena();
 	void exit_Escena();
-	
+    
+    cheapComm *myComm;
+    void setComm(cheapComm *m){ myComm=m;}
+    
 	EnergyData	energData;
     
 	ofxBox2d                            box2d;			  //	the box2d world

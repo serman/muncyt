@@ -14,7 +14,7 @@
 #pragma once
 #include "ofMain.h"
 #include "consts.h"
-
+#include "cheapComm.h"
 #include "ofxScene.h"
 #include "ofxAnimatableFloat.h"
 // -------------------------------------------------
@@ -45,7 +45,8 @@ public:
 //	tangiblesHandler hands;			// hands
 //	tangiblesHandler touchElements;	// Habrá 4 touchElements
 	
-    
+    cheapComm *myComm;
+    void setComm(cheapComm *m){ myComm=m;}
 };
 
 #endif /* defined(__escena_basica__electromagnetica__) */

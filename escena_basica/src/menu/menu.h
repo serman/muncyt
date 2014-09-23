@@ -19,6 +19,7 @@
 
 // Esto ya es parte de la escena en si:
 #include "ofxBox2d.h"
+#include "cheapComm.h"
 
 
 // -------------------------------------------------
@@ -38,7 +39,8 @@ public:
 	void mousePressed(int x, int y, int button);
 	void mouseReleased(int x, int y, int button);
 	void resized(int w, int h);
-	
+	cheapComm *myComm;
+    void setComm(cheapComm *m){ myComm=m;}
 	//
 	// Cosas para incorporacion a Prog_PPal, a TUIO...
 	//

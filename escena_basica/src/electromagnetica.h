@@ -25,6 +25,7 @@
 #include "ofxTuio.h"
 #include "wavesManager.h"
 #include "ofxSvg.h"
+#include "cheapComm.h"
 
 // -------------------------------------------------
 
@@ -83,6 +84,8 @@ public:
     vector<ofPolyline> fieldLines;
     ofPoint getDstPoint(int, int);
     void drawEM();*/
+    cheapComm *myComm;
+    void setComm(cheapComm *m){ myComm=m;}
 };
 
 #endif /* defined(__escena_basica__electromagnetica__) */

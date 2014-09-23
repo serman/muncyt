@@ -16,12 +16,27 @@ void testApp::setup(){
 	///////////////////////////////////////
 	
 	sceneManager = ofxSceneManager::instance();
-	sceneManager->addScene( new menu(), SCENE_0);
-	sceneManager->addScene( new electromagnetica(), SCENE_2);
-	sceneManager->addScene( new nuclear_debil(), SCENE_1);
+    myComm.setup();
+    
+    menu *m1=new menu();
+    m1->setComm(&myComm);
+	sceneManager->addScene( m1, SCENE_0);
+    
+    electromagnetica *electrom=new electromagnetica();
+    electrom->setComm(&myComm);
+	sceneManager->addScene( electrom, SCENE_2);
+    
+    nuclear_debil *nuclear_d = new nuclear_debil();
+    nuclear_d->setComm(&myComm);
+	sceneManager->addScene( nuclear_d, SCENE_1);
 
-	sceneManager->addScene( new nuclear_fuerte(), SCENE_3);
-    sceneManager->addScene( new gravedad(), SCENE_4);
+    nuclear_fuerte *nuclear_f = new nuclear_fuerte();
+    nuclear_d->setComm(&myComm);
+	sceneManager->addScene( nuclear_f , SCENE_3);
+    
+    gravedad *grave=new gravedad();
+    grave->setComm(&myComm);
+    sceneManager->addScene( grave, SCENE_4);
 	
 	sceneManager->setDrawDebug(true);
 	sceneManager->setCurtainDropTime(1.0);
@@ -32,14 +47,14 @@ void testApp::setup(){
 	
 	
 	// OSC
-	myComm.setup();
-	ofAddListener(eventoOSC, this, &testApp::eventoOSC_Recibido  );
+	
+	//ofAddListener(eventoOSC, this, &testApp::eventoOSC_Recibido  );
 
 }
 
 void testApp::eventoOSC_Recibido(oscData &valor) {
 	ofLogNotice("testApp::eventoOSC_Recibido: " + ofToString(valor.tipoOSCDato));
-	myComm.recibirEventoOSC(valor);
+	//myComm.recibirEventoOSC(valor);
 }
 
 
@@ -99,14 +114,15 @@ void testApp::keyPressed(int key){
 	//if (key == '3') sceneManager->goToScene(SCENE_3);
 	//if (key == '4') sceneManager->goToScene(SCENE_4);
 	
-	if(key=='x') {
+/*	if(key=='x') {
 		
 		ofLogNotice("testApp::keyPressed   'x'   notifyEvent EXPLOSION");
 		oscData mydata;
 		mydata.tipoOSCDato = EXPLOSION;
 		ofNotifyEvent( eventoOSC, mydata, this);
 		
-	}
+	}*/
+    
 	
     sceneManager->keyPressed(key);
 	

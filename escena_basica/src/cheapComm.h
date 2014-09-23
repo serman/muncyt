@@ -13,20 +13,21 @@
 #include "ofxOsc.h"
 #include "consts.h"
 
-static ofEvent	<oscData>	eventoOSC;
+
+//static ofEvent	<oscData> eventoOSC;
 
 class cheapComm {
 	public:
         cheapComm();    
 	    void setup();
 
-		void recibirEventoOSC( oscData &mydata );
+		void eventoOSC( oscData &mydata );
 	
 		void sendPosition( float sector, float speed );
     	void sendExplosion();
 
 	    ofxOscSender myosc;
-    	
+
     private:
 	
 };

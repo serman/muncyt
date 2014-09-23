@@ -21,26 +21,26 @@ void cheapComm::setup(){
 	ofLogNotice("> >> >>> >> > >> >>> >> > >> >>> >> > >> cheapComm::setup()");
 	
 	// Add Listeners de eventos
-//	ofAddListener(eventoOSC, this, &cheapComm::recibirEventoOSC  );
+	//ofAddListener(eventoOSC, this, &cheapComm::recibirEventoOSC  );
 	
 }
 
-//void cheapComm::recibirEventoOSC( oscData &mydata ) {
-//	
-//	ofLogNotice("Evento Enviar-OSC recibido.");
-//	
-//	if(mydata.tipoOSCDato == EXPLOSION) {
-//		sendExplosion();
-//	}
-//	
-//}
-
-
-void cheapComm::recibirEventoOSC( oscData &mydata ) {
+void cheapComm::eventoOSC( oscData &mydata ) {
 	
 	ofLogNotice("Evento Enviar-OSC recibido.");
-	
+//	
+	if(mydata.tipoOSCDato == EXPLOSION) {
+		sendExplosion();
+	}
+//	
 }
+
+
+//void cheapComm::recibirEventoOSC( oscData &mydata ) {
+	
+//	ofLogNotice("Evento Enviar-OSC recibido.");
+	
+//}
 
 void cheapComm::sendPosition( float sector, float speed ){
         ofxOscMessage m;

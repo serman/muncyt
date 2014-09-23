@@ -37,14 +37,14 @@ void nuclear_debil::keyPressed(int key) {
 	
 	if(key=='f') swFuerza = !swFuerza;
 	
-	if(key=='x') {
-//		myComm.sendExplosion();
+    if(key=='x') {
 		
-		ofLogNotice("nuclear_debil::keyPressed   'x'   notifyEvent EXPLOSION");
-		
+		ofLogNotice("nucleardebil::keyPressed   'x'   notifyEvent EXPLOSION");
 		oscData mydata;
 		mydata.tipoOSCDato = EXPLOSION;
-		ofNotifyEvent( eventoOSC, mydata, this);
+		//ofNotifyEvent( eventoOSC, mydata);
+        myComm->eventoOSC(mydata);
+		
 	}
 	
 	if(key=='t') {
