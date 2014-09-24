@@ -64,6 +64,8 @@ public:
 	
 	// End add cosas - - - 
 
+	ofVec2f centroScreen;	
+	
 	// - - - Menu 4 Forces (4ces) - - -
 	void	draw4Forces();	
 	bool	bDraw4Forces;

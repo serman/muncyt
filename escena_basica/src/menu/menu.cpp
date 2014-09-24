@@ -23,32 +23,37 @@ void menu::setup() {
 	coloresBN.push_back(ofColor(150));
 	coloresBN.push_back(ofColor(255));
 
-			// Modos dibujo
-			bDraw4Forces = true;
-			fRed = true;
+	// Modos dibujo
+	bDraw4Forces = true;
+	fRed = true;
 
+	// centro
+	centroScreen = ofVec2f(ofGetWidth()/2, W_HEIGHT/2); // ofGetHeight()/2);
+	
 	// Borde Negro circular
 	borde.clear();
-	ofColor ctmp = ofColor::black;
+	ofColor ctmp = ofColor::red;//black;
 	borde.setFillColor(ctmp);
 	//http://www.openframeworks.cc/documentation/graphics/ofPath.html#show_setPolyWindingMode
 	borde.setPolyWindingMode(OF_POLY_WINDING_ODD);
 	// rectangulo 
 	borde.rectangle(0,0,ofGetWidth(),ofGetHeight());
 	borde.setCircleResolution(60);
-	borde.circle(ofGetWidth()/2,ofGetHeight()/2,ofGetHeight()/2*0.95);
-	
-	centro = ofVec2f(ofGetWidth()/2.0, ofGetHeight()/2.0);
-	distConf = ofGetHeight()/2.0*0.9;
+	// Paso a posicion de la pantall centrada en ancho y ajustada al borde superior
+//	borde.circle(ofGetWidth()/2,ofGetHeight()/2,ofGetHeight()/2*0.95);
+//	centro = ofVec2f(ofGetWidth()/2.0, ofGetHeight()/2.0);
+//	distConf = ofGetHeight()/2.0*0.9;
+	borde.circle(ofGetWidth()/2, W_HEIGHT/2,W_HEIGHT/2*0.95);	
+	centro = ofVec2f(ofGetWidth()/2.0, W_HEIGHT/2.0);
+	distConf = W_HEIGHT/2.0*0.9;
 	
 	minDisInt = 25;
 	
 	// fbos
-	// fbos
-	fbo1.allocate(ofGetHeight()/2,ofGetHeight()/2);
-	fbo2.allocate(ofGetHeight()/2,ofGetHeight()/2);
-	fbo3.allocate(ofGetHeight()/2,ofGetHeight()/2);
-	fbo4.allocate(ofGetHeight()/2,ofGetHeight()/2);	
+	fbo1.allocate(ofGetHeight()/2,W_HEIGHT/2);// ofGetHeight()/2);
+	fbo2.allocate(ofGetHeight()/2,W_HEIGHT/2);// ofGetHeight()/2);
+	fbo3.allocate(ofGetHeight()/2,W_HEIGHT/2);// ofGetHeight()/2);
+	fbo4.allocate(ofGetHeight()/2,W_HEIGHT/2);// ofGetHeight()/2);	
 	
 	
 	//
@@ -160,10 +165,12 @@ void menu::initParticles() {
 	removeParticles();	// primero borrar las que pudiera haber, porsiaca.
 	for (int i=0; i<150; i++) {
 		// circulos
-		addCircle(ofPoint(ofGetWidth()/2+ofRandom(100), ofGetHeight()/2+ofRandom(100)));
+//		addCircle(ofPoint(ofGetWidth()/2+ofRandom(100), ofGetHeight()/2+ofRandom(100)));
+		addCircle(ofPoint(ofGetWidth()/2+ofRandom(200)-100, W_HEIGHT/2+ofRandom(200)-100));
 		
 		// rectangulos
-		addBox(ofPoint(ofGetWidth()/2+ofRandom(100), ofGetHeight()/2+ofRandom(100)));
+//		addBox(ofPoint(ofGetWidth()/2+ofRandom(100), ofGetHeight()/2+ofRandom(100)));
+		addBox(ofPoint(ofGetWidth()/2+ofRandom(200)-100, W_HEIGHT/2+ofRandom(200)-100));
 	}
 	ptoMed_circles = ptoMedio(circles);
 	ptoMed_boxes = ptoMedio(boxes);
@@ -204,8 +211,9 @@ ofVec2f menu::ptoMedio(vector <ofPtr<ofxBox2dRect> > shapes) {
 }
 
 void menu::setupSectores() {
-	ofVec2f centroScreen = ofVec2f(ofGetWidth()/2, ofGetHeight()/2);
-	float rrr = ofGetHeight()/2.0;
+//	ofVec2f centroScreen = ofVec2f(ofGetWidth()/2, ofGetHeight()/2);
+//	float rrr = ofGetHeight()/2.0;
+	float rrr = W_HEIGHT/2.0;
 	
 	for(int i=0; i<4; i++) {
 		float ang = i*HALF_PI;
@@ -352,7 +360,6 @@ void menu::draw() {
 
 	// clear fbos
 	if(bDrawFbos) {
-		ofVec2f centroScreen = ofVec2f(ofGetWidth()/2, ofGetHeight()/2);
 		ofSetColor(255,255,255);
 		
 		fbo1.begin();	ofBackground(0,0,0); ofEnableAlphaBlending();	fbo1.end();
@@ -518,7 +525,6 @@ void menu::drawBola4_fbos(ofVec2f pos, float radius, float rot) {
 	ofPushStyle();
 	
 	ofVec2f vx = ofVec2f(1,0);
-	ofVec2f centroScreen = ofVec2f(ofGetWidth()/2, ofGetHeight()/2);
 	ofVec2f posCentro =  pos-centroScreen;
 	float angulo = vx.angle(posCentro);
 	while(angulo<0) {angulo+=360.0;}
@@ -655,7 +661,6 @@ void menu::drawBola4_fbos(ofVec2f pos, float radius, float rot) {
 
 void menu::drawBola4(ofVec2f pos, float radius, float rot) {
 	ofVec2f vx = ofVec2f(1,0);
-	ofVec2f centroScreen = ofVec2f(ofGetWidth()/2, ofGetHeight()/2);
 	ofVec2f posCentro =  pos-centroScreen;
 	float angulo = vx.angle(posCentro);
 	while(angulo<0) {angulo+=360.0;}
@@ -677,7 +682,6 @@ void menu::drawBola4(ofVec2f pos, float radius, float rot) {
 		ofPolyline arco;
 		arco.arc(ofPoint(0,0), posCentro.length(), posCentro.length(),0, 90);
 		arco.draw();
-		
 	}
 	
 	else if(angulo>=rangosAngDeg[1] && angulo<rangosAngDeg[2]) {
@@ -707,7 +711,8 @@ void menu::drawBola4(ofVec2f pos, float radius, float rot) {
 			
 			ofPushMatrix();
 			ofTranslate(-pos.x, -pos.y, 0);
-			ofTranslate(ofGetWidth()/2, ofGetHeight()/2, 0);
+//			ofTranslate(ofGetWidth()/2, ofGetHeight()/2, 0);
+			ofTranslate(ofGetWidth()/2, W_HEIGHT/2, 0);
 			float rot = 2*(315-angulo);
 			ofRotate(rot);
 			ofTranslate(posCentro.x, posCentro.y,0);
