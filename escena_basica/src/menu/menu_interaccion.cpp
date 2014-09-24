@@ -132,9 +132,10 @@ void menu::resized(int w, int h){
 	// rectangulo 
 	borde.rectangle(0,0,ofGetWidth(),ofGetHeight());
 	borde.setCircleResolution(60);
-	borde.circle(ofGetWidth()/2,ofGetHeight()/2,ofGetHeight()/2*0.95);	
+//	borde.circle(ofGetWidth()/2,ofGetHeight()/2,ofGetHeight()/2*0.95);	
+	borde.circle(ofGetWidth()/2,W_HEIGHT/2,W_HEIGHT/2*0.95);	
 	
-	centro = ofVec2f(ofGetWidth()/2.0, ofGetHeight()/2.0);
+	centro = ofVec2f(ofGetWidth()/2.0, W_HEIGHT/2.0);
 	distConf = ofGetHeight()/2.0*0.9;
   	
 }
@@ -144,7 +145,7 @@ void menu::resized(int w, int h){
 
 ofPoint menu::transf_PosTUIO(ofxTuioCursor & tuioCursor) {
 
-    int mx = W_WIDTH*tuioCursor.getX() + (ofGetWidth()-W_WIDTH)/2.0;
+    int mx = W_WIDTH*tuioCursor.getX() + (ofGetScreenWidth()-W_WIDTH)/2.0;
     int my = W_HEIGHT*tuioCursor.getY();
 //	ofPoint loc = ofPoint(mx,my);
 
