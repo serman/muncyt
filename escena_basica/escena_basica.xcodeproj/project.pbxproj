@@ -373,6 +373,7 @@
 		F7016925196D84CB00D174E9 /* tangibleObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tangibleObject.h; sourceTree = "<group>"; };
 		F7016926196D84CB00D174E9 /* tangiblesHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tangiblesHandler.h; sourceTree = "<group>"; };
 		F7016928196D863700D174E9 /* handShadow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = handShadow.h; sourceTree = "<group>"; };
+		F705833019D1C27F00BE601A /* display.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = display.h; sourceTree = "<group>"; };
 		F74B89AD196EE2C5005F3893 /* consts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = consts.h; sourceTree = "<group>"; };
 		F74B89AE196EEE3C005F3893 /* consts.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = consts.cpp; sourceTree = "<group>"; };
 		F74B89B0196EF6E8005F3893 /* anilloButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = anilloButton.h; sourceTree = "<group>"; };
@@ -567,6 +568,7 @@
 				7F307A8819811704000DCABB /* menu.cpp */,
 				7F307A9A1981795C000DCABB /* menu_interaccion.cpp */,
 				7F307AA11981B498000DCABB /* menuButton.h */,
+				F705833019D1C27F00BE601A /* display.h */,
 			);
 			path = menu;
 			sourceTree = "<group>";

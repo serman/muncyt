@@ -51,6 +51,7 @@ public:
         ofEnableAlphaBlending();
         ofSetColor (200,0,0);//,alpha);
         ofEllipse( x, y,40, 40);
+        ofDisableAlphaBlending();
         //movidillas
 //        ofPushMatrix();
 //

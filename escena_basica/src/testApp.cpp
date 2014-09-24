@@ -114,19 +114,36 @@ void testApp::keyPressed(int key){
 	//if (key == '3') sceneManager->goToScene(SCENE_3);
 	//if (key == '4') sceneManager->goToScene(SCENE_4);
 	
-/*	if(key=='x') {
+	if(key=='u') {
+        cout << "u key" <<endl;
 		
-		ofLogNotice("testApp::keyPressed   'x'   notifyEvent EXPLOSION");
-		oscData mydata;
-		mydata.tipoOSCDato = EXPLOSION;
-		ofNotifyEvent( eventoOSC, mydata, this);
-		
-	}*/
+		ofSendMessage("mymsg");
+	}
     
 	
     sceneManager->keyPressed(key);
 	
 	
+}
+
+void testApp::gotMessage(ofMessage m){
+    cout << "message event";
+    cout << m.message << endl;
+    if(m.message=="changeScene1"){
+        sceneManager->goToScene(SCENE_1, true);
+    }
+    else if(m.message=="changeScene2"){
+        sceneManager->goToScene(SCENE_2, true);
+    }
+    else if(m.message=="changeScene2"){
+        sceneManager->goToScene(SCENE_3, true);
+    }
+    else if(m.message=="changeScene3"){
+        sceneManager->goToScene(SCENE_4, true);
+    }
+    else if(m.message=="changeScene0"){
+        sceneManager->goToScene(SCENE_0, true);
+    }
 }
 
 

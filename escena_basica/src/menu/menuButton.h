@@ -13,7 +13,7 @@
 #define INTERACTIONTIMEOUT
 #include <ofMain.h>
 #include <math.h>
-
+#include "display.h"
 enum BUTTON_TYPE1 {TYPE_ACC1,TYPE_CRASH1};
 
 class menuButton : public tangibleObject{
@@ -32,14 +32,13 @@ public:
 	
 	bool last_hadOn;
 	
-	string nombre;
-	
+	int nombre;
+	display *mdisplay;
     ofEvent<BUTTON_TYPE1> buttonEvent;
 	
     menuButton(){
         status_handIsOn=false;
         status_active=true;
-        
 		timeTouch = 0.0;
 		timePressed = 0.0;
 		timeIntervActivacion = 2000.0;
@@ -56,37 +55,44 @@ public:
 //        }
     }
 	
-    void setup(string _name, ofColor _cF){
-		nombre = _name;		
+    void setup(int tipo, ofColor _cF,display* d){
+		nombre = tipo;
 		cF = _cF;
+        mdisplay=d;
     }
     
 	
     void draw(){
         ofPushStyle();
+        ofEnableAlphaBlending();
         if(status_active ==false ){
-            ofSetColor(cF,220);
-            ofRect(x,y,width,height);
+            //ofSetColor(cF,220);
+            //ofRect(x,y,width,height);
         }
         
         else{ //non active Status
             if(status_handIsOn ==true){
-                ofSetColor(cF, 100);
+                ofSetColor(cF, 30);
                 ofFill();
                 ofRect(x,y,width,height);
+                mdisplay->init(nombre);
             }else{ 
-				//active bug hand is not on
+				// hand is not on
 				
-                //ofSetColor(cF, 160);
+                //ofSetColor(cF, 20);
                 //ofFill();
-				// ofRect(x,y,width,height);
+                //ofRect(x,y,width,height);
             }
         }
+        ofDisableAlphaBlending();
         ofPopStyle();
         //
     }
 	
-    void update(){}
+    void update(){
+
+            
+    }
 	
 //    void update_prev(ofPoint p){
 //        
@@ -124,6 +130,7 @@ public:
     void touchUp(int s_id){
 		status_handIsOn=false;
 		pulsado = false;
+        mdisplay->interrupt(nombre);
     }
     
     bool canInteract(){

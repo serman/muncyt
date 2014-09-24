@@ -58,16 +58,16 @@ void menu::setup() {
 	//buttonSpeed1.set(centro.x-rMed-(dRad*0.9/2),centro.y-(dRad*0.9/2), dRad*0.9,dRad*0.9);
 	button1.set(0, 0, centro.x, centro.y);
 //	button1.setup("E·M", ofColor::fromHex(0xF70D1A) );	// ferrary red
-	button1.setup("E·M", ofColor::fromHex(0xF70D1A) );	// ferrary red
+	button1.setup(EM, ofColor::fromHex(0xF70D1A) , &mdisplay);	// ferrary red
 	
 	button2.set(centro.x, 0, centro.x, centro.y);
-	button2.setup("N·D", ofColor::skyBlue );
+	button2.setup(DEBIL, ofColor::skyBlue , &mdisplay);
 
 	button3.set(centro.x,centro.y, centro.x, centro.y);
-	button3.setup("N·F", ofColor::chartreuse);//	fromHex(0x64E986) );	// Algae Green	// Emerald
+	button3.setup(FUERTE, ofColor::chartreuse, &mdisplay);//	fromHex(0x64E986) );	// Algae Green	// Emerald
 
 	button4.set(0, centro.y, centro.x, centro.y);
-	button4.setup("G", ofColor::pink );
+	button4.setup(GRAVEDAD, ofColor::pink , &mdisplay);
  
 	touchElements.addObject(button1);
 	touchElements.addObject(button2);
@@ -121,12 +121,13 @@ void menu::init_Escena() {
 //	ofAddListener(box2d.contactEndEvents, this, &menu::contactEnd);
 	
 	// Listeners para detectar que se esta tocando en una zona u otra
-    ofAddListener(button1.buttonEvent ,this, &menu::onButtonPressed);
+ /*   ofAddListener(button1.buttonEvent ,this, &menu::onButtonPressed);
     ofAddListener(button2.buttonEvent ,this, &menu::onButtonPressed);
     ofAddListener(button3.buttonEvent ,this, &menu::onButtonPressed);
-    ofAddListener(button4.buttonEvent ,this, &menu::onButtonPressed);
+    ofAddListener(button4.buttonEvent ,this, &menu::onButtonPressed);*/
 		
 	ofLogNotice("menu - init_escena - fin");
+   
 	
 }
 
@@ -347,6 +348,8 @@ void menu::update(float d1) {
 void menu::draw() {
 	ofBackground(ofColor::black);
 
+
+
 	// clear fbos
 	if(bDrawFbos) {
 		ofVec2f centroScreen = ofVec2f(ofGetWidth()/2, ofGetHeight()/2);
@@ -381,7 +384,7 @@ void menu::draw() {
 
 
     // Botones para TUIO
-//		touchElements.draw();
+    touchElements.draw();
 	
 	// TUIOS
 	//    tuioClient.drawCursors();	
@@ -406,11 +409,15 @@ void menu::draw() {
 	info += "Total Bodies: "+ofToString(box2d.getBodyCount())+"\n";
 	info += "Total Joints: "+ofToString(box2d.getJointCount())+"\n\n";
 	info += "FPS: "+ofToString(ofGetFrameRate(), 1)+"\n";
+    info += "Button Dest" + ofToString(mdisplay.scene);
 //	ofSetHexColor(0x444342);
 	ofSetHexColor(0xAAAAAA);
 	ofDrawBitmapString(info, 30, 30);
 	ofPopStyle();
+    
+    mdisplay.draw();
 }
+
 
 void menu::draw2Colors() {
 	ofEnableAlphaBlending();

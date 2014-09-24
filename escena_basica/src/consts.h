@@ -12,6 +12,7 @@
 #define W_WIDTH 768
 #define W_HEIGHT 768
 #define TUIORATE
+enum scenes{MENU, EM, DEBIL, FUERTE, GRAVEDAD};
 
 enum tipoOSCData {
 	ESCENA,

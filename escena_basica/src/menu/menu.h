@@ -20,6 +20,7 @@
 // Esto ya es parte de la escena en si:
 #include "ofxBox2d.h"
 #include "cheapComm.h"
+#include "display.h"
 
 
 // -------------------------------------------------
@@ -116,6 +117,7 @@ public:
 	
 	// rangos angulares
 	float rangosAngDeg [4];
+    display mdisplay;
 	
 };
 
