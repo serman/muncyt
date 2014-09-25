@@ -50,14 +50,15 @@ int i=0;
 
 void draw()
 {
-  background(0);
+  
  /* stroke(255,0,0);
   fill(0,0,200);
   line(endX,initY,endX,endY);
   rect(initY,initX,2,2);*/
   
 //  rotateDraw(2.0);
-
-  noiseDraw();
+//  noiseDraw();
+//randomParticleDraw();
+waveDraw();
 }
 

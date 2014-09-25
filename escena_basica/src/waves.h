@@ -93,20 +93,20 @@ public:
     
     
     waves(){
+        waves(-1);
+    }
+    waves(int mid){
+        waveID=mid;
         p1set=false;
         p2set=false;
         p1_id=-1;
         p2_id=-1;
-       // isCompleted=false;
+        // isCompleted=false;
 		theta = 0.05;
         n_ciclos=2;
 		dx = n_ciclos*(2*PI / 500.0); // si t es mas pequeño hay mas ondas
 		incr=-0.11; //esto define la frecuencia
         a=50;
-    }
-    waves(int mid){
-        waveID=mid;
-        waves();
     }
     
     void update(){
@@ -228,6 +228,10 @@ ofSetColor(255,255,0);
         }
         return false;
         
+    }
+    
+    int getLength(){
+       return p1.distance(p2);
     }
     
     

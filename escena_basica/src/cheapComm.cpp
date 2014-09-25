@@ -15,7 +15,7 @@ cheapComm::cheapComm(){
 
 void cheapComm::setup(){
     int serverRecvPort = 9000;
-    string dst="192.168.0.255";
+    string dst="127.0.0.1";
 	myosc.setup(dst, serverRecvPort);
 	int maxServerMessages = 38;
 
@@ -73,7 +73,6 @@ void cheapComm::sendAudio3(string pattern, float i0, float i1, float i2){
     m.addFloatArg(i1);
     m.addFloatArg(i2);
     myosc.sendMessage(m);
-    
 }
 
 void cheapComm::sendPosition( float sector, float speed ){
@@ -82,7 +81,6 @@ void cheapComm::sendPosition( float sector, float speed ){
 		m.addFloatArg(sector);
         m.addFloatArg(speed);
 		myosc.sendMessage(m);
-
 }
 
 void cheapComm::sendExplosion(){

@@ -168,8 +168,14 @@ void electromagnetica::update(float d1){
         }
         
     }*/
-    
+    /*OSC SENDING UPDATES */
+    if(ofGetFrameNum()%4==0){
+        for(int i=0; i<wavesm.howManyWaves(); i++){
+            cheapComm::getInstance()->sendAudio2("/audio/electromagnetism/wave_length",wavesm.waveslist[i].waveID, wavesm.waveslist[i].getLength());
+        }
     }
+    
+}
 
 void electromagnetica::draw(){
     

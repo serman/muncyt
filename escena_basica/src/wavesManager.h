@@ -33,7 +33,6 @@ class wavesManager : public tangibleObject{
         for(int i=0; i<waveslist.size(); i++){
             waveslist[i].setup(); // esta funcion descarta el id si no lo tiene
         }
-        cheapComm::getInstance();
     }
 
     void draw(){
@@ -85,7 +84,6 @@ class wavesManager : public tangibleObject{
                     singleWave->p1set= waveslist[i].p1set;
                     singleWave->p2set= waveslist[i].p2set;
                     waveslist.erase(waveslist.begin()+i);
-                    
                 }
                 break;
             }
