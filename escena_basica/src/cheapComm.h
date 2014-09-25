@@ -16,9 +16,11 @@
 
 //static ofEvent	<oscData> eventoOSC;
 
+
+
 class cheapComm {
 	public:
-        cheapComm();    
+    
 	    void setup();
 
 		void eventoOSC( oscData &mydata );
@@ -27,9 +29,24 @@ class cheapComm {
     	void sendExplosion();
 
 	    ofxOscSender myosc;
+    
+        static cheapComm *getInstance(){
+            if (!m_pInstance)   // Only allow one instance of class to be generated.
+                m_pInstance = new cheapComm;
+            return m_pInstance;
 
+        }
+        void sendAudio0(string pattern);
+        void sendAudio0(string, float );
+        void sendAudio1(string, float );
+        void sendAudio2(string, float , float);
+        void sendAudio3(string, float , float, float);
     private:
-	
+            cheapComm();
+    cheapComm(cheapComm const&);              // Don't Implement
+    void operator=(cheapComm const&); // Don't implement
+    static cheapComm* m_pInstance;
+
 };
 
 #endif /* defined(__panel1_tracking__cheapComm__) */

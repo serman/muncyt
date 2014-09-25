@@ -184,7 +184,7 @@ void electromagnetica::draw(){
             ofSetColor(255);
             meshParticles.setMode(OF_PRIMITIVE_POINTS);
                 meshAux.setMode(OF_PRIMITIVE_POINTS);
-            glPointSize(2);
+            glPointSize(1);
             glEnable(GL_POINT_SMOOTH);	// Para que sean puntos redondos
             ofEnableDepthTest();
             meshParticles.draw();
@@ -356,7 +356,7 @@ void electromagnetica::sceneWillAppear( ofxScene * fromScreen ){  // reset our s
 	ofAddListener(tuioClientEm.cursorRemoved,this,&electromagnetica::tuioRemoved);
 	ofAddListener(tuioClientEm.cursorUpdated,this,&electromagnetica::tuioUpdated);*/
 
-   
+    cheapComm::getInstance()->sendAudio0("/audio/electromagnetism/start_event");
 };
 
 
@@ -397,6 +397,7 @@ void electromagnetica::tuioUpdated(ofxTuioCursor &tuioCursor){
     hands.notifySlide(mx, my,tuioCursor.getSessionId(),tuioCursor.getMotionAccel());
     wavesm.slide(mx,  my,tuioCursor.getSessionId(),tuioCursor.getMotionAccel());
   //  updateMagneticField(100,mx,my);
+    cheapComm::getInstance()->sendAudio0("/audio/electromagnetism/hand_on_event");
 }
 
 void electromagnetica::tuioRemoved(ofxTuioCursor &tuioCursor){
@@ -410,6 +411,7 @@ void electromagnetica::tuioRemoved(ofxTuioCursor &tuioCursor){
     
     hands.removeObjectByTuioID(tuioCursor.getSessionId() );
     wavesm.touchUp(tuioCursor.getSessionId());
+    cheapComm::getInstance()->sendAudio0("/audio/electromagnetism/hand_off_event");
     
 }
 

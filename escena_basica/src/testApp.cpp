@@ -1,5 +1,6 @@
 #include "testApp.h"
 #include "consts.h"
+//static cheapComm myComm;
 
 void testApp::setup(){
 
@@ -16,26 +17,28 @@ void testApp::setup(){
 	///////////////////////////////////////
 	
 	sceneManager = ofxSceneManager::instance();
-    myComm.setup();
+
+    myComm=cheapComm::getInstance();
+    myComm->setup();
     
     menu *m1=new menu();
-    m1->setComm(&myComm);
+  //  m1->setComm(&myComm);
 	sceneManager->addScene( m1, SCENE_0);
     
     electromagnetica *electrom=new electromagnetica();
-    electrom->setComm(&myComm);
+   // electrom->setComm(&myComm);
 	sceneManager->addScene( electrom, SCENE_2);
     
     nuclear_debil *nuclear_d = new nuclear_debil();
-    nuclear_d->setComm(&myComm);
+  //  nuclear_d->setComm(&myComm);
 	sceneManager->addScene( nuclear_d, SCENE_1);
 
     nuclear_fuerte *nuclear_f = new nuclear_fuerte();
-    nuclear_d->setComm(&myComm);
+  //  nuclear_d->setComm(&myComm);
 	sceneManager->addScene( nuclear_f , SCENE_3);
     
     gravedad *grave=new gravedad();
-    grave->setComm(&myComm);
+ //   grave->setComm(&myComm);
     sceneManager->addScene( grave, SCENE_4);
 	
 	sceneManager->setDrawDebug(true);

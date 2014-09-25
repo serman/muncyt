@@ -7,6 +7,7 @@
 //
 
 #include "cheapComm.h"
+cheapComm* cheapComm::m_pInstance = NULL;
 
 cheapComm::cheapComm(){
 
@@ -41,6 +42,39 @@ void cheapComm::eventoOSC( oscData &mydata ) {
 //	ofLogNotice("Evento Enviar-OSC recibido.");
 	
 //}
+
+void cheapComm::sendAudio0(string pattern){
+    ofxOscMessage m;
+    m.setAddress(pattern);
+    myosc.sendMessage(m);
+    
+}
+
+void cheapComm::sendAudio1(string pattern, float i0){
+    ofxOscMessage m;
+    m.setAddress(pattern);
+    m.addFloatArg(i0);
+    myosc.sendMessage(m);
+    
+}
+
+void cheapComm::sendAudio2(string pattern, float i0, float i1){
+    ofxOscMessage m;
+    m.setAddress(pattern);
+    m.addFloatArg(i0);
+    m.addFloatArg(i1);
+    myosc.sendMessage(m);
+}
+
+void cheapComm::sendAudio3(string pattern, float i0, float i1, float i2){
+    ofxOscMessage m;
+    m.setAddress(pattern);
+    m.addFloatArg(i0);
+    m.addFloatArg(i1);
+    m.addFloatArg(i2);
+    myosc.sendMessage(m);
+    
+}
 
 void cheapComm::sendPosition( float sector, float speed ){
         ofxOscMessage m;

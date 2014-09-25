@@ -85,7 +85,7 @@ public:
     ofPoint getDstPoint(int, int);
     void drawEM();*/
     cheapComm *myComm;
-    void setComm(cheapComm *m){ myComm=m;}
+    //void setComm(cheapComm *m){ myComm=m;}
 };
 
 #endif /* defined(__escena_basica__electromagnetica__) */

@@ -38,6 +38,7 @@ public:
     //gestion de punteros
     long p1_id;
     long p2_id;
+    int waveID;
     
     bool isCompleted(){
         if(p1set&& p2set)
@@ -102,7 +103,10 @@ public:
 		dx = n_ciclos*(2*PI / 500.0); // si t es mas pequeño hay mas ondas
 		incr=-0.11; //esto define la frecuencia
         a=50;
-		
+    }
+    waves(int mid){
+        waveID=mid;
+        waves();
     }
     
     void update(){

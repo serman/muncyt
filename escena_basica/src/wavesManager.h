@@ -10,27 +10,30 @@
 #define escena_basica_wavesManager_h
 #include "waves.h"
 #include "tangibleObject.h"
+#include "cheapComm.h"
 struct trIndices{
     
     int n_wave;
     int new_index;
-
-};
+  };
 
 class wavesManager : public tangibleObject{
     public:
     vector<waves> waveslist;
     waves *singleWave;
+    int waves_id_counter;
+
     int howManyWaves(){
         return countCurrentWaves();
     }
 
     void setup(){
-     singleWave= new waves();
+        singleWave= new waves(waves_id_counter++);
         singleWave->setup();
         for(int i=0; i<waveslist.size(); i++){
             waveslist[i].setup(); // esta funcion descarta el id si no lo tiene
         }
+        cheapComm::getInstance();
     }
 
     void draw(){
@@ -49,7 +52,8 @@ class wavesManager : public tangibleObject{
             singleWave->addPoint(x,y,s_id);
             if(singleWave->isCompleted()==true){
                 waveslist.push_back(*singleWave);
-                singleWave= new waves(); //esta onda se queda como incompleta hasta que se le añadan 2 puntos
+                cheapComm::getInstance()->sendAudio1("/audio/electromagnetism/create_wave_event",waves_id_counter);
+                singleWave= new waves(waves_id_counter++); //esta onda se queda como incompleta hasta que se le añadan 2 puntos
             }
         //}
     }
@@ -65,6 +69,7 @@ class wavesManager : public tangibleObject{
             singleWave->remove_id(s_id);
         for(int i=0; i<waveslist.size(); i++){
             if(waveslist[i].contains(s_id)){
+                cheapComm::getInstance()->sendAudio1("/audio/electromagnetism/destroy_wave_event", waveslist[i].waveID);
                 waveslist[i].remove_id(s_id);
                 if(singleWave->isHalf() ){// si hay otro cursor soltero los uno y creo una onda entre ellos
                     waveslist[i].addPoint(singleWave->getSinglePoint().x,singleWave->getSinglePoint().y,singleWave->getSinglePointID());

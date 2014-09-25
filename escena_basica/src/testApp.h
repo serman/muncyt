@@ -13,6 +13,7 @@
 
 #include "cheapComm.h"
 
+
 class testApp : public ofBaseApp{
 
 	enum Scenes{ SCENE_0 = 0, SCENE_1, SCENE_2, SCENE_3, SCENE_4 };
@@ -42,8 +43,9 @@ class testApp : public ofBaseApp{
 	
 	
 		// Comunicacion OSC
-		cheapComm myComm;
+		
 	
   
 		void eventoOSC_Recibido(oscData &valor);
+        cheapComm *myComm;
 };
