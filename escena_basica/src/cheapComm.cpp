@@ -14,8 +14,9 @@ cheapComm::cheapComm(){
 }
 
 void cheapComm::setup(){
-    int serverRecvPort = 9000;
-    string dst="127.0.0.1";
+//    int serverRecvPort = 9000;
+    int serverRecvPort = 7777;
+    string dst="192.168.43.215";
 	myosc.setup(dst, serverRecvPort);
 	int maxServerMessages = 38;
 

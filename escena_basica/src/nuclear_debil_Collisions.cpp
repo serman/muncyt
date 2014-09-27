@@ -56,7 +56,8 @@ void nuclear_debil::contactEnd(ofxBox2dContactArgs &e) {
 			else if((pA->tipo == tipoNeutron || pB->tipo == tipoNeutron)) {
 				// neutron choca contra otra cosa
 				ofLogVerbose("CHOQUE >>>>>>>>>>>>> n <-> algo <<<<<<<<<<<<<<");
-				sounds[1].play();
+			//	sounds[1].play();
+                cheapComm::getInstance()->sendAudio0("/audio/weak_nuclear/particle_hit_event");
 				if(pA->tipo == tipoNeutron) {
 					
 				}

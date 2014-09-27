@@ -96,7 +96,7 @@ public:
 	vector    <ofPtr<Particula> >	nucleos;	//	
 	vector    <ofPtr<Particula> >	neutrones;  //	
 	vector	  <ofPtr<ofxBox2dRect> >	boxes;	//	defalut box2d rects
-
+    int nCircs;
 	void addNucleo();
 	void addNucleo(int xx, int yy);
 	void addNucleo(int xx, int yy, float r);
@@ -182,6 +182,8 @@ public:
 	
     void sceneWillAppear( ofxScene * fromScreen );
     void sceneWillDisappear( ofxScene * toScreen );
+    
+    void    ball_inside_event();
 	
 	bool swDrawTRAILS;
 	

@@ -16,7 +16,8 @@ enum BUTTON_TYPE {TYPE_ACC,TYPE_CRASH};
 class anilloButton : public tangibleObject{
     
 public:
-    ofImage img;
+    ofImage imgPlus;
+    ofImage imgExp;
     bool status_handIsOn;
     bool status_active;
     BUTTON_TYPE btype;
@@ -26,9 +27,9 @@ public:
     anilloButton(){
         status_handIsOn=false;
         status_active=true;
-        btype= TYPE_ACC;
-        img.loadImage("boton_anillo2.png");
-        
+        btype = TYPE_ACC;
+        imgPlus.loadImage("boton_anillo_mas.fw.png");
+        imgExp.loadImage("boton_anillo_exp.fw.png");
         
     }
 
@@ -36,11 +37,12 @@ public:
     
     void setup(){
         if(x<100 && y>100){//izquierda
-            img.rotate90(2);
+            imgPlus.rotate90(2);
         }
         else if (y<100 && x<500){ //arriba
-            img.rotate90(3);
+            imgExp.rotate90(3);
         }
+        
     }
     
     void draw(){
@@ -66,12 +68,12 @@ public:
 
         //ñapa para tres botones CAMBIAR!!
         if(x<100 && y>100){//izquierda
-            img.draw(5, 314);
+            imgPlus.draw(5, 314);
         }else if (y<100 && x<500){ //arriba
-            img.draw(309,5);
+            imgExp.draw(309,5);
         }
         else{ //derecha
-			img.draw(702,314);
+			imgPlus.draw(702,314);
         }
         ofPopStyle();
         //
@@ -96,6 +98,10 @@ public:
     void touch(float x, float y, int s_id){
         if(inside(x, y)){
             status_handIsOn=true;
+            if(status_active){
+                cout << "notify event"<<endl;
+                ofNotifyEvent(buttonEvent, btype);
+            }
         }else
             status_handIsOn=false;
         
@@ -105,8 +111,10 @@ public:
         if(canInteract()==false) return;
         if(inside(x, y)){
             status_handIsOn=true;
-            if(status_active)
+            if(status_active){
+                    cout << "notify event"<<endl;
                 ofNotifyEvent(buttonEvent, btype);
+            }
         }else
             status_handIsOn=false;
         

@@ -28,7 +28,7 @@ class wavesManager : public tangibleObject{
     }
 
     void setup(){
-        singleWave= new waves(waves_id_counter++);
+        singleWave= new waves(0);
         singleWave->setup();
         for(int i=0; i<waveslist.size(); i++){
             waveslist[i].setup(); // esta funcion descarta el id si no lo tiene
@@ -51,8 +51,10 @@ class wavesManager : public tangibleObject{
             singleWave->addPoint(x,y,s_id);
             if(singleWave->isCompleted()==true){
                 waveslist.push_back(*singleWave);
-                cheapComm::getInstance()->sendAudio1("/audio/electromagnetism/create_wave_event",waves_id_counter);
-                singleWave= new waves(waves_id_counter++); //esta onda se queda como incompleta hasta que se le añadan 2 puntos
+                cheapComm::getInstance()->sendAudio1("/audio/electromagnetism/create_wave_event",singleWave->waveID);
+                
+                singleWave= new waves(getAvailableId()); //esta onda se queda como incompleta hasta que se le añadan 2 puntos
+                
             }
         //}
     }
@@ -143,6 +145,19 @@ class wavesManager : public tangibleObject{
             return singleWave->getSinglePointID();
         }
         else return -1;
+    }
+    
+    int getAvailableId(){
+        for(int idToCheck=0; idToCheck<8; idToCheck++){
+            int i=0;
+            for(i=0; i<waveslist.size(); i++){
+                if(waveslist[i].waveID==idToCheck) break;
+            }
+            if(i==waveslist.size()){
+                return idToCheck;
+            }
+        }
+        return -1;
     }
 
 

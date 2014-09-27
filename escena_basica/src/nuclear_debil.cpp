@@ -156,6 +156,7 @@ void nuclear_debil::init_Escena() {
 	swDrawTRAILS = true;
 
 	anillo.reset_wAng();
+    anillo.setFadeInMode();
 	
 	ofPoint centro = ofPoint(W_WIDTH/2.0, W_HEIGHT/2.0);
 
@@ -163,13 +164,11 @@ void nuclear_debil::init_Escena() {
 	ofLogVerbose("Add nucleos");
 	// add some nucleos
 	nucleos.clear();
-	int nCircs = 60 + floor(  ofRandom(20) );
+    nCircs = 60 + floor(  ofRandom(20) );
 	for(int i =0; i<nCircs; i++) {
 		addNucleo(centro.x+ofRandom(-1,1), centro.y+ofRandom(-1,1), rNucleo);
 	}
-	
-	
-	
+
 	
 	// addListeners
     box2d.enableEvents();
@@ -223,7 +222,6 @@ void nuclear_debil::cargaSounds() {
 
 //--------------------------------------------------------------
 void nuclear_debil::update(float dt) {
-
 	// 
 	box2d.update();	
 
@@ -292,13 +290,15 @@ void nuclear_debil::update(float dt) {
 	}
 	
     //Envio OSC
-	if(ofGetFrameNum()%10 ==0){
-        // myComm.sendPosition(anillo.angT, anillo.wAng);
-		
-		// lanzar evento que lo recoge el myComm de arriba
-//		oscData mydata;
-//		mydata.tipoOSCDato = EXPLOSION;
-//		ofNotifyEvent( eventoOSC, mydata, this);
+	if(ofGetFrameNum()%2 ==0){
+        cheapComm::getInstance()->sendAudio2("/audio/weak_nuclear/ball", -1*(anillo.angT)/(2*PI),ofMap(anillo.wAng,0,-anillo.wAngMax,0,1));
+        cout << anillo.angT<< " " << -1*(anillo.angT)/(2*PI) <<endl;
+        
+        
+        cheapComm::getInstance()->sendAudio2("/audio/weak_nuclear/number_particles", ofMap(nucleos.size(),nCircs,nCircs+50,0,1), ofMap(anillo.angT,0,2*PI,0,1));
+        cout << nucleos.size()<< " ";
+        
+//        CUAL ES EL MAXIMO DE NUCLEOS AQUI?
     }
 	
 	
@@ -331,24 +331,7 @@ void nuclear_debil::update(float dt) {
 		}
 	}
 	
-	/*// Interaccion de los blobs recibidos
-	list<ofxTuioCursor*>cursorList = tuioClient.getTuioCursors();
-	for(list<ofxTuioCursor*>::iterator it=cursorList.begin(); it != cursorList.end(); it++) {
-		ofxTuioCursor *tcur = (*it);
 
-//		ofPoint ptCursor = ofPoint(tcur->getX(),tcur->getY());
-		ofPoint ptCursor = tuioPoint2Screen(*tcur);
-
-//		ofLogNotice("nuevo TUIO cursor: " + ofToString(ptCursor));
-		
-		// Evaluar si esta en posicion de interaccion:		
-		if(bordeLine.inside(ptCursor)) {
-			addDestello(ptCursor.x, ptCursor.y);
-		}
-		
-		else anillo.interaccionAnillo(ptCursor);
-		
-    }*/
 	
 }
 
@@ -383,7 +366,7 @@ void nuclear_debil::draw(){
         bordeLine.clear();
     	float radioMuro = MIN(W_WIDTH, W_HEIGHT) / 2.0*0.85;
     	bordeLine.arc(centro, radioMuro, radioMuro, 0.0, 360.0, true, 180);
-		circuloExt.draw();
+		//circuloExt.draw();
 	
 		entrada1.clear(); 
 		entrada2.clear();
@@ -391,13 +374,17 @@ void nuclear_debil::draw(){
 		entrada1.arc(ofPoint(centro.x,centro.y-radioExt+100), 100, 100, 125, 270,true,180);
 		entrada2.arc(ofPoint(centro.x,centro.y-radioExt+100), (radioExt-radioInt), (radioExt-radioInt), 125, 270,true,180);
 
-		entrada1.draw();
-		entrada2.draw();
+		//entrada1.draw();
+		//entrada2.draw();
 		// PARED INTERIOR
 		//box2d.drawGround();
-		bordeLine.draw();
+		//bordeLine.draw();
 	ofPopStyle();
-	
+    // Mascara exterior
+	// ...Con algun Shape...
+	anillo.draw();
+
+    
 	if(swBlendModeADD) ofEnableBlendMode(OF_BLENDMODE_ADD);
 	for(int i=0; i<nucleos.size(); i++) {
 		ofFill();
@@ -446,12 +433,7 @@ void nuclear_debil::draw(){
     
     touchElements.draw();
 	
-	// Mascara exterior
-	// ...Con algun Shape...
-	anillo.draw();
 	
-	// GUI ANILLO
-	//anillo.drawControls();
 	
 	// TUIOS
 //    tuioClient.drawCursors();	
@@ -481,7 +463,7 @@ void nuclear_debil::draw(){
     
     
 	// Info
-	//drawInfo();
+	drawInfo();
 
 //	ofSetColor(255);
 //	ofLine(ofGetMouseX()*W_WIDTH/ofGetScreenWidth(),0,ofGetMouseX()*ofGetScreenWidth()/W_WIDTH,ofGetHeight());
@@ -615,7 +597,6 @@ void nuclear_debil::addNeutron(int xx, int yy){
 }
 
 void nuclear_debil::addNeutron(int xx, int yy, float vVal, float vAng){
-
 //	ofLogVerbose("Nuevo Neutron. INI. #neutrones: "+ofToString(neutrones));
 	neutrones.push_back(ofPtr<Particula>(new Particula));
 	neutrones.back().get()->setPhysics(50.5, 0.85, 0.1); // setPhysics(float density, float bounce, float friction);
@@ -692,6 +673,7 @@ void nuclear_debil::sceneWillAppear( ofxScene * fromScreen ){  // reset our scen
 	ofAddListener(tuioClient.cursorUpdated,this,&nuclear_debil::tuioUpdated);
     */
     init_Escena();
+    cheapComm::getInstance()->sendAudio0("/audio/weak_nuclear/start_event");
 };
 
 
@@ -703,7 +685,10 @@ void nuclear_debil::sceneWillDisappear( ofxScene * toScreen ){
 	ofRemoveListener(tuioClient.cursorUpdated,this,&nuclear_debil::tuioUpdated);
    */
 	exit_Escena();
+    cheapComm::getInstance()->sendAudio0("/audio/weak_nuclear/end_event");
 };
+
+
 
 
 

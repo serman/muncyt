@@ -169,10 +169,18 @@ void electromagnetica::update(float d1){
         
     }*/
     /*OSC SENDING UPDATES */
-    if(ofGetFrameNum()%4==0){
+    if(ofGetFrameNum()%20==0){
         for(int i=0; i<wavesm.howManyWaves(); i++){
-            cheapComm::getInstance()->sendAudio2("/audio/electromagnetism/wave_length",wavesm.waveslist[i].waveID, wavesm.waveslist[i].getLength());
+            int waveLength=wavesm.waveslist[i].getLength();
+            if(wavesm.waveslist[i].waveID!=-1){
+            
+            cheapComm::getInstance()->sendAudio2("/audio/electromagnetism/wave_length",wavesm.waveslist[i].waveID, ofMap(waveLength,0,768,1,0));
+                
+            }
+            cout << wavesm.waveslist[i].waveID << " ";
         }
+        cout <<endl;
+        
     }
     
 }
@@ -372,7 +380,7 @@ void electromagnetica::sceneWillDisappear( ofxScene * toScreen ){
    /* ofRemoveListener(tuioClientEm.cursorAdded,this,&electromagnetica::tuioAdded);
 	ofRemoveListener(tuioClientEm.cursorRemoved,this,&electromagnetica::tuioRemoved);
 	ofRemoveListener(tuioClientEm.cursorUpdated,this,&electromagnetica::tuioUpdated);*/
-
+    cheapComm::getInstance()->sendAudio0("/audio/electromagnetism/end_event");
 }
 
 
@@ -394,6 +402,7 @@ void electromagnetica::tuioAdded(ofxTuioCursor &tuioCursor){
     wavesm.touch(loc.x, loc.y,tuioCursor.getSessionId());
       //  updateMagneticField(100,loc.x,loc.y);
 
+    cheapComm::getInstance()->sendAudio0("/audio/electromagnetism/hand_on_event");
 }
 
 void electromagnetica::tuioUpdated(ofxTuioCursor &tuioCursor){
@@ -403,7 +412,7 @@ void electromagnetica::tuioUpdated(ofxTuioCursor &tuioCursor){
     hands.notifySlide(mx, my,tuioCursor.getSessionId(),tuioCursor.getMotionAccel());
     wavesm.slide(mx,  my,tuioCursor.getSessionId(),tuioCursor.getMotionAccel());
   //  updateMagneticField(100,mx,my);
-    cheapComm::getInstance()->sendAudio0("/audio/electromagnetism/hand_on_event");
+    
 }
 
 void electromagnetica::tuioRemoved(ofxTuioCursor &tuioCursor){

@@ -46,7 +46,7 @@ void testApp::setup(){
 	sceneManager->setCurtainStayTime(0.0);
 	sceneManager->setCurtainRiseTime(1.0);
 	sceneManager->setOverlapUpdate(true);
-    //sceneManager->goToScene(SCENE_2);
+    sceneManager->goToScene(SCENE_1);
 	
 	
 	// OSC
@@ -156,7 +156,6 @@ void testApp::windowResized(int w, int h){
 
 
 void testApp::tuioAdded(ofxTuioCursor &tuioCursor){
-    cout << "tuio added";
     sceneManager->getCurrentScene()->tuioAdded(tuioCursor);
 }
 

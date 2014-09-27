@@ -113,7 +113,6 @@ public:
             }
             ofPopMatrix();
         
-        
             ofDisableAlphaBlending();
             ofPopStyle();
         

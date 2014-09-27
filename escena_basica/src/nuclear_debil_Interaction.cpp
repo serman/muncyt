@@ -38,19 +38,19 @@ void nuclear_debil::keyPressed(int key) {
 	if(key=='f') swFuerza = !swFuerza;
 	
     if(key=='x') {
-		
-		ofLogNotice("nucleardebil::keyPressed   'x'   notifyEvent EXPLOSION");
-		oscData mydata;
-		mydata.tipoOSCDato = EXPLOSION;
-		//ofNotifyEvent( eventoOSC, mydata);
-        myComm->eventoOSC(mydata);
-		
+		ball_inside_event();
 	}
+    if(key=='e'){
+        cheapComm::getInstance()->sendAudio0("/audio/weak_nuclear/chain_reaction_event");
+    }
 	
 	if(key=='t') {
 		fpsAct = ofMap(ofGetAppPtr()->mouseX,0,W_WIDTH, 20.0, 600.0);
 		box2d.setFPS(fpsAct);
 	}
+    if(key=='a'){
+        anillo.acelera(-anillo.dAcc/2);
+    }
 	
 //	if(key == 's') ofToggleFullscreen();
 	
@@ -139,6 +139,8 @@ void nuclear_debil::tuioAdded(ofxTuioCursor &tuioCursor){
     hands.addObject(*h1);
     hands.notifyTouch(loc.x, loc.y,tuioCursor.getSessionId());
     touchElements.notifyTouch(loc.x, loc.y,tuioCursor.getSessionId());
+            cheapComm::getInstance()->sendAudio0("/audio/weak_nuclear/hand_on_event");
+    
 }
 
 void nuclear_debil::tuioUpdated(ofxTuioCursor &tuioCursor){
@@ -164,24 +166,29 @@ void nuclear_debil::tuioRemoved(ofxTuioCursor &tuioCursor){
     
     hands.removeObjectByTuioID(tuioCursor.getSessionId() );
     touchElements.notifyTouchUp( tuioCursor.getSessionId() );
+    cheapComm::getInstance()->sendAudio0("/audio/weak_nuclear/hand_off_event");
     
 }
 
 void nuclear_debil::onButtonPressed(BUTTON_TYPE& mtype){
     cout <<" buttonpressed " << endl;
     if(mtype==TYPE_ACC){
-        anillo.acelera(-anillo.dAcc);
+        anillo.acelera(-anillo.dAcc/2);
         cout <<" acelera " << endl;
+        cheapComm::getInstance()->sendAudio0("/audio/weak_nuclear/acceleration_event");
     }
     else if(mtype==TYPE_CRASH){
-        cout <<" crash " << endl;
 		// Lanzarla con velocidad que tenga el anillo
-		
-		float vvVal = anillo.getVelocNeutronLanz();
-		float vvAng = HALF_PI;
-		
-		addNeutron(W_WIDTH/2.0,W_HEIGHT/2.0-radioInt*0.9,vvVal,vvAng);
+		ball_inside_event();
 	}
 	
+}
+
+void nuclear_debil::ball_inside_event(){
+    float vvVal = anillo.getVelocNeutronLanz();
+    float vvAng = HALF_PI;
+    addNeutron(W_WIDTH/2.0,W_HEIGHT/2.0-radioInt*0.9,vvVal,vvAng);
+    cheapComm::getInstance()->sendAudio0("/audio/weak_nuclear/ball_inside_event");
+    anillo.setFadeInMode();
 }
 

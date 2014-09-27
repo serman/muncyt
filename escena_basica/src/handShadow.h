@@ -47,7 +47,6 @@ public:
     }
     
     void draw(){
-		ofLogNotice("draw handShadow");
         ofEnableAlphaBlending();
         ofSetColor (200,0,0);//,alpha);
         ofEllipse( x, y,40, 40);

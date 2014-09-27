@@ -124,7 +124,6 @@ void testApp::setup() {
     ofDisableLighting();
     
     post.init(ofGetWidth(), ofGetHeight());
-    post.init(ofGetWidth(), ofGetHeight());
     post.createPass<ZoomBlurPass>()->setEnabled(false);
     post.createPass<BloomPass>()->setEnabled(false);
     post.createPass<ContrastPass>()->setEnabled(false);
