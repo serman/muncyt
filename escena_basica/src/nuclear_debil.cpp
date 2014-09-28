@@ -655,13 +655,7 @@ void nuclear_debil::resized(int w, int h){
 
 // ------------------------- TUIO ----------------------
 
-void nuclear_debil::setupTuio() {
-	
-  /*  ofAddListener(tuioClient.cursorAdded,this,&nuclear_debil::tuioAdded);
-	ofAddListener(tuioClient.cursorRemoved,this,&nuclear_debil::tuioRemoved);
-	ofAddListener(tuioClient.cursorUpdated,this,&nuclear_debil::tuioUpdated);
-	*/
-}
+
 
 
 

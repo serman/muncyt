@@ -1,5 +1,5 @@
 /*
- *  testApp_particulasMgr.cpp
+ *  gravedad_particulasMgr.cpp
  *  tests_Light_Grav
  *
  *  Created by guillermo casado on 24/09/14.
@@ -7,9 +7,9 @@
  *
  */
 
-#include "testApp.h"
+#include "gravedad.h"
 
-void testApp::addParticleOut() {
+void gravedad::addParticleOut() {
 	
 	//	float rnd = ofRandom(1.0);
 	//	if(rnd<0.15) {
@@ -35,12 +35,13 @@ void testApp::addParticleOut() {
 		
 		// pos, vel, color, mass, charge
 		//		ParticleX pTmp = ParticleX(ofVec3f(0,ofRandom(ofGetHeight())) , ofVec3f(ofRandom(10.0, 30.0), 0) , ofColor::white, 1.0, 0.0);
-		
+		cheapComm::getInstance()->sendAudio1("/audio/gravity/new_particle_event",ofMap(ang0,0,TWO_PI,0,1));
+        
 	}
 	
 }
 
-void testApp::updateParticlesX() {
+void gravedad::updateParticlesX() {
 	// add alguna particula desde un lateral
 	addParticleOut();
 	
@@ -48,17 +49,23 @@ void testApp::updateParticlesX() {
 	for(int i=0; i<particulas.size(); i++) {
 //		gravityTowards(ofVec3f& a_target,float a_minDist, float masaAttrac)
 		ofVec3f pSol = ofVec3f(W_WIDTH/2.0, W_HEIGHT/2.0,0);
-		particulas[i].gravityTowards(pSol, 10.0f,  masaSol);	
-	}
+		particulas[i].gravityTowards(pSol, 10.0f,  masaSol);
+        	}
 	
 	
-	// fuerzas TUIO 
-	for(int i=0; i<particulas.size(); i++) {
-		ofVec3f pTUIO = ofVec3f(mouseX-ofGetWidth()/2, -(mouseY-ofGetHeight()/2), 0);
-		pTUIO+=ofVec3f(W_WIDTH/2.0, W_HEIGHT/2.0 ,0);
-		particulas[i].gravityTowards(pTUIO, 10.0f,  masaTUIO);
-	}
+	// fuerzas TUIO
+    for (int j=0; j<hands.objectsCol.size(); j++){
+        ofVec3f pTUIO(hands.objectsCol[j]->x,hands.objectsCol[j]->y);
+        for(int i=0; i<particulas.size(); i++) {
+            //ofVec3f pTUIO = ofVec3f(ofGetMouseX()-ofGetWidth()/2, -(ofGetMouseY()-ofGetHeight()/2), 0);
+            pTUIO+=ofVec3f(W_WIDTH/2.0, W_HEIGHT/2.0 ,0);
+            particulas[i].gravityTowards(pTUIO, 10.0f,  masaTUIO);
+        }
+    }
+    //esto hay que hacerlo para cada TUIO
+
 	
+    
 	
 	// update
 	for(int i=0; i<particulas.size(); i++) {
@@ -78,7 +85,7 @@ void testApp::updateParticlesX() {
 			// eliminar particula
 			particulas.erase(particulas.begin()+i);
 			
-			// lanzar mensaje OSC
+			cheapComm::getInstance()->sendAudio0("/audio/gravity/sun_collision_event");
 			
 			
 		}
@@ -92,7 +99,7 @@ void testApp::updateParticlesX() {
 }
 
 
-void testApp::drawParticlesX() {
+void gravedad::drawParticlesX() {
 	// draw
 	for(int i=0; i<particulas.size(); i++) {
 		particulas[i].draw();

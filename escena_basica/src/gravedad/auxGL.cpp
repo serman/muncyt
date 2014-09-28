@@ -8,14 +8,14 @@
  */
 
 
-#include "testApp.h"
+#include "gravedad.h"
 
 /*
  These functions are for adding quads and triangles to an ofMesh -- either
  vertices, or texture coordinates.
  */
 //--------------------------------------------------------------
-void testApp::addFace(ofMesh& mesh, ofVec3f a, ofVec3f b, ofVec3f c) {
+void gravedad::addFace(ofMesh& mesh, ofVec3f a, ofVec3f b, ofVec3f c) {
 	mesh.addVertex(a);
 	mesh.addVertex(b);
 	mesh.addVertex(c);
@@ -39,20 +39,20 @@ void testApp::addFace(ofMesh& mesh, ofVec3f a, ofVec3f b, ofVec3f c) {
 }
 
 //--------------------------------------------------------------
-void testApp::addFace(ofMesh& mesh, ofVec3f a, ofVec3f b, ofVec3f c, ofVec3f d) {
+void gravedad::addFace(ofMesh& mesh, ofVec3f a, ofVec3f b, ofVec3f c, ofVec3f d) {
 	addFace(mesh, a, b, c);
 	addFace(mesh, a, c, d);
 }
 
 //--------------------------------------------------------------
-void testApp::addTexCoords(ofMesh& mesh, ofVec2f a, ofVec2f b, ofVec2f c) {
+void gravedad::addTexCoords(ofMesh& mesh, ofVec2f a, ofVec2f b, ofVec2f c) {
 	mesh.addTexCoord(a);
 	mesh.addTexCoord(b);
 	mesh.addTexCoord(c);
 }
 
 //--------------------------------------------------------------
-void testApp::addTexCoords(ofMesh& mesh, ofVec2f a, ofVec2f b, ofVec2f c, ofVec2f d) {
+void gravedad::addTexCoords(ofMesh& mesh, ofVec2f a, ofVec2f b, ofVec2f c, ofVec2f d) {
 	addTexCoords(mesh, a, b, c);
 	addTexCoords(mesh, a, c, d);
 }
@@ -62,7 +62,7 @@ void testApp::addTexCoords(ofMesh& mesh, ofVec2f a, ofVec2f b, ofVec2f c, ofVec2
  a 3d point from the current x,y image position.
  */
 //--------------------------------------------------------------
-ofVec3f testApp::getVertexFromImg(ofImage& img, int x, int y) {
+ofVec3f gravedad::getVertexFromImg(ofImage& img, int x, int y) {
 	ofColor color = img.getColor(x, y);
 	if(color.a > 0) {
 		float z = ofMap(color.a, 0, 255, -480, 480);
@@ -73,14 +73,14 @@ ofVec3f testApp::getVertexFromImg(ofImage& img, int x, int y) {
 }
 
 //Universal function which sets normals for the triangle mesh 
-void testApp::setNormals( ofMesh &mesh ){
-//	ofLogNotice("dir: ****************** testApp::setNormals ******************");
+void gravedad::setNormals( ofMesh &mesh ){
+//	ofLogNotice("dir: ****************** gravedad::setNormals ******************");
 	
 	//The number of the vertices 
 	int nV = mesh.getNumVertices();
 	//The number of the triangles 
 	int nT = mesh.getNumIndices() / 3;
-//	ofLogNotice("dir: ****************** testApp::setNormals ****************** nt: " + ofToString(nT));
+//	ofLogNotice("dir: ****************** gravedad::setNormals ****************** nt: " + ofToString(nT));
 	
 	vector<ofPoint> norm( nV ); //Array for the normals
 	//Scan all the triangles. For each triangle add its 

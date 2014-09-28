@@ -176,8 +176,6 @@ public:
 	void	tuioUpdated(ofxTuioCursor & tuioCursor);
 
     void    onButtonPressed(BUTTON_TYPE &mtype);
-	void	setupTuio();
-    ofxTuioClient   *tuioClient;
 	ofPoint tuioPoint2Screen(ofxTuioCursor &tuioCursor);
 	
     void sceneWillAppear( ofxScene * fromScreen );

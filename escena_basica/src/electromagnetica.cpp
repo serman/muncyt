@@ -366,9 +366,7 @@ void electromagnetica::resetParticles(){
 //scene notifications
 void electromagnetica::sceneWillAppear( ofxScene * fromScreen ){  // reset our scene when we appear
     gui1->enable();
-   /* ofAddListener(tuioClientEm.cursorAdded,this,&electromagnetica::tuioAdded);
-	ofAddListener(tuioClientEm.cursorRemoved,this,&electromagnetica::tuioRemoved);
-	ofAddListener(tuioClientEm.cursorUpdated,this,&electromagnetica::tuioUpdated);*/
+
 
     cheapComm::getInstance()->sendAudio0("/audio/electromagnetism/start_event");
 };
@@ -377,9 +375,7 @@ void electromagnetica::sceneWillAppear( ofxScene * fromScreen ){  // reset our s
 //scene notifications
 void electromagnetica::sceneWillDisappear( ofxScene * toScreen ){
     gui1->disable();
-   /* ofRemoveListener(tuioClientEm.cursorAdded,this,&electromagnetica::tuioAdded);
-	ofRemoveListener(tuioClientEm.cursorRemoved,this,&electromagnetica::tuioRemoved);
-	ofRemoveListener(tuioClientEm.cursorUpdated,this,&electromagnetica::tuioUpdated);*/
+
     cheapComm::getInstance()->sendAudio0("/audio/electromagnetism/end_event");
 }
 

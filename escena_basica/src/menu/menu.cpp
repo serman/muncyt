@@ -101,7 +101,7 @@ void menu::init_Escena() {
 	fRed = false;
 
 	swFuerzaDensidad = false;
-
+    ofEnableAlphaBlending();
 	// fbos:
 	// limpiarlas
 	fbo1.begin();	ofClear(255,255,255,0);	fbo1.end();
@@ -117,7 +117,7 @@ void menu::init_Escena() {
 	rangosAngDeg [1] = 90;
 	rangosAngDeg [2] = 180;
 	rangosAngDeg [3] = 270;
-	
+	ofDisableAlphaBlending();
 	
 	// addListeners
 	// Aqui no hacemos nada (por ahora) con las colisiones y otros eventos
@@ -382,10 +382,14 @@ void menu::draw() {
 	}	
 	else {
 		if(bDraw4Forces) {
+            ofEnableAlphaBlending();
 			draw4Forces();
+            ofDisableAlphaBlending();
 		}
 		else {
+             ofEnableAlphaBlending();
 			draw2Colors();
+              ofDisableAlphaBlending();
 		}
 	}
 
