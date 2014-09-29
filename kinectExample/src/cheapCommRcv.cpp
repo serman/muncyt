@@ -55,6 +55,24 @@ void cheapCommRcv::update(){
             return;
         }
         
+        
+        pattern="/sync/*/end_event";
+        matchResult1 = osc_match(pattern.c_str(), addr, &pattrOffset, &addrOffset);
+        //cout << "matchresult aa"<< matchResult1 << endl;
+        if(matchResult1==3){
+            if(m.getAddress()=="/sync/electromagnetism/end_event")
+                ((testApp*)ofGetAppPtr())->endScene(EM);
+            if(m.getAddress()=="/sync/gravity/end_event")
+                ((testApp*)ofGetAppPtr())->endScene(GRAVEDAD);
+            if(m.getAddress()=="/sync/weak_nuclear/end_event")
+                ((testApp*)ofGetAppPtr())->endScene(NUCLEAR_DEBIL);
+            if(m.getAddress()=="/sync/strong_nuclear/end_event")
+                ((testApp*)ofGetAppPtr())->endScene(NUCLEAR_FUERTE);
+            if(m.getAddress()=="/sync/menu/end_event")
+                ((testApp*)ofGetAppPtr())->endScene(MENU);
+            return;
+        }
+        
         /** si no dentro de cada escena recibe lo suyo **/
         
          pattern="/sync/electromagnetism";

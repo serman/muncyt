@@ -15,9 +15,10 @@
 #ifndef kinectExample_particleClouds_h
 #define kinectExample_particleClouds_h
 #define SAMPLING 3
-  enum	{RUIDO=0, ESPEJO,DESAPARECE};
+
 class particleClouds{
 public:
+    static enum	{RUIDO=0, ESPEJO,DESAPARECE};
     ofCamera *cam;
 // http://stackoverflow.com/questions/1701416/initialization-of-reference-member-requires-a-temporary-variable-c
 // there is no default constructor
@@ -129,7 +130,7 @@ public:
                     p->color=ofColor(255,255,255,ofRandom(0,160));
                 }//ESPEJO
             }else if(cloudState==DESAPARECE){
-                p->sandDown(acceleration,-200);
+                p->sandDown(acceleration/3,-800);
                 p->update();
                     //p->position+=ofNoise( p->position.x,p->position.y,p->position.z)*30;
                     //   p->color=ofColor(255,255,255,alphaParticles);
@@ -190,6 +191,10 @@ public:
     void resetParticles(){
         particles.clear();
         setupParticles();
+    }
+    
+    void setMode(int m){
+        mode=m;
     }
     
     void setUI(ofxUITabBar *guiTabBar ){

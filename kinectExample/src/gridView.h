@@ -17,6 +17,7 @@ public:
     void setup(int _w, int _h, float *_zMin, float *_zMax, ofxOpenNI2Grabber *_oniCamGrabber, extendedDepthSource *_depthGenerator){
         w=_w;
         h=_h;
+        temporary_w=0;
         oniCamGrabber=_oniCamGrabber;
         depthGenerator= _depthGenerator;
         zMin=_zMin;
@@ -29,6 +30,8 @@ public:
         fbo.begin();
         ofClear(0, 0, 0, 0);
         fbo.end();
+        mline.loadImage("images/lineGlow.png");
+        
     }
     
     void update(){
@@ -43,6 +46,9 @@ public:
                     elong_current+=0.01;
             break;
         }
+        
+        
+        
         
     }
     
@@ -60,7 +66,7 @@ public:
             ofPath line ;
             bool bLastValid = false;
             int _xStep = step;
-            for(int x = 0; x < w; x += step) { //recorro columnas
+            for(int x = 0; x < temporary_w; x += step) { //recorro columnas
                 int distance=depthGenerator->currentRawPixels->getPixels()[y * depthGenerator->width +x];
                 if(distance> *zMin && distance < *zMax) {
                     ofVec3f vtmp=oniCamGrabber->convertDepthToWorld(x,y);
@@ -111,12 +117,11 @@ public:
         //    ofPoint lastPoint ;
         ofVec3f lastPoint ;
         
-        for(int x = 0; x < w; x += step) { // recorro la horizontal
+        for(int x = 0; x < temporary_w; x += step) { // recorro la horizontal
             ofPath line;
             bool bLastValid = false;
             //		int _xStep = step;
             for(int y = 0; y < h; y += step) { // recorro columnas
-                
                 int distance=depthGenerator->currentRawPixels->getPixels()[y * depthGenerator->width +x];
                 if(distance> *zMin && distance < *zMax) {
                     ofVec3f vtmp=oniCamGrabber->convertDepthToWorld(x,y);
@@ -160,6 +165,7 @@ public:
     }
     
     void draw(ofCamera *cam){
+       temporary_w= temporary_w<=w ? temporary_w+4: w;
 
        if(status!=GRID)
            return;
@@ -233,6 +239,16 @@ public:
         
         
     }
+    void draw2D(){
+        ofPushStyle();
+        ofEnableAlphaBlending();
+        ofSetColor(ofColor::white);
+        if(temporary_w<w){
+            mline.draw(ofMap(temporary_w,0,w,0,ofGetWidth()),0,30,ofGetHeight());
+        }
+        ofDisableAlphaBlending();
+        ofPopStyle();
+    }
 
     void setUI(ofxUITabBar *guiTabBar ){
         gui1 = new ofxUICanvas(0,100,400,800);
@@ -278,11 +294,26 @@ public:
         elong_goal=_elong;
     }
     
+    void fadeIn(){
+        status=GRID;
+        temporary_w=0;
+    }
+    
+    void initBlackHole(){
+        status = BLACKHOLE;
+    }
+    
+    void endBlackHole(){
+        
+    }
+    
+    
 private:
     float elong_goal=1;
     float elong_current=1;
     int w;
     int h;
+    int temporary_w;
     float *zMin;
     float *zMax;
     ofxOpenNI2Grabber *oniCamGrabber;
@@ -296,6 +327,7 @@ private:
     float speed=1.2; //influye sobre la velocidad de las ondas mas pequeño mas rapido
     ofShader shader;
     ofFbo fbo;
+                ofImage mline;
 };
 
 #endif

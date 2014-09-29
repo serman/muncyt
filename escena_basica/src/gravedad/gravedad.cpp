@@ -258,9 +258,9 @@ void gravedad::update(float d1){
     
  /***************/
 	// eliminar las particulas que ya han chocado contra el sol o que se han ido muy lejos
-	if(ofGetFrameNum() % 10==0){
-        
+	if(ofGetFrameNum() % 10==0){        
         cheapComm::getInstance()->sendAudio1("/audio/gravity/collapse_proximity",ofMap(masaSol, INIT_MASA_SOL, MAX_MASA_SOL, 0, 1));
+        cheapComm::getInstance()->sendSync1("/sync/gravity/collapse_proximity",ofMap(masaSol, INIT_MASA_SOL, MAX_MASA_SOL, 0, 1));
         
 #ifdef DEBUGOSC
         ofLogNotice() << "/audio/gravity/collapse_proximity" << "masa sol: " << ofMap(masaSol, INIT_MASA_SOL, MAX_MASA_SOL, 0, 1) << "real"<<  masaSol;
@@ -619,10 +619,12 @@ void gravedad::setupGUI() {
 void gravedad::keyPressed(int key){
     if(key=='s'){
         cheapComm::getInstance()->sendAudio0("/audio/gravity/collapse_start_event");
+        cheapComm::getInstance()->sendSync0("/sync/gravity/collapse_start_event");
     }
     
     if(key=='e'){
         cheapComm::getInstance()->sendAudio0("/audio/gravity/collapse_end_event");
+        cheapComm::getInstance()->sendSync0("/sync/gravity/collapse_start_event");
     }
     
 }

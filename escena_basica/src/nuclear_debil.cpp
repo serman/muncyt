@@ -681,7 +681,7 @@ void nuclear_debil::sceneWillDisappear( ofxScene * toScreen ){
    */
 	exit_Escena();
     cheapComm::getInstance()->sendAudio0("/audio/weak_nuclear/end_event");
-     cheapComm::getInstance()->sendSync0("/audio/weak_nuclear/end_event");
+     cheapComm::getInstance()->sendSync0("/sync/weak_nuclear/end_event");
 };
 
 

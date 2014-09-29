@@ -136,10 +136,10 @@ void testApp::gotMessage(ofMessage m){
     else if(m.message=="changeScene2"){
         sceneManager->goToScene(SCENE_2, true);
     }
-    else if(m.message=="changeScene2"){
+    else if(m.message=="changeScene3"){
         sceneManager->goToScene(SCENE_3, true);
     }
-    else if(m.message=="changeScene3"){
+    else if(m.message=="changeScene4"){
         sceneManager->goToScene(SCENE_4, true);
     }
     else if(m.message=="changeScene0"){

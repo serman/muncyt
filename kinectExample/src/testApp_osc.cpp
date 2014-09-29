@@ -15,14 +15,41 @@ void testApp::parseStrongOsc(string s,ofxOscMessage &m){
 
 void testApp::parseWeakOsc(string s,  ofxOscMessage &m){
 
+    
+    
 }
 
 void testApp::parseEmOsc(string s,   ofxOscMessage &m){
-
+    if(s=="/number_waves"){
+        if(m.getArgAsFloat(0)>0){
+           
+            particleCloud.setMode(particleClouds::ESPEJO);
+        }
+        else{
+             particleCloud.setMode(particleClouds::RUIDO);
+        }
+    }
 }
 
 
 void testApp::parseGravityOsc(string s,   ofxOscMessage &m){
+    cout << "parse gravity: " << s << endl;
+    if(s=="/collapse_proximity"){
+        float collapseProximity=m.getArgAsFloat(0);
+        mgrid.elongation( ofMap(collapseProximity,0,1,0,3) );
+    }
+    else if(s=="/sun_collision_event"){
+        mgrid.setVibration();
+    }
+    
+    else if(s=="/collapse_start_event"){
+        mgrid.initBlackHole();
+    }
+    
+    else if(s=="/collapse_end_event"){
+        mgrid.endBlackHole();
+    }
+
     
 
 }
@@ -56,4 +83,10 @@ void testApp::toScene(int scn){
     appStatuses["escena"]=scn;
     cout << "toScene" << scn <<endl;
     if(appStatuses["escena"]==EM) particleCloud.resetParticles();
+    if(appStatuses["escena"]==GRAVEDAD) mgrid.fadeIn();
+
+}
+
+void testApp::endScene(int scn){
+    if(appStatuses["escena"]==EM) particleCloud.setMode(particleClouds::DESAPARECE);
 }

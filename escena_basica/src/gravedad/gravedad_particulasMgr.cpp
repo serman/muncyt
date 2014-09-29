@@ -86,7 +86,7 @@ void gravedad::updateParticlesX() {
 			particulas.erase(particulas.begin()+i);
 			
 			cheapComm::getInstance()->sendAudio0("/audio/gravity/sun_collision_event");
-			
+			cheapComm::getInstance()->sendSync0("/sync/gravity/sun_collision_event");
 			
 		}
 		else if(zDist.lengthSquared() > (4*W_WIDTH*4*W_WIDTH)) {

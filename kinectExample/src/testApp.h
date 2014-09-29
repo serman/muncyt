@@ -136,6 +136,7 @@ public:
 
     //test
     void toScene(int );
+    void endScene(int );
     void parseStrongOsc(string s,ofxOscMessage &m);
     void parseWeakOsc(string s,ofxOscMessage &m);
     void parseEmOsc(string s,ofxOscMessage &m);

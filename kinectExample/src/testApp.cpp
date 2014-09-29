@@ -76,7 +76,7 @@ void testApp::setup() {
     boolDrawNoise = false
 #endif
     
-	particleCloud.cloudState=ESPEJO;
+	particleCloud.cloudState=particleClouds::ESPEJO;
 	alphaNoise=255;
 	debug = true;
 	
@@ -84,8 +84,7 @@ void testApp::setup() {
     zMin = 200;
     zMax = 1500;
     alphaLines = 255;
-	stepLines = 5;
-	
+	stepLines = 5;	
     incrDistance=0;
 	
 
@@ -368,6 +367,9 @@ void testApp::draw() {
                     if(mcontour.v.size()>0 && mcontour.v[0].size()>0){
                         mcontour.draw(&(mcontour.v[0])); // TODO REPLACE WITH THE OTHER CONTOUR
                     }
+                }
+                else{
+                    mgrid.draw2D();
                 }
             break;
                 

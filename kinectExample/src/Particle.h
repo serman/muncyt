@@ -116,7 +116,11 @@ class Particle
     }
     
     bool sandDown(int acc,int floor){
+        //position=ofVec3f( floor,position.y,position.z);
         ofVec3f dPoint = ofVec3f( floor,position.y,position.z);
+        steer(dPoint, false, 1.4, 10 );
+        return;
+        
         ofVec3f diff =  dPoint - position;
         if(position.x<floor){ //no point can be "below our floor
         	position.x=floor;
