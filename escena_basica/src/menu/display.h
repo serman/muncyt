@@ -11,6 +11,7 @@
 #include "consts.h"
 #include <math.h>
 #include <ofMain.h>
+#include "cheapComm.h"
 #define RADIO 130
 #define LOADINGTIME 6
 
@@ -44,12 +45,14 @@ public:
                 textEm.loadImage("debil.png");
             if(sc==GRAVEDAD)
                 textEm.loadImage("gravedad.png");
+            
         }
     }
     
     void interrupt(int sc ){
         if(scene==sc){
             status=OFF;
+            cheapComm::getInstance()->sendSync0("/sync/menu/hand_off_event");
         }
     }
     
@@ -63,10 +66,12 @@ public:
                 rotation_angle=0;
                 a=0;
                 status=COUNTING;
+                cheapComm::getInstance()->sendSync1("/sync/menu/hand_on_event",scene);
             }
             return;
         }
 
+        
         
         int tim=ofGetElapsedTimeMillis()-init_time;
         int timeleft=LOADINGTIME*1000-tim;

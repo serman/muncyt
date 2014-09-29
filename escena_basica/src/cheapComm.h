@@ -23,12 +23,13 @@ class cheapComm {
     
 	    void setup();
 
-		void eventoOSC( oscData &mydata );
+		//void eventoOSC( oscData &mydata );
 	
 		void sendPosition( float sector, float speed );
     	void sendExplosion();
 
-	    ofxOscSender myosc;
+	    ofxOscSender myOscAudio;
+        ofxOscSender myOscData;
     
         static cheapComm *getInstance(){
             if (!m_pInstance)   // Only allow one instance of class to be generated.
@@ -37,15 +38,20 @@ class cheapComm {
 
         }
         void sendAudio0(string pattern);
-        void sendAudio0(string, float );
         void sendAudio1(string, float );
         void sendAudio2(string, float , float);
         void sendAudio3(string, float , float, float);
+    
+        void sendSync0(string pattern);
+        void sendSync1(string, float );
+        void sendSync2(string, float , float);
+        void sendSync3(string, float , float, float);
+    
     private:
             cheapComm();
-    cheapComm(cheapComm const&);              // Don't Implement
-    void operator=(cheapComm const&); // Don't implement
-    static cheapComm* m_pInstance;
+            cheapComm(cheapComm const&);              // Don't Implement
+            void operator=(cheapComm const&); // Don't implement
+            static cheapComm* m_pInstance;
 
 };
 

@@ -24,6 +24,7 @@ public:
     virtual void touch(float x, float y, int s_id)= 0;
     virtual void slide(float x, float y, int s_id, int acc)= 0;
     virtual void touchUp(int s_id)= 0;
+    virtual void touchUpAll()= 0;
 };
 
 #endif

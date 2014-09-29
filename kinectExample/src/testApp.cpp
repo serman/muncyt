@@ -104,7 +104,8 @@ void testApp::setup() {
 	setupShader();
     
     mcontour.setup(&oniCamGrabber);
-    myOSCrcv.setup();
+    myOSCrcv=new cheapCommRcv();
+    myOSCrcv->setup();
     sender.setup();
     mrayoSil.setup();
     mgrid.setup(oniSettings.width, oniSettings.height, &zMin, &zMax, &oniCamGrabber, &depthGenerator);
@@ -135,6 +136,8 @@ void testApp::setup() {
     post.createPass<ConvolutionPass>()->setEnabled(false);
     
     mtunnel.setup();
+    mmenu.setup();
+    
 
     
 }
@@ -147,12 +150,7 @@ void testApp::setupStatus(){
    //  appStatuses["escena"]=escenas.EM;
 }
 
-void testApp::cambioEscena(){
-    if( appStatuses["escena"]==EM){
-           }
-    else{
-            }
-}
+
 
 
 //--------------------------------------------------------------
@@ -213,8 +211,8 @@ void testApp::update() {
         rgbGenerator.update();
     
     
-    int r=myOSCrcv.update();
-    parseOSC(r);
+    myOSCrcv->update();
+   // parseOSC(r);
 
 }
 
@@ -235,7 +233,7 @@ void testApp::draw() {
     
     //Things to be drawn in 3D
 	ofPushMatrix();
-        ofScale(1, 1, -1);
+        ofScale(-1, 1, -1);
 		// the projected points are 'upside down' and 'backwards'
         drawAxis();
     //ofDrawAxis(1000);
@@ -361,6 +359,10 @@ void testApp::draw() {
 
                 break;
                 
+            case MENU:
+                mmenu.draw();
+                break;
+                
             case GRAVEDAD:
                 if(mgrid.status==mgrid.BLACKHOLE){
                     if(mcontour.v.size()>0 && mcontour.v[0].size()>0){
@@ -387,7 +389,7 @@ void testApp::draw() {
 
 
 void testApp::parseOSC(int response){
-    if(response==myOSCrcv.position){
+  /*  if(response==myOSCrcv.position){
         if(ofGetElapsedTimeMillis()-lastExplosionTime>4000){
             ofLog() << "myOSCrcv.remotePosition"  << myOSCrcv.remotePosition << "\n";
         }
@@ -398,7 +400,7 @@ void testApp::parseOSC(int response){
         setRandomBG();
         particleCloud.explosionParticles();
         
-    }
+    }*/
 }
 
 

@@ -14,20 +14,19 @@ cheapComm::cheapComm(){
 }
 
 void cheapComm::setup(){
-//    int serverRecvPort = 9000;
-    int serverRecvPort = 7777;
+    int serverRecvPortData = 9000;
+    int serverRecvPortAudio = 7777;
     string dst="192.168.1.8";
-	myosc.setup(dst, serverRecvPort);
+	myOscAudio.setup(dst, serverRecvPortAudio);
+    
+    myOscData.setup("127.0.0.1",serverRecvPortData);
 	int maxServerMessages = 38;
-
 	ofLogNotice("> >> >>> >> > >> >>> >> > >> >>> >> > >> cheapComm::setup()");
 	
-	// Add Listeners de eventos
-	//ofAddListener(eventoOSC, this, &cheapComm::recibirEventoOSC  );
-	
+		
 }
 
-void cheapComm::eventoOSC( oscData &mydata ) {
+/*void cheapComm::eventoOSC( oscData &mydata ) {
 	
 	ofLogNotice("Evento Enviar-OSC recibido.");
 //	
@@ -35,7 +34,7 @@ void cheapComm::eventoOSC( oscData &mydata ) {
 		sendExplosion();
 	}
 //	
-}
+}*/
 
 
 //void cheapComm::recibirEventoOSC( oscData &mydata ) {
@@ -47,7 +46,7 @@ void cheapComm::eventoOSC( oscData &mydata ) {
 void cheapComm::sendAudio0(string pattern){
     ofxOscMessage m;
     m.setAddress(pattern);
-    myosc.sendMessage(m);
+    myOscAudio.sendMessage(m);
     
 }
 
@@ -55,7 +54,7 @@ void cheapComm::sendAudio1(string pattern, float i0){
     ofxOscMessage m;
     m.setAddress(pattern);
     m.addFloatArg(i0);
-    myosc.sendMessage(m);
+    myOscAudio.sendMessage(m);
     
 }
 
@@ -64,7 +63,7 @@ void cheapComm::sendAudio2(string pattern, float i0, float i1){
     m.setAddress(pattern);
     m.addFloatArg(i0);
     m.addFloatArg(i1);
-    myosc.sendMessage(m);
+    myOscAudio.sendMessage(m);
 }
 
 void cheapComm::sendAudio3(string pattern, float i0, float i1, float i2){
@@ -73,20 +72,41 @@ void cheapComm::sendAudio3(string pattern, float i0, float i1, float i2){
     m.addFloatArg(i0);
     m.addFloatArg(i1);
     m.addFloatArg(i2);
-    myosc.sendMessage(m);
+    myOscAudio.sendMessage(m);
 }
 
-void cheapComm::sendPosition( float sector, float speed ){
-        ofxOscMessage m;
-		m.setAddress("/position");
-		m.addFloatArg(sector);
-        m.addFloatArg(speed);
-		myosc.sendMessage(m);
-}
 
-void cheapComm::sendExplosion(){
+void cheapComm::sendSync0(string pattern){
     ofxOscMessage m;
-    m.setAddress("/explosion");
-    myosc.sendMessage(m);  
-
+    m.setAddress(pattern);
+    myOscData.sendMessage(m);
+    
 }
+
+void cheapComm::sendSync1(string pattern, float i0){
+    ofxOscMessage m;
+    m.setAddress(pattern);
+    m.addFloatArg(i0);
+    myOscData.sendMessage(m);
+    
+}
+
+void cheapComm::sendSync2(string pattern, float i0, float i1){
+    ofxOscMessage m;
+    m.setAddress(pattern);
+    m.addFloatArg(i0);
+    m.addFloatArg(i1);
+    myOscData.sendMessage(m);
+}
+
+void cheapComm::sendSync3(string pattern, float i0, float i1, float i2){
+    ofxOscMessage m;
+    m.setAddress(pattern);
+    m.addFloatArg(i0);
+    m.addFloatArg(i1);
+    m.addFloatArg(i2);
+    myOscData.sendMessage(m);
+}
+
+
+

@@ -259,7 +259,13 @@ void gravedad::update(float d1){
  /***************/
 	// eliminar las particulas que ya han chocado contra el sol o que se han ido muy lejos
 	if(ofGetFrameNum() % 10==0){
+        
         cheapComm::getInstance()->sendAudio1("/audio/gravity/collapse_proximity",ofMap(masaSol, INIT_MASA_SOL, MAX_MASA_SOL, 0, 1));
+        
+#ifdef DEBUGOSC
+        ofLogNotice() << "/audio/gravity/collapse_proximity" << "masa sol: " << ofMap(masaSol, INIT_MASA_SOL, MAX_MASA_SOL, 0, 1) << "real"<<  masaSol;
+#endif
+        
         
 /*************/
         //ofVec3f pTUIO = ofVec3f(ofGetMouseX()-ofGetWidth()/2, -(ofGetMouseY()-ofGetHeight()/2), 0);
@@ -283,8 +289,13 @@ void gravedad::update(float d1){
                                                  ofMap(particulas[minimun_dist_index].angle,0,2*PI,0,1),
                                                  ofMap(sqrt(minimun_dist),0,768,0,1)
                                                  );
+#ifdef DEBUGOSC
+                ofLogNotice()  << "hand_particle: " << j << " " << particulas[minimun_dist_index].angle << "(" <<  ofMap(particulas[minimun_dist_index].angle,0,2*PI,0,1) << ")"<<
+                "dist: " << sqrt(minimun_dist)<< "("<< ofMap(sqrt(minimun_dist),0,768,0,1) <<")"<< endl ;
+#endif
+                
             }
-            cout << "hand_particle" << j << " " << particulas[minimun_dist_index].angle << " " << sqrt(minimun_dist)<<endl;
+       
         
         }
 /****************************/
@@ -298,6 +309,12 @@ void gravedad::update(float d1){
                                                  ofMap(particulas[i].angle,0,2*PI,0,1),
                                                  ofMap(sqdistance,0,768,0,1)
                                                  );
+        
+#ifdef DEBUGOSC
+            ofLogNotice()  << "sun_particle: " << i << " " << particulas[i].angle << "(" << ofMap(particulas[i].angle,0,2*PI,0,1) << ")" <<
+            "dist" << sqdistance<< "("<< ofMap(sqdistance,0,768,0,1)  << ")"<< endl ;
+#endif
+        
         }
     }
 	
@@ -382,13 +399,13 @@ void gravedad::updateMeshSuperf(){
                     p.x -= kk / sqrt(d2) * cos(angDir);
                     p.y -= kk / sqrt(d2) * sin(angDir);
                 }
-                
+           }     
                 // SET VERTEX
                 superf.setVertex( i, p );
                 superf.setColor(i, cc);
                 //Change color of vertex
                 //			mesh.setColor( i, ofColor( value*255, value * 255, 255 ) );
-			}
+			
 		}
 	}
 	
@@ -517,7 +534,8 @@ void gravedad::mousePressed( int x, int y, int button ){}
 //scene notifications
 void gravedad::sceneWillAppear( ofxScene * fromScreen ){  // reset our scene when we appear
     //gui1->enable();
-
+    cheapComm::getInstance()->sendAudio0("/sync/gravity/start_event");
+    cheapComm::getInstance()->sendSync0("/sync/gravity/start_event");
     init_Escena();
 };
 
@@ -526,6 +544,8 @@ void gravedad::sceneWillAppear( ofxScene * fromScreen ){  // reset our scene whe
 void gravedad::sceneWillDisappear( ofxScene * toScreen ){
 	// gui1->disable();
 
+    cheapComm::getInstance()->sendAudio0("/sync/gravity/end_event");
+    cheapComm::getInstance()->sendSync0("/sync/gravity/end_event");
 	exit_Escena();
 };
 

@@ -23,11 +23,11 @@ void testApp::setup(){
     
     menu *m1=new menu();
   //  m1->setComm(&myComm);
-	sceneManager->addScene( m1, SCENE_0);
+	sceneManager->addScene( m1, SCENE_4);
     
     electromagnetica *electrom=new electromagnetica();
    // electrom->setComm(&myComm);
-	sceneManager->addScene( electrom, SCENE_2);
+	sceneManager->addScene( electrom, SCENE_0);
     
     nuclear_debil *nuclear_d = new nuclear_debil();
   //  nuclear_d->setComm(&myComm);
@@ -35,20 +35,17 @@ void testApp::setup(){
 
     nuclear_fuerte *nuclear_f = new nuclear_fuerte();
   //  nuclear_d->setComm(&myComm);
-	sceneManager->addScene( nuclear_f , SCENE_3);
+	sceneManager->addScene( nuclear_f , SCENE_2);
     
     gravedad *grave=new gravedad();
  //   grave->setComm(&myComm);
-    sceneManager->addScene( grave, SCENE_4);
-	
+    sceneManager->addScene( grave, SCENE_3);
 	sceneManager->setDrawDebug(true);
 	sceneManager->setCurtainDropTime(1.0);
 	sceneManager->setCurtainStayTime(0.0);
 	sceneManager->setCurtainRiseTime(1.0);
 	sceneManager->setOverlapUpdate(true);
-   // sceneManager->goToScene(SCENE_4);
-	
-	
+    sceneManager->goToScene(SCENE_4);
 	// OSC
 	
 	//ofAddListener(eventoOSC, this, &testApp::eventoOSC_Recibido  );
@@ -102,7 +99,7 @@ void testApp::draw(){
 }
 
 
-//if you require mouseMoved events in your scenes, forward them to the SceneManager. Same for any other events
+//if you require mouseMoved events in your scenes, fforward them to the SceneManager. Same for any other events
 void testApp::mousePressed( int x, int y, int button ){
 	sceneManager->mousePressed(x, y, button);
 }
@@ -132,6 +129,7 @@ void testApp::keyPressed(int key){
 void testApp::gotMessage(ofMessage m){
     cout << "message event";
     cout << m.message << endl;
+    
     if(m.message=="changeScene1"){
         sceneManager->goToScene(SCENE_1, true);
     }

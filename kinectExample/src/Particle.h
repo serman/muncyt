@@ -28,9 +28,9 @@ class Particle
         recentlyUsed=0;
     };
     
-    Particle( ofVec3f _position , ofColor _color, int mx, int my , int mz=0)
+    Particle( ofVec3f _position , ofVec3f far_position, ofColor _color, int mx, int my , int mz=0)
     {
-        position = _position ;
+        position = far_position ;
         color = _color ;
         velocity = ofVec3f ( ofRandom ( -2 , 2 ) , ofRandom ( -2 , 2 ) , ofRandom ( -2 , -2 ) ) ;
         spawnPoint = _position ;

@@ -136,8 +136,8 @@ void rayoSilueta::draw(){
     
     
     ofPushMatrix();
-    ofTranslate(ofGetWidth(), ofGetHeight());
-    ofRotateZ(180);
+    //ofTranslate(ofGetWidth(), ofGetHeight());
+    //ofRotateZ(180);
     ofScale(2,2,2);
 	
 	//

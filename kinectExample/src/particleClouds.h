@@ -11,11 +11,10 @@
 #include "ofxOpenNI2Recorder.h"
 #include "extendedDepthSource.h"
 #include "ofxUI.h"
-
+#include "consts.h"
 #ifndef kinectExample_particleClouds_h
 #define kinectExample_particleClouds_h
 #define SAMPLING 3
-enum	{FUERTE, DEBIL, EM, GRAVEDAD};
   enum	{RUIDO=0, ESPEJO,DESAPARECE};
 class particleClouds{
 public:
@@ -81,7 +80,7 @@ public:
                 v.y+=-229;
                 v.z+=757;
 #endif
-                particles.push_back(Particle(v ,ofColor(255,255,255) ,x,y));
+                particles.push_back(Particle(v , ofVec3f(0,ofRandom(-400,0),ofRandom(-400)), ofColor(255,255,255) ,x,y));
                 numParticles++ ;
             }
         }
@@ -92,7 +91,7 @@ public:
 #ifdef TESTMODE
 //        setupParticles();
 #endif
-            if(mode==DEBIL){
+            if(mode==NUCLEAR_DEBIL){
                 updateDEBIL();
                 
             }else if(mode==EM) updateEM();
@@ -206,6 +205,7 @@ public:
         gui->addSlider("tranX", -1800.0f, 1800.0f,  &(tranX));
                 gui->addSlider("tranY", -1800.0f, 1800.0f,  &(tranY));
                 gui->addSlider("tranZ", -2800.0f, 2800.0f,  &(tranZ));
+        gui->addButton("fadeIn",&fadeIn_b );
         vector<string> names;
         names.push_back("RUIDO");
         names.push_back("ESPEJO");
@@ -229,6 +229,11 @@ public:
             ofLogNotice("MODO_Partics. " + wr ->getActiveName() + " = " + ofToString(wr->getValue()));
             cloudState = wr->getValue();
             //		gui1->loadSettings("./config/gui/gui_kinect.xml");
+        }
+        if(name == "fadeIn")
+        {
+            if(fadeIn_b==true)
+             resetParticles();
         }
 
     }
@@ -254,7 +259,7 @@ private:
     vector<Particle> particles ;
     ofMesh meshParticles;
     ofxUICanvas *gui;
-
+    bool fadeIn_b;
     ofxOpenNI2Grabber *oniCamGrabber;
     extendedDepthSource *depthGenerator;
 

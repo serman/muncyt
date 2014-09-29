@@ -50,7 +50,7 @@ void gravedad::updateParticlesX() {
 //		gravityTowards(ofVec3f& a_target,float a_minDist, float masaAttrac)
 		ofVec3f pSol = ofVec3f(W_WIDTH/2.0, W_HEIGHT/2.0,0);
 		particulas[i].gravityTowards(pSol, 10.0f,  masaSol);
-        	}
+    }
 	
 	
 	// fuerzas TUIO

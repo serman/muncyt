@@ -340,7 +340,7 @@ void menu::update(float d1) {
 	for(int i=0; i<hands.objectsCol.size(); i++) {
 		//		ofLogNotice("handShadow num: " + ofToString(i));
 		handShadow * h = (handShadow *) hands.objectsCol[i];
-		ofLogNotice("Id: " + ofToString(h->cursor_id) + "  x,y: " + ofToString(h->x)+"/"+ofToString(h->y)+ "   age: " + ofToString(h->age));
+		//ofLogNotice("Id: " + ofToString(h->cursor_id) + "  x,y: " + ofToString(h->x)+"/"+ofToString(h->y)+ "   age: " + ofToString(h->age));
 
 		bool bPar = false;
 		if(h->cursor_id%2 == 0)		   bPar = true;
@@ -768,6 +768,9 @@ void menu::sceneWillAppear( ofxScene * fromScreen ){  // reset our scene when we
 	 */
 	ofLogNotice("menu - sceneWillAppear - ");
 	
+    cheapComm::getInstance()->sendAudio0("/sync/menu/start_event");
+    cheapComm::getInstance()->sendSync0("/sync/menu/start_event");
+    
     init_Escena();
 };
 
@@ -779,7 +782,11 @@ void menu::sceneWillDisappear( ofxScene * toScreen ){
 	 ofRemoveListener(tuioClient.cursorRemoved,this,&menu::tuioRemoved);
 	 ofRemoveListener(tuioClient.cursorUpdated,this,&menu::tuioUpdated);
 	 */
+    cheapComm::getInstance()->sendAudio0("/sync/menu/end_event");
+    cheapComm::getInstance()->sendSync0("/sync/menu/end_event");
 	exit_Escena();
+    hands.objectsCol.clear();
+    touchElements.notifyTouchUpAll( );
 };
 
 

@@ -49,6 +49,7 @@ void testApp::setupGUI() {
     names.push_back("DEBIL");
     names.push_back("FUERTE");
     names.push_back("GRAVEDAD");
+    names.push_back("MENU");
     gui1->addRadio("MODO", names, OFX_UI_ORIENTATION_HORIZONTAL);
     gui1->addIntSlider("lx", -700, 700, &lx) ;
     gui1->addIntSlider("ly", -700, 700, &ly) ;

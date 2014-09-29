@@ -81,6 +81,8 @@
 		F77369671945D5A600548CEA /* libXnLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F77369551945D5A600548CEA /* libXnLib.a */; };
 		F781326A19C84EDA004A38E3 /* rayoSilueta.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F781326819C84EDA004A38E3 /* rayoSilueta.cpp */; };
 		F781326D19C84F14004A38E3 /* utilsGeom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F781326C19C84F14004A38E3 /* utilsGeom.cpp */; };
+		F79A3D7319D89643009151E9 /* osc_match.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F79A3D7219D89643009151E9 /* osc_match.cpp */; };
+		F79A3D7719D8BDDD009151E9 /* testApp_osc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F79A3D7619D8BDDD009151E9 /* testApp_osc.cpp */; };
 		F7A515AA1975740000028875 /* testApp_Drawing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7A515A81975740000028875 /* testApp_Drawing.cpp */; };
 		F7A515AD197574C100028875 /* testApp_inputInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7A515AB197574C100028875 /* testApp_inputInterface.cpp */; };
 		F7C1705B192B76E30034A5CB /* ofxUI2DGraph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7C16FFE192B76E20034A5CB /* ofxUI2DGraph.cpp */; };
@@ -480,6 +482,10 @@
 		F781326919C84EDA004A38E3 /* rayoSilueta.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rayoSilueta.h; sourceTree = "<group>"; };
 		F781326B19C84F14004A38E3 /* ParticleX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParticleX.h; sourceTree = "<group>"; };
 		F781326C19C84F14004A38E3 /* utilsGeom.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = utilsGeom.cpp; sourceTree = "<group>"; };
+		F79A3D7219D89643009151E9 /* osc_match.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = osc_match.cpp; sourceTree = "<group>"; };
+		F79A3D7419D8964A009151E9 /* osc_match.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = osc_match.h; sourceTree = "<group>"; };
+		F79A3D7519D8B7A7009151E9 /* consts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = consts.h; sourceTree = "<group>"; };
+		F79A3D7619D8BDDD009151E9 /* testApp_osc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testApp_osc.cpp; sourceTree = "<group>"; };
 		F7A515A81975740000028875 /* testApp_Drawing.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testApp_Drawing.cpp; sourceTree = "<group>"; };
 		F7A515AB197574C100028875 /* testApp_inputInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testApp_inputInterface.cpp; sourceTree = "<group>"; };
 		F7A657D619B0C62E004E0E78 /* particleClouds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = particleClouds.h; sourceTree = "<group>"; };
@@ -614,6 +620,7 @@
 		F7E3C060195C34A000D7724A /* Utilities.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Utilities.cpp; sourceTree = "<group>"; };
 		F7E3C061195C34A000D7724A /* Wrappers.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Wrappers.cpp; sourceTree = "<group>"; };
 		F7E3C062195C34A000D7724A /* opencv.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = opencv.a; path = ../../../addons/ofxOpenCv/libs/opencv/lib/osx/opencv.a; sourceTree = "<group>"; };
+		F7E3CA8419D8D70500442BCA /* menu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = menu.h; sourceTree = "<group>"; };
 		F7EBD1A319335852009805D5 /* cheapCommRcv.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cheapCommRcv.cpp; sourceTree = "<group>"; };
 		F7EBD1A419335852009805D5 /* cheapCommRcv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cheapCommRcv.h; sourceTree = "<group>"; };
 		F7EBD1A9193358F3009805D5 /* ofxOsc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxOsc.h; sourceTree = "<group>"; };
@@ -1097,6 +1104,7 @@
 				E4B69E1F0A3A1BDC003C02F2 /* testApp.h */,
 				F7A515AB197574C100028875 /* testApp_inputInterface.cpp */,
 				F7A515A81975740000028875 /* testApp_Drawing.cpp */,
+				F79A3D7619D8BDDD009151E9 /* testApp_osc.cpp */,
 				F7BCE62C19B5DCA300ECB37E /* gridView.h */,
 				F7BCE62B19B3CFB800ECB37E /* contours.h */,
 				F73625AA192842BC00964804 /* Particle.h */,
@@ -1104,6 +1112,8 @@
 				F772533019819DC600ADD13E /* sendContour.h */,
 				F772537B1981E91A00ADD13E /* rcvContour.h */,
 				F7A657D619B0C62E004E0E78 /* particleClouds.h */,
+				F79A3D7519D8B7A7009151E9 /* consts.h */,
+				F7E3CA8419D8D70500442BCA /* menu.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -1812,6 +1822,8 @@
 		F7EBD1A619335856009805D5 /* cheampCommRcv */ = {
 			isa = PBXGroup;
 			children = (
+				F79A3D7419D8964A009151E9 /* osc_match.h */,
+				F79A3D7219D89643009151E9 /* osc_match.cpp */,
 				F7EBD1A319335852009805D5 /* cheapCommRcv.cpp */,
 				F7EBD1A419335852009805D5 /* cheapCommRcv.h */,
 			);
@@ -2037,6 +2049,7 @@
 				E4B69E210A3A1BDC003C02F2 /* testApp.cpp in Sources */,
 				F74CAAB519BBC9520037FCEA /* FxaaPass.cpp in Sources */,
 				F74CAAC219BBC9520037FCEA /* ToonPass.cpp in Sources */,
+				F79A3D7719D8BDDD009151E9 /* testApp_osc.cpp in Sources */,
 				F74CAABC19BBC9520037FCEA /* PixelatePass.cpp in Sources */,
 				F7E3C069195C34A000D7724A /* Helpers.cpp in Sources */,
 				F74CAAAD19BBC9520037FCEA /* BleachBypassPass.cpp in Sources */,
@@ -2058,6 +2071,7 @@
 				F7E3C065195C34A000D7724A /* Calibration.cpp in Sources */,
 				F7EBD1D6193358F3009805D5 /* ofxOscSender.cpp in Sources */,
 				D31F5C1B140C59B2AF1533A8 /* registration.c in Sources */,
+				F79A3D7319D89643009151E9 /* osc_match.cpp in Sources */,
 				F7C17072192B76E30034A5CB /* ofxUIMultiImageToggle.cpp in Sources */,
 				49BEEB2DFA5319D55AA6899F /* tilt.c in Sources */,
 				F7EBD1DD193358F3009805D5 /* OscTypes.cpp in Sources */,

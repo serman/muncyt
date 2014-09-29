@@ -123,6 +123,10 @@ public:
             status_handIsOn=false;
     }
     
+    void touchUpAll(){
+        status_handIsOn=false;
+    }
+    
     bool canInteract(){
         if(ofGetElapsedTimeMillis()-lastCollision>400){
             lastCollision=ofGetElapsedTimeMillis();

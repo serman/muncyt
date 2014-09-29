@@ -133,7 +133,9 @@ class ParticleX
 //			memoPaths[memoPaths.size()-1].addVertex(position);
 //		}
         angle=atan2(position.x-W_WIDTH/2,position.y-W_HEIGHT/2);
-		
+        
+		angle=ofWrapRadians(angle,0,2.0*PI);
+        
         acceleration=acceleration*0;
     }	
 	

@@ -115,8 +115,8 @@ public:
             // DIBUJAR
             
             ofPushMatrix();
-            ofTranslate(ofGetWidth(), ofGetHeight());
-            ofRotateZ(180);
+           // ofTranslate(ofGetWidth(), ofGetHeight());
+            //ofRotateZ(180);
             ofScale(3,3,3);
             
             if(doTriang) {

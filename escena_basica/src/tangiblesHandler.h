@@ -83,6 +83,11 @@ public:
             objectsCol[i]->touchUp(s_id);
         }
     }
+    void notifyTouchUpAll( ){
+        for(int i=0; i<objectsCol.size();i++){
+            objectsCol[i]->touchUpAll();
+        }
+    }
     
 };
 

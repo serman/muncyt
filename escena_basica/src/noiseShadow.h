@@ -139,6 +139,12 @@ public:
         age=0;
         
     }
+    void touchUpAll(){
+        
+            cursor_id=-1;
+       
+        age=0;
+    }
     
     ofPoint getDstPoint(int x1,int y1){
       //  x1=x1-x;

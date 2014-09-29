@@ -155,6 +155,9 @@
 		F772532C197FF94200ADD13E /* svgtiny.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7725325197FF94200ADD13E /* svgtiny.cpp */; };
 		F772532D197FF94200ADD13E /* svgtiny_gradient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7725327197FF94200ADD13E /* svgtiny_gradient.cpp */; };
 		F772532E197FF94200ADD13E /* svgtiny_list.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7725329197FF94200ADD13E /* svgtiny_list.cpp */; };
+		F79A3D6E19D784F9009151E9 /* gravedad_particulasMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F79A3D6B19D784F9009151E9 /* gravedad_particulasMgr.cpp */; };
+		F79A3D6F19D784F9009151E9 /* gravedad_SolMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F79A3D6C19D784F9009151E9 /* gravedad_SolMgr.cpp */; };
+		F79A3D7019D784F9009151E9 /* auxGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F79A3D6D19D784F9009151E9 /* auxGL.cpp */; };
 		F7DFCE3619D4EC58002D7BBF /* BleachBypassPass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7DFCE0519D4EC58002D7BBF /* BleachBypassPass.cpp */; };
 		F7DFCE3719D4EC58002D7BBF /* BloomPass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7DFCE0719D4EC58002D7BBF /* BloomPass.cpp */; };
 		F7DFCE3819D4EC58002D7BBF /* ContrastPass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7DFCE0919D4EC58002D7BBF /* ContrastPass.cpp */; };
@@ -531,6 +534,10 @@
 		F7725327197FF94200ADD13E /* svgtiny_gradient.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = svgtiny_gradient.cpp; sourceTree = "<group>"; };
 		F7725328197FF94200ADD13E /* svgtiny_internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = svgtiny_internal.h; sourceTree = "<group>"; };
 		F7725329197FF94200ADD13E /* svgtiny_list.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = svgtiny_list.cpp; sourceTree = "<group>"; };
+		F79A3D6A19D784F9009151E9 /* ParticleX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParticleX.h; sourceTree = "<group>"; };
+		F79A3D6B19D784F9009151E9 /* gravedad_particulasMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gravedad_particulasMgr.cpp; sourceTree = "<group>"; };
+		F79A3D6C19D784F9009151E9 /* gravedad_SolMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gravedad_SolMgr.cpp; sourceTree = "<group>"; };
+		F79A3D6D19D784F9009151E9 /* auxGL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = auxGL.cpp; sourceTree = "<group>"; };
 		F7DFCE0519D4EC58002D7BBF /* BleachBypassPass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BleachBypassPass.cpp; sourceTree = "<group>"; };
 		F7DFCE0619D4EC58002D7BBF /* BleachBypassPass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BleachBypassPass.h; sourceTree = "<group>"; };
 		F7DFCE0719D4EC58002D7BBF /* BloomPass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BloomPass.cpp; sourceTree = "<group>"; };
@@ -1137,6 +1144,10 @@
 		F74B8A0A196F6F6C005F3893 /* gravedad */ = {
 			isa = PBXGroup;
 			children = (
+				F79A3D6A19D784F9009151E9 /* ParticleX.h */,
+				F79A3D6B19D784F9009151E9 /* gravedad_particulasMgr.cpp */,
+				F79A3D6C19D784F9009151E9 /* gravedad_SolMgr.cpp */,
+				F79A3D6D19D784F9009151E9 /* auxGL.cpp */,
 				F74B8A0B196F6F6C005F3893 /* gravedad.cpp */,
 				F74B8A0C196F6F6C005F3893 /* gravedad.h */,
 			);
@@ -1605,11 +1616,13 @@
 				7FFD07AA1913A0450022FA53 /* b2ChainShape.cpp in Sources */,
 				F74B8A94196F7AA7005F3893 /* ofxUITextArea.cpp in Sources */,
 				F7EBD19A19334D11009805D5 /* UdpSocket.cpp in Sources */,
+				F79A3D7019D784F9009151E9 /* auxGL.cpp in Sources */,
 				F7DFCE3A19D4EC58002D7BBF /* DofAltPass.cpp in Sources */,
 				F74B8A90196F7AA7005F3893 /* ofxUISpacer.cpp in Sources */,
 				7FFD07AB1913A0450022FA53 /* b2CircleShape.cpp in Sources */,
 				F74B8A85196F7AA7005F3893 /* ofxUIMovingGraph.cpp in Sources */,
 				7FFD07AC1913A0450022FA53 /* b2EdgeShape.cpp in Sources */,
+				F79A3D6E19D784F9009151E9 /* gravedad_particulasMgr.cpp in Sources */,
 				7FFD07AD1913A0450022FA53 /* b2PolygonShape.cpp in Sources */,
 				7FFD07AE1913A0450022FA53 /* b2BlockAllocator.cpp in Sources */,
 				F74B8A9A196F7AA7005F3893 /* ofxUIWidget.cpp in Sources */,
@@ -1656,6 +1669,7 @@
 				F7EBD19C19334D11009805D5 /* OscPrintReceivedElements.cpp in Sources */,
 				7FFD07BC1913A0450022FA53 /* b2CircleContact.cpp in Sources */,
 				F7DFCE4619D4EC58002D7BBF /* PostProcessing.cpp in Sources */,
+				F79A3D6F19D784F9009151E9 /* gravedad_SolMgr.cpp in Sources */,
 				7FFD07BD1913A0450022FA53 /* b2Contact.cpp in Sources */,
 				7FFD07BE1913A0450022FA53 /* b2ContactSolver.cpp in Sources */,
 				F74B8A72196F7AA7005F3893 /* ofxUIBaseDraws.cpp in Sources */,

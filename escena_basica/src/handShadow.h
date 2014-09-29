@@ -86,7 +86,11 @@ public:
             cursor_id=-1;
         }
         age=0;
-        
+    }
+    
+    void touchUpAll(){
+            cursor_id=-1;
+            age=0;
     }
 
 };

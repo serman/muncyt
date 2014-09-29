@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __kinect__app__
+#define __kinect__app__
 
 #include "ofMain.h"
 #include "particleClouds.h"
@@ -15,8 +16,9 @@
 #include "ofxPostProcessing.h"
 #include "tunnel.h"
 #include "rayoSilueta.h"
+#include "menu.h"
 //#define EASYCAM
-
+#include "consts.h"
 #ifndef EASYCAM
 	#include "ofxGrabCam.h"
 #endif
@@ -34,9 +36,9 @@
 #define IRCAMERAHEIGHT 480
 
 
+class cheapCommRcv;
 class testApp : public ofBaseApp {
 public:
-	
 	void setup();
 	void update();
 	void draw();
@@ -129,17 +131,23 @@ public:
     long lastExplosionTime;
 
     //osc
-    cheapCommRcv myOSCrcv;
+    cheapCommRcv *myOSCrcv;
     void parseOSC(int );
 
     //test
-    void cambioEscena();
+    void toScene(int );
+    void parseStrongOsc(string s,ofxOscMessage &m);
+    void parseWeakOsc(string s,ofxOscMessage &m);
+    void parseEmOsc(string s,ofxOscMessage &m);
+    void parseGravityOsc(string s,ofxOscMessage &m);
+    void parseMenuOsc(string s,ofxOscMessage &m);
     
     std::map<string, int> appStatuses;
     
 //********CV
    
-    enum  {EM, NUCLEAR_DEBIL, NUCLEAR_FUERTE, GRAVEDAD};
+    
+    
     
     int status_mode=EM;
 
@@ -152,6 +160,7 @@ public:
     gridView mgrid;
     tunnel   mtunnel;
     rayoSilueta mrayoSil;
+    menu mmenu;
     ofVec3f tr, tl, bl, br;
     ofMesh mesh1;
     ofLight light;
@@ -170,3 +179,4 @@ public:
         light.setOrientation(q);
     }
 };
+#endif

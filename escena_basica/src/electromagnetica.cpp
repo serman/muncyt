@@ -169,7 +169,7 @@ void electromagnetica::update(float d1){
         
     }*/
     /*OSC SENDING UPDATES */
-    if(ofGetFrameNum()%20==0){
+    if(ofGetFrameNum()%2==0){
         for(int i=0; i<wavesm.howManyWaves(); i++){
             int waveLength=wavesm.waveslist[i].getLength();
             if(wavesm.waveslist[i].waveID!=-1){
@@ -177,10 +177,11 @@ void electromagnetica::update(float d1){
             cheapComm::getInstance()->sendAudio2("/audio/electromagnetism/wave_length",wavesm.waveslist[i].waveID, ofMap(waveLength,0,768,1,0));
                 
             }
+#ifdef OSCDEBUG
             cout << wavesm.waveslist[i].waveID << " ";
+#endif
         }
-        cout <<endl;
-        
+        cheapComm::getInstance()->sendAudio1("/sync/electromagnetism/number_waves",wavesm.howManyWaves());        
     }
     
 }
@@ -369,14 +370,15 @@ void electromagnetica::sceneWillAppear( ofxScene * fromScreen ){  // reset our s
 
 
     cheapComm::getInstance()->sendAudio0("/audio/electromagnetism/start_event");
+    cheapComm::getInstance()->sendSync0("/sync/electromagnetism/start_event");
 };
 
 
 //scene notifications
 void electromagnetica::sceneWillDisappear( ofxScene * toScreen ){
     gui1->disable();
-
     cheapComm::getInstance()->sendAudio0("/audio/electromagnetism/end_event");
+    cheapComm::getInstance()->sendSync0("/sync/electromagnetism/end_event");
 }
 
 

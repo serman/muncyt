@@ -11,16 +11,16 @@
 
 #include <iostream>
 #include "ofxOsc.h"
+#include "osc_match.h"
+#include "testApp.h"
 
-#endif /* defined(__panel1_tracking__cheapComm__) */
-
-
+class testApp;
 class cheapCommRcv {
 	public:
 	    enum  {none,position, explosion};
 
 	    void setup();
-    	int update( );
+    	void update();
         cheapCommRcv();
 	    ofxOscReceiver myosc;
 //	    float remotePosition=0;
@@ -33,3 +33,5 @@ class cheapCommRcv {
     
 
 };
+
+#endif /* defined(__panel1_tracking__cheapComm__) */

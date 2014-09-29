@@ -133,6 +133,12 @@ public:
         mdisplay->interrupt(nombre);
     }
     
+    void touchUpAll(){
+		status_handIsOn=false;
+		pulsado = false;
+        mdisplay->interrupt(nombre);
+    }
+    
     bool canInteract(){
         if(ofGetElapsedTimeMillis()-lastCollision>400){
             lastCollision=ofGetElapsedTimeMillis();

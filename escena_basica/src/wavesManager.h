@@ -53,6 +53,8 @@ class wavesManager : public tangibleObject{
                 waveslist.push_back(*singleWave);
                 cheapComm::getInstance()->sendAudio1("/audio/electromagnetism/create_wave_event",singleWave->waveID);
                 
+                cheapComm::getInstance()->sendSync0("/sync/electromagnetism/create_wave_event");
+                
                 singleWave= new waves(getAvailableId()); //esta onda se queda como incompleta hasta que se le añadan 2 puntos
                 
             }
@@ -71,6 +73,8 @@ class wavesManager : public tangibleObject{
         for(int i=0; i<waveslist.size(); i++){
             if(waveslist[i].contains(s_id)){
                 cheapComm::getInstance()->sendAudio1("/audio/electromagnetism/destroy_wave_event", waveslist[i].waveID);
+                cheapComm::getInstance()->sendSync0("/sync/electromagnetism/destroy_wave_event");
+                
                 waveslist[i].remove_id(s_id);
                 if(singleWave->isHalf() ){// si hay otro cursor soltero los uno y creo una onda entre ellos
                     waveslist[i].addPoint(singleWave->getSinglePoint().x,singleWave->getSinglePoint().y,singleWave->getSinglePointID());
@@ -90,6 +94,9 @@ class wavesManager : public tangibleObject{
                 break;
             }
         }
+        
+    }
+    void touchUpAll(){
         
     }
     
