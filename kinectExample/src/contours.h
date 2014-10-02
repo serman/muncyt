@@ -10,11 +10,13 @@
 #define kinectExample_contours_h
 #include "ofxOpenCv.h"
 #include "ofxCv.h"
+#include "consts.h"
 
 using namespace ofxCv;
 using namespace cv;
 class contours{
 public:
+    enum colores{ROJOS=0, AZULES,VERDES,FLUOR};
     
     vector<ofPolyline> v;
     
@@ -31,6 +33,8 @@ public:
     }
     
     void draw(ofPolyline *mcontour=NULL ){
+
+        
         //NIAPILLA. SI NO LE PASAS NADA DIBUJA POR DEFECTO LA SILUETA LOCAL. SI LE PASAS OTRO POLILINE ( EL REMOTO)
         //LO DIBUJA
         if(mcontour==NULL)
@@ -53,8 +57,7 @@ public:
                         triangulation.addPoint(ofPoint(px, py));
                     }
                 }
-            }
-            
+            }            
             
             triangulation.triangulate();
             triangContMesh_old = triangContMesh;
@@ -74,12 +77,12 @@ public:
                     // colorFluor.size() bandas de distinto color
                     float hBandaPpal = ofGetHeight()/10;
                     
-                    float hBanda = hBandaPpal/colorFluor.size();
+                    float hBanda = hBandaPpal/selectedColors.size();
                     
                     ofColor ctmpa, ctmpb, ctmpc;
                     if(modoFill==0) {
                         // RANDOM
-                        ofColor ctmp = colorFluor[i%colorFluor.size()];
+                        ofColor ctmp = selectedColors[i%selectedColors.size()];
                         ctmpa = ctmp;
                         ctmpb = ctmp;
                         ctmpc = ctmp;
@@ -87,18 +90,18 @@ public:
                     else if(modoFill==1) {
                         // asignar color segun la posicion del punto medio
                         int nBanda = floor(pm.y/hBanda);
-                        ofColor ctmp = colorFluor[nBanda%colorFluor.size()];
+                        ofColor ctmp = selectedColors[nBanda%selectedColors.size()];
                         ctmpa = ctmp;
                         ctmpb = ctmp;
                         ctmpc = ctmp;
                     }
                     else if(modoFill==2) {
                         int nBanda = floor(a.y/hBanda);
-                        ctmpa = colorFluor[nBanda%colorFluor.size()];
+                        ctmpa = selectedColors[nBanda%selectedColors.size()];
                         nBanda = floor(b.y/hBanda);
-                        ctmpb = colorFluor[nBanda%colorFluor.size()];
+                        ctmpb = selectedColors[nBanda%selectedColors.size()];
                         nBanda = floor(c.y/hBanda);
-                        ctmpc = colorFluor[nBanda%colorFluor.size()];
+                        ctmpc = selectedColors[nBanda%selectedColors.size()];
                     }
                     triangContMesh.addVertex(a);
                     triangContMesh.addVertex(b);
@@ -107,8 +110,6 @@ public:
                     triangContMesh.addColor(ctmpb);
                     triangContMesh.addColor(ctmpc);
                 }
-                
-                
             }
             
             
@@ -158,6 +159,7 @@ public:
         bSoloEnContorno = true;
         bDrawOld = false;
         oniCamGrabber=_oniCamGrabber;
+        selectedColors=colorFluor;
 
         
     }
@@ -175,6 +177,26 @@ public:
         colorFluor.push_back(ofColor::fromHex(0xF938FC));	// Calcinha
         colorFluor.push_back(ofColor::fromHex(0xFA00AB));	// ow!
         colorFluor.push_back(ofColor::fromHex(0xDFFC00));	// Limei Green
+        
+        colorFluorGreen.push_back(ofColor::fromHex(0x9CFE30));
+        colorFluorGreen.push_back(ofColor::fromHex(0x39EDC0));
+        colorFluorGreen.push_back(ofColor::fromHex(0xBBC848));
+        colorFluorGreen.push_back(ofColor::fromHex(0x00E331));
+        colorFluorGreen.push_back(ofColor::fromHex(0xDDFF54));
+        
+        colorFluorBlue.push_back(ofColor::fromHex(0x04F2FF));
+        colorFluorBlue.push_back(ofColor::fromHex(0x3C3FFC));
+        colorFluorBlue.push_back(ofColor::fromHex(0x0902A8));
+        colorFluorBlue.push_back(ofColor::fromHex(0x2A8AC4));
+        colorFluorBlue.push_back(ofColor::fromHex(0x596BA2));
+        colorFluorBlue.push_back(ofColor::fromHex(0x1CB5C5));
+        
+        colorFluorRed.push_back(ofColor::fromHex(0xFF5988));
+        colorFluorRed.push_back(ofColor::fromHex(0xCF3ED6));
+        colorFluorRed.push_back(ofColor::fromHex(0xFF7A1F));
+        colorFluorRed.push_back(ofColor::fromHex(0xFF0000));
+        colorFluorRed.push_back(ofColor::fromHex(0xFF965C));
+        colorFluorRed.push_back(ofColor::fromHex(0xE426AA));
         
     }
     
@@ -194,6 +216,23 @@ public:
         gui1->addToggle("bDrawOld", &bDrawOld);
         guiTabBar->addCanvas(gui1);
         
+    }
+    
+    void setColor( int tipoColor){
+        switch(tipoColor){
+            case ROJOS:
+                selectedColors=colorFluorRed;
+                break;
+            case VERDES:
+                selectedColors=colorFluorGreen;
+                break;
+            case AZULES:
+                selectedColors=colorFluorBlue;
+                break;
+            case FLUOR:
+                selectedColors=colorFluor;
+                break;
+        }
     }
 
     
@@ -222,7 +261,12 @@ private:
     int modoFill;
     // Colores
     vector<ofColor> colorFluor;
+    vector<ofColor> colorFluorGreen;
+    vector<ofColor> colorFluorRed;
+    vector<ofColor> colorFluorBlue;
 
+    vector<ofColor> selectedColors;
+    
     ofImage depthImg;
     ofxOpenNI2Grabber *oniCamGrabber;
     

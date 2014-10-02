@@ -40,6 +40,9 @@
 		E7E077E815D3B6510020DFD4 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E077E715D3B6510020DFD4 /* QTKit.framework */; };
 		E7F985F815E0DEA3003869B5 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7F985F515E0DE99003869B5 /* Accelerate.framework */; };
 		F4135EEFC911E9ED211FB6F9 /* core.c in Sources */ = {isa = PBXBuildFile; fileRef = CF528C0E8DBFF5C31E8D6529 /* core.c */; };
+		F713076419DCD0D000A48FC1 /* particle2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F713075E19DCD0D000A48FC1 /* particle2.cpp */; };
+		F713076519DCD0D000A48FC1 /* ParticleEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F713076019DCD0D000A48FC1 /* ParticleEmitter.cpp */; };
+		F713076619DCD0D000A48FC1 /* particleSourceHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F713076219DCD0D000A48FC1 /* particleSourceHandler.cpp */; };
 		F74CAAAD19BBC9520037FCEA /* BleachBypassPass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F74CAA7C19BBC9520037FCEA /* BleachBypassPass.cpp */; };
 		F74CAAAE19BBC9520037FCEA /* BloomPass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F74CAA7E19BBC9520037FCEA /* BloomPass.cpp */; };
 		F74CAAAF19BBC9520037FCEA /* ContrastPass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F74CAA8019BBC9520037FCEA /* ContrastPass.cpp */; };
@@ -328,6 +331,13 @@
 		E90542C149C83316678AB011 /* cxmisc.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = cxmisc.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv/cxmisc.h; sourceTree = SOURCE_ROOT; };
 		ECC34C470C60F0A2AE2761B1 /* random.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = random.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/random.h; sourceTree = SOURCE_ROOT; };
 		F070AF5E3926EB2CB7A15D1B /* params.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = params.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/params.h; sourceTree = SOURCE_ROOT; };
+		F713075D19DCD0D000A48FC1 /* effects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = effects.h; path = utils/effects.h; sourceTree = "<group>"; };
+		F713075E19DCD0D000A48FC1 /* particle2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = particle2.cpp; path = utils/particle2.cpp; sourceTree = "<group>"; };
+		F713075F19DCD0D000A48FC1 /* Particle2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Particle2.h; path = utils/Particle2.h; sourceTree = "<group>"; };
+		F713076019DCD0D000A48FC1 /* ParticleEmitter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ParticleEmitter.cpp; path = utils/ParticleEmitter.cpp; sourceTree = "<group>"; };
+		F713076119DCD0D000A48FC1 /* ParticleEmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ParticleEmitter.h; path = utils/ParticleEmitter.h; sourceTree = "<group>"; };
+		F713076219DCD0D000A48FC1 /* particleSourceHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = particleSourceHandler.cpp; path = utils/particleSourceHandler.cpp; sourceTree = "<group>"; };
+		F713076319DCD0D000A48FC1 /* particleSourceHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = particleSourceHandler.h; path = utils/particleSourceHandler.h; sourceTree = "<group>"; };
 		F7269F96AC34A2B44A680D03 /* ofxCvFloatImage.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxCvFloatImage.h; path = ../../../addons/ofxOpenCv/src/ofxCvFloatImage.h; sourceTree = SOURCE_ROOT; };
 		F73625AA192842BC00964804 /* Particle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Particle.h; sourceTree = "<group>"; };
 		F74CAA7C19BBC9520037FCEA /* BleachBypassPass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BleachBypassPass.cpp; sourceTree = "<group>"; };
@@ -1096,6 +1106,7 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				F713075C19DCD09400A48FC1 /* utils */,
 				F781326719C84E85004A38E3 /* RayoSilueta */,
 				F74CAC5519BCAEB80037FCEA /* tunnel.h */,
 				F7EBD1A619335856009805D5 /* cheampCommRcv */,
@@ -1161,6 +1172,20 @@
 				65726280742CD54BF368BDB8 /* libusb-1.0 */,
 			);
 			name = libs;
+			sourceTree = "<group>";
+		};
+		F713075C19DCD09400A48FC1 /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				F713075D19DCD0D000A48FC1 /* effects.h */,
+				F713075E19DCD0D000A48FC1 /* particle2.cpp */,
+				F713075F19DCD0D000A48FC1 /* Particle2.h */,
+				F713076019DCD0D000A48FC1 /* ParticleEmitter.cpp */,
+				F713076119DCD0D000A48FC1 /* ParticleEmitter.h */,
+				F713076219DCD0D000A48FC1 /* particleSourceHandler.cpp */,
+				F713076319DCD0D000A48FC1 /* particleSourceHandler.h */,
+			);
+			name = utils;
 			sourceTree = "<group>";
 		};
 		F74CAA7A19BBC9510037FCEA /* ofxPostProcessing */ = {
@@ -2099,7 +2124,9 @@
 				F77369611945D5A600548CEA /* IRSource.cpp in Sources */,
 				F767CA58195D04BD004401E8 /* ofxDelaunay.cpp in Sources */,
 				F7C17070192B76E30034A5CB /* ofxUIMovingGraph.cpp in Sources */,
+				F713076519DCD0D000A48FC1 /* ParticleEmitter.cpp in Sources */,
 				F7C17082192B76E30034A5CB /* ofxUIToggleMatrix.cpp in Sources */,
+				F713076419DCD0D000A48FC1 /* particle2.cpp in Sources */,
 				F7C17062192B76E30034A5CB /* ofxUIDragableLabelButton.cpp in Sources */,
 				F7E3C064195C34A000D7724A /* fdog.cpp in Sources */,
 				F7C1705F192B76E30034A5CB /* ofxUIButton.cpp in Sources */,
@@ -2154,6 +2181,7 @@
 				F77369631945D5A600548CEA /* ofxOpenNI2Recorder.cpp in Sources */,
 				F7C17064192B76E30034A5CB /* ofxUIEventArgs.cpp in Sources */,
 				7FCD30971941BB1C00D5358C /* ofxGrabCam.cpp in Sources */,
+				F713076619DCD0D000A48FC1 /* particleSourceHandler.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

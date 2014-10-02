@@ -8,13 +8,34 @@
 
 #include <testApp.h>
 #include "osc_match.h"
-
+#include "consts.h"
 void testApp::parseStrongOsc(string s,ofxOscMessage &m){
+    
+    if(s=="/setColor"){
+        int target= round(m.getArgAsFloat(0));
+        int color= round(m.getArgAsFloat(1));
+        cout << "parse strong nuclear: " << s << " "<<target <<" "<< color <<" " << SCREEN_ID << endl;
+        if(SCREEN_ID==target){
+
+            mcontour.setColor(color);
+        }
+    }
     
 }
 
 void testApp::parseWeakOsc(string s,  ofxOscMessage &m){
-
+    if(s=="/ball"){
+        float angle= m.getArgAsFloat(0);
+        float speed= m.getArgAsFloat(1);
+        mrayoSil.triggerParticles(angle);
+        
+    }
+    else if(s=="chain_reaction_event"){
+        
+    }
+    else if(s=="acceleration_event"){
+        
+    }
     
     
 }
@@ -82,11 +103,19 @@ void testApp::parseMenuOsc(string s,   ofxOscMessage &m){
 void testApp::toScene(int scn){
     appStatuses["escena"]=scn;
     cout << "toScene" << scn <<endl;
-    if(appStatuses["escena"]==EM) particleCloud.resetParticles();
+    if(appStatuses["escena"]==EM) {
+        particleCloud.setMode(particleClouds::RUIDO);
+        particleCloud.resetParticles();
+    
+    }
     if(appStatuses["escena"]==GRAVEDAD) mgrid.fadeIn();
 
 }
 
 void testApp::endScene(int scn){
-    if(appStatuses["escena"]==EM) particleCloud.setMode(particleClouds::DESAPARECE);
+    if(appStatuses["escena"]==EM) {
+     //   particleCloud.setMode(particleClouds::DESAPARECE);
+        particleCloud.setMode(particleClouds::DESAPARECE);
+        cout << "particle cloud desaparece";
+    }
 }

@@ -18,7 +18,7 @@
 
 class particleClouds{
 public:
-    static enum	{RUIDO=0, ESPEJO,DESAPARECE};
+    enum	{RUIDO=0, ESPEJO,DESAPARECE};
     ofCamera *cam;
 // http://stackoverflow.com/questions/1701416/initialization-of-reference-member-requires-a-temporary-variable-c
 // there is no default constructor
@@ -194,7 +194,7 @@ public:
     }
     
     void setMode(int m){
-        mode=m;
+        cloudState=m;
     }
     
     void setUI(ofxUITabBar *guiTabBar ){

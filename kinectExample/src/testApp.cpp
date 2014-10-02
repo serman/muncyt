@@ -1,6 +1,7 @@
 #include "testApp.h"
 #include <math.h>
 
+int  SCREEN_ID=0;
 
 //--------------------------------------------------------------
 void testApp::setup() {
@@ -142,7 +143,7 @@ void testApp::setup() {
 }
 
 void testApp::setupStatus(){
-     appStatuses["escena"]=GRAVEDAD;
+     appStatuses["escena"]=NUCLEAR_DEBIL;
      appStatuses["em_ruido"]=true;
      appStatuses["alpha_ruido"]=255;
     
@@ -195,8 +196,6 @@ void testApp::update() {
                       
                 case NUCLEAR_DEBIL:
                        // sender.send(mcontour.v[0]);
-
-
                 break;
                     
                 case NUCLEAR_FUERTE:
@@ -272,67 +271,7 @@ void testApp::draw() {
                 
                 break;
         }
-    //post.end();
- /*    cout << "fov"<< ofToString(camera.getFov())<<endl;
-    cout << "aspect"<< ofToString(camera.getAspectRatio())<<endl;
-        cout << "near clip"<< ofToString(camera.getNearClip())<<endl;
-    
-   float hNear = 2 * tan(camera.getFov()*PI / 360) * camera.getNearClip(); // height
-    float wNear = hNear * 0.56; // width
-    tr=ofVec3f( wNear / 2, hNear / 2, -camera.getNearClip() );
-    tl=ofVec3f( -wNear / 2, hNear / 2, -camera.getNearClip() );
-    bl=ofVec3f( -wNear / 2, -hNear / 2, -camera.getNearClip() );
-    br=ofVec3f( -wNear / 2, -hNear / 2, -camera.getNearClip() );
-    
-    tr=camera.cameraToWorld(tr);
-    tl=camera.cameraToWorld(tl);
-    bl=camera.cameraToWorld(bl);
-    br=camera.cameraToWorld(br);/
-    
-    ofVec3f lookat=camera.getLookAtDir();
-    ofVec3f v1=camera.getUpDir();
-    
-    ofVec3f v2= lookat*v1;
-    v1=v1*700;
-    v2=v2*700;
-    ofPoint X=ofPoint(0,0,1000);
-    ofPoint X2=ofPoint(X.x+v1.x, X.y+v1.y, X.z+v1.z);
-    ofPoint X3=ofPoint(X.x+v1.x+v2.x, X.y+v1.y+v2.y, X.z+v1.z+v2.z);
-    ofPoint X4=ofPoint(X.x+v2.x, X.y+v2.y, X.z+v2.z);
-    //tr.z+=50;
-    //tl.z+=50;
-    ofMesh m1;
-    glPointSize(30);
-    glBegin(GL_QUADS);
-    //m1.setMode(OF_PRIMITIVE_LINE_LOOP);
-    glVertex3f(X.x, X.y, X.z);
-    glVertex3f(X.x+v1.x, X.y+v1.y, X.z+v1.z);
-    glVertex3f(X.x+v1.x+v2.x, X.y+v1.y+v2.y, X.z+v1.z+v2.z);
-    glVertex3f(X.x+v2.x, X.y+v2.y, X.z+v2.z);
-    glEnd();
-    
-    m1.addVertex(X);m1.addColor(ofColor::pink);
-    m1.addVertex(X2);m1.addColor(ofColor::green);
-    m1.addVertex(X3);m1.addColor(ofColor::blue);
-    m1.addVertex(X4);m1.addColor(ofColor::pink);
-    
 
-    
-    
-    m1.setMode(OF_PRIMITIVE_POINTS);
-        m1.addVertex(tl);
-    m1.addColor(ofColor::red);
-        m1.addVertex(tr);
-        m1.addColor(ofColor::yellow);
-        m1.addVertex(br);
-            m1.addColor(ofColor::green);
-        m1.addVertex(bl);
-            m1.addColor(ofColor::pink);
-    mesh1.setMode(OF_PRIMITIVE_LINES);*/
-    //ofSetColor(ofColor::pink);
-   //  ofEnableDepthTest();
-   // m1.draw();
-   // ofDisableDepthTest();
 
 #endif
 	ofPopMatrix();
@@ -459,7 +398,7 @@ void testApp::loadScreenId(){
     int id;
     fileRead >> id;
     SCREEN_ID=id;
-    ofLogVerbose()<<"SCREEN ID:" << id<<endl;
+    ofLogVerbose()<<"SCREEN ID:" << SCREEN_ID<<endl;
 }
 
     

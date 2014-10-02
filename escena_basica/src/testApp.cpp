@@ -45,7 +45,7 @@ void testApp::setup(){
 	sceneManager->setCurtainStayTime(0.0);
 	sceneManager->setCurtainRiseTime(1.0);
 	sceneManager->setOverlapUpdate(true);
-    sceneManager->goToScene(SCENE_4);
+    sceneManager->goToScene(SCENE_1);
 	// OSC
 	
 	//ofAddListener(eventoOSC, this, &testApp::eventoOSC_Recibido  );
@@ -111,7 +111,7 @@ void testApp::keyPressed(int key){
 	if (key == '0') sceneManager->goToScene(SCENE_0);
 	if (key == '1') sceneManager->goToScene(SCENE_1, true); /* true >> regardless of curtain state (so u can change state while curtain is moving)*/
 	if (key == '2') sceneManager->goToScene(SCENE_2);
-	//if (key == '3') sceneManager->goToScene(SCENE_3);
+	if (key == '3') sceneManager->goToScene(SCENE_3);
 	if (key == '4') sceneManager->goToScene(SCENE_4);
 	
 	if(key=='u') {

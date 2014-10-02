@@ -31,8 +31,8 @@ void cheapCommRcv::update(){
         
         ((testApp*)ofGetAppPtr());
         
-        int pattrOffset = 0;
-        int addrOffset  = 0;
+        int pattrOffset =  0;
+        int addrOffset  =  0;
         int matchResult1 = 0;
         int matchResult2 = 0;
         char* addr = (char*)(m.getAddress()).c_str();

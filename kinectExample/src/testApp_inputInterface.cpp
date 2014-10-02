@@ -202,7 +202,6 @@ void testApp::guiEvent(ofxUIEventArgs &e)
         //		gui1->loadSettings("./config/gui/gui_kinect.xml");
     }
     else if(name=="RangoZ"){
-        cout << "cambio rango \n";
         oniCamGrabber.depthSource.setDepthClipping(zMin,zMax);
     }
 }

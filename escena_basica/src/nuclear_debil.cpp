@@ -292,19 +292,16 @@ void nuclear_debil::update(float dt) {
     //Envio OSC
 	if(ofGetFrameNum()%2 ==0){
         cheapComm::getInstance()->sendAudio2("/audio/weak_nuclear/ball", -1*(anillo.angT)/(2*PI),ofMap(anillo.wAng,0,-anillo.wAngMax,0,1));
-        cout << anillo.angT<< " " << -1*(anillo.angT)/(2*PI) <<endl;
-        
+        //cout << anillo.angT<< " " << -1*(anillo.angT)/(2*PI) <<endl;
         
         cheapComm::getInstance()->sendAudio2("/audio/weak_nuclear/number_particles", ofMap(nucleos.size(),nCircs,nCircs+50,0,1), ofMap(anillo.angT,0,2*PI,0,1));
-        cout << nucleos.size()<< " ";
-        
+        //cout << nucleos.size()<< " ";
 //        CUAL ES EL MAXIMO DE NUCLEOS AQUI?
     }
-	
-	
-	// - - - - TUIOS - - - - 
-    //tuioClient.getMessage();
+    cheapComm::getInstance()->sendSync2("/sync/weak_nuclear/ball", ofWrapRadians(anillo.angT,0,2.0*PI),ofMap(abs(anillo.wAng),0,abs(anillo.wAngMax),0,1));
+    /********/
 
+//TUIOS
     buttonCollide.update_prev(anillo.getParticlePosition());
     buttonSpeed1.update_prev(anillo.getParticlePosition());
     buttonSpeed2.update_prev(anillo.getParticlePosition());
@@ -330,9 +327,6 @@ void nuclear_debil::update(float dt) {
 			}
 		}
 	}
-	
-
-	
 }
 
 //--------------------------------------------------------------

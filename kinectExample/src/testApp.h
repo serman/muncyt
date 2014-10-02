@@ -167,7 +167,7 @@ public:
     ofLight light;
     int lx,ly,lz=0;
     ofxPostProcessing post;
-    int SCREEN_ID;
+
     void loadScreenId();
     
     void setLightOri(ofLight &light, ofVec3f rot)

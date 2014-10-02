@@ -14,7 +14,7 @@
 #pragma once
 #include "ofMain.h"
 #include "consts.h"
-
+#include "cheapComm.h"
 #include "ofxScene.h"
 #include "ofxAnimatableFloat.h"
 // -------------------------------------------------
@@ -25,14 +25,22 @@
 class nuclear_fuerte : public ofxScene {
 
 public:
-    
+    enum colores{ROJOS=0, AZULES,VERDES,FLUOR};
 	void setup();
 	
 	void update(float dt);
 	void draw();
     
 	void mousePressed( int x, int y, int button );
-
+    
+    void	tuioAdded(ofxTuioCursor & tuioCursor);
+	void	tuioRemoved(ofxTuioCursor & tuioCursor);
+	void	tuioUpdated(ofxTuioCursor & tuioCursor);
+    
+    void exchangeColors(int );
+    int colorp1=0; //red
+    int colorp2=1; //blue
+    int colorp3=2;//green
     
 };
 

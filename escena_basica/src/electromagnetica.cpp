@@ -173,9 +173,7 @@ void electromagnetica::update(float d1){
         for(int i=0; i<wavesm.howManyWaves(); i++){
             int waveLength=wavesm.waveslist[i].getLength();
             if(wavesm.waveslist[i].waveID!=-1){
-            
-            cheapComm::getInstance()->sendAudio2("/audio/electromagnetism/wave_length",wavesm.waveslist[i].waveID, ofMap(waveLength,0,768,1,0));
-                
+            cheapComm::getInstance()->sendAudio2("/audio/electromagnetism/wave_length",wavesm.waveslist[i].waveID, ofMap(waveLength,0,768,1,0));                
             }
 #ifdef OSCDEBUG
             cout << wavesm.waveslist[i].waveID << " ";

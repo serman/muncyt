@@ -46,6 +46,7 @@ class cheapComm {
         void sendSync1(string, float );
         void sendSync2(string, float , float);
         void sendSync3(string, float , float, float);
+        void sendSync4(string, float , float, float,float);
     
     private:
             cheapComm();

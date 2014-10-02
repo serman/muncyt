@@ -33,7 +33,7 @@ void rayoSilueta::setup(){
 	testPath.setStrokeColor(ofColor::blueSteel);
 	testPath.setColor(ofColor::blueSteel);
 	
-    
+    bAddParticles=false;
 }
 
 void rayoSilueta::setSilueta(ofPolyline p){
@@ -42,8 +42,12 @@ void rayoSilueta::setSilueta(ofPolyline p){
 
 //--------------------------------------------------------------
 void rayoSilueta::update(){
+    mExplosionEfect.update();
 	// add alguna particula desde un lateral
-	addParticleLateral();
+    
+    if(ofGetElapsedTimeMillis() > stopParticlesAt ) bAddParticles=false;
+    if(bAddParticles)
+        addParticleLateral();
 	
 	// cambiar camino
 	if(bTiltCamino) tiltCamino();
@@ -75,6 +79,7 @@ void rayoSilueta::update(){
 					
 					// add el punto al camino de la particula
 					particulas[i].insertPtChoque(ptChoque);
+                    mExplosionEfect.addEmitter(ptChoque.x, ptChoque.y);
 					
 					float angRotMax = 15;
 					float angRot =  ofRandom(-angRotMax, angRotMax);
@@ -110,27 +115,36 @@ void rayoSilueta::tiltCamino() {
 
 
 void rayoSilueta::addParticleLateral() {
-	
-	
 	//	float rnd = ofRandom(1.0);
 	//	if(rnd<0.15) {
 	if(ofGetFrameNum()%ratePartic==0) {
 		//		ParticleX( ofVec3f _position , ofColor _color, float mass = 1.0, float charge = 0.0 )
 		//		ParticleX( ofVec3f _position , ofVec3f _vel , ofColor _color, float mass = 1.0, float charge = 0.0 )
-
-		ParticleX p = ParticleX(ofVec3f(ofRandom(ofGetWidth()),0), ofVec3f(0,vel,0), ofColor(255,255,255) );
-		particulas.push_back(p);
-		
-		
+        for(int ii=0; ii<10; ii++){
+            ParticleX p = ParticleX(ofVec3f(ofRandom(ofGetWidth()),0), ofVec3f(0,vel,0), ofColor(255,255,255) );
+            particulas.push_back(p);
+        }	
 		// pos, vel, color, mass, charge
         //		ParticleX pTmp = ParticleX(ofVec3f(0,ofRandom(ofGetHeight())) , ofVec3f(ofRandom(10.0, 30.0), 0) , ofColor::white, 1.0, 0.0);
 	}
-    
-    
-	
-	
 }
 
+void rayoSilueta::addParticlesFor(int msecs){
+    bAddParticles=true;
+    stopParticlesAt=ofGetElapsedTimeMillis()+msecs;
+}
+
+void rayoSilueta::triggerParticles(float ang){
+    if(SCREEN_ID==1){
+        if(ang>angTV1 && ang<angTV1+0.3) addParticlesFor(500);
+    }
+    if(SCREEN_ID==2){
+        if(ang>angTV2 && ang<angTV2+0.2)addParticlesFor(500);
+    }
+    if(SCREEN_ID==3){
+        if(ang>angTV3 && ang<angTV3+0.2)addParticlesFor(500);
+    }
+}
 //--------------------------------------------------------------
 void rayoSilueta::draw(){
     
@@ -172,6 +186,7 @@ void rayoSilueta::draw(){
 		}
 		ofPopStyle();
 	}
+    mExplosionEfect.draw();
 	
 	ofPopMatrix();
 	

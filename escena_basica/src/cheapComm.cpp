@@ -108,5 +108,15 @@ void cheapComm::sendSync3(string pattern, float i0, float i1, float i2){
     myOscData.sendMessage(m);
 }
 
+void cheapComm::sendSync4(string pattern, float i0, float i1, float i2, float i3){
+    ofxOscMessage m;
+    m.setAddress(pattern);
+    m.addFloatArg(i0);
+    m.addFloatArg(i1);
+    m.addFloatArg(i2);
+        m.addFloatArg(i3);
+    myOscData.sendMessage(m);
+}
+
 
 

@@ -13,6 +13,8 @@
 #include <ofMain.h>
 #include "ParticleX.h"
 #include "ofxUI.h"
+#include "particleSourceHandler.h"
+#include "consts.h"
 class rayoSilueta{
 public:
     void setup();
@@ -45,7 +47,12 @@ public:
     void guiEvent(ofxUIEventArgs &e);
     
     void setSilueta(ofPolyline p);
-
+    void addParticlesFor(int );
+    ParticleSourceHandler mExplosionEfect;
+    bool bAddParticles;
+    long stopParticlesAt;
+    void triggerParticles(float ang);
+   
 };
 
 #endif /* defined(__kinectExample__rayoSilueta__) */
