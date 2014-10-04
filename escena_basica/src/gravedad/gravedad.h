@@ -141,7 +141,11 @@ public:
     void	tuioAdded(ofxTuioCursor & tuioCursor);
 	void	tuioRemoved(ofxTuioCursor & tuioCursor);
 	void	tuioUpdated(ofxTuioCursor & tuioCursor);
-    
+    void sendSunParticlesOsc();
+    enum states {GROWING, EXPLOSION};
+    enum states state;
+    int initExplosionTime;
+    void    initExplosion();
     tangiblesHandler hands;
     
 };

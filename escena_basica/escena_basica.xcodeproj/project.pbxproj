@@ -95,9 +95,6 @@
 		E7E077E515D3B63C0020DFD4 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E077E415D3B63C0020DFD4 /* CoreVideo.framework */; };
 		E7E077E815D3B6510020DFD4 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E077E715D3B6510020DFD4 /* QTKit.framework */; };
 		E7F985F815E0DEA3003869B5 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7F985F515E0DE99003869B5 /* Accelerate.framework */; };
-		F7003B4719D457F2001FEDD0 /* particle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7003B4119D457F2001FEDD0 /* particle.cpp */; };
-		F7003B4819D457F2001FEDD0 /* ParticleEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7003B4319D457F2001FEDD0 /* ParticleEmitter.cpp */; };
-		F7003B4919D457F2001FEDD0 /* particleSourceHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7003B4519D457F2001FEDD0 /* particleSourceHandler.cpp */; };
 		F74B89AF196EEE3C005F3893 /* consts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F74B89AE196EEE3C005F3893 /* consts.cpp */; };
 		F74B89B3196EFF27005F3893 /* nuclear_debil_Interaction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F74B89B1196EFF27005F3893 /* nuclear_debil_Interaction.cpp */; };
 		F74B89F0196F4EDD005F3893 /* ofxScreenCurtain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F74B89EE196F4EDD005F3893 /* ofxScreenCurtain.cpp */; };
@@ -155,6 +152,9 @@
 		F772532C197FF94200ADD13E /* svgtiny.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7725325197FF94200ADD13E /* svgtiny.cpp */; };
 		F772532D197FF94200ADD13E /* svgtiny_gradient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7725327197FF94200ADD13E /* svgtiny_gradient.cpp */; };
 		F772532E197FF94200ADD13E /* svgtiny_list.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7725329197FF94200ADD13E /* svgtiny_list.cpp */; };
+		F774CF0C19DD61B000A4D1C0 /* particle2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F774CF0619DD61B000A4D1C0 /* particle2.cpp */; };
+		F774CF0D19DD61B000A4D1C0 /* ParticleEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F774CF0819DD61B000A4D1C0 /* ParticleEmitter.cpp */; };
+		F774CF0E19DD61B000A4D1C0 /* particleSourceHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F774CF0A19DD61B000A4D1C0 /* particleSourceHandler.cpp */; };
 		F79A3D6E19D784F9009151E9 /* gravedad_particulasMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F79A3D6B19D784F9009151E9 /* gravedad_particulasMgr.cpp */; };
 		F79A3D6F19D784F9009151E9 /* gravedad_SolMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F79A3D6C19D784F9009151E9 /* gravedad_SolMgr.cpp */; };
 		F79A3D7019D784F9009151E9 /* auxGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F79A3D6D19D784F9009151E9 /* auxGL.cpp */; };
@@ -400,13 +400,6 @@
 		E7E077E415D3B63C0020DFD4 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
 		E7E077E715D3B6510020DFD4 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
 		E7F985F515E0DE99003869B5 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = /System/Library/Frameworks/Accelerate.framework; sourceTree = "<absolute>"; };
-		F7003B4019D457CE001FEDD0 /* effects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = effects.h; sourceTree = "<group>"; };
-		F7003B4119D457F2001FEDD0 /* particle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = particle.cpp; sourceTree = "<group>"; };
-		F7003B4219D457F2001FEDD0 /* Particle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Particle.h; sourceTree = "<group>"; };
-		F7003B4319D457F2001FEDD0 /* ParticleEmitter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ParticleEmitter.cpp; sourceTree = "<group>"; };
-		F7003B4419D457F2001FEDD0 /* ParticleEmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParticleEmitter.h; sourceTree = "<group>"; };
-		F7003B4519D457F2001FEDD0 /* particleSourceHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = particleSourceHandler.cpp; sourceTree = "<group>"; };
-		F7003B4619D457F2001FEDD0 /* particleSourceHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = particleSourceHandler.h; sourceTree = "<group>"; };
 		F7016925196D84CB00D174E9 /* tangibleObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tangibleObject.h; sourceTree = "<group>"; };
 		F7016926196D84CB00D174E9 /* tangiblesHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tangiblesHandler.h; sourceTree = "<group>"; };
 		F7016928196D863700D174E9 /* handShadow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = handShadow.h; sourceTree = "<group>"; };
@@ -534,6 +527,13 @@
 		F7725327197FF94200ADD13E /* svgtiny_gradient.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = svgtiny_gradient.cpp; sourceTree = "<group>"; };
 		F7725328197FF94200ADD13E /* svgtiny_internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = svgtiny_internal.h; sourceTree = "<group>"; };
 		F7725329197FF94200ADD13E /* svgtiny_list.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = svgtiny_list.cpp; sourceTree = "<group>"; };
+		F774CF0519DD61B000A4D1C0 /* effects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = effects.h; path = src/util/effects.h; sourceTree = "<group>"; };
+		F774CF0619DD61B000A4D1C0 /* particle2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = particle2.cpp; path = src/util/particle2.cpp; sourceTree = "<group>"; };
+		F774CF0719DD61B000A4D1C0 /* Particle2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Particle2.h; path = src/util/Particle2.h; sourceTree = "<group>"; };
+		F774CF0819DD61B000A4D1C0 /* ParticleEmitter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ParticleEmitter.cpp; path = src/util/ParticleEmitter.cpp; sourceTree = "<group>"; };
+		F774CF0919DD61B000A4D1C0 /* ParticleEmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ParticleEmitter.h; path = src/util/ParticleEmitter.h; sourceTree = "<group>"; };
+		F774CF0A19DD61B000A4D1C0 /* particleSourceHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = particleSourceHandler.cpp; path = src/util/particleSourceHandler.cpp; sourceTree = "<group>"; };
+		F774CF0B19DD61B000A4D1C0 /* particleSourceHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = particleSourceHandler.h; path = src/util/particleSourceHandler.h; sourceTree = "<group>"; };
 		F79A3D6A19D784F9009151E9 /* ParticleX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParticleX.h; sourceTree = "<group>"; };
 		F79A3D6B19D784F9009151E9 /* gravedad_particulasMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gravedad_particulasMgr.cpp; sourceTree = "<group>"; };
 		F79A3D6C19D784F9009151E9 /* gravedad_SolMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gravedad_SolMgr.cpp; sourceTree = "<group>"; };
@@ -1062,13 +1062,13 @@
 		F7003B3F19D457BB001FEDD0 /* utils */ = {
 			isa = PBXGroup;
 			children = (
-				F7003B4119D457F2001FEDD0 /* particle.cpp */,
-				F7003B4219D457F2001FEDD0 /* Particle.h */,
-				F7003B4319D457F2001FEDD0 /* ParticleEmitter.cpp */,
-				F7003B4419D457F2001FEDD0 /* ParticleEmitter.h */,
-				F7003B4519D457F2001FEDD0 /* particleSourceHandler.cpp */,
-				F7003B4619D457F2001FEDD0 /* particleSourceHandler.h */,
-				F7003B4019D457CE001FEDD0 /* effects.h */,
+				F774CF0519DD61B000A4D1C0 /* effects.h */,
+				F774CF0619DD61B000A4D1C0 /* particle2.cpp */,
+				F774CF0719DD61B000A4D1C0 /* Particle2.h */,
+				F774CF0819DD61B000A4D1C0 /* ParticleEmitter.cpp */,
+				F774CF0919DD61B000A4D1C0 /* ParticleEmitter.h */,
+				F774CF0A19DD61B000A4D1C0 /* particleSourceHandler.cpp */,
+				F774CF0B19DD61B000A4D1C0 /* particleSourceHandler.h */,
 			);
 			name = utils;
 			path = ..;
@@ -1593,7 +1593,6 @@
 				F772532B197FF94200ADD13E /* src_colors.cpp in Sources */,
 				F7EBD19E19334D11009805D5 /* OscTypes.cpp in Sources */,
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
-				F7003B4919D457F2001FEDD0 /* particleSourceHandler.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* nuclear_debil.cpp in Sources */,
 				7FFD07A21913A0450022FA53 /* b2BroadPhase.cpp in Sources */,
 				F74B8A92196F7AA7005F3893 /* ofxUISuperCanvas.cpp in Sources */,
@@ -1643,6 +1642,7 @@
 				F7EBD19D19334D11009805D5 /* OscReceivedElements.cpp in Sources */,
 				F74B8A93196F7AA7005F3893 /* ofxUITabBar.cpp in Sources */,
 				7FFD07B21913A0450022FA53 /* b2StackAllocator.cpp in Sources */,
+				F774CF0E19DD61B000A4D1C0 /* particleSourceHandler.cpp in Sources */,
 				F7DFCE4119D4EC58002D7BBF /* KaleidoscopePass.cpp in Sources */,
 				F7DFCE4719D4EC58002D7BBF /* RenderPass.cpp in Sources */,
 				7FFD07B31913A0450022FA53 /* b2Timer.cpp in Sources */,
@@ -1650,6 +1650,7 @@
 				F74B8A8D196F7AA7005F3893 /* ofxUIScrollableCanvas.cpp in Sources */,
 				F7DFCE3F19D4EC58002D7BBF /* GodRaysPass.cpp in Sources */,
 				7FFD07B41913A0450022FA53 /* b2Body.cpp in Sources */,
+				F774CF0C19DD61B000A4D1C0 /* particle2.cpp in Sources */,
 				7FFD07B51913A0450022FA53 /* b2ContactManager.cpp in Sources */,
 				7FFD07B61913A0450022FA53 /* b2Fixture.cpp in Sources */,
 				F74B8AA519704992005F3893 /* ofxSceneManager.cpp in Sources */,
@@ -1682,6 +1683,7 @@
 				F74B89B3196EFF27005F3893 /* nuclear_debil_Interaction.cpp in Sources */,
 				F7EBD19419334D11009805D5 /* ofxOscMessage.cpp in Sources */,
 				F7DFCE3E19D4EC58002D7BBF /* FxaaPass.cpp in Sources */,
+				F774CF0D19DD61B000A4D1C0 /* ParticleEmitter.cpp in Sources */,
 				7FFD07C11913A0450022FA53 /* b2PolygonAndCircleContact.cpp in Sources */,
 				7FFD07C21913A0450022FA53 /* b2PolygonContact.cpp in Sources */,
 				7FFD07C31913A0450022FA53 /* b2DistanceJoint.cpp in Sources */,
@@ -1711,7 +1713,6 @@
 				7FFD07CF1913A0450022FA53 /* b2Rope.cpp in Sources */,
 				F772532A197FF94200ADD13E /* ofxSvg.cpp in Sources */,
 				7FFD07D01913A0450022FA53 /* del_impl.cpp in Sources */,
-				F7003B4719D457F2001FEDD0 /* particle.cpp in Sources */,
 				F74B8A8A196F7AA7005F3893 /* ofxUIRangeSlider.cpp in Sources */,
 				F74B8A80196F7AA7005F3893 /* ofxUIImageToggle.cpp in Sources */,
 				7FFD07D11913A0450022FA53 /* ofxBox2d.cpp in Sources */,
@@ -1737,7 +1738,6 @@
 				F74B8A88196F7AA7005F3893 /* ofxUINumberDialer.cpp in Sources */,
 				7F93F38C19186382004761F3 /* Efectos.cpp in Sources */,
 				7F2CBE7C1926ED1400981859 /* nuclear_debil_Collisions.cpp in Sources */,
-				F7003B4819D457F2001FEDD0 /* ParticleEmitter.cpp in Sources */,
 				F74B8A78196F7AA7005F3893 /* ofxUIDropDownList.cpp in Sources */,
 				F74B8A7F196F7AA7005F3893 /* ofxUIImageSlider.cpp in Sources */,
 				7F5FFFFD192A035000CA8725 /* tinyxml.cpp in Sources */,

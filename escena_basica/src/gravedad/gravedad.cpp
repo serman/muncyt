@@ -93,6 +93,7 @@ void gravedad::setup(){
     
     setupGUI();
     gui1->disable();
+    ofAddListener(gui1->newGUIEvent,this,&gravedad::guiEvent);
     gui1->loadSettings("guiSettings.xml");
 	
     ofDisableAlphaBlending();
@@ -117,11 +118,12 @@ void gravedad::init_Escena() {
 	light.setOrientation( ofVec3f(180,0, 0) );
     
     
-    ofAddListener(gui1->newGUIEvent,this,&gravedad::guiEvent);
+    
     gui1->enable();
     initSol(INIT_MASA_SOL);
 	
 	cam.setDistance(zCam);
+    state=GROWING;
     // Crear las particulas
 	
 	
@@ -153,11 +155,11 @@ void gravedad::exit_Escena() {
 //    ofRemoveListener(button2.buttonEvent ,this, &gravedad::onButtonPressed);
 //    ofRemoveListener(button3.buttonEvent ,this, &gravedad::onButtonPressed);
 //    ofRemoveListener(button4.buttonEvent ,this, &gravedad::onButtonPressed);
-	ofRemoveListener(gui1->newGUIEvent,this,&gravedad::guiEvent);
+	//ofRemoveListener(gui1->newGUIEvent,this,&gravedad::guiEvent);
     
-	gui1->saveSettings("gui1Settings.xml");
+	//gui1->saveSettings("gui1Settings.xml");
     gui1->disable();
-	delete gui1;
+	//delete gui1;
 }
 
 void gravedad::setupMeshSuperf() {
@@ -209,12 +211,21 @@ void gravedad::setupMeshSuperf() {
 	
     mat1Color.setBrightness(250.f);
     mat1Color.setSaturation(200);
-	
-	
 }
+
+
 
 void gravedad::update(float d1){
 	// aplicar noise y deformaciones por sol y hands
+    if(masaSol>MAX_MASA_SOL && state==GROWING){
+        initExplosion();
+    }
+    if((initExplosionTime+2000) > ofGetElapsedTimeMillis() ){
+        cheapComm::getInstance()->sendAudio0("/audio/gravity/collapse_end_event");
+        cheapComm::getInstance()->sendSync0("/sync/gravity/collapse_end_event");
+        ofSendMessage("changeScene" + ofToString(MENU) );
+    }
+    
 	updateMeshSuperf();
     
 	// particulas
@@ -265,61 +276,72 @@ void gravedad::update(float d1){
 #ifdef DEBUGOSC
         ofLogNotice() << "/audio/gravity/collapse_proximity" << "masa sol: " << ofMap(masaSol, INIT_MASA_SOL, MAX_MASA_SOL, 0, 1) << "real"<<  masaSol;
 #endif
+        sendSunParticlesOsc();
         
-        
-/*************/
-        //ofVec3f pTUIO = ofVec3f(ofGetMouseX()-ofGetWidth()/2, -(ofGetMouseY()-ofGetHeight()/2), 0);
-        for (int j=0; j<hands.objectsCol.size(); j++){
-            ofVec3f pTUIO(hands.objectsCol[j]->x,hands.objectsCol[j]->y);
-            int minimun_dist;
-            int minimun_dist_index;
-            for(int i=0; i<particulas.size(); i++) {
-                int dist=(pTUIO-particulas[i].position).length();
-                if(i==0) { minimun_dist=dist; minimun_dist_index=0;}
-                else{
-                    if(dist<minimun_dist){
-                        minimun_dist=dist;
-                        minimun_dist_index=i;
-                    }
+    }
+}
+
+void gravedad::sendSunParticlesOsc(){
+    /*************/
+    //ofVec3f pTUIO = ofVec3f(ofGetMouseX()-ofGetWidth()/2, -(ofGetMouseY()-ofGetHeight()/2), 0);
+    for (int j=0; j<hands.objectsCol.size(); j++){
+        ofVec3f pTUIO(hands.objectsCol[j]->x,hands.objectsCol[j]->y);
+        int minimun_dist;
+        int minimun_dist_index;
+        for(int i=0; i<particulas.size(); i++) {
+            int dist=(pTUIO-particulas[i].position).length();
+            if(i==0) { minimun_dist=dist; minimun_dist_index=0;}
+            else{
+                if(dist<minimun_dist){
+                    minimun_dist=dist;
+                    minimun_dist_index=i;
                 }
             }
-            if(particulas.size()>0){
+        }
+        if(particulas.size()>0){
             cheapComm::getInstance()->sendAudio3("/audio/gravity/hand_particle",
                                                  j,
                                                  ofMap(particulas[minimun_dist_index].angle,0,2*PI,0,1),
                                                  ofMap(sqrt(minimun_dist),0,768,0,1)
                                                  );
 #ifdef DEBUGOSC
-                ofLogNotice()  << "hand_particle: " << j << " " << particulas[minimun_dist_index].angle << "(" <<  ofMap(particulas[minimun_dist_index].angle,0,2*PI,0,1) << ")"<<
-                "dist: " << sqrt(minimun_dist)<< "("<< ofMap(sqrt(minimun_dist),0,768,0,1) <<")"<< endl ;
+            ofLogNotice()  << "hand_particle: " << j << " " << particulas[minimun_dist_index].angle << "(" <<  ofMap(particulas[minimun_dist_index].angle,0,2*PI,0,1) << ")"<<
+            "dist: " << sqrt(minimun_dist)<< "("<< ofMap(sqrt(minimun_dist),0,768,0,1) <<")"<< endl ;
 #endif
-                
-            }
-       
-        
+            
         }
-/****************************/
-        ////DISTANCIA AL SOL
-        for(int i=0; i<particulas.size(); i++) {
-            ofVec3f pSol = ofVec3f(W_WIDTH/2.0, W_HEIGHT/2.0,0);
-            ofVec3f diff =  particulas[i].position - pSol;
-            float sqdistance =  diff.lengthSquared();
-            cheapComm::getInstance()->sendAudio3("/audio/gravity/sun_particle",
-                                                 i,
-                                                 ofMap(particulas[i].angle,0,2*PI,0,1),
-                                                 ofMap(sqdistance,0,768,0,1)
-                                                 );
+        
+        
+    }
+    /****************************/
+    ////DISTANCIA AL SOL
+    for(int i=0; i<particulas.size(); i++) {
+        ofVec3f pSol = ofVec3f(W_WIDTH/2.0, W_HEIGHT/2.0,0);
+        ofVec3f diff =  particulas[i].position - pSol;
+        float sqdistance =  diff.lengthSquared();
+        cheapComm::getInstance()->sendAudio3("/audio/gravity/sun_particle",
+                                             i,
+                                             ofMap(particulas[i].angle,0,2*PI,0,1),
+                                             ofMap(sqdistance,0,768,0,1)
+                                             );
         
 #ifdef DEBUGOSC
-            ofLogNotice()  << "sun_particle: " << i << " " << particulas[i].angle << "(" << ofMap(particulas[i].angle,0,2*PI,0,1) << ")" <<
-            "dist" << sqdistance<< "("<< ofMap(sqdistance,0,768,0,1)  << ")"<< endl ;
+        ofLogNotice()  << "sun_particle: " << i << " " << particulas[i].angle << "(" << ofMap(particulas[i].angle,0,2*PI,0,1) << ")" <<
+        "dist" << sqdistance<< "("<< ofMap(sqdistance,0,768,0,1)  << ")"<< endl ;
 #endif
         
-        }
     }
-	
+
+    
 }
 
+
+void gravedad::initExplosion(){
+    state=EXPLOSION;
+    cheapComm::getInstance()->sendAudio0("/audio/gravity/collapse_start_event");
+    cheapComm::getInstance()->sendSync0("/sync/gravity/collapse_start_event");
+    initExplosionTime=ofGetElapsedTimeMillis();
+}
 
 void gravedad::updateMeshSuperf(){
 	
@@ -610,7 +632,6 @@ void gravedad::setupGUI() {
 	gui1->addIntSlider("Rate_partics", 1,120, &ratePartic);
 	gui1->addSpacer();
 	gui1->addLabel("fr: " + ofToString(ofGetFrameRate()));
-	
 	
     gui1->autoSizeToFitWidgets();
 	

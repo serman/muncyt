@@ -24,6 +24,7 @@ public:
     bool isSingle;
     ofxSVG magneticFieldSvg;
     vector<ofPolyline> fieldLines;
+    vector<ofPoint> fieldLinesVector;
     void setup(){
 		rotVect=ofVec3f(0,0,1);
         cursor_id=-1;
@@ -90,6 +91,9 @@ public:
 
         ofDisableAlphaBlending();
         
+      /*  for(int i=0; i<fieldLinesVector.size(); i++){
+            ofCircle(fieldLinesVector[i].x, fieldLinesVector[i].y, 1);
+        }*/
         ofPopStyle();
         ofPopMatrix();
 
@@ -124,9 +128,15 @@ public:
             ofPath path1=magneticFieldSvg.getPathAt(i);
             path1.scale(0.6,0.6);
             path1.translate(pto);
-            fieldLines.push_back( path1.getOutline()[0].getResampledByCount(15));
+            fieldLines.push_back( path1.getOutline()[0].getResampledByCount(50));
             //magneticFieldSvg.getPathAt(i).setColor(ofColor::red);
         }
+        for(int i=0; i< fieldLines.size(); i++){
+            for (int j=0; j<fieldLines[i].getVertices().size(); j++){
+                fieldLinesVector.push_back(fieldLines[i].getVertices()[j] );
+            }
+        }
+
 
     }
     
@@ -146,13 +156,19 @@ public:
         age=0;
     }
     
-    ofPoint getDstPoint(int x1,int y1){
+    ofPoint getDstPoint(int x1,int y1, int index){
       //  x1=x1-x;
       //  y1=x1-x;
         ofPoint particlePoint=ofPoint(x1-x,y1-y); //particle point translated to 0,0
         int minDist=1000000000;
         ofPoint returnPoint=ofPoint(0,0);
         ofPoint tmpPoint;
+        
+        int totalPuntos=fieldLinesVector.size();
+        int dstIndex=index%totalPuntos;
+        returnPoint.x=fieldLinesVector[dstIndex].x+x;
+        returnPoint.y=fieldLinesVector[dstIndex].y+y;
+        /*
         for(int i=0; i<fieldLines.size();i++){
             tmpPoint=fieldLines[i].getClosestPoint(particlePoint);
             if(tmpPoint.distance(particlePoint)<minDist){
@@ -161,18 +177,24 @@ public:
             }
         }
         returnPoint.x+=x;
-        returnPoint.y+=y;
+        returnPoint.y+=y;*/
         return returnPoint;
     }
-    
-    ofPoint getDstPoint2(int x1,int y1){
+
+    //Aqui se hace de otra forma: El punto que nos llega es el de la posición inicial de las partículas
+    ofPoint getDstPoint2(int x1,int y1, int index){
         //  x1=x1-x;
         //  y1=x1-x;
         ofPoint particlePoint=ofPoint(x1,y1); //particle point translated to 0,0
         int minDist=1000000000;
         ofPoint returnPoint=ofPoint(0,0);
         ofPoint tmpPoint;
-        for(int i=0; i<fieldLines.size();i++){
+        int totalPuntos=fieldLinesVector.size();
+        int dstIndex=index%totalPuntos;
+        returnPoint.x=fieldLinesVector[dstIndex].x+x;
+        returnPoint.y=fieldLinesVector[dstIndex].y+y;
+        
+       /* for(int i=0; i<fieldLines.size();i++){
             tmpPoint=fieldLines[i].getClosestPoint(particlePoint);
             if(tmpPoint.distance(particlePoint)<minDist){
                 minDist=tmpPoint.distance(particlePoint);
@@ -180,7 +202,7 @@ public:
             }
         }
         returnPoint.x+=x;
-        returnPoint.y+=y;
+        returnPoint.y+=y;*/
         return returnPoint;
     }
     

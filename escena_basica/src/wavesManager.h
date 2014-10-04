@@ -11,6 +11,8 @@
 #include "waves.h"
 #include "tangibleObject.h"
 #include "cheapComm.h"
+
+#define MAX_ONDAS 6
 struct trIndices{
     
     int n_wave;
@@ -24,7 +26,16 @@ class wavesManager : public tangibleObject{
     int waves_id_counter;
 
     int howManyWaves(){
-        return countCurrentWaves();
+        return num_waves;
+    }
+    
+    void countWaves(){
+        int count=0;
+        for(int i=0; i<waveslist.size(); i++){
+            if(waveslist[i].isCompleted())
+                count++;
+        }
+        num_waves= count;
     }
 
     void setup(){
@@ -41,8 +52,15 @@ class wavesManager : public tangibleObject{
         }
     }
     void update(){
+        countWaves();
         for(int i=0; i<waveslist.size(); i++){
             waveslist[i].update(); // esta funcion descarta el id si no lo tiene
+        }
+        
+        
+        puntos_ondas=0; //va a almacenar la cantidad de puntos totales que hay para asignar a las distintas particulas
+        for(int i=0; i<howManyWaves(); i++){
+            puntos_ondas+=waveslist[i].points.size();
         }
     };
     
@@ -100,24 +118,30 @@ class wavesManager : public tangibleObject{
         
     }
     
-    int countCurrentWaves(){
-        int count=0;
-        for(int i=0; i<waveslist.size(); i++){
-            if(waveslist[i].isCompleted())
-                count++;
+
+
+    /*
+     ind es el numero de onda al que tiene que ir un punto
+     
+     devuelve una onda a la que ir y un indice dentro de esa onda
+     */
+    trIndices num_onda(int ind,int i){ // i siempre va a ser un multiplo de ind
+        int onda_asignada=ind;
+        if(ind>=howManyWaves()){
+            onda_asignada=ind%howManyWaves();
         }
-        return count;
-    }
-    
-    trIndices num_onda(int ind){
+        int npuntos=waveslist[onda_asignada].points.size();
+        // tengo npuntos que asignar a un cierto numero de particulas. Los asigno en orden
         trIndices trindex;
-        int puntos_ondas=0;
+        int indicereal=i/(ind+1);
+        int puntoAsignado=indicereal%npuntos;
         
-        for(int i=0; i<countCurrentWaves(); i++){
-            puntos_ondas+=waveslist[i].points.size();
-        }
+        trindex.n_wave=onda_asignada;
+        trindex.new_index=puntoAsignado;
+        return trindex;
+        /*
         int counter=0;
-        for(int i=0; i<countCurrentWaves(); i++){
+        for(int i=0; i<howManyWaves(); i++){ //recorro cada onda La condicion para asignarle el punto a la onda es que esté 
             if(ind>=counter && (ind < (counter+waveslist[i].points.size() )) ){
                 trindex.n_wave=i;
                 trindex.new_index=ind-counter;
@@ -126,12 +150,12 @@ class wavesManager : public tangibleObject{
             counter += waveslist[i].points.size();
         }
         trindex.n_wave=-1;
-        return trindex;
+        return trindex;*/
     }
 
     void debugInfo(){
         if(ofGetFrameNum()%30==0){
-            ofLogNotice() << "Numero de ondas" << ofToString(countCurrentWaves()) ;
+            ofLogNotice() << "Numero de ondas" << ofToString(howManyWaves()) ;
             ofLogNotice() << "onda single half: " << ofToString(singleWave->isHalf()) ;
             if(singleWave->p1set){
                 ofLogNotice() << "p1 " << ofToString(singleWave->p1_id) ;
@@ -167,6 +191,9 @@ class wavesManager : public tangibleObject{
         return -1;
     }
 
+private:
+    int puntos_ondas;
+    int num_waves;
 
 };
 

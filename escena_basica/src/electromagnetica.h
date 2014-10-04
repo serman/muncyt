@@ -26,6 +26,7 @@
 #include "wavesManager.h"
 #include "ofxSvg.h"
 #include "cheapComm.h"
+#include "ofxPostProcessing.h"
 
 // -------------------------------------------------
 
@@ -58,6 +59,7 @@ public:
     bool	boolDrawNoise;
     void setupParticles();
     void resetParticles();
+    void resetExtraParticles(int x0=0, int y0=0);
     void showDebug();
     float alpha;
     float freq;
@@ -86,6 +88,8 @@ public:
     void drawEM();*/
     cheapComm *myComm;
     //void setComm(cheapComm *m){ myComm=m;}
+    ofPath borde;
+    ofxPostProcessing post;
 };
 
 #endif /* defined(__escena_basica__electromagnetica__) */
