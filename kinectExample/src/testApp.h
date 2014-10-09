@@ -3,6 +3,7 @@
 
 #include "ofMain.h"
 #include "particleClouds.h"
+#include "dela.h"
 #include "ofxUI.h"
 #include "cheapCommRcv.h"
 #include "ofxDelaunay.h"
@@ -11,6 +12,8 @@
 //#include "ofxMsgUnPacker.h"
 #include <msgpack.hpp>
 #include "sendContour.h"
+#include "rcvContour.h"
+
 #include "contours.h"
 #include "gridView.h"
 #include "ofxPostProcessing.h"
@@ -155,7 +158,7 @@ public:
     void setupStatus();
     
     sendContour sender;
-
+    rcvContour rcvCont;
     particleClouds particleCloud;
     contours mcontour;
     gridView mgrid;
@@ -167,7 +170,7 @@ public:
     ofLight light;
     int lx,ly,lz=0;
     ofxPostProcessing post;
-
+    ofFbo pfbo;
     void loadScreenId();
     
     void setLightOri(ofLight &light, ofVec3f rot)
@@ -179,5 +182,6 @@ public:
         q.makeRotate(rot.x, xax, rot.y, yax, rot.z, zax);
         light.setOrientation(q);
     }
+    dela mdela;
 };
 #endif

@@ -7,6 +7,7 @@
 //
 #include "ofxNetwork.h"
 #include "msgpack.hpp"
+#include "consts.h"
 
 #ifndef kinectExample_sendContour_h
 #define kinectExample_sendContour_h
@@ -48,9 +49,24 @@ public:
     
     
     void setup(){
+        cout << "screen id que se ve en sendcontour" << SCREEN_ID;
+            string ip_espejo_1="127.0.0.1";
+            string ip_espejo_2="192.168.98.22";
+            string ip_espejo_3="192.168.98.101";
         udpConnection.Create();
-        udpConnection.Connect("127.0.0.1",11999);
-        udpConnection.SetNonBlocking(true);
+//            SCREEN1 SENDS TO SCREEN 2 2->3 3->1
+        
+        if(SCREEN_ID==3){
+
+            udpConnection.Connect(ip_espejo_1.c_str() ,11999);
+        }
+        
+        if(SCREEN_ID==1){
+            udpConnection.Connect(ip_espejo_1.c_str(),11999);
+            cout <<"ENTRANDO SCREEN ID 1" <<endl;
+        }
+
+            udpConnection.SetNonBlocking(true);
     }
     
     

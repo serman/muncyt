@@ -31,7 +31,7 @@ void nuclear_debil::setup() {
 	// load the texure
 	ofDisableArbTex();
 	ofLoadImage(texPartic, "media/images/dot.png");
-	
+	ofEnableArbTex();
 	fpsAct = 370.0;
 	
 	// BOX2D
@@ -143,7 +143,19 @@ void nuclear_debil::setup() {
 	//setupTuio();
 	
 	//init_Escena();
+    
+    spriteExp = new ofxSpriteSheetRenderer(1, 1000, 0, 100); //declare a new renderer with 1 layer, 10000 tiles per layer, default layer of 0, tile size of 32
+	spriteExp->loadTexture("exp__Spritesheet.png", 2800, GL_NEAREST); // load the spriteSheetExample.png texture of size 256x256 into the sprite sheet. set it's scale mode to nearest since it's pixel art
+	ofEnableAlphaBlending();
+
 }
+// comparison routine for sort...
+
+bool sortVertically(  basicSprite * a, basicSprite * b ) {
+	return a->pos.y > b->pos.y;
+}
+
+
 
 void nuclear_debil::init_Escena() {
 	// init variables
@@ -158,10 +170,10 @@ void nuclear_debil::init_Escena() {
 	anillo.reset_wAng();
     anillo.setFadeInMode();
 	
+    status=nuclear_debil::NORMAL;
 	ofPoint centro = ofPoint(W_WIDTH/2.0, W_HEIGHT/2.0);
 
 	// crear cosas
-	ofLogVerbose("Add nucleos");
 	// add some nucleos
 	nucleos.clear();
     nCircs = 60 + floor(  ofRandom(20) );
@@ -327,10 +339,33 @@ void nuclear_debil::update(float dt) {
 			}
 		}
 	}
+    
+    
+    /*** Sprite update ***/
+    spriteExp->clear(); // clear the sheet
+	spriteExp->update(ofGetElapsedTimeMillis()); //update the time in the renderer, this is necessary for animations to advance
+    sort( sprites.begin(), sprites.end(), sortVertically ); // sorts the sprites vertically so the ones that are lower are drawn later and there for in front of the ones that are higher up
+    
+    if(sprites.size()>0) // if we have sprites
+	{
+		for(int i=sprites.size()-1;i>=0;i--) //go through them
+		{		
+			if(sprites[i]->animation.frame>= sprites[i]->animation.total_frames-1) //if they are past the bottom of the screen
+			{
+                
+				//delete sprites[i]; //delete them
+				//sprites.erase(sprites.begin()+i); // remove them from the vector
+			}
+			else //otherwise //int layer = -1,                        flipDirection f = F_NONE, float scale = 1.0,          int r=255, int g=255, int b=255,
+				//spriteExp->addCenteredTile(&sprites[i]->animation, sprites[i]->pos.x, sprites[i]->pos.y);//,-1,F_NONE,1-0,0,0,120); // add them to the sprite renderer (add their animation at their position, there are a lot more options for what could happen here, scale, tint, rotation, etc, but the animation, x and y are the only variables that are required)
+                spriteExp->addCenteredTile(&sprites[i]->animation, sprites[i]->pos.x, sprites[i]->pos.y,-1,F_NONE,0.5);
+		}
+	}
 }
 
 //--------------------------------------------------------------
 void nuclear_debil::draw(){
+
     ofColor colorCentro = ofColor::fromHsb(0, 0, 30+30*sin(ofGetElapsedTimef()/frecFondo*TWO_PI));
     ofBackgroundGradient (colorCentro, ofColor::black, OF_GRADIENT_CIRCULAR);
  //   ofBackground(colorCentro);
@@ -377,6 +412,8 @@ void nuclear_debil::draw(){
     // Mascara exterior
 	// ...Con algun Shape...
 	anillo.draw();
+
+    //ofSetColor(0, 0, 255);
 
     
 	if(swBlendModeADD) ofEnableBlendMode(OF_BLENDMODE_ADD);
@@ -426,7 +463,7 @@ void nuclear_debil::draw(){
     // Botones para TUIO
     
     touchElements.draw();
-	
+	ofEnableAlphaBlending();
 	
 	
 	// TUIOS
@@ -447,12 +484,18 @@ void nuclear_debil::draw(){
         ofCircle(W_WIDTH/2,W_HEIGHT/2, rr);
     
     
+
     
     
     ofPopStyle();
 
-    
-    
+    spriteExp->draw();
+    if(sprites.size()>0) // if we have sprites
+	{
+		
+       // cout << sprites[0]->animation.frame << "index" <<sprites[0]->animation.index << endl;
+        
+    }
     ofPopMatrix();  // FIn translate para centrar contenidos
     
     
@@ -461,6 +504,18 @@ void nuclear_debil::draw(){
 
 //	ofSetColor(255);
 //	ofLine(ofGetMouseX()*W_WIDTH/ofGetScreenWidth(),0,ofGetMouseX()*ofGetScreenWidth()/W_WIDTH,ofGetHeight());
+
+}
+
+void nuclear_debil::addSprite(int x1, int y1){
+    basicSprite * newSprite = new basicSprite(); // create a new sprite
+    newSprite->pos.set(x1,y1); //set its position
+    newSprite->speed=ofRandom(1,5); //set its speed
+    newSprite->animation = walkAnimation; //set its animation to the walk animation we declared
+    //newSprite->animation.frame_duration /= newSprite->speed; //adjust its frame duration based on how fast it is walking (faster = smaller)
+    newSprite->animation.index = 0; //change the start index of our sprite. we have 4 rows of animations and our spritesheet is 8 tiles wide, so our possible start indicies are 0, 8, 16, and 24
+    
+    sprites.push_back(newSprite); //add our sprite to the vector
 
 }
 

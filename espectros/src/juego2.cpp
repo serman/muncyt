@@ -97,7 +97,7 @@ void juego2::draw(){
     
     
     ofPushMatrix();
-        ofTranslate(200,200); //PINTO EN LA ZONA DE LA PANTALLA QUE QUIERO
+        ofTranslate(100,100); //PINTO EN LA ZONA DE LA PANTALLA QUE QUIERO
        // mask1.draw(0,0);   
         ofSetColor(255,255,255);
         ofFill();

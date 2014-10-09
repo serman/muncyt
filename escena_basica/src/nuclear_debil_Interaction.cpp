@@ -72,6 +72,10 @@ void nuclear_debil::keyPressed(int key) {
 	else if(key=='j') {
 		swDrawTRAILS = !swDrawTRAILS;
 	}
+    else if(key=='l'){
+        
+        addSprite(ofRandom(50,500),ofRandom(50,500));
+    }
 }
 
 void nuclear_debil::setModoParticulas(int _modo) {
@@ -190,5 +194,11 @@ void nuclear_debil::ball_inside_event(){
     addNeutron(W_WIDTH/2.0,W_HEIGHT/2.0-radioInt*0.9,vvVal,vvAng);
     cheapComm::getInstance()->sendAudio0("/audio/weak_nuclear/ball_inside_event");
     anillo.setFadeInMode();
+    //TODO EVENTO EXPLOSION SI LAS VELOCIDAD ES DEL 100%
+    if(anillo.wAng==anillo.wAngMax){
+        status=nuclear_debil::EXPLOSION;
+    }
 }
+
+
 

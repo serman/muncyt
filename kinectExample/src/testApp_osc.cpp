@@ -54,10 +54,12 @@ void testApp::parseEmOsc(string s,   ofxOscMessage &m){
 
 
 void testApp::parseGravityOsc(string s,   ofxOscMessage &m){
-    cout << "parse gravity: " << s << endl;
+    //cout << "parse gravity: " << s << endl;
     if(s=="/collapse_proximity"){
+      
         float collapseProximity=m.getArgAsFloat(0);
-        mgrid.elongation( ofMap(collapseProximity,0,1,0,3) );
+        mgrid.elongation( ofMap(collapseProximity, 0, 1, 1, 0.6 ) );
+        cout << "collapse proximity " << collapseProximity <<endl;
     }
     else if(s=="/sun_collision_event"){
         mgrid.setVibration();
@@ -105,8 +107,7 @@ void testApp::toScene(int scn){
     cout << "toScene" << scn <<endl;
     if(appStatuses["escena"]==EM) {
         particleCloud.setMode(particleClouds::RUIDO);
-        particleCloud.resetParticles();
-    
+        particleCloud.resetParticles();    
     }
     if(appStatuses["escena"]==GRAVEDAD) mgrid.fadeIn();
 

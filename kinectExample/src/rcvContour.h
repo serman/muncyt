@@ -93,7 +93,7 @@ public:
     void threadedFunction(){
         while( isThreadRunning() != 0 ){
             rcv();
-            ofLog() << "msg rcved" <<endl;
+            //ofLog() << "msg rcved" <<endl;
             sleep(30);
         }
     }

@@ -76,13 +76,14 @@ void nuclear_debil::colisiona_N_n (Particula * pN, Particula * pn) {
 		ofVec2f ptChoque = (pN->getPosition() + pn->getPosition())/2.0;
 		
 		// sonido
-		sounds[0].play();
+	//	sounds[0].play();
 		
 		// desexcitar el nucleo
 		pN->setExcitado(false);
 		
 		addDestello(ptChoque.x, ptChoque.y);
-		
+        
+		addSprite(ptChoque.x, ptChoque.y);
 		// add un nuevo neutron, y tal vez duplicar el nucleo
 		// Calcular el punto para que no choque con el nucleo
 		ofVec2f velNucleo = pN->getVelocity();
@@ -108,13 +109,22 @@ void nuclear_debil::colisiona_N_n (Particula * pN, Particula * pn) {
 		//								   atan2(dirNeutron2.y, dirNeutron2.x));
 		CineticData cd = CineticData(posNeutron2.x, 
 									 posNeutron2.y,
-									 velNeutron2.length(),
+									 velNeutron2.length()*10.4,
 									 atan2(velNeutron2.y, velNeutron2.x),
 									 tipoNeutron);
 		nuevasPartics.push_back(cd);
+        
+        CineticData cd2 = CineticData(posNeutron2.x,
+									 posNeutron2.y,
+									 velNeutron2.length()*40.4,
+									 atan2(velNeutron2.y, velNeutron2.x),
+									 tipoNeutron);
+		nuevasPartics.push_back(cd2);
 		ofLogVerbose("add CineticData por Nueva colision +++++++++++++++++++++++++++++ N n ++++");
 		
 		addDestello(posNeutron2.x, posNeutron2.y);
+        
+       // addNeutron(pN->getPosition().x,pN->getPosition().y,ofRandom(PI/2,PI),3);
 		
 	}
 }

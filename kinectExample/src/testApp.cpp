@@ -9,7 +9,7 @@ void testApp::setup() {
 	ofSetLogLevel(OF_LOG_VERBOSE);
 	
     ofSetFullscreen(true);
-
+    loadScreenId();
     oniSettings.width = IRCAMERAWIDTH;
 	oniSettings.height = IRCAMERAHEIGHT;
 	oniSettings.fps = 30;
@@ -99,6 +99,7 @@ void testApp::setup() {
 	camera.setCursorWorld(ofVec3f(0,0,-2000));
 
 #endif
+    
 	setupStatus();
 	setupGUI();
 	setupShader();
@@ -107,21 +108,27 @@ void testApp::setup() {
     myOSCrcv=new cheapCommRcv();
     myOSCrcv->setup();
     sender.setup();
+    rcvCont.setup();
     mrayoSil.setup();
     mgrid.setup(oniSettings.width, oniSettings.height, &zMin, &zMax, &oniCamGrabber, &depthGenerator);
     particleCloud.setup(oniSettings.width, oniSettings.height, &zMin, &zMax, &oniCamGrabber, &depthGenerator,&camera);
+    mdela.setup(oniSettings.width, oniSettings.height, &zMin, &zMax, &oniCamGrabber, &depthGenerator,&camera);
     
     //gui1->loadSettings("./config/gui/gui_kinect.xml");
     guiTabBar->loadSettings("./config/gui/","espejo_");
 #ifndef EASYCAM
     loadCameraPose();
 #endif
-    loadScreenId();
+    
     
     //http://stackoverflow.com/questions/12018710/calculate-near-far-plane-vertices-using-three-frustum
  
     light.setup();
+   
     light.setAmbientColor(ofColor(230, 230, 250));
+    light.setSpotlight();
+    light.setPosition(0, 100, 0);
+    // light.enable();
     ofDisableLighting();
     
     post.init(ofGetWidth(), ofGetHeight());
@@ -134,16 +141,31 @@ void testApp::setup() {
     post.createPass<LimbDarkeningPass>()->setEnabled(false);
     post.createPass<VerticalTiltShifPass>()->setEnabled(false);
     post.createPass<ConvolutionPass>()->setEnabled(false);
-    
+    post.setFlip(false);
     mtunnel.setup();
     mmenu.setup();
+    
+  //  pfbo.allocate(ofGetWidth(),ofGetHeight(),GL_RGBA);
+    ofFbo::Settings s;
+    s.width = ofNextPow2(ofGetWidth());
+    s.height = ofNextPow2(ofGetHeight());
+    s.textureTarget = GL_TEXTURE_2D;
+    s.useDepth = true;
+    s.depthStencilInternalFormat = GL_DEPTH_COMPONENT24;
+    s.depthStencilAsTexture = true;
+    pfbo.allocate(s);
+    pfbo.begin();
+    ofBackground( 0, 0, 0 );
+    pfbo.end();
+    
+
     
 
     
 }
 
 void testApp::setupStatus(){
-     appStatuses["escena"]=NUCLEAR_DEBIL;
+     appStatuses["escena"]=MENU;
      appStatuses["em_ruido"]=true;
      appStatuses["alpha_ruido"]=255;
     
@@ -161,7 +183,8 @@ void testApp::update() {
 /// ACTUALIZACION CONTINUA
         switch(appStatuses["escena"]){
             case EM:
-                particleCloud.updateParticles();
+                //particleCloud.updateParticles();
+                mdela.update();
                 break;
                 
             case GRAVEDAD:
@@ -191,6 +214,15 @@ void testApp::update() {
                     mcontour.update();
                     if(mgrid.status==mgrid.BLACKHOLE){
                         sender.send(mcontour.v[0]);
+                        if(rcvCont.isThreadRunning()==false){
+                            cout << "receiver start" <<endl;
+                            rcvCont.start();
+                        }
+                    }else{
+                        if(rcvCont.isThreadRunning()==true){
+                            rcvCont.stop();
+                            cout << "receiver stop" <<endl;
+                        }
                     }
                 break;
                       
@@ -216,29 +248,37 @@ void testApp::update() {
 
 
 void testApp::draw() {
-    fadeBG();
+    //fadeBG();
 	ofBackground(colorfondo);
-    
     ofEnableAlphaBlending();
-	
-#ifdef EASYCAM
-	easyCam.begin();
-#else
-	//camera.begin();
-    post.begin(camera);
-#endif
+    camera.begin();
+    camera.end();
+    pfbo.begin(false);
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    ofSetColor(0,0,0,255);
+    ofRect(0,0,ofGetWidth(),ofGetHeight());
     
+    glLoadMatrixf(camera.getProjectionMatrix(ofRectangle(0, 0, ofGetWidth(), ofGetHeight())).getPtr());
+    
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadMatrixf(camera.getModelViewMatrix().getPtr());
+    
+    glViewport(0, 0, pfbo.getWidth(), pfbo.getHeight());
+    
+    // glClear(GL_DEPTH_BUFFER_BIT );
+    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+    ofPushStyle();
+    glPushAttrib(GL_ENABLE_BIT);
+
+    //ofSetColor(255,255);
     
     //Things to be drawn in 3D
 	ofPushMatrix();
         ofScale(-1, 1, -1);
 		// the projected points are 'upside down' and 'backwards'
-        drawAxis();
-    //ofDrawAxis(1000);
-   // ofDrawGridPlane(100);
-   // ofDrawGrid(300);
-
-		
+        //drawAxis();
 		// Superponemos modos de dibujo en 3D
 #ifdef TESTMODE
     
@@ -248,10 +288,13 @@ void testApp::draw() {
     	if(bDrawNativePointCloud) drawPointCloud();
 #else
   //  post.begin();
+    light.draw();
         switch(appStatuses["escena"]){
                 
             case EM:
-                particleCloud.drawParticles();
+//                particleCloud.drawWithRectangles();
+//                particleCloud.drawParticles();
+                mdela.draw();
             break;
                 
             case GRAVEDAD:
@@ -276,13 +319,30 @@ void testApp::draw() {
 #endif
 	ofPopMatrix();
 
-
-#ifdef EASYCAM
-	easyCam.end();
-#else
-//	camera.end();
+	//camera.end();
+//    post.end();
+    //pfbo.end();
+    glPopAttrib();
+    ofPopStyle();
+    glViewport(0, 0, ofGetWidth(), ofGetHeight());
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+    glPopMatrix();
+    pfbo.end();/*
+                
+    ofPushStyle();
+    glPushAttrib(GL_ENABLE_BIT);
+    glDisable(GL_LIGHTING);
+    ofSetColor(255, 255, 255);
+    post.process(pfbo,true);
+    */
+    post.begin();
+    ofSetColor(255, 255, 255);
+    pfbo.draw(0,0,ofGetWidth(),ofGetHeight());
     post.end();
-#endif
+
+
     
  /** DIBUJADO EN 2D  **/
     #ifdef TESTMODE
@@ -298,13 +358,27 @@ void testApp::draw() {
                 break;
                 
             case MENU:
+                //post[1]->setEnabled(true);
+                pfbo.begin();
+                //glMatrixMode(GL_PROJECTION);
+                //glPushMatrix();
+                ofEnableAlphaBlending();
+                ofSetColor(0,0,0,2);
+                ofRect(0,0,ofGetWidth(),ofGetHeight());
+                //post.begin();
                 mmenu.draw();
+                pfbo.end();
+                ofSetColor(255, 255, 255);
+                pfbo.draw(0,0);
+                //post.end();
+                //post[1]->setEnabled(false);
                 break;
                 
             case GRAVEDAD:
                 if(mgrid.status==mgrid.BLACKHOLE){
-                    if(mcontour.v.size()>0 && mcontour.v[0].size()>0){
-                        mcontour.draw(&(mcontour.v[0])); // TODO REPLACE WITH THE OTHER CONTOUR
+                    ofPolyline v=rcvCont.getRemoteContour();
+                    if( v.size()>0 && v.size()>0){
+                        mcontour.draw(&(v));
                     }
                 }
                 else{
@@ -355,6 +429,7 @@ void testApp::setupShader(){
 void testApp::showDebug(){
     ofPushMatrix();
     ofTranslate(ofGetWidth()-300,0);
+    ofSetColor(255, 0, 0);
     ofDrawBitmapString("Framerate " + ofToString(ofGetFrameRate()), 20, 20);
 
     for (unsigned i = 0; i < post.size(); ++i)

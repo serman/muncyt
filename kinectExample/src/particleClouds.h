@@ -20,6 +20,7 @@ class particleClouds{
 public:
     enum	{RUIDO=0, ESPEJO,DESAPARECE};
     ofCamera *cam;
+    ofFbo fbo_rects;
 // http://stackoverflow.com/questions/1701416/initialization-of-reference-member-requires-a-temporary-variable-c
 // there is no default constructor
    // particleClouds(ofxOpenNI2Grabber &g, extendedDepthSource &s ) : oniCamGrabber(g),depthGenerator(s)  {
@@ -35,7 +36,7 @@ public:
     }*/
    
     //only call once but have to call it
-
+    ofImage palete;
     void setup(int _w, int _h, float *_zMin, float *_zMax, ofxOpenNI2Grabber *_oniCamGrabber, extendedDepthSource *_depthGenerator, ofCamera *_cam){
         w=_w;
         h=_h;
@@ -49,6 +50,8 @@ public:
         alphaParticles = 255;
         cam=_cam;
         setupParticles();
+        palete.loadImage("palete1.png");
+
     }
     void setupParticles(){
         //int w= oniSettings.width;
@@ -145,7 +148,7 @@ public:
     
     
     void updateDEBIL(){
-        meshParticles.clear();
+        /*meshParticles.clear();
         ofVec3f mdestPoint;
         ofVec3f diff ;
         std::vector<Particle>::iterator p ;
@@ -158,6 +161,44 @@ public:
                 p->color=ofColor(255,0,0,255);
                 meshParticles.addVertex(p->position);
                 meshParticles.addColor(p->color);
+        }*/
+        
+        
+        for ( int y = 0 ; y < h ; y+=15 ){
+            for ( int x = w ; x > 0 ; x-=15 ){
+                int distance=depthGenerator->currentRawPixels->getPixels()[y * depthGenerator->width + x];
+                ofSetColor(ofColor::fromHsb(ofRandom(100,200), 200, 200));
+                ofRect(x,y,distance,15,15);
+            }
+        }
+    }
+    
+    void drawWithRectangles(){
+        for ( int y = 0 ; y < h ; y+=5 ){
+            for ( int x = w ; x > 0 ; x-=5 ){
+                  int distance=depthGenerator->currentRawPixels->getPixels()[y * depthGenerator->width + x];
+                 if(distance> *zMin && distance < *zMax) {
+                      ofVec3f mdestPoint=  oniCamGrabber->convertDepthToWorld(x,y);
+                     ofColor c= oniCamGrabber->rgbSource.currentPixels->getColor(x,y);
+                    //ofSetColor(ofColor::fromHsb(150+ 100* ofNoise(0.4+ofGetElapsedTimeMillis()/100000), 200, 200));
+                     ofNoFill();
+                     ofSetColor(ofColor::white);
+                     ofPushMatrix();
+                     ofTranslate(mdestPoint.x,mdestPoint.y,mdestPoint.z);
+                     if((x+y)%10==0){
+                         ofRotateY(ofGetElapsedTimeMillis()/3);
+                     }
+                     ofRect(-4,-4,8,8);
+                     ofFill();
+//                     ofSetColor(c);
+//                     ofSetColor(ofColor::fromHsb(50+ 100* ofNoise(0.4+ofGetElapsedTimeMillis()/1000+(x+y)), 200, 200));
+                     ofSetColor(
+                                palete.getColor(x+100*ofNoise( (float) ofGetElapsedTimeMillis()/1000 ),y+50*ofNoise( (float) ofGetElapsedTimeMillis()/1000 ))
+                     );
+                     ofRect(-4,-4,8,8);
+                     ofPopMatrix();
+                 }
+            }
         }
     }
 
@@ -171,10 +212,14 @@ public:
         ofTranslate(tranX,tranY,tranZ);*/
         meshParticles.setMode(OF_PRIMITIVE_POINTS);
         glPointSize(4);
+        
         //glEnable(GL_POINT_SMOOTH);	// Para que sean puntos redondos
+
         ofEnableDepthTest();
-        meshParticles.draw();
+
+            meshParticles.draw();
         ofDisableDepthTest();
+
 //        ofPopMatrix();
     }
     

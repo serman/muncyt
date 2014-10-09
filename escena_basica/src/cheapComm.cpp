@@ -19,7 +19,7 @@ void cheapComm::setup(){
     string dst="192.168.1.8";
 	myOscAudio.setup(dst, serverRecvPortAudio);
     
-    myOscData.setup("127.0.0.1",serverRecvPortData);
+    myOscData.setup("192.168.98.255",serverRecvPortData);
 	int maxServerMessages = 38;
 	ofLogNotice("> >> >>> >> > >> >>> >> > >> >>> >> > >> cheapComm::setup()");
 	

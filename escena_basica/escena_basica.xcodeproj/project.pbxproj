@@ -95,6 +95,10 @@
 		E7E077E515D3B63C0020DFD4 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E077E415D3B63C0020DFD4 /* CoreVideo.framework */; };
 		E7E077E815D3B6510020DFD4 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E077E715D3B6510020DFD4 /* QTKit.framework */; };
 		E7F985F815E0DEA3003869B5 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7F985F515E0DE99003869B5 /* Accelerate.framework */; };
+		F72F1C6819E592F200453005 /* CollageTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F72F1C6019E592F200453005 /* CollageTexture.cpp */; };
+		F72F1C6919E592F200453005 /* LinearTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F72F1C6219E592F200453005 /* LinearTexture.cpp */; };
+		F72F1C6A19E592F200453005 /* ofxSpriteSheetRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F72F1C6419E592F200453005 /* ofxSpriteSheetRenderer.cpp */; };
+		F72F1C6B19E592F200453005 /* PixelTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F72F1C6619E592F200453005 /* PixelTexture.cpp */; };
 		F74B89AF196EEE3C005F3893 /* consts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F74B89AE196EEE3C005F3893 /* consts.cpp */; };
 		F74B89B3196EFF27005F3893 /* nuclear_debil_Interaction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F74B89B1196EFF27005F3893 /* nuclear_debil_Interaction.cpp */; };
 		F74B89F0196F4EDD005F3893 /* ofxScreenCurtain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F74B89EE196F4EDD005F3893 /* ofxScreenCurtain.cpp */; };
@@ -404,6 +408,14 @@
 		F7016926196D84CB00D174E9 /* tangiblesHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tangiblesHandler.h; sourceTree = "<group>"; };
 		F7016928196D863700D174E9 /* handShadow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = handShadow.h; sourceTree = "<group>"; };
 		F705833019D1C27F00BE601A /* display.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = display.h; sourceTree = "<group>"; };
+		F72F1C6019E592F200453005 /* CollageTexture.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CollageTexture.cpp; sourceTree = "<group>"; };
+		F72F1C6119E592F200453005 /* CollageTexture.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CollageTexture.h; sourceTree = "<group>"; };
+		F72F1C6219E592F200453005 /* LinearTexture.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LinearTexture.cpp; sourceTree = "<group>"; };
+		F72F1C6319E592F200453005 /* LinearTexture.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LinearTexture.h; sourceTree = "<group>"; };
+		F72F1C6419E592F200453005 /* ofxSpriteSheetRenderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxSpriteSheetRenderer.cpp; sourceTree = "<group>"; };
+		F72F1C6519E592F200453005 /* ofxSpriteSheetRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxSpriteSheetRenderer.h; sourceTree = "<group>"; };
+		F72F1C6619E592F200453005 /* PixelTexture.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PixelTexture.cpp; sourceTree = "<group>"; };
+		F72F1C6719E592F200453005 /* PixelTexture.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PixelTexture.h; sourceTree = "<group>"; };
 		F74B89AD196EE2C5005F3893 /* consts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = consts.h; sourceTree = "<group>"; };
 		F74B89AE196EEE3C005F3893 /* consts.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = consts.cpp; sourceTree = "<group>"; };
 		F74B89B0196EF6E8005F3893 /* anilloButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = anilloButton.h; sourceTree = "<group>"; };
@@ -955,6 +967,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				F72F1C5E19E592F200453005 /* ofxSpriteSheetRenderer */,
 				F7DFCE0319D4EC58002D7BBF /* ofxPostProcessing */,
 				F772531D197FF94200ADD13E /* ofxSvg */,
 				7F386BE619713CD1003C9AF0 /* ofxAnimatable */,
@@ -1082,6 +1095,30 @@
 				F7016926196D84CB00D174E9 /* tangiblesHandler.h */,
 			);
 			name = touchObj;
+			sourceTree = "<group>";
+		};
+		F72F1C5E19E592F200453005 /* ofxSpriteSheetRenderer */ = {
+			isa = PBXGroup;
+			children = (
+				F72F1C5F19E592F200453005 /* src */,
+			);
+			name = ofxSpriteSheetRenderer;
+			sourceTree = "<group>";
+		};
+		F72F1C5F19E592F200453005 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				F72F1C6019E592F200453005 /* CollageTexture.cpp */,
+				F72F1C6119E592F200453005 /* CollageTexture.h */,
+				F72F1C6219E592F200453005 /* LinearTexture.cpp */,
+				F72F1C6319E592F200453005 /* LinearTexture.h */,
+				F72F1C6419E592F200453005 /* ofxSpriteSheetRenderer.cpp */,
+				F72F1C6519E592F200453005 /* ofxSpriteSheetRenderer.h */,
+				F72F1C6619E592F200453005 /* PixelTexture.cpp */,
+				F72F1C6719E592F200453005 /* PixelTexture.h */,
+			);
+			name = src;
+			path = ../../../addons/ofxSpriteSheetRenderer/src;
 			sourceTree = "<group>";
 		};
 		F74B89EC196F4EDD005F3893 /* ofxScreenCurtain */ = {
@@ -1637,6 +1674,7 @@
 				F74B8A95196F7AA7005F3893 /* ofxUITextInput.cpp in Sources */,
 				F74B8A76196F7AA7005F3893 /* ofxUICircleSlider.cpp in Sources */,
 				7FFD07B01913A0450022FA53 /* b2Math.cpp in Sources */,
+				F72F1C6B19E592F200453005 /* PixelTexture.cpp in Sources */,
 				F7DFCE4519D4EC58002D7BBF /* PixelatePass.cpp in Sources */,
 				7FFD07B11913A0450022FA53 /* b2Settings.cpp in Sources */,
 				F7EBD19D19334D11009805D5 /* OscReceivedElements.cpp in Sources */,
@@ -1677,6 +1715,7 @@
 				F7DFCE3719D4EC58002D7BBF /* BloomPass.cpp in Sources */,
 				F7DFCE4B19D4EC58002D7BBF /* ToonPass.cpp in Sources */,
 				F7DFCE4419D4EC58002D7BBF /* NoiseWarpPass.cpp in Sources */,
+				F72F1C6A19E592F200453005 /* ofxSpriteSheetRenderer.cpp in Sources */,
 				7FFD07BF1913A0450022FA53 /* b2EdgeAndCircleContact.cpp in Sources */,
 				7FFD07C01913A0450022FA53 /* b2EdgeAndPolygonContact.cpp in Sources */,
 				F7DFCE3B19D4EC58002D7BBF /* DofPass.cpp in Sources */,
@@ -1699,6 +1738,7 @@
 				7FFD07C71913A0450022FA53 /* b2MotorJoint.cpp in Sources */,
 				F74B89AF196EEE3C005F3893 /* consts.cpp in Sources */,
 				F7DFCE3D19D4EC58002D7BBF /* FakeSSSPass.cpp in Sources */,
+				F72F1C6819E592F200453005 /* CollageTexture.cpp in Sources */,
 				F74B8A7B196F7AA7005F3893 /* ofxUIFPSSlider.cpp in Sources */,
 				7FFD07C81913A0450022FA53 /* b2MouseJoint.cpp in Sources */,
 				F7EBD19919334D11009805D5 /* NetworkingUtils.cpp in Sources */,
@@ -1750,6 +1790,7 @@
 				F74B8A77196F7AA7005F3893 /* ofxUIDragableLabelButton.cpp in Sources */,
 				F74B89F3196F5090005F3893 /* testApp.cpp in Sources */,
 				F7DFCE3C19D4EC58002D7BBF /* EdgePass.cpp in Sources */,
+				F72F1C6919E592F200453005 /* LinearTexture.cpp in Sources */,
 				F74B8A87196F7AA7005F3893 /* ofxUIMultiImageToggle.cpp in Sources */,
 				7F5F0007192A689200CA8725 /* nuclear_debil_xml.cpp in Sources */,
 				7F386C3A19713CD2003C9AF0 /* ofxAnimatable.cpp in Sources */,

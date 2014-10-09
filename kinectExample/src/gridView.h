@@ -290,13 +290,15 @@ public:
         amplitude=60;
     }
     
-    void elongation(int _elong){
+    void elongation(float _elong){
         elong_goal=_elong;
     }
     
     void fadeIn(){
         status=GRID;
         temporary_w=0;
+        elong_goal=1.0;
+        elong_current=1.0;
     }
     
     void initBlackHole(){
