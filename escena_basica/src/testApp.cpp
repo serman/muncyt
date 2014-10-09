@@ -17,48 +17,48 @@ void testApp::setup(){
 	///////////////////////////////////////
 	
 	sceneManager = ofxSceneManager::instance();
-
+    cheapComm *myComm;
     myComm=cheapComm::getInstance();
     myComm->setup();
     
     menu *m1=new menu();
   //  m1->setComm(&myComm);
-	sceneManager->addScene( m1, SCENE_4);
+	sceneManager->addScene( m1, SCENE_MENU);
     
     electromagnetica *electrom=new electromagnetica();
    // electrom->setComm(&myComm);
-	sceneManager->addScene( electrom, SCENE_0);
+	sceneManager->addScene( electrom, SCENE_EM);
     
     nuclear_debil *nuclear_d = new nuclear_debil();
   //  nuclear_d->setComm(&myComm);
-	sceneManager->addScene( nuclear_d, SCENE_1);
+	sceneManager->addScene( nuclear_d, SCENE_NUC_D);
 
     nuclear_fuerte *nuclear_f = new nuclear_fuerte();
   //  nuclear_d->setComm(&myComm);
-	sceneManager->addScene( nuclear_f , SCENE_2);
+	sceneManager->addScene( nuclear_f , SCENE_NUC_F);
     
     gravedad *grave=new gravedad();
  //   grave->setComm(&myComm);
-    sceneManager->addScene( grave, SCENE_3);
+    sceneManager->addScene( grave, SCENE_GRAVEDAD);
 	sceneManager->setDrawDebug(true);
 	sceneManager->setCurtainDropTime(0.2);
 	sceneManager->setCurtainStayTime(0.0);
 	sceneManager->setCurtainRiseTime(0.2);
-	sceneManager->setOverlapUpdate(true);
-    sceneManager->goToScene(SCENE_1);
+	sceneManager->setOverlapUpdate(false);
+    
+    sceneManager->goToScene(SCENE_GRAVEDAD);
+    timeToEndScene=-1;
 	// OSC
 	
 	//ofAddListener(eventoOSC, this, &testApp::eventoOSC_Recibido  );
 
 }
 
-void testApp::eventoOSC_Recibido(oscData &valor) {
-	ofLogNotice("testApp::eventoOSC_Recibido: " + ofToString(valor.tipoOSCDato));
-	//myComm.recibirEventoOSC(valor);
-}
+
 
 
 void testApp::update(){
+    
 	tuioClient.getMessage();
 	float dt = 0.016666666;
 	sceneManager->update( dt );
@@ -66,7 +66,9 @@ void testApp::update(){
 	//
 	// sceneManager->goToScene(SCENE_1, true); /* true >> regardless of curtain state (so u can change state while curtain is moving)*/	
 	//
-	
+	if(timeToEndScene !=-1 && timeToEndScene<ofGetElapsedTimeMillis()){
+        ofSendMessage("changeScene" +ofToString(SCENE_MENU));
+    }
 }
 
 
@@ -108,11 +110,11 @@ void testApp::mouseReleased( int x, int y, int button ){
 }
 
 void testApp::keyPressed(int key){	
-	if (key == '0') sceneManager->goToScene(SCENE_0);
-	if (key == '1') sceneManager->goToScene(SCENE_1, true);
-	if (key == '2') sceneManager->goToScene(SCENE_2);
-	if (key == '3') sceneManager->goToScene(SCENE_3);
-	if (key == '4') sceneManager->goToScene(SCENE_4);
+	if (key == '0'){ sceneManager->goToScene(SCENE_EM);  setTimeToEndScene(SCENE_EM);}
+    if (key == '1'){ sceneManager->goToScene(SCENE_NUC_D, true); setTimeToEndScene(SCENE_NUC_D);}
+    if (key == '2'){ sceneManager->goToScene(SCENE_NUC_F);setTimeToEndScene(SCENE_NUC_F);}
+    if (key == '3') {sceneManager->goToScene(SCENE_GRAVEDAD);setTimeToEndScene(SCENE_GRAVEDAD);}
+    if (key == '4') {sceneManager->goToScene(SCENE_MENU);setTimeToEndScene(SCENE_MENU);}
 	
 	if(key=='u') {
         cout << "u key" <<endl;		
@@ -130,19 +132,34 @@ void testApp::gotMessage(ofMessage m){
     cout << m.message << endl;
     
     if(m.message=="changeScene1"){
-        sceneManager->goToScene(SCENE_1, true);
+        sceneManager->goToScene(SCENE_NUC_D, true);
+        setTimeToEndScene(SCENE_NUC_D);
     }
     else if(m.message=="changeScene2"){
-        sceneManager->goToScene(SCENE_2, true);
+        sceneManager->goToScene(SCENE_NUC_F, true);
+        setTimeToEndScene(SCENE_NUC_F);
     }
     else if(m.message=="changeScene3"){
-        sceneManager->goToScene(SCENE_3, true);
+        sceneManager->goToScene(SCENE_GRAVEDAD, true);
+        setTimeToEndScene(SCENE_GRAVEDAD);
     }
     else if(m.message=="changeScene4"){
-        sceneManager->goToScene(SCENE_4, true);
+        sceneManager->goToScene(SCENE_MENU, true);
+        setTimeToEndScene(SCENE_MENU);
     }
     else if(m.message=="changeScene0"){
-        sceneManager->goToScene(SCENE_0, true);
+        sceneManager->goToScene(SCENE_EM, true);
+        setTimeToEndScene(SCENE_EM);
+    }
+}
+
+// ajusta tiempo máximo de una escena en pantalla
+void testApp::setTimeToEndScene(int scene_num){
+    if(scene_num!=SCENE_MENU){
+        timeToEndScene=ofGetElapsedTimeMillis()+MAX_TIME_ESCENA;
+    }
+    else{
+        timeToEndScene=-1;
     }
 }
 

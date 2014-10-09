@@ -97,6 +97,8 @@ void gravedad::setup(){
     gui1->loadSettings("guiSettings.xml");
 	
     ofDisableAlphaBlending();
+    blackHoleShader.load("", "shaders/blackHole.frag");
+  
     
 }
 
@@ -124,6 +126,7 @@ void gravedad::init_Escena() {
 	
 	cam.setDistance(zCam);
     state=GROWING;
+    status_sent_EOS_Sent=false;
     // Crear las particulas
 	
 	
@@ -220,10 +223,14 @@ void gravedad::update(float d1){
     if(masaSol>MAX_MASA_SOL && state==GROWING){
         initExplosion();
     }
-    if((initExplosionTime+2000) > ofGetElapsedTimeMillis() ){
-        cheapComm::getInstance()->sendAudio0("/audio/gravity/collapse_end_event");
-        cheapComm::getInstance()->sendSync0("/sync/gravity/collapse_end_event");
-        ofSendMessage("changeScene" + ofToString(MENU) );
+    if(( (initExplosionTime+DURACION_BLACK_HOLE)  < ofGetElapsedTimeMillis()) && state==EXPLOSION){
+        if(status_sent_EOS_Sent==false){
+            cheapComm::getInstance()->sendAudio0("/audio/gravity/collapse_end_event");
+            cheapComm::getInstance()->sendSync0("/sync/gravity/collapse_end_event");
+            ofSendMessage("changeScene" + ofToString(MENU) );
+            status_sent_EOS_Sent=true;
+        }
+        
     }
     
 	updateMeshSuperf();
@@ -540,7 +547,40 @@ void gravedad::draw(){
     //	imgWeb.draw(ofGetWidth()-200,0,200,200);
     //	imgDyn.draw(ofGetWidth()-200,300,200,200);
     //	imgMix.draw(ofGetWidth()-200,ofGetHeight()-200,200,200);
-	
+    if(state==EXPLOSION){
+
+        
+        int timeSinceExplosion=ofGetElapsedTimeMillis()-initExplosionTime;
+        if(timeSinceExplosion <500 ) {
+            int circleWidth=ofMap(ofGetElapsedTimeMillis()-initExplosionTime,0,500,0,ofGetWidth());
+            ofSetColor(0);
+            ofEllipse(ofGetWidth()/2, ofGetHeight()/2,circleWidth,circleWidth);
+        }else if(timeSinceExplosion>500 && timeSinceExplosion<1300){
+            blackHoleShader.begin();
+            blackHoleShader.setUniform3f("iResolution", ofGetWidth(), ofGetHeight(),0);
+            blackHoleShader.setUniform1f("iGlobalTime", (float) ofGetElapsedTimef());
+            blackHoleShader.setUniform1f("BULB_R", (float) ofMap(ofGetElapsedTimeMillis()-(initExplosionTime+500),0,1300,1.1,1.0/6.0) ) ;
+            blackHoleShader.setUniformTexture("iChannel1", imgMix.getTextureReference(), 1);
+            ofSetColor(255);
+            imgMix.draw(0,0,ofGetWidth(), ofGetHeight());
+            blackHoleShader.end();
+           // int circleWidth=ofMap(ofGetElapsedTimeMillis()-(initExplosionTime+500),0,1300,ofGetWidth()+200,0);
+        }
+        else{
+            cout << "parte final"<<endl;
+            blackHoleShader.begin();
+            blackHoleShader.setUniform3f("iResolution", ofGetWidth(), ofGetHeight(),0);
+            blackHoleShader.setUniform1f("iGlobalTime", (float) ofGetElapsedTimef());
+            blackHoleShader.setUniform1f("BULB_R", (float) ofMap(ofGetElapsedTimeMillis()-(initExplosionTime+1300),0,DURACION_BLACK_HOLE-2000,1.0/6.0,0.7) );
+            blackHoleShader.setUniformTexture("iChannel1", imgMix.getTextureReference(), 1);
+            ofSetColor(255);
+            imgMix.draw(0,0,ofGetWidth(), ofGetHeight());
+            blackHoleShader.end();
+            
+        }
+        
+    }
+    
 	ofPushStyle();
 	ofSetColor(255,0,0);
 	ofDrawBitmapString("fr: " + ofToString(ofGetFrameRate()), 10, ofGetHeight()-90);
@@ -641,11 +681,13 @@ void gravedad::keyPressed(int key){
     if(key=='s'){
         cheapComm::getInstance()->sendAudio0("/audio/gravity/collapse_start_event");
         cheapComm::getInstance()->sendSync0("/sync/gravity/collapse_start_event");
+        initExplosion();
     }
     
     if(key=='e'){
         cheapComm::getInstance()->sendAudio0("/audio/gravity/collapse_end_event");
         cheapComm::getInstance()->sendSync0("/sync/gravity/collapse_start_event");
+        state=GROWING;
     }
     
 }

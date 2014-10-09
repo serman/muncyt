@@ -224,9 +224,9 @@ public:
         ofPushMatrix();
         ofTranslate(W_WIDTH/2, W_HEIGHT/2);
         int r=740/2;
-        ofSetColor(ofColor::fromHsb(ofMap(wAng,0,-wAngMax,150,250), 200, 200,150+70*sin(ofGetElapsedTimef()/ofMap(wAng,0,-wAngMax,4.0,1.0)*TWO_PI)));
+        ofSetColor(ofColor::fromHsb(ofMap(abs(wAng),0,wAngMax,150,250), 200, 200,150+70*sin(ofGetElapsedTimef()/ofMap(abs(wAng),0,wAngMax,4.0,1.0)*TWO_PI)));
        // ofSetColor(27,117,187,200+50*sin(ofGetElapsedTimef()/2.0*TWO_PI));
-        for(int i=0; i<ofMap(wAng,0,-wAngMax,0,360); i+=3){
+        for(int i=0; i<ofMap(abs(wAng),0,wAngMax,0,360); i+=3){
             ofRotateZ(3);
             if( (i>=0 && i<10) || (i>73 && i<100) || (i>166 && i<190) || (i>342 && i<360)){
                 

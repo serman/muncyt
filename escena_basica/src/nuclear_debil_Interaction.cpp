@@ -191,13 +191,19 @@ void nuclear_debil::onButtonPressed(BUTTON_TYPE& mtype){
 void nuclear_debil::ball_inside_event(){
     float vvVal = anillo.getVelocNeutronLanz();
     float vvAng = HALF_PI;
+    
+    if(abs(anillo.wAng)>=anillo.wAngMax*0.95){
+        status=nuclear_debil::EXPLOSION;
+        init_explosion_time=ofGetElapsedTimeMillis();
+        ofLogNotice() << "MODO explosion" <<endl;
+    }
+    
     addNeutron(W_WIDTH/2.0,W_HEIGHT/2.0-radioInt*0.9,vvVal,vvAng);
     cheapComm::getInstance()->sendAudio0("/audio/weak_nuclear/ball_inside_event");
+
     anillo.setFadeInMode();
     //TODO EVENTO EXPLOSION SI LAS VELOCIDAD ES DEL 100%
-    if(anillo.wAng==anillo.wAngMax){
-        status=nuclear_debil::EXPLOSION;
-    }
+
 }
 
 

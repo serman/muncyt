@@ -219,6 +219,7 @@ public:
 	vector<basicSprite * > sprites;				// our vector of sprites
     void addSprite(int, int);
     int status;
+    long init_explosion_time;
     
     
 };

@@ -27,7 +27,7 @@
 
 #define MAX_MASA_SOL 18000
 #define INIT_MASA_SOL 7000
-
+#define DURACION_BLACK_HOLE 15000
 class gravedad : public ofxScene {
 
 public:
@@ -147,6 +147,10 @@ public:
     int initExplosionTime;
     void    initExplosion();
     tangiblesHandler hands;
+    
+    ofShader blackHoleShader;
+    
+    bool status_sent_EOS_Sent;
     
 };
 

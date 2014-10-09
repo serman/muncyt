@@ -14,7 +14,10 @@
 #define TUIORATE
 #define DEBUGOSC 1
 
+#define MAX_TIME_ESCENA 200*1000 //tiempo maximo por defecto que está una escena en pantalla
 enum scenes{ EM, DEBIL, FUERTE, GRAVEDAD,MENU};
+
+enum Scenes_ofxScene{ SCENE_EM = 0, SCENE_NUC_D, SCENE_NUC_F, SCENE_GRAVEDAD, SCENE_MENU };
 
 enum tipoOSCData {
 	ESCENA,

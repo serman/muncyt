@@ -361,6 +361,8 @@ void nuclear_debil::update(float dt) {
                 spriteExp->addCenteredTile(&sprites[i]->animation, sprites[i]->pos.x, sprites[i]->pos.y,-1,F_NONE,0.5);
 		}
 	}
+    
+    
 }
 
 //--------------------------------------------------------------
@@ -490,12 +492,15 @@ void nuclear_debil::draw(){
     ofPopStyle();
 
     spriteExp->draw();
-    if(sprites.size()>0) // if we have sprites
-	{
-		
-       // cout << sprites[0]->animation.frame << "index" <<sprites[0]->animation.index << endl;
+//    if(sprites.size()>0) // if we have sprites
+//MODO EXPLOSION FIN DE LA ESCENA
+    if(status==EXPLOSION ){
         
+        if(init_explosion_time+1000> ofGetElapsedTimeMillis()){
+            ofSendMessage("changeScene" +ofToString(SCENE_MENU)); status==OFF;
+        }
     }
+        
     ofPopMatrix();  // FIn translate para centrar contenidos
     
     
