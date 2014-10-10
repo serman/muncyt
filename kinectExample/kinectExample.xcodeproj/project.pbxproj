@@ -84,6 +84,7 @@
 		F79A3D7719D8BDDD009151E9 /* testApp_osc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F79A3D7619D8BDDD009151E9 /* testApp_osc.cpp */; };
 		F7A515AA1975740000028875 /* testApp_Drawing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7A515A81975740000028875 /* testApp_Drawing.cpp */; };
 		F7A515AD197574C100028875 /* testApp_inputInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7A515AB197574C100028875 /* testApp_inputInterface.cpp */; };
+		F7B7A51219E76E0200AC0B37 /* glow.vert in Sources */ = {isa = PBXBuildFile; fileRef = F7B7A51119E76E0200AC0B37 /* glow.vert */; };
 		F7C1705B192B76E30034A5CB /* ofxUI2DGraph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7C16FFE192B76E20034A5CB /* ofxUI2DGraph.cpp */; };
 		F7C1705C192B76E30034A5CB /* ofxUI2DPad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7C17000192B76E20034A5CB /* ofxUI2DPad.cpp */; };
 		F7C1705D192B76E30034A5CB /* ofxUIBaseDraws.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7C17002192B76E20034A5CB /* ofxUIBaseDraws.cpp */; };
@@ -452,6 +453,16 @@
 		F7A515A81975740000028875 /* testApp_Drawing.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testApp_Drawing.cpp; sourceTree = "<group>"; };
 		F7A515AB197574C100028875 /* testApp_inputInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testApp_inputInterface.cpp; sourceTree = "<group>"; };
 		F7A657D619B0C62E004E0E78 /* particleClouds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = particleClouds.h; sourceTree = "<group>"; };
+		F7B7A50819E768FB00AC0B37 /* fisheye.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = fisheye.frag; sourceTree = "<group>"; };
+		F7B7A50919E768FB00AC0B37 /* fisheye.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = fisheye.vert; sourceTree = "<group>"; };
+		F7B7A50A19E768FB00AC0B37 /* glow.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = glow.frag; sourceTree = "<group>"; };
+		F7B7A50B19E768FB00AC0B37 /* myCrazyFragFile.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = myCrazyFragFile.frag; sourceTree = "<group>"; };
+		F7B7A50C19E768FB00AC0B37 /* myCrazyFragFile2.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = myCrazyFragFile2.frag; sourceTree = "<group>"; };
+		F7B7A50D19E768FB00AC0B37 /* myCrazyVertFile.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = myCrazyVertFile.vert; sourceTree = "<group>"; };
+		F7B7A50E19E768FB00AC0B37 /* myCrazyVertFile2.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = myCrazyVertFile2.vert; sourceTree = "<group>"; };
+		F7B7A50F19E768FB00AC0B37 /* whitenoise.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = whitenoise.frag; sourceTree = "<group>"; };
+		F7B7A51019E768FB00AC0B37 /* whitenoise.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = whitenoise.vert; sourceTree = "<group>"; };
+		F7B7A51119E76E0200AC0B37 /* glow.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = glow.vert; sourceTree = "<group>"; };
 		F7BCE62B19B3CFB800ECB37E /* contours.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = contours.h; sourceTree = "<group>"; };
 		F7BCE62C19B5DCA300ECB37E /* gridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gridView.h; sourceTree = "<group>"; };
 		F7C16FFD192B76E20034A5CB /* ofxUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxUI.h; sourceTree = "<group>"; };
@@ -996,6 +1007,7 @@
 		E4B69B4A0A3A1720003C02F2 = {
 			isa = PBXGroup;
 			children = (
+				F7B7A50719E768FB00AC0B37 /* shaders */,
 				E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */,
 				E4EB6923138AFD0F00A09F29 /* Project.xcconfig */,
 				E4B69E1C0A3A1BDC003C02F2 /* src */,
@@ -1389,6 +1401,24 @@
 				F781326919C84EDA004A38E3 /* rayoSilueta.h */,
 			);
 			name = RayoSilueta;
+			sourceTree = "<group>";
+		};
+		F7B7A50719E768FB00AC0B37 /* shaders */ = {
+			isa = PBXGroup;
+			children = (
+				F7B7A50819E768FB00AC0B37 /* fisheye.frag */,
+				F7B7A50919E768FB00AC0B37 /* fisheye.vert */,
+				F7B7A50A19E768FB00AC0B37 /* glow.frag */,
+				F7B7A50B19E768FB00AC0B37 /* myCrazyFragFile.frag */,
+				F7B7A50C19E768FB00AC0B37 /* myCrazyFragFile2.frag */,
+				F7B7A50D19E768FB00AC0B37 /* myCrazyVertFile.vert */,
+				F7B7A50E19E768FB00AC0B37 /* myCrazyVertFile2.vert */,
+				F7B7A50F19E768FB00AC0B37 /* whitenoise.frag */,
+				F7B7A51019E768FB00AC0B37 /* whitenoise.vert */,
+				F7B7A51119E76E0200AC0B37 /* glow.vert */,
+			);
+			name = shaders;
+			path = bin/data/shaders;
 			sourceTree = "<group>";
 		};
 		F7C16FFB192B76E20034A5CB /* ofxUI */ = {
@@ -1921,6 +1951,7 @@
 				F7EBD1D5193358F3009805D5 /* ofxOscReceiver.cpp in Sources */,
 				F7E3C063195C34A000D7724A /* ETF.cpp in Sources */,
 				F7C17073192B76E30034A5CB /* ofxUINumberDialer.cpp in Sources */,
+				F7B7A51219E76E0200AC0B37 /* glow.vert in Sources */,
 				F74CAAAF19BBC9520037FCEA /* ContrastPass.cpp in Sources */,
 				F77369611945D5A600548CEA /* IRSource.cpp in Sources */,
 				F767CA58195D04BD004401E8 /* ofxDelaunay.cpp in Sources */,

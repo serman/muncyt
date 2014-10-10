@@ -52,7 +52,8 @@ public:
     bool bAddParticles;
     long stopParticlesAt;
     void triggerParticles(float ang);
-   
+    ofShader glowShader;
+    ofFbo   fboGeneral;
 };
 
 #endif /* defined(__kinectExample__rayoSilueta__) */

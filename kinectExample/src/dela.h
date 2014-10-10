@@ -13,6 +13,7 @@ class dela{
     
     
 public:
+    enum colores{ROJOS=0, AZULES,VERDES,FLUOR};
     void setup(int _w, int _h, float *_zMin, float *_zMax, ofxOpenNI2Grabber *_oniCamGrabber, extendedDepthSource *_depthGenerator, ofCamera *_cam){
         w=_w;
         h=_h;
@@ -27,10 +28,15 @@ public:
        // cam=_cam;
        // setupParticles();
         blob.allocate(640,480,OF_IMAGE_GRAYSCALE);
-        
+        setColours();
+        palette.loadImage("palette1.png");
+        paletteRed.loadImage("palette_red.png");
+        paletteGreen.loadImage("palette_green.png");
+        paletteBlue.loadImage("palette_blue.png");
+        selectedPalette=&paletteRed;
     }
-
-
+    ofImage palette, paletteRed, paletteGreen,paletteBlue;
+    ofImage *selectedPalette;
     void update(){
         del.reset();
         
@@ -101,8 +107,25 @@ public:
             
 			ofColor c = oniCamGrabber->rgbSource.currentPixels->getColor(v.x+320.0, v.y+240.0);
             
-			if(!useRealColors)
-				c = ofColor(255,0,0);
+			if(!useRealColors){
+//				c = ofColor(255,0,0);
+                //c= colorFluor[ ofRandom(colorFluor.size())];
+                ofVec3f punto=del.triangleMesh.getVertices()[i]; //getIndex(i*3)
+                punto.x+=320;
+                punto.y+=240;
+                 changeColorConst+=changeColorFactor;
+                int changeFactor1=(selectedPalette->getWidth()/6) * (ofNoise( changeColorConst)-0.5 );
+                changeColorConst+=changeColorFactor;
+                int changeFactor2=(selectedPalette->getHeight()/6) * (ofNoise( 10+changeColorConst)-0.5);
+                
+                punto.x+=changeFactor1;
+                punto.y+=changeFactor2;
+                punto.x=ofWrap(punto.x,0,selectedPalette->getWidth()-1);
+                punto.y=ofWrap(punto.y,0,selectedPalette->getHeight()-1);
+                
+                c= selectedPalette->getColor(punto.x,punto.y);
+
+            }
             
 			c.a = colorAlpha;
 			
@@ -164,23 +187,44 @@ public:
        // glPushAttrib(GL_ALL_ATTRIB_BITS);
        // glShadeModel(GL_FLAT);
        // glProvokingVertex(GL_FIRST_VERTEX_CONVENTION);
+                ofSetColor(200);
         convertedMesh.drawFaces();
        // glShadeModel(GL_SMOOTH);
        // glPopAttrib();
         
-        if(useRealColors) {
+        /*if(useRealColors) {
             ofSetColor(30,30,30, 255);
         } else
             ofSetColor(124,136,128,255);
-        
+        */
         ofPushMatrix();
         ofTranslate(0, 0,0.5);
+        ofSetColor(200);
         wireframeMesh.drawWireframe();
         ofPopMatrix();
        // cam.end();
     }
-
     
+    void setColours(){
+        colorFluor.clear();
+        colorFluor.push_back(ofColor::fromHex(0x0DE0FC));	// melting flowers
+        colorFluor.push_back(ofColor::fromHex(0x38FC48));	// Dead Nuclear
+        colorFluor.push_back(ofColor::fromHex(0xF938FC));	// Calcinha
+        colorFluor.push_back(ofColor::fromHex(0xFA00AB));	// ow!
+        colorFluor.push_back(ofColor::fromHex(0xDFFC00));	// Limei Green
+    }
+    
+    void setUI(ofxUITabBar *guiTabBar ){
+        gui = new ofxUICanvas(0,100,400,800);
+        gui->setName("Delaunay 3D" );
+        
+        gui->addIntSlider("pointSkip", 1, 30,  &(pointSkip));
+        gui->addIntSlider("colorAlpha", 1, 255,  &(colorAlpha));
+        gui->addSlider("changeColorFactor", 0, 1.0,  &(changeColorFactor));
+        gui->addSlider("noiseAmount", 0, 10,  &(noiseAmount));
+        gui->addToggle("useRealColors",&useRealColors);
+        guiTabBar->addCanvas(gui);
+    }
     int		cloudState;
     float *zMin, *zMax;
     float speed;
@@ -192,6 +236,23 @@ public:
     float tranX=0;
     float tranY=0;
     float tranZ=0;
+    
+    void setColor( int tipoColor){
+        switch(tipoColor){
+            case ROJOS:
+                selectedPalette=&paletteRed;
+                break;
+            case VERDES:
+                selectedPalette=&paletteGreen;
+                break;
+            case AZULES:
+                selectedPalette=&paletteBlue;
+                break;
+            case FLUOR:
+                selectedPalette=&palette;
+                break;
+        }
+    }
     
 private:
     int numParticles;
@@ -210,10 +271,13 @@ private:
 	ofMesh wireframeMesh;
 	ofxDelaunay del;
 	ofImage blob;
-    int pointSkip=8;
-    bool useRealColors=true;
-    float noiseAmount=0;
+    int pointSkip=6;
+    bool useRealColors=false;
+    float noiseAmount=3;
     int colorAlpha=255;
+    vector<ofColor> colorFluor;
+    float changeColorConst=0.0;
+    float changeColorFactor=0.01;
 };
 
 

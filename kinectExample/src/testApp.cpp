@@ -130,7 +130,7 @@ void testApp::setup() {
     light.setPosition(0, 100, 0);
     // light.enable();
     ofDisableLighting();
-    
+    ofVec2f xBlur = ofVec2f(0.001953125, 0.0);
     post.init(ofGetWidth(), ofGetHeight());
     post.createPass<ZoomBlurPass>()->setEnabled(false);
     post.createPass<BloomPass>()->setEnabled(false);
@@ -165,7 +165,7 @@ void testApp::setup() {
 }
 
 void testApp::setupStatus(){
-     appStatuses["escena"]=MENU;
+     appStatuses["escena"]=NUCLEAR_DEBIL;
      appStatuses["em_ruido"]=true;
      appStatuses["alpha_ruido"]=255;
     
@@ -183,8 +183,8 @@ void testApp::update() {
 /// ACTUALIZACION CONTINUA
         switch(appStatuses["escena"]){
             case EM:
-                //particleCloud.updateParticles();
-                mdela.update();
+                particleCloud.updateParticles();
+                
                 break;
                 
             case GRAVEDAD:
@@ -198,7 +198,7 @@ void testApp::update() {
                 break;
                 
             case NUCLEAR_FUERTE:
-                
+                mdela.update();
                 break;
                 
         }
@@ -211,8 +211,9 @@ void testApp::update() {
                 break;
                 
                 case GRAVEDAD:
-                    mcontour.update();
+                    
                     if(mgrid.status==mgrid.BLACKHOLE){
+                        mcontour.update();
                         sender.send(mcontour.v[0]);
                         if(rcvCont.isThreadRunning()==false){
                             cout << "receiver start" <<endl;
@@ -292,9 +293,9 @@ void testApp::draw() {
         switch(appStatuses["escena"]){
                 
             case EM:
-//                particleCloud.drawWithRectangles();
-//                particleCloud.drawParticles();
-                mdela.draw();
+                //particleCloud.drawWithRectangles();
+                particleCloud.drawParticles();
+                
             break;
                 
             case GRAVEDAD:
@@ -311,7 +312,7 @@ void testApp::draw() {
             break;
                 
             case NUCLEAR_FUERTE:
-                
+                mdela.draw();
                 break;
         }
 
@@ -389,13 +390,12 @@ void testApp::draw() {
             case NUCLEAR_DEBIL:
                 post.begin();
                 mrayoSil.draw();
+                mcontour.draw(&mrayoSil.camino);
                 post.end();
             break;
                 
             case NUCLEAR_FUERTE:
-                post.begin();
-                    mcontour.draw();
-                post.end();
+
                 break;
         }
     #endif

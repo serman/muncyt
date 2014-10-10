@@ -32,9 +32,7 @@ public:
         }
     }
     
-    void draw(ofPolyline *mcontour=NULL ){
-
-        
+    void draw(ofPolyline *mcontour=NULL ){        
         //NIAPILLA. SI NO LE PASAS NADA DIBUJA POR DEFECTO LA SILUETA LOCAL. SI LE PASAS OTRO POLILINE ( EL REMOTO)
         //LO DIBUJA
         if(mcontour==NULL)
@@ -57,7 +55,7 @@ public:
                         triangulation.addPoint(ofPoint(px, py));
                     }
                 }
-            }            
+            }
             
             triangulation.triangulate();
             triangContMesh_old = triangContMesh;
@@ -147,10 +145,6 @@ public:
             ofPopMatrix();
         }
 
-    }
-    
-    void drawRemote(){
-        
     }
     
     void setup(ofxOpenNI2Grabber *_oniCamGrabber){

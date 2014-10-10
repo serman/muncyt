@@ -34,6 +34,8 @@ void rayoSilueta::setup(){
 	testPath.setColor(ofColor::blueSteel);
 	
     bAddParticles=false;
+    glowShader.load("shaders/glow.vert","shaders/glow.frag");
+    fboGeneral.allocate(ofGetWidth(),ofGetHeight());
 }
 
 void rayoSilueta::setSilueta(ofPolyline p){
@@ -147,8 +149,8 @@ void rayoSilueta::triggerParticles(float ang){
 }
 //--------------------------------------------------------------
 void rayoSilueta::draw(){
-    
-    
+  //  fboGeneral.begin();
+  //  glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
     ofPushMatrix();
     //ofTranslate(ofGetWidth(), ofGetHeight());
     //ofRotateZ(180);
@@ -164,9 +166,24 @@ void rayoSilueta::draw(){
     
 	if(bDrawCaminos) {
 		ofPushStyle();
-		ofSetColor(ofColor::lime, 60);
+		ofSetColor(ofColor::lime, 200);
 		ofSetLineWidth(15);
 		camino.draw();
+        ofPushMatrix();
+        ofSetColor(ofColor::lime, 100);
+                ofTranslate(-2, -2);
+        		camino.draw();
+        ofPopMatrix();
+        
+
+		
+        
+        ofPushMatrix();
+            ofSetColor(ofColor::lime, 150);
+            ofTranslate(2, 2);
+            camino.draw();
+        ofPopMatrix();
+        
 		ofSetColor(ofColor::white, 200);
 		ofSetLineWidth(1);
 		camino1.draw();
@@ -189,6 +206,15 @@ void rayoSilueta::draw(){
     mExplosionEfect.draw();
 	
 	ofPopMatrix();
+   // fboGeneral.end();
+    
+    /*glowShader.begin();
+    glowShader.setUniform1f("glowSize",0.5);
+    
+    glowShader.setUniformTexture("tex1", fboGeneral.getTextureReference(), 1 );
+        ofSetColor(255);
+        fboGeneral.draw(0, 0);
+    glowShader.end();*/
 	
 	
 	
@@ -203,6 +229,7 @@ void rayoSilueta::setUI(ofxUITabBar *guiTabBar ){
     gui->addToggle("bDrawPtosChoque", &bDrawPtosChoque);
     gui->addToggle("bDrawCaminos", &bDrawCaminos);
     gui->addToggle("bTiltCamino", &bTiltCamino);
+    gui->addToggle("addParticles", &bAddParticles);
     gui->addButton("clear", false);
     gui->addButton("partClear", false);
     

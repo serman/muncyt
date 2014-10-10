@@ -50,7 +50,7 @@ public:
         alphaParticles = 255;
         cam=_cam;
         setupParticles();
-        palete.loadImage("palete1.png");
+        palete.loadImage("palette1.png");
 
     }
     void setupParticles(){

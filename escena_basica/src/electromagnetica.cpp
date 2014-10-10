@@ -329,7 +329,7 @@ void electromagnetica::drawNoise(){
     //mtexture.loadScreenData(600,600,200,200);
     //mtexture.loadData(mimage.getPixelsRef());
     ///shader.setUniformTexture("iChannel0",mtexture,2 );
-    
+
     ofRect(0, 0, W_WIDTH, W_HEIGHT);
     shader.end();
     ofPopStyle();
