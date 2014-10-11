@@ -15,10 +15,12 @@
 #include "ofxUI.h"
 #include "particleSourceHandler.h"
 #include "consts.h"
+#include "ofxPostProcessing.h"
+class contours;
 class rayoSilueta{
 public:
     void setup();
-    void update();
+    void update(contours &cont);
     void draw();
 
     ofVec3f zentro;
@@ -53,7 +55,9 @@ public:
     long stopParticlesAt;
     void triggerParticles(float ang);
     ofShader glowShader;
-    ofFbo   fboGeneral;
+    ofFbo   fboGeneral, fboRayos;
+        bool guiAddParticles;
+    ofxPostProcessing postp1;
 };
 
 #endif /* defined(__kinectExample__rayoSilueta__) */

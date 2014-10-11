@@ -15,19 +15,14 @@
 void rayoSilueta::setup(){
     
 	ofSetVerticalSync(true);
-	
 	zentro = ofVec3f(ofGetWidth()/2.0,ofGetHeight()/2.0,0);
-	
 	swDifraccion = false;
-	
 	ratePartic = 20;
     vel=20;
-	
 	bDrawCaminos = true;
 	bDrawPtosChoque = true;
 	bTiltCamino = false;
-	
-	
+		
 	
 	testPath.setFilled(false);
 	testPath.setStrokeColor(ofColor::blueSteel);
@@ -35,7 +30,19 @@ void rayoSilueta::setup(){
 	
     bAddParticles=false;
     glowShader.load("shaders/glow.vert","shaders/glow.frag");
-    fboGeneral.allocate(ofGetWidth(),ofGetHeight());
+    fboGeneral.allocate(ofGetWidth()/3,ofGetHeight()/3);
+    fboGeneral.begin();
+    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+    fboGeneral.end();
+    
+   // postp1.init(ofGetWidth(), ofGetHeight());
+   // postp1.createPass<BloomPass>()->setEnabled(true);
+    
+    fboRayos.allocate(ofGetWidth()/3,ofGetHeight()/3,GL_RGBA);
+    fboRayos.begin();
+    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+    fboRayos.end();
+    
 }
 
 void rayoSilueta::setSilueta(ofPolyline p){
@@ -43,11 +50,13 @@ void rayoSilueta::setSilueta(ofPolyline p){
 }
 
 //--------------------------------------------------------------
-void rayoSilueta::update(){
+void rayoSilueta::update(contours &cont ){
     mExplosionEfect.update();
 	// add alguna particula desde un lateral
     
     if(ofGetElapsedTimeMillis() > stopParticlesAt ) bAddParticles=false;
+    if (guiAddParticles) bAddParticles =true;
+    
     if(bAddParticles)
         addParticleLateral();
 	
@@ -82,7 +91,8 @@ void rayoSilueta::update(){
 					// add el punto al camino de la particula
 					particulas[i].insertPtChoque(ptChoque);
                     mExplosionEfect.addEmitter(ptChoque.x, ptChoque.y);
-					
+					if(ofRandom(0,1)>0.5)    cont.addImpact(ptChoque.x, ptChoque.y);
+                    
 					float angRotMax = 15;
 					float angRot =  ofRandom(-angRotMax, angRotMax);
 					ofColor cc = ofColor::fromHsb(ofMap(abs(angRot), 0, angRotMax, 0,255), 255, 255, 100);
@@ -123,7 +133,7 @@ void rayoSilueta::addParticleLateral() {
 		//		ParticleX( ofVec3f _position , ofColor _color, float mass = 1.0, float charge = 0.0 )
 		//		ParticleX( ofVec3f _position , ofVec3f _vel , ofColor _color, float mass = 1.0, float charge = 0.0 )
         for(int ii=0; ii<10; ii++){
-            ParticleX p = ParticleX(ofVec3f(ofRandom(ofGetWidth()),0), ofVec3f(0,vel,0), ofColor(255,255,255) );
+            ParticleX p = ParticleX(ofVec3f(ofRandom(ofGetWidth()/3),0), ofVec3f(0,vel,0), ofColor(255,255,255) );
             particulas.push_back(p);
         }	
 		// pos, vel, color, mass, charge
@@ -154,7 +164,7 @@ void rayoSilueta::draw(){
     ofPushMatrix();
     //ofTranslate(ofGetWidth(), ofGetHeight());
     //ofRotateZ(180);
-    ofScale(2,2,2);
+    ofScale(1,1,1);
 	
 	//
 	//
@@ -164,19 +174,20 @@ void rayoSilueta::draw(){
 	ofEnableSmoothing();
 	ofEnableAntiAliasing();
     
-	if(bDrawCaminos) {
+       ofEnableAlphaBlending();
+       ofSetColor(0 ,0,0,10);
+       ofFill();
+       ofRect(0, 0, ofGetWidth(), ofGetHeight());
+    ofSetColor(255,255,255,255);
 		ofPushStyle();
-		ofSetColor(ofColor::lime, 200);
-		ofSetLineWidth(15);
+		ofSetColor(ofColor::lime, 120);
+		ofSetLineWidth(5);
 		camino.draw();
         ofPushMatrix();
         ofSetColor(ofColor::lime, 100);
                 ofTranslate(-2, -2);
         		camino.draw();
         ofPopMatrix();
-        
-
-		
         
         ofPushMatrix();
             ofSetColor(ofColor::lime, 150);
@@ -189,14 +200,19 @@ void rayoSilueta::draw(){
 		camino1.draw();
 		ofPopStyle();
 		testPath.draw();
-	}
-	
+
+
+	fboGeneral.begin();
+    glEnable(GL_POINT_SMOOTH);
+    ofEnableAlphaBlending();
+    ofSetColor(0 ,0,0,10);
+    ofFill();
+    ofRect(0, 0, ofGetWidth(), ofGetHeight());
+    ofSetColor(255,255,255,255);
 	for(int i=0;i<particulas.size();i++) {
 		particulas[i].draw();
 	}
-	
-	
-	if(bDrawPtosChoque) {
+    if(bDrawPtosChoque) {
 		ofPushStyle();
 		for(int i=0;i<ptsChoque.size();i++) {
 			ofCircle(ptsChoque[i].x, ptsChoque[i].y, 3);
@@ -204,6 +220,15 @@ void rayoSilueta::draw(){
 		ofPopStyle();
 	}
     mExplosionEfect.draw();
+	fboGeneral.end();
+    //postp1.begin();
+      //  glPushMatrix();
+       // glViewport(0, 0, postp1.getRawRef().getWidth()*3,  postp1.getRawRef().getHeight()*3);
+    fboGeneral.draw(0,0);
+       // glPopMatrix();
+    //postp1.end();
+
+
 	
 	ofPopMatrix();
    // fboGeneral.end();
@@ -229,13 +254,11 @@ void rayoSilueta::setUI(ofxUITabBar *guiTabBar ){
     gui->addToggle("bDrawPtosChoque", &bDrawPtosChoque);
     gui->addToggle("bDrawCaminos", &bDrawCaminos);
     gui->addToggle("bTiltCamino", &bTiltCamino);
-    gui->addToggle("addParticles", &bAddParticles);
+    gui->addToggle("addParticles", &guiAddParticles);
     gui->addButton("clear", false);
     gui->addButton("partClear", false);
     
     ofAddListener(gui->newGUIEvent,this,&rayoSilueta::guiEvent);
-    
-    
     guiTabBar->addCanvas(gui);
     
 }

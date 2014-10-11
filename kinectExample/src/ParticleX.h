@@ -159,13 +159,13 @@ class ParticleX
 			//ofLine(position_prev.x, position_prev.y, position.x, position.y);
 		}
 
-		ofEllipse(position.x, position.y, 3,3);
-		if(inside) {
+		//ofEllipse(position.x, position.y, 3,3); //dibuja unos circulitos en la posicion de los rayos
+		/*if(inside) {
 			ofPushStyle();
 			ofNoFill();
 			ofEllipse(position.x, position.y, 9,9);			
 			ofPopStyle();
-		}
+		}*/
 
 		
 //		ofPopMatrix();
@@ -175,7 +175,7 @@ class ParticleX
 	void drawMemoPath() {
 		
 		ofPushStyle();
-		ofSetLineWidth(4);
+		ofSetLineWidth(2);
 		ofSetColor(colorExcited);
 		for(int i=0; i<memoPaths.size(); i++) {
 			memoPaths[i].draw();

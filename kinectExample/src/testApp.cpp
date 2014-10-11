@@ -130,16 +130,20 @@ void testApp::setup() {
     light.setPosition(0, 100, 0);
     // light.enable();
     ofDisableLighting();
-    ofVec2f xBlur = ofVec2f(0.001953125, 0.0);
+    post2D.init(ofGetWidth()/3, ofGetHeight()/3);
+    post2D.createPass<ZoomBlurPass>()->setEnabled(false);
+    post2D.createPass<BloomPass>()->setEnabled(false);
+    post2D.setFlip(false);
+    
+    
     post.init(ofGetWidth(), ofGetHeight());
     post.createPass<ZoomBlurPass>()->setEnabled(false);
     post.createPass<BloomPass>()->setEnabled(false);
+    post.createPass<VerticalTiltShifPass>()->setEnabled(false);
     post.createPass<ContrastPass>()->setEnabled(false);
     post.createPass<BleachBypassPass>()->setEnabled(false);
-    post.createPass<ToonPass>()->setEnabled(false);
     post.createPass<GodRaysPass>()->setEnabled(false);
     post.createPass<LimbDarkeningPass>()->setEnabled(false);
-    post.createPass<VerticalTiltShifPass>()->setEnabled(false);
     post.createPass<ConvolutionPass>()->setEnabled(false);
     post.setFlip(false);
     mtunnel.setup();
@@ -193,7 +197,7 @@ void testApp::update() {
                 
             case NUCLEAR_DEBIL:
                         mcontour.update();
-                        mrayoSil.update();
+                        mrayoSil.update(mcontour);
                         mrayoSil.setSilueta(mcontour.v[0]);
                 break;
                 
@@ -294,12 +298,20 @@ void testApp::draw() {
                 
             case EM:
                 //particleCloud.drawWithRectangles();
-                particleCloud.drawParticles();
-                
+                post[0]->setEnabled(false);
+                post[1]->setEnabled(false);
+                if(post[2]->getEnabled()==false) post[1]->setEnabled(true);
+                    particleCloud.drawParticles();
+
             break;
                 
             case GRAVEDAD:
+                
                 if(mgrid.status==mgrid.GRID){
+                    //glow Shader
+                    post[0]->setEnabled(false);
+                    post[2]->setEnabled(false);
+                    if(post[1]->getEnabled()==false) post[1]->setEnabled(true);
                     mgrid.draw(&camera);
                 }
                 else if(mgrid.status==mgrid.BLACKHOLE){
@@ -308,10 +320,14 @@ void testApp::draw() {
             break;
                 
             case NUCLEAR_DEBIL:
-
+                    //el dibujado aqu’ es en 2D asi que no viene nada
             break;
                 
             case NUCLEAR_FUERTE:
+                //apago los shdaers que no tocan Dejo el glow
+                post[0]->setEnabled(false);
+                post[2]->setEnabled(false);
+                if(post[1]->getEnabled()==false) post[1]->setEnabled(true);
                 mdela.draw();
                 break;
         }
@@ -361,17 +377,17 @@ void testApp::draw() {
             case MENU:
                 //post[1]->setEnabled(true);
                 pfbo.begin();
-                //glMatrixMode(GL_PROJECTION);
-                //glPushMatrix();
-                ofEnableAlphaBlending();
-                ofSetColor(0,0,0,2);
-                ofRect(0,0,ofGetWidth(),ofGetHeight());
-                //post.begin();
-                mmenu.draw();
+                    //glMatrixMode(GL_PROJECTION);
+                    //glPushMatrix();
+                    ofEnableAlphaBlending();
+                    ofSetColor(0,0,0,2);
+                    ofRect(0,0,ofGetWidth(),ofGetHeight());
+                    mmenu.draw();
                 pfbo.end();
-                ofSetColor(255, 255, 255);
-                pfbo.draw(0,0);
-                //post.end();
+                post.begin();
+                    ofSetColor(255, 255, 255);
+                    pfbo.draw(0,0);
+                post.end();
                 //post[1]->setEnabled(false);
                 break;
                 
@@ -387,16 +403,33 @@ void testApp::draw() {
                 }
             break;
                 
-            case NUCLEAR_DEBIL:
-                post.begin();
-                mrayoSil.draw();
+            {case NUCLEAR_DEBIL:
+                int ww=ofGetWidth();
+                int hh=ofGetHeight();
+                if(post2D[1]->getEnabled()==false) post2D[1]->setEnabled(true);
+                if(mcontour.bFill==true){
+                    if(post2D[0]->getEnabled()==false) post2D[0]->setEnabled(true);
+                }else{
+                    post2D[0]->setEnabled(false);
+                }
+                post2D.begin();
+                glPushMatrix();
+                 glViewport(0, 0, post2D.getRawRef().getWidth()*3,  post2D.getRawRef().getHeight()*3);
+                //Deshago el cambio de viewport
+             
+                /*Post processing shader is set to 1/3 of the screen.    When you start it it "reset" the screen to its own size so the following code will think that its size is the real size.  In this case I need to set the real size of the screen again. By working with 1/3 resolution, Everything is faster and actually the kinect real resolution is around 1/3 of the screen. So together with the cool shaders the scalation doesn't matter at the end */
                 mcontour.draw(&mrayoSil.camino);
-                post.end();
+                mrayoSil.draw();
+                glPopMatrix();
+                post2D.end(false);
+                ofSetColor(255);
+                post2D.draw(0, 0, ofGetWidth(), ofGetHeight());
+                //post.getProcessedTextureReference().draw(0, 0, ofGetWidth(), ofGetHeight());
             break;
-                
-            case NUCLEAR_FUERTE:
+            }
+            {case NUCLEAR_FUERTE:
 
-                break;
+                break;}
         }
     #endif
 	if(debug) showDebug();

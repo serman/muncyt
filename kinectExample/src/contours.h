@@ -17,11 +17,22 @@ using namespace cv;
 class contours{
 public:
     enum colores{ROJOS=0, AZULES,VERDES,FLUOR};
-    
+    ofImage paletteRadio;
     vector<ofPolyline> v;
+    int numPointsXtra;
+        bool bFill;
+    void setup(ofxOpenNI2Grabber *_oniCamGrabber){
+        cargaColores();
+        bFill = false;
+        bSoloEnContorno = true;
+        bDrawOld = false;
+        oniCamGrabber=_oniCamGrabber;
+        selectedColors=colorFluor;
+        paletteRadio.loadImage("palette_radiactive.png");
+        numPointsXtra = 5;
+    }
     
     void update(){
-        
         depthImg.setFromPixels( oniCamGrabber->getDepthPixels());
         depthImg.update();
 
@@ -30,15 +41,29 @@ public:
         if(v.size()>0){
             resampledContour =v[0];
         }
+        //decrease();
+        
+        //Set drawing status according to the state of the scene
+        
+        if(numPointsXtra<10){ bAddPts=false; doTriang=false;}
+        if(numPointsXtra>10) {bAddPts=true; doTriang=true;}
+        if(numPointsXtra<100) bFill=false;
+        else bFill=true;
+        
+    }
+    
+    void reset(){
+        numPointsXtra = 5;
     }
     
     void draw(ofPolyline *mcontour=NULL ){        
-        //NIAPILLA. SI NO LE PASAS NADA DIBUJA POR DEFECTO LA SILUETA LOCAL. SI LE PASAS OTRO POLILINE ( EL REMOTO)
+        //NIAPILLA. SI NO LE PASAS NADA DIBUJA POR DEFECTO LA SILUETA LOCAL. SI LE PASAS OTRO POLYLINE ( EL REMOTO)
         //LO DIBUJA
         if(mcontour==NULL)
             mcontour=&resampledContour;
         ofFill();
         ofSetColor(255,255,255);
+
         ofSetColor(255, 255, 0);
         ofSetLineWidth(2);
         if(mcontour->size()>=3) {
@@ -47,12 +72,20 @@ public:
                 triangulation.addPoint((*mcontour)[i]);
             }
             if(bAddPts) {
+                if(mcontour->size()>umbralPoints && bRegeneratePoints==true){
+                    puntosExtraInit(mcontour);
+                    bRegeneratePoints=false;
+                    ofDrawBitmapString("REGENERATING POINTS: ", ofGetWidth()-300,500 );
+                }
+                if(mcontour->size()<umbralPoints-3 && bRegeneratePoints==false){
+                    bRegeneratePoints=true;
+                }
+                
                 ofRectangle bounds = mcontour->getBoundingBox();
-                for(int i=0; i<numPointsXtra; i++) {
-                    float px = bounds.x+ofRandom(bounds.width);
-                    float py = bounds.y+ofRandom(bounds.height);
-                    if( mcontour->inside(ofPoint(px, py)) ){
-                        triangulation.addPoint(ofPoint(px, py));
+                puntosExtraUpdate(mcontour);
+                for(int i=0; i<extraPoints.size(); i++) {
+                    if( mcontour->inside(extraPoints[i]) ){
+                        triangulation.addPoint(extraPoints[i]);
                     }
                 }
             }
@@ -80,7 +113,10 @@ public:
                     ofColor ctmpa, ctmpb, ctmpc;
                     if(modoFill==0) {
                         // RANDOM
-                        ofColor ctmp = selectedColors[i%selectedColors.size()];
+                        ofColor ctmp= paletteRadio.getColor( ofWrap(pm.x,0,paletteRadio.getWidth() ) ,
+                                                             ofWrap(pm.y,0,paletteRadio.getHeight())
+                                                            );
+//                        ofColor ctmp = selectedColors[i%selectedColors.size()];
                         ctmpa = ctmp;
                         ctmpb = ctmp;
                         ctmpc = ctmp;
@@ -116,7 +152,8 @@ public:
             ofPushMatrix();
            // ofTranslate(ofGetWidth(), ofGetHeight());
             //ofRotateZ(180);
-            ofScale(3,3,3);
+                    //ofRect(0,0,ofGetWidth(), ofGetHeight());
+            ofScale(1,1,1);
             
             if(doTriang) {
                 ofNoFill();
@@ -143,20 +180,42 @@ public:
             
             //    else triangContMesh.drawWireframe();
             ofPopMatrix();
+            ofDrawBitmapString("tamanio contour: " + ofToString( mcontour->size()) + "\n", ofGetWidth()-300,300 );
         }
 
     }
     
-    void setup(ofxOpenNI2Grabber *_oniCamGrabber){
-        cargaColores();
-        bFill = false;
-        bSoloEnContorno = true;
-        bDrawOld = false;
-        oniCamGrabber=_oniCamGrabber;
-        selectedColors=colorFluor;
-
-        
+    void addImpacts(ofRectangle &bounds){
+        int pointGoals=100;
+        if( numPointsXtra<pointGoals){
+            numPointsXtra+=5;
+            for(int i=0; i<5; i++){
+                float px = bounds.x+ofRandom(bounds.width);
+                float py = bounds.y+ofRandom(bounds.height);
+                extraPoints.push_back(ofPoint(px, py));
+            }
+        }
     }
+    void addImpact(int px, int py){
+       
+        if(numPointsXtra<100){
+             numPointsXtra+=1;
+            extraPoints.push_back(ofPoint(px, py));
+        }
+
+    }
+    
+    void decrease(){
+        int pointGoals=5;
+        if( numPointsXtra>pointGoals)
+        {
+            numPointsXtra--;
+            if(extraPoints.size()>pointGoals)
+                extraPoints.erase(extraPoints.begin(),extraPoints.begin()+3);
+        }
+    }
+    
+
     
     void cargaColores() {
         // paleta de colores fluor
@@ -204,8 +263,6 @@ public:
        // ofAddListener(gui->newGUIEvent,this,&particleClouds::guiEvent);
         gui1->addToggle("doTriang", &doTriang);
         gui1->addToggle("doTessel", &doTessel);
-        gui1->addToggle("bAddPts", &bAddPts);
-        gui1->addToggle("bFill", &bFill);
         gui1->addIntSlider("modoFill", 0,2, &modoFill);
         gui1->addToggle("bDrawOld", &bDrawOld);
         guiTabBar->addCanvas(gui1);
@@ -229,14 +286,42 @@ public:
         }
     }
 
+    void puntosExtraReset(){
+        extraPoints.clear();
+    }
     
-
+    void puntosExtraInit(ofPolyline *mcontour){
+        ofRectangle bounds = mcontour->getBoundingBox();
+        for(int i=0; i<numPointsXtra; i++) {
+            float px = bounds.x+ofRandom(bounds.width);
+            float py = bounds.y+ofRandom(bounds.height);
+            extraPoints.push_back(ofPoint(px, py));
+        }
+    }
+    
+    void puntosExtraUpdate(ofPolyline *mcontour){
+        ofRectangle bounds = mcontour->getBoundingBox();
+        for(int i=0; i<extraPoints.size(); i++) {
+            if(mcontour->inside(extraPoints[i]) ){
+                extraPoints[i].x+=40*(ofNoise(dt)-0.5);
+                extraPoints[i].y+=40*(ofNoise(50+dt)-0.5);
+            }
+            else{
+                extraPoints[i].x = bounds.x+ofRandom(bounds.width);
+                extraPoints[i].y = bounds.y+ofRandom(bounds.height);
+            }
+            dt+=0.01;
+        }
+    }
     
     
 private:
-        
-
-        
+    
+    vector<ofPoint> extraPoints;
+    int umbralPoints=30;
+    int bRegeneratePoints=true;
+    
+    float dt=0.05;
     bool doTriang;
 	ofxDelaunay triangulation;
 	bool	bAddPts;		// si añade puntos a la triangulacion
@@ -249,8 +334,8 @@ private:
 	ofTessellator tessel;
 	ofMesh contornoTes;	// contorno teselado
     ofMesh	triangContMesh_old;
-    int numPointsXtra = 100;
-    bool bFill;
+    
+
     
     int modoFill;
     // Colores

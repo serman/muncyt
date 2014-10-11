@@ -170,6 +170,7 @@ public:
     ofLight light;
     int lx,ly,lz=0;
     ofxPostProcessing post;
+    ofxPostProcessing post2D;
     ofFbo pfbo;
     void loadScreenId();
     

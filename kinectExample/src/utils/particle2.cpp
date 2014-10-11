@@ -17,9 +17,9 @@ Particle2::Particle2()
 	speedY = ofRandom(0,1);
 	radius =1;
 	//color = ofRandom(0, 0xff0000);	
-	color.r=205;
-	color.g=215;
-	color.b=201;
+	color.r=ofRandom(140,250);
+	color.g=ofRandom(140,250);
+	color.b=0;
 	age = 0;
 	dead = false;
 	maxAge = ofRandom(0, MAXTIME-MINTIME)+MINTIME;

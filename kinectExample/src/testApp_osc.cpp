@@ -109,6 +109,9 @@ void testApp::toScene(int scn){
         particleCloud.setMode(particleClouds::RUIDO);
         particleCloud.resetParticles();    
     }
+    if(appStatuses["escena"]==NUCLEAR_DEBIL) {
+        mcontour.reset();
+    }
     if(appStatuses["escena"]==GRAVEDAD) mgrid.fadeIn();
 
 }
