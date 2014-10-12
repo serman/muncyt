@@ -424,11 +424,14 @@ void nuclear_debil::draw(){
     //ofSetColor(0, 0, 255);
 
     
+	numNucleosActivos = 0;
 	if(swBlendModeADD) ofEnableBlendMode(OF_BLENDMODE_ADD);
 	for(int i=0; i<nucleos.size(); i++) {
 		ofFill();
 		ofSetHexColor(0xf6c738);
 		nucleos[i].get()->draw();
+		
+		if(nucleos[i].get()->swExcitado) numNucleosActivos++;
 	}
 	
 	
@@ -452,7 +455,7 @@ void nuclear_debil::draw(){
 //	drawFuerza(bordeLine.getCentroid2D(), fuerza);
 	if(swDrawTRAILS) {
 		for(int i=0; i<nucleos.size(); i++) {
-			nucleos[i].get()->drawTrail();
+			if(!nucleos[i].get()->swExcitado)	nucleos[i].get()->drawTrail();
 		}		
 		for(int i=0; i<neutrones.size(); i++) {
 			neutrones[i].get()->drawTrail();
@@ -492,9 +495,6 @@ void nuclear_debil::draw(){
         ofCircle(W_WIDTH/2,W_HEIGHT/2, rr);
     
     
-
-    
-    
     ofPopStyle();
 
     spriteExp->draw();
@@ -502,8 +502,9 @@ void nuclear_debil::draw(){
 //MODO EXPLOSION FIN DE LA ESCENA
     if(status==EXPLOSION ){
         
-        if(init_explosion_time+1000> ofGetElapsedTimeMillis()){
-            ofSendMessage("changeScene" +ofToString(SCENE_MENU)); status==OFF;
+        if(init_explosion_time+5000 < ofGetElapsedTimeMillis()){
+				
+          //  ofSendMessage("changeScene" +ofToString(SCENE_MENU)); status==OFF;
         }
     }
         
@@ -537,7 +538,6 @@ void 	nuclear_debil::drawInfo(){
 	info += "Press [t] + mouseX para Time Step: "+ofToString(fpsAct)+"\n";
 	info += "time en millis: "+ ofToString(ofGetElapsedTimef()) +"\n";
 	info += "Total Bodies: "+ofToString(box2d.getBodyCount())+"\n";
-	info += "Total Joints: "+ofToString(box2d.getJointCount())+"\n\n";
 	info += "FPS: "+ofToString(ofGetFrameRate(), 1)+"\n\n";
 	info += "Aplica Fuerza [f]: "+ofToString(swFuerza)+"\n";
 	info += "BlendMode ADD [b]: "+ofToString(swBlendModeADD)+" \n";
@@ -545,6 +545,9 @@ void 	nuclear_debil::drawInfo(){
 	info += "veloc Ang: " + ofToString(anillo.wAng) + "\n";
 
 	info += "nuevasPartics: " + ofToString(nuevasPartics.size()) + "\n";
+	info += "Num Nucleos: " + ofToString(nucleos.size()) + "\n";
+	info += "Num Nucleos Activos: " + ofToString(numNucleosActivos) + "\n";
+	
 	//	ofSetHexColor(0x444342);
 	ofSetHexColor(0xCCCCCC);
 	ofDrawBitmapString(info, 30, 30);

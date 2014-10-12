@@ -138,6 +138,8 @@ public:
 	int modoDrawParticulas;
 		
 	vector <CineticData>	nuevasPartics;
+	int		numNucleosActivos;
+	
 	
 	// Fuerza
 	float		fuerzaVal;

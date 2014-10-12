@@ -177,7 +177,7 @@ void menu::tuioUpdated(ofxTuioCursor &tuioCursor){
 	//	ofPoint loc = ofPoint(mx,my);
 	
 	ofPoint loc = transf_PosTUIO(tuioCursor);
-	cout << "Point n" << tuioCursor.getSessionId() << " updated at " << loc << endl;
+//	cout << "Point n" << tuioCursor.getSessionId() << " updated at " << loc << endl;
     
     hands.notifySlide(loc.x, loc.y, tuioCursor.getSessionId(),tuioCursor.getMotionAccel());
     touchElements.notifySlide(loc.x, loc.y,tuioCursor.getSessionId(),tuioCursor.getMotionAccel());

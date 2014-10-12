@@ -109,17 +109,12 @@ void testApp::mouseReleased( int x, int y, int button ){
 }
 
 void testApp::keyPressed(int key){	
-	if (key == '0'){ sceneManager->goToScene(SCENE_EM);  setTimeToEndScene(SCENE_EM);}
-    if (key == '1'){ sceneManager->goToScene(SCENE_NUC_D, true); setTimeToEndScene(SCENE_NUC_D);}
-    if (key == '2'){ sceneManager->goToScene(SCENE_NUC_F);setTimeToEndScene(SCENE_NUC_F);}
-    if (key == '3') {sceneManager->goToScene(SCENE_GRAVEDAD);setTimeToEndScene(SCENE_GRAVEDAD);}
-    if (key == '4') {sceneManager->goToScene(SCENE_MENU);setTimeToEndScene(SCENE_MENU);}
+	if (key == 'W'){ sceneManager->goToScene(SCENE_EM);  setTimeToEndScene(SCENE_EM);}
+    if (key == 'E'){ sceneManager->goToScene(SCENE_NUC_D, true); setTimeToEndScene(SCENE_NUC_D);}
+    if (key == 'R'){ sceneManager->goToScene(SCENE_NUC_F);setTimeToEndScene(SCENE_NUC_F);}
+    if (key == 'T') {sceneManager->goToScene(SCENE_GRAVEDAD);setTimeToEndScene(SCENE_GRAVEDAD);}
+    if (key == 'Q') {sceneManager->goToScene(SCENE_MENU);setTimeToEndScene(SCENE_MENU);}
 	
-	if(key=='u') {
-        cout << "u key" <<endl;		
-		ofSendMessage("mymsg");
-	}
-    
 	
     sceneManager->keyPressed(key);
 	

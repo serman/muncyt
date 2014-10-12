@@ -71,6 +71,7 @@ class Particula : public ofxBox2dCircle {
 	bool		swAcumula;
 	vector<ofPoint> trailV;
 	ofPolyline	trail;
+	ofVbo		trailVbo;
 	
 	int		tLifeMax;
 	
