@@ -19,6 +19,12 @@
 //--------------------------------------------------------------
 void nuclear_debil::setup() {
     
+	// Sustituye a 
+	//    static enum states_nuclear_w{NORMAL, EXPLOSION};
+    NORMAL = 0;
+	EXPLOSION = 1;
+	
+	
 //    ofDisableAntiAliasing();
 	ofSetVerticalSync(true);
 	ofBackgroundHex(0xfdefc2);

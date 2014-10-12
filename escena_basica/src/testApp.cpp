@@ -51,7 +51,6 @@ void testApp::setup(){
 	// OSC
 	
 	//ofAddListener(eventoOSC, this, &testApp::eventoOSC_Recibido  );
-
 }
 
 
