@@ -62,10 +62,6 @@ void gravedad::updateParticlesX() {
             particulas[i].gravityTowards(pTUIO, 10.0f,  masaTUIO);
         }
     }
-    //esto hay que hacerlo para cada TUIO
-
-	
-    
 	
 	// update
 	for(int i=0; i<particulas.size(); i++) {
@@ -73,6 +69,7 @@ void gravedad::updateParticlesX() {
 	}
 	
 	// chequear si han chocado con el Sol
+	// o si estan muy lejos
 	for(int i=particulas.size()-1; i>=0; i--) {
 		ofVec3f pSol = ofVec3f(W_WIDTH/2.0, W_HEIGHT/2.0,0);
 		ofVec2f zDist = ofVec2f(particulas[i].position.x, particulas[i].position.y);
@@ -89,7 +86,7 @@ void gravedad::updateParticlesX() {
 			cheapComm::getInstance()->sendSync0("/sync/gravity/sun_collision_event");
 			
 		}
-		else if(zDist.lengthSquared() > (4*W_WIDTH*4*W_WIDTH)) {
+		else if(zDist.lengthSquared() > (W_WIDTH*W_WIDTH)) {
 			particulas.erase(particulas.begin()+i);			
 		}
 

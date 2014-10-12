@@ -37,7 +37,6 @@ class ParticleX
     ofColor color, color_orig, colorExcited ;
     char recentlyUsed;
 	
-	
 	float angle;
 	
 	// para chequear colision con ofPolyline
@@ -107,6 +106,15 @@ class ParticleX
 		
 		
 	}
+	
+	float getAngleRad(ofVec2f pRef) {
+		// Devuelve entre 0 y TWO_PI
+		
+		float angRad = atan2(position.y-pRef.y, position.x-pRef.x);
+		if(angRad<0) angRad+=PI;
+		
+		return angRad; 
+	}
 
     void update(){
 		position_prev = position;
@@ -132,9 +140,9 @@ class ParticleX
 //		if(inside) {
 //			memoPaths[memoPaths.size()-1].addVertex(position);
 //		}
-        angle=atan2(position.x-W_WIDTH/2,position.y-W_HEIGHT/2);
+		
         
-		angle=ofWrapRadians(angle,0,2.0*PI);
+//		angle=ofWrapRadians(angle,0,2.0*PI);
         
         acceleration=acceleration*0;
     }	
