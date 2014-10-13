@@ -49,6 +49,11 @@ void Particula::setEscala(float _escale) {
 
 void Particula::setExcitado(bool _swEx) {
 	swExcitado = _swEx;
+	if(!swExcitado) { 
+		this->radio = this->getRadius();
+		this->radio *= 0.1;
+		this->setRadius(this->radio);
+	}
 }
 
 void Particula::setTipo(int _tipo) {
@@ -76,7 +81,6 @@ void Particula::update() {
 }
 
 void Particula::updateTrail(ofPoint _pos) {
-	//ofLogNotice("update pos: " + ofToString(trailV.size())+"/"+ofToString(tLifeMax));
 
 	trailV.push_back(pos);
 	if(trailV.size()>tLifeMax) {
@@ -88,10 +92,11 @@ void Particula::updateTrail(ofPoint _pos) {
 	for(int i=0; i<trailV.size(); i++) {
 		trail.addVertex(trailV[i]);
 	}
-		//	
-		//	if(trail.size()>100 && ) {
-		//		trail.clear();
-		//	}
+	
+	//	
+	//	if(trail.size()>100 && ) {
+	//		trail.clear();
+	//	}
 		
 }
 		
@@ -114,7 +119,7 @@ void Particula::draw() {
 		
 			this->radio = this->getRadius(); 
 			ofPushMatrix();
-				float radioT = radio+ofRandom(2);
+				float radioT = radio+ofRandom(3);
 				if(this->swExcitado) 			ofSetColor(colorExcitado, 255);
 				else							ofSetColor(color, 100);
 		
@@ -140,9 +145,7 @@ void Particula::draw() {
 	}
 	else if(modoDraw==MODO_PATH) {
 //		ofLogVerbose("Partic modoDraw PATH: " + ofToString(modoDraw));
-
 		drawTrail();
-		
 	}
 	else if(modoDraw==MODO_BOX2D) {
 //		ofLogVerbose("Partic modoDraw BOX2D: " + ofToString(modoDraw));
@@ -153,7 +156,11 @@ void Particula::draw() {
 
 void Particula::drawTrail() {
 	// dibujar traza
-	ofSetColor(color);
+	ofPushStyle();
+	ofColor cc = color;
+	cc.a = 50.0;
+	ofSetColor(cc);
 	trail.draw();
+	ofPopStyle();
 	
 }

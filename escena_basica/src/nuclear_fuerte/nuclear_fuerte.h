@@ -38,9 +38,9 @@ public:
 	void	tuioUpdated(ofxTuioCursor & tuioCursor);
     
     void exchangeColors(int );
-    int colorp1=0; //red
-    int colorp2=1; //blue
-    int colorp3=2;//green
+    int colorp1; //red
+    int colorp2; //blue
+    int colorp3;//green
     
 };
 

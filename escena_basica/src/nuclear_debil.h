@@ -78,7 +78,10 @@ struct CineticData {
 class nuclear_debil : public ofxScene {
 	
 public:
-    static enum states_nuclear_w{NORMAL, EXPLOSION};
+//    static enum states_nuclear_w{NORMAL, EXPLOSION};
+    int NORMAL;
+	int EXPLOSION;
+	
 	void setup();
 	void update(float dt);
 	void draw();
@@ -135,6 +138,8 @@ public:
 	int modoDrawParticulas;
 		
 	vector <CineticData>	nuevasPartics;
+	int		numNucleosActivos;
+	
 	
 	// Fuerza
 	float		fuerzaVal;

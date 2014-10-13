@@ -66,13 +66,13 @@ void menu::setup() {
 	button1.setup(EM, ofColor::fromHex(0xF70D1A) , &mdisplay);	// ferrary red
 	
 	button2.set(centro.x, 0, centro.x, centro.y);
-	button2.setup(DEBIL, ofColor::skyBlue , &mdisplay);
+	button2.setup(FUERTE, ofColor::chartreuse, &mdisplay);
 
 	button3.set(centro.x,centro.y, centro.x, centro.y);
-	button3.setup(FUERTE, ofColor::chartreuse, &mdisplay);//	fromHex(0x64E986) );	// Algae Green	// Emerald
+	button3.setup(GRAVEDAD, ofColor::skyBlue, &mdisplay);//	fromHex(0x64E986) );	// Algae Green	// Emerald
 
 	button4.set(0, centro.y, centro.x, centro.y);
-	button4.setup(GRAVEDAD, ofColor::pink , &mdisplay);
+	button4.setup(DEBIL, ofColor::pink , &mdisplay);
  
 	touchElements.addObject(button1);
 	touchElements.addObject(button2);

@@ -42,7 +42,7 @@ class testApp : public ofBaseApp{
 		ofPath borde;
 	
         void setTimeToEndScene(int scene_num);
-        long timeToEndScene=0;
+        long timeToEndScene;
 	
 		// Comunicacion OSC
 		

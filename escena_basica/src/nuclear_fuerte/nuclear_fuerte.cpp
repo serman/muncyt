@@ -10,7 +10,11 @@
 
 
 void nuclear_fuerte::setup(){
-    
+
+	colorp1=0; //red
+    colorp2=1; //blue
+    colorp3=2;//green
+	
     
 }
 
