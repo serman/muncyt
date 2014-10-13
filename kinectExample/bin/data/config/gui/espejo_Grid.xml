@@ -18,3 +18,23 @@
     <Name>elongation</Name>
     <Value>1.000000000</Value>
 </Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>INIT</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>END</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>GRID</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>BLACKHOLE</Name>
+    <Value>1</Value>
+</Widget>

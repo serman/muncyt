@@ -385,6 +385,8 @@
 		F74CAAAB19BBC9520037FCEA /* ZoomBlurPass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ZoomBlurPass.cpp; sourceTree = "<group>"; };
 		F74CAAAC19BBC9520037FCEA /* ZoomBlurPass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZoomBlurPass.h; sourceTree = "<group>"; };
 		F74CAC5519BCAEB80037FCEA /* tunnel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tunnel.h; path = ../tunnel.h; sourceTree = "<group>"; };
+		F74D128B19EAA9B900A544A5 /* maskVideo.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = maskVideo.frag; sourceTree = "<group>"; };
+		F74D128D19EAF7DF00A544A5 /* videoMask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = videoMask.h; sourceTree = "<group>"; };
 		F767CA52195D04BD004401E8 /* ofxDelaunay.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxDelaunay.cpp; sourceTree = "<group>"; };
 		F767CA53195D04BD004401E8 /* ofxDelaunay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxDelaunay.h; sourceTree = "<group>"; };
 		F767CA56195D04BD004401E8 /* Delaunay.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Delaunay.cpp; sourceTree = "<group>"; };
@@ -1026,6 +1028,7 @@
 				F7EBD1A619335856009805D5 /* cheampCommRcv */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */,
+				F74D128D19EAF7DF00A544A5 /* videoMask.h */,
 				E4B69E1F0A3A1BDC003C02F2 /* testApp.h */,
 				F7A515AB197574C100028875 /* testApp_inputInterface.cpp */,
 				F7A515A81975740000028875 /* testApp_Drawing.cpp */,
@@ -1416,6 +1419,7 @@
 				F7B7A50F19E768FB00AC0B37 /* whitenoise.frag */,
 				F7B7A51019E768FB00AC0B37 /* whitenoise.vert */,
 				F7B7A51119E76E0200AC0B37 /* glow.vert */,
+				F74D128B19EAA9B900A544A5 /* maskVideo.frag */,
 			);
 			name = shaders;
 			path = bin/data/shaders;

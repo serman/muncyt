@@ -1,12 +1,12 @@
 <Widget>
     <Kind>42</Kind>
     <Name>fogNear</Name>
-    <Value>400</Value>
+    <Value>270</Value>
 </Widget>
 <Widget>
     <Kind>42</Kind>
     <Name>fogFar</Name>
-    <Value>2984</Value>
+    <Value>2168</Value>
 </Widget>
 <Widget>
     <Kind>42</Kind>
@@ -31,7 +31,7 @@
 <Widget>
     <Kind>4</Kind>
     <Name>xRotation</Name>
-    <Value>10.000000000</Value>
+    <Value>16.530612946</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -41,10 +41,10 @@
 <Widget>
     <Kind>4</Kind>
     <Name>moveSpeed</Name>
-    <Value>4017.856933594</Value>
+    <Value>1530.612304688</Value>
 </Widget>
 <Widget>
     <Kind>42</Kind>
     <Name>circleResolution</Name>
-    <Value>27</Value>
+    <Value>13</Value>
 </Widget>

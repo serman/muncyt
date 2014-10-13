@@ -10,17 +10,18 @@
 #define kinectExample_contours_h
 #include "ofxOpenCv.h"
 #include "ofxCv.h"
-#include "consts.h"
+
 
 using namespace ofxCv;
 using namespace cv;
 class contours{
 public:
     enum colores{ROJOS=0, AZULES,VERDES,FLUOR};
-    ofImage paletteRadio;
+    ofImage paletteRadio, paletteBlackhole;
     vector<ofPolyline> v;
     int numPointsXtra;
         bool bFill;
+        int modoFill;
     void setup(ofxOpenNI2Grabber *_oniCamGrabber){
         cargaColores();
         bFill = false;
@@ -29,7 +30,9 @@ public:
         oniCamGrabber=_oniCamGrabber;
         selectedColors=colorFluor;
         paletteRadio.loadImage("palette_radiactive.png");
+        paletteBlackhole.loadImage("palette_Blackhole.png");
         numPointsXtra = 5;
+
     }
     
     void update(){
@@ -61,11 +64,6 @@ public:
         //LO DIBUJA
         if(mcontour==NULL)
             mcontour=&resampledContour;
-        ofFill();
-        ofSetColor(255,255,255);
-
-        ofSetColor(255, 255, 0);
-        ofSetLineWidth(2);
         if(mcontour->size()>=3) {
             triangulation.reset();
             for(int i=0; i<mcontour->size(); i++) {
@@ -113,8 +111,7 @@ public:
                     ofColor ctmpa, ctmpb, ctmpc;
                     if(modoFill==0) {
                         // RANDOM
-                        ofColor ctmp= paletteRadio.getColor( ofWrap(pm.x,0,paletteRadio.getWidth() ) ,
-                                                             ofWrap(pm.y,0,paletteRadio.getHeight())
+                        ofColor ctmp= paletteRadio.getColor( ofClamp(pm.x,0,paletteRadio.getWidth() ) , ofClamp(pm.y,0,paletteRadio.getHeight())
                                                             );
 //                        ofColor ctmp = selectedColors[i%selectedColors.size()];
                         ctmpa = ctmp;
@@ -137,6 +134,19 @@ public:
                         nBanda = floor(c.y/hBanda);
                         ctmpc = selectedColors[nBanda%selectedColors.size()];
                     }
+                    if(modoFill==3) {
+                        // RANDOM
+                        ofColor ctmp= paletteBlackhole.getColor( ofClamp(pm.x,0,paletteRadio.getWidth() ) , ofClamp(pm.y,0,paletteRadio.getHeight())
+                                                            );
+                        ctmpa = ctmp;
+                        ctmpa.a=150;
+                        ctmpb = ctmp;
+                        ctmpb.a=150;
+                        ctmpc = ctmp;
+                        ctmpc.a=150;
+                        
+                    }
+                    
                     triangContMesh.addVertex(a);
                     triangContMesh.addVertex(b);
                     triangContMesh.addVertex(c);
@@ -153,6 +163,9 @@ public:
            // ofTranslate(ofGetWidth(), ofGetHeight());
             //ofRotateZ(180);
                     //ofRect(0,0,ofGetWidth(), ofGetHeight());
+            ofFill();            
+            ofSetColor(255, 255, 0);
+            ofSetLineWidth(1);
             ofScale(1,1,1);
             
             if(doTriang) {
@@ -184,6 +197,24 @@ public:
         }
 
     }
+    
+    void drawSimple(ofPolyline *mcontour=NULL ){
+        if(mcontour==NULL) return;
+        bAddPts=true;
+        numPointsXtra=100;
+        modoFill=3;
+        bFill=true;
+        ofRectangle bounds =mcontour->getBoundingBox();
+        addImpacts(bounds );
+        draw(mcontour);
+        
+    }
+    
+    void drawMaskVideo(){
+        
+    }
+    
+    
     
     void addImpacts(ofRectangle &bounds){
         int pointGoals=100;
@@ -336,8 +367,6 @@ private:
     ofMesh	triangContMesh_old;
     
 
-    
-    int modoFill;
     // Colores
     vector<ofColor> colorFluor;
     vector<ofColor> colorFluorGreen;

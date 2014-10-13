@@ -9,9 +9,7 @@
 #ifndef kinectExample_rectangles_h
 #define kinectExample_rectangles_h
 #include "ofxDelaunay.h"
-class dela{
-    
-    
+class dela{    
 public:
     enum colores{ROJOS=0, AZULES,VERDES,FLUOR};
     void setup(int _w, int _h, float *_zMin, float *_zMax, ofxOpenNI2Grabber *_oniCamGrabber, extendedDepthSource *_depthGenerator, ofCamera *_cam){
@@ -33,7 +31,7 @@ public:
         paletteRed.loadImage("palette_red.png");
         paletteGreen.loadImage("palette_green.png");
         paletteBlue.loadImage("palette_blue.png");
-        selectedPalette=&paletteRed;
+        selectedPalette=&paletteBlue;
     }
     ofImage palette, paletteRed, paletteGreen,paletteBlue;
     ofImage *selectedPalette;
@@ -120,8 +118,8 @@ public:
                 
                 punto.x+=changeFactor1;
                 punto.y+=changeFactor2;
-                punto.x=ofWrap(punto.x,0,selectedPalette->getWidth()-1);
-                punto.y=ofWrap(punto.y,0,selectedPalette->getHeight()-1);
+                punto.x=ofClamp(punto.x,0,selectedPalette->getWidth()-1);
+                punto.y=ofClamp(punto.y,0,selectedPalette->getHeight()-1);
                 
                 c= selectedPalette->getColor(punto.x,punto.y);
 

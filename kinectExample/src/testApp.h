@@ -13,13 +13,14 @@
 #include <msgpack.hpp>
 #include "sendContour.h"
 #include "rcvContour.h"
-
+#include "videoMask.h"
 #include "contours.h"
 #include "gridView.h"
 #include "ofxPostProcessing.h"
 #include "tunnel.h"
 #include "rayoSilueta.h"
 #include "menu.h"
+#include <math.h>
 //#define EASYCAM
 #include "consts.h"
 #ifndef EASYCAM
@@ -37,6 +38,11 @@
 
 #define IRCAMERAWIDTH 640
 #define IRCAMERAHEIGHT 480
+
+static unsigned char GLOW_ON = 0x0002;
+static unsigned char ZOOM_ON = 0x0001;
+static unsigned char VERTICAL_ON = 0x0004;
+static unsigned char CONV_ON = 0x0008;
 
 
 class cheapCommRcv;
@@ -61,7 +67,7 @@ public:
     void	showDebug();
     void setRandomBG();
     void fadeBG();
-	
+	void startFBO();
 
     ofxOpenNI2Grabber oniCamGrabber;
     ofxOpenNI2GrabberSettings oniSettings;
@@ -135,7 +141,6 @@ public:
 
     //osc
     cheapCommRcv *myOSCrcv;
-    void parseOSC(int );
 
     //test
     void toScene(int );
@@ -164,6 +169,7 @@ public:
     gridView mgrid;
     tunnel   mtunnel;
     rayoSilueta mrayoSil;
+    videoMask mvideoMask;
     menu mmenu;
     ofVec3f tr, tl, bl, br;
     ofMesh mesh1;
@@ -184,5 +190,8 @@ public:
         light.setOrientation(q);
     }
     dela mdela;
+    
+    void setShaders(unsigned int  shaderFlags);
+
 };
 #endif

@@ -63,7 +63,6 @@ public:
         
         if(SCREEN_ID==1){
             udpConnection.Connect(ip_espejo_1.c_str(),11999);
-            cout <<"ENTRANDO SCREEN ID 1" <<endl;
         }
 
             udpConnection.SetNonBlocking(true);

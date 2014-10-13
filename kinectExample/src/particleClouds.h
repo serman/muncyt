@@ -121,16 +121,16 @@ public:
                         p->update();
                         p->color=ofColor(255,255,255,255);
                 }else{ // si las particulas están mas lejos
-                    /*
+                    
                     if(!p->recentlyUsed>0){
-                        p->color=ofColor(255,0,0,0);
+                        p->color=ofColor(255,255,255,200);
                     }else{
-                        p->color=ofColor(255,0,0,255);
+                        p->color=ofColor(207,62,214,200);
                         p->recentlyUsed--;
-                    }*/
+                    }
                     p->steer(p->spawnPoint, true, speed, stopUmbral );
                     p->update();
-                    p->color=ofColor(255,255,255,ofRandom(0,160));
+                    //p->color=ofColor(255,255,255,ofRandom(0,160));
                 }//ESPEJO
             }else if(cloudState==DESAPARECE){
                 p->sandDown(acceleration/3,-800);

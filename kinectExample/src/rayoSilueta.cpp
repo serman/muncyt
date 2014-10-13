@@ -181,19 +181,9 @@ void rayoSilueta::draw(){
     ofSetColor(255,255,255,255);
 		ofPushStyle();
 		ofSetColor(ofColor::lime, 120);
-		ofSetLineWidth(5);
+		ofSetLineWidth(2);
 		camino.draw();
-        ofPushMatrix();
-        ofSetColor(ofColor::lime, 100);
-                ofTranslate(-2, -2);
-        		camino.draw();
-        ofPopMatrix();
-        
-        ofPushMatrix();
-            ofSetColor(ofColor::lime, 150);
-            ofTranslate(2, 2);
-            camino.draw();
-        ofPopMatrix();
+
         
 		ofSetColor(ofColor::white, 200);
 		ofSetLineWidth(1);

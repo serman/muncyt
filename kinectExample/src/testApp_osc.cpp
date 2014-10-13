@@ -50,6 +50,10 @@ void testApp::parseEmOsc(string s,   ofxOscMessage &m){
              particleCloud.setMode(particleClouds::RUIDO);
         }
     }
+    else if(s=="/wave_length"){
+        int id= m.getArgAsFloat(0);
+        int length= m.getArgAsFloat(1);
+    }
 }
 
 
@@ -101,6 +105,7 @@ void testApp::parseMenuOsc(string s,   ofxOscMessage &m){
     
 }
 
+//AQUI HAY QUE COLOCAR PARA CADA CAMBIO DE ESCENA LAS FUNCIONES A LAS QUE HAYA QUE LLAMAR PARA RESETEAR LA ENTRADA EN LA ESCENA ANTES DE EMPEZARLA O PONERLA EN MODO "ENTRADA"
 
 void testApp::toScene(int scn){
     appStatuses["escena"]=scn;
@@ -111,11 +116,21 @@ void testApp::toScene(int scn){
     }
     if(appStatuses["escena"]==NUCLEAR_DEBIL) {
         mcontour.reset();
+        mcontour.modoFill=0;
     }
-    if(appStatuses["escena"]==GRAVEDAD) mgrid.fadeIn();
+    if(appStatuses["escena"]==GRAVEDAD){
+        mgrid.fadeIn();
+    }
+    
+    if(appStatuses["escena"]==MENU) {
+        pfbo.begin();
+            glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+        pfbo.end();
+    }
 
 }
 
+//SE EJECUTA CUANDO COMIENZA LA TRANSICION PARA SALIR DE LA ESCENA
 void testApp::endScene(int scn){
     if(appStatuses["escena"]==EM) {
      //   particleCloud.setMode(particleClouds::DESAPARECE);

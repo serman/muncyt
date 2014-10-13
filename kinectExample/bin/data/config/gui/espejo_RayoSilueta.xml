@@ -1,0 +1,35 @@
+<Widget>
+    <Kind>42</Kind>
+    <Name>ratePartic</Name>
+    <Value>20</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>vel</Name>
+    <Value>20.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>swDifraccion</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>bDrawPtosChoque</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>bDrawCaminos</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>bTiltCamino</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>addParticles</Name>
+    <Value>0</Value>
+</Widget>
