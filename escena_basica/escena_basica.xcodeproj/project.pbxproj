@@ -99,6 +99,8 @@
 		F72F1C6919E592F200453005 /* LinearTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F72F1C6219E592F200453005 /* LinearTexture.cpp */; };
 		F72F1C6A19E592F200453005 /* ofxSpriteSheetRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F72F1C6419E592F200453005 /* ofxSpriteSheetRenderer.cpp */; };
 		F72F1C6B19E592F200453005 /* PixelTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F72F1C6619E592F200453005 /* PixelTexture.cpp */; };
+		F732CD4C19F0F8D3000DD176 /* utilsGeom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F732CD4B19F0F8D3000DD176 /* utilsGeom.cpp */; };
+		F732CD4F19F0FE1F000DD176 /* nuclear_fuerte_input_gui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F732CD4D19F0FE1F000DD176 /* nuclear_fuerte_input_gui.cpp */; };
 		F74B89AF196EEE3C005F3893 /* consts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F74B89AE196EEE3C005F3893 /* consts.cpp */; };
 		F74B89B3196EFF27005F3893 /* nuclear_debil_Interaction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F74B89B1196EFF27005F3893 /* nuclear_debil_Interaction.cpp */; };
 		F74B89F0196F4EDD005F3893 /* ofxScreenCurtain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F74B89EE196F4EDD005F3893 /* ofxScreenCurtain.cpp */; };
@@ -421,6 +423,13 @@
 		F72F1C7019E6D25100453005 /* whitenoise.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = whitenoise.frag; sourceTree = "<group>"; };
 		F72F1C7119E6D25100453005 /* whitenoise.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = whitenoise.vert; sourceTree = "<group>"; };
 		F72F1C7219E6D27200453005 /* blackHole.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = blackHole.frag; sourceTree = "<group>"; };
+		F732CD4719F0F8D3000DD176 /* Centro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Centro.h; sourceTree = "<group>"; };
+		F732CD4819F0F8D3000DD176 /* Emisor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Emisor.h; sourceTree = "<group>"; };
+		F732CD4919F0F8D3000DD176 /* ParticleS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParticleS.h; sourceTree = "<group>"; };
+		F732CD4A19F0F8D3000DD176 /* ParticleTipos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParticleTipos.h; sourceTree = "<group>"; };
+		F732CD4B19F0F8D3000DD176 /* utilsGeom.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = utilsGeom.cpp; sourceTree = "<group>"; };
+		F732CD4D19F0FE1F000DD176 /* nuclear_fuerte_input_gui.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuclear_fuerte_input_gui.cpp; sourceTree = "<group>"; };
+		F732CD4E19F0FE1F000DD176 /* nuclear_fuerte_input_gui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuclear_fuerte_input_gui.h; sourceTree = "<group>"; };
 		F74B89AD196EE2C5005F3893 /* consts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = consts.h; sourceTree = "<group>"; };
 		F74B89AE196EEE3C005F3893 /* consts.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = consts.cpp; sourceTree = "<group>"; };
 		F74B89B0196EF6E8005F3893 /* anilloButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = anilloButton.h; sourceTree = "<group>"; };
@@ -1191,8 +1200,15 @@
 		F74B8A06196F6F5F005F3893 /* nuclear_fuerte */ = {
 			isa = PBXGroup;
 			children = (
+				F732CD4719F0F8D3000DD176 /* Centro.h */,
+				F732CD4819F0F8D3000DD176 /* Emisor.h */,
+				F732CD4919F0F8D3000DD176 /* ParticleS.h */,
+				F732CD4A19F0F8D3000DD176 /* ParticleTipos.h */,
+				F732CD4B19F0F8D3000DD176 /* utilsGeom.cpp */,
 				F74B8A07196F6F5F005F3893 /* nuclear_fuerte.cpp */,
 				F74B8A08196F6F5F005F3893 /* nuclear_fuerte.h */,
+				F732CD4D19F0FE1F000DD176 /* nuclear_fuerte_input_gui.cpp */,
+				F732CD4E19F0FE1F000DD176 /* nuclear_fuerte_input_gui.h */,
 			);
 			path = nuclear_fuerte;
 			sourceTree = "<group>";
@@ -1677,6 +1693,7 @@
 				7FFD07AB1913A0450022FA53 /* b2CircleShape.cpp in Sources */,
 				F74B8A85196F7AA7005F3893 /* ofxUIMovingGraph.cpp in Sources */,
 				7FFD07AC1913A0450022FA53 /* b2EdgeShape.cpp in Sources */,
+				F732CD4C19F0F8D3000DD176 /* utilsGeom.cpp in Sources */,
 				F79A3D6E19D784F9009151E9 /* gravedad_particulasMgr.cpp in Sources */,
 				7FFD07AD1913A0450022FA53 /* b2PolygonShape.cpp in Sources */,
 				7FFD07AE1913A0450022FA53 /* b2BlockAllocator.cpp in Sources */,
@@ -1712,6 +1729,7 @@
 				7FFD07B61913A0450022FA53 /* b2Fixture.cpp in Sources */,
 				F74B8AA519704992005F3893 /* ofxSceneManager.cpp in Sources */,
 				F74B8A8B196F7AA7005F3893 /* ofxUIRectangle.cpp in Sources */,
+				F732CD4F19F0FE1F000DD176 /* nuclear_fuerte_input_gui.cpp in Sources */,
 				F7DFCE3819D4EC58002D7BBF /* ContrastPass.cpp in Sources */,
 				7FFD07B71913A0450022FA53 /* b2Island.cpp in Sources */,
 				F74B8A86196F7AA7005F3893 /* ofxUIMultiImageButton.cpp in Sources */,
@@ -1873,7 +1891,7 @@
 					"-lpthread",
 					"-mtune=native",
 				);
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx10.8;
 			};
 			name = Debug;
 		};
@@ -1918,7 +1936,7 @@
 					"-lpthread",
 					"-mtune=native",
 				);
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx10.8;
 			};
 			name = Release;
 		};

@@ -46,7 +46,7 @@ void testApp::setup(){
 	sceneManager->setCurtainRiseTime(0.2);
 	sceneManager->setOverlapUpdate(false);
     
-    sceneManager->goToScene(SCENE_GRAVEDAD);
+   // sceneManager->goToScene(SCENE_NUC_D);
     timeToEndScene=-1;
 	// OSC
 	

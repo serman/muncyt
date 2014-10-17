@@ -7,9 +7,67 @@
 //
 
 #include "nuclear_fuerte.h"
-
+#include "utilsGeom.cpp"
 
 void nuclear_fuerte::setup(){
+    ofSetVerticalSync(true);
+	
+	// Lista de colores
+	setupColores();
+	
+	// imagen png
+	imgPunto.loadImage("images/dot.png");
+    
+	// setup geometria del sketch
+	zentro = ofVec3f(ofGetWidth()/2.0,W_HEIGHT/2.0,0);
+    
+	radioEscena = W_HEIGHT/2*0.95;
+	// Borde Negro circular
+	borde.clear();
+	ofColor ctmp = ofColor::black;//red;//black;
+	borde.setFillColor(ctmp);
+	//http://www.openframeworks.cc/documentation/graphics/ofPath.html#show_setPolyWindingMode
+	borde.setPolyWindingMode(OF_POLY_WINDING_ODD);
+	// rectangulo
+	borde.rectangle(0,0,ofGetWidth(),ofGetHeight());
+	borde.setCircleResolution(60);
+	borde.circle(ofGetWidth()/2, W_HEIGHT/2, radioEscena);
+	
+	// borde exterior
+	circExt.clear();
+	circExt.arc(zentro, radioEscena, radioEscena, 0, 360, true, 60);
+	
+	float rext = radioEscena;
+	float rint = rext*0.95;
+	float dAngDeg = 60.0;
+	anilloExterior.setCircleResolution(60);
+	anilloExterior.setFillColor(ofColor::red);
+	anilloExterior.clear();
+	anilloExterior.arc(ofVec2f(0,0), rint, rint, 0, dAngDeg, true);
+	anilloExterior.arc(ofVec2f(0,0), rext, rext, dAngDeg, 0, false);
+	anilloExterior.close();
+	
+	anilloExteriorLineas.setFilled(false);
+	anilloExteriorLineas.setStrokeColor(ofColor::black);
+	anilloExteriorLineas.setStrokeWidth(0.5);
+	int nDivs = 120;
+	for(int i=0; i<nDivs; i++) {
+		anilloExteriorLineas.moveTo(rext*cos((float)TWO_PI/nDivs*i), rext*sin((float)TWO_PI/nDivs*i), 0);
+		anilloExteriorLineas.lineTo(rint*cos((float)TWO_PI/nDivs*i), rint*sin((float)TWO_PI/nDivs*i), 0);
+		anilloExteriorLineas.close();
+	}
+	
+	
+	// zona central
+	centroLab.set(zentro, 50);
+    
+	
+	ofSetBackgroundAuto(bSetBack);
+	
+	setupGUI();
+    
+	init_Scena();
+    gui1->disable();
 
 	colorp1=0; //red
     colorp2=1; //blue
@@ -20,40 +78,312 @@ void nuclear_fuerte::setup(){
 
 void nuclear_fuerte::update(float d1){
     
+	// rest del contador
+	centroLab.reset();
+	
+	// add alguna particula desde un lateral
+    //	addParticleLateral();
+	
+	if(clearEMitters) {
+		emitters.clear();
+		clearEMitters = false;
+	}
+	
+	// Emitir particulas
+	if(ofGetMousePressed(0)) {
+		emitter.ratePartic = ratePartic;
+		addParticleFromEmiter(emitter);
+	}
+	for(int i=0; i<emitters.size(); i++) {
+		addParticleFromEmiter(emitters[i]);
+	}
+	
+	
+	// update partics
+	
+	// aplicar fuerzas de interaccion part-part
+	
+	for(int i=0;i<particulas.size();i++) {
+		
+		// aplicar fuerzas globales
+        //		if(swMagnetField && particulas[i].inside) {
+		if(swMagnetField && particulas[i].swActivaB) {
+			particulas[i].forceMagnetZ(magnetField);
+		}
+		
+		
+		// mover
+		particulas[i].update();
+		
+        //		float rnd = ofRandom(1.0);
+        //		if(rnd<0.02) particulas[i].forceRadAround(zentro, 3.0, 300.0);
+		camino = centroLab.circulo;
+		
+		// COLISION CON CAMINO
+		if(camino.size()>0) {
+			bool bCruce = false;
+			if(GeometryUtils::estaDentro(particulas[i].position, camino)) {
+				// si la partic esta dentro:
+				particulas[i].color = ofColor::red;
+				bCruce = particulas[i].setInside(true);
+				
+				centroLab.addParticle(particulas[i]);
+				
+			}
+			else {
+				particulas[i].color = particulas[i].color_orig;
+				bCruce = particulas[i].setInside(false);
+				
+				// Activamos el campo magnet cuando la partic sale del camino
+				if(bCruce) particulas[i].swActivaB = true;
+			}
+			
+			if(bCruce) {
+				// encontrar el punto de choque con el camino
+				ofVec2f ptChoque = GeometryUtils::getIntersectionPoly(particulas[i].position_prev, particulas[i].position, camino);
+				if(ptChoque!=ofVec2f(0,0)) {
+					if(bDrawPtosChoque) ptsChoque.push_back(ptChoque);
+					
+					// add el punto al camino de la particula
+					particulas[i].insertPtChoque(ptChoque);
+					
+					if (swDifraccion) {
+						// recalcular la direccion de la particula.
+                        //					ofVec2f dirI = particulas[i].position - ptChoque;
+                        //					ofVec2f dirI = particulas[i].velocity;
+						// rotate random
+						float angRotMax = 15;
+						float angRot =  ofRandom(-angRotMax, angRotMax);
+						ofColor cc = ofColor::fromHsb(ofMap(abs(angRot), 0, angRotMax, 0,255), 255, 255, 100);
+						particulas[i].colorExcited = cc;
+						particulas[i].velocity.rotate(angRot, ofVec3f(0,0,1));
+					}
+					
+				}
+			}
+		}
+		
+		
+	}
+	
+	
+	// remove particulas marcadas para borrar
+	for(int i=particulas.size()-1; i>=0;i--) {
+		ofVec2f distZ = ofVec2f(particulas[i].position.x, particulas[i].position.y);
+		distZ -= zentro;
+		// Borrar las que esten fuera de la zona de interes
+		if( distZ.length() > W_HEIGHT/2 ){
+			particulas_old.push_back(particulas[i]);
+			particulas.erase(particulas.begin()+i);
+			continue;
+		}
+		
+		// Borrar las que hayan superado el tiempo de vida
+		if(particulas[i].tLife < 0) {
+			particulas_old.push_back(particulas[i]);
+			particulas.erase(particulas.begin()+i);
+			continue;
+		}
+		
+		// Borrar las que hayan pasado el punto central
+		if( centroLab.bVariosEmitters && (distZ.dot(particulas[i].velocity)>0) ) {	// && alguna caracteristica!
+			particulas_old.push_back(particulas[i]);
+			particulas.erase(particulas.begin()+i);
+			continue;
+		}
+		
+		
+		
+	}
+	
+	// limitar a 100 las particulas
+	if(particulas_old.size()>100) particulas_old.erase(particulas_old.begin()+(particulas_old.size()-100) );
+	
+    
+	// update centro
+	centroLab.updateEnd();
+	
+	// Update emitter
+	emitter.setPos_XY(ofGetMouseX()-zentro.x, ofGetMouseY()-zentro.y);
+	
+
 }
 
+void nuclear_fuerte::addParticleLateral() {
+	//	float rnd = ofRandom(1.0);
+	//	if(rnd<0.15) {
+	if(ofGetFrameNum()%ratePartic==0) {
+		float v = ofMap(ofGetMouseX(),0,ofGetMouseY(), 4, 10);
+		float mass = 1+ofRandom(5);
+		float carga = floor(ofRandom(10))-5;	// de -5 a 5
+		
+		int nColor = floor(ofRandom(6)); // 0,1,2 colores y 3,4,5 anticolores
+		ofColor cTmp = coloresAll[nColor];
+		
+        
+		ParticleS p = ParticleS(ofVec3f(0,ofRandom(ofGetHeight()),0), ofVec3f(v,0,0), cTmp, mass, carga );
+		p.idEmitter = -1;
+		particulas.push_back(p);
+	}
+}
+
+void nuclear_fuerte::addParticleFromEmiter(Emisor &em) {
+    //	ofLogNotice("addParticleFromEmiter INI");
+	if(em.bActivo) {
+		if(ofGetFrameNum()%em.ratePartic==0) {
+			ParticleData pd = em.getParticleData();
+			// la devuelve con un tipo de particula, position, velocity
+			pd.position += zentro;
+			// asigno el resto de valores
+			pd.setTipoPart(pd.tpPartic);
+			pd.color = coloresAll[pd.nColor];
+            //			ofLogNotice("addParticleFromEmiter 5: " + ofToString(pd.nColor));
+			
+			ParticleS p = ParticleS(pd);
+			p.idEmitter = em.idEmisor;
+			particulas.push_back(p);
+		}
+	}
+    //	ofLogNotice("addParticleFromEmiter FIN");
+	
+}
+
+void nuclear_fuerte::addEmisor(ofVec2f posTmp) {
+	Emisor emTmp;
+	float rhoTmp = posTmp.length();
+	float angTmp = atan2(posTmp.y, posTmp.x);
+	//			emTmp.setPos_Radial(rhoTmp, angTmp);
+	//			emTmp.setPos_XY(mouseX-zentro.x, mouseY-zentro.y);
+	emTmp.setPos_XY(posTmp.x, posTmp.y);
+	
+    //	ofLogNotice(ofToString(angTmp));
+	ofColor cTmp = ofColor::fromHsb(ofMap(angTmp,-PI,PI, 0, 255), 255, 255, 255);
+	emTmp.setColor(cTmp);
+	emTmp.setId(totEmitters);
+	emTmp.ratePartic = ratePartic;
+	totEmitters++;
+	
+	emitters.push_back(emTmp);
+}
+
+//--------------------------------------------------------------
 void nuclear_fuerte::draw(){
     
-}
-
-void nuclear_fuerte::mousePressed( int x, int y, int button ){}
-
-void nuclear_fuerte::tuioAdded(ofxTuioCursor &tuioCursor){
-	ofPoint loc = ofPoint(tuioCursor.getX()*W_WIDTH,tuioCursor.getY()*W_HEIGHT);
-
-    int tipo=(int)ofRandom(0,4);
-    exchangeColors(tipo);
-    if(tipo==1){
-        cheapComm::getInstance()->sendSync4("/sync/strong_nuclear/hand_on_event",1.0,tipo,colorp1,(float)colorp2);
-        cheapComm::getInstance()->sendSync2("/sync/strong_nuclear/setColor",1.0,colorp1);
-        cheapComm::getInstance()->sendSync2("/sync/strong_nuclear/setColor",2.0,colorp2);
+	if(bSetBack) {
+        //	ofBackground(ofColor::black);
+        //		ofBackgroundGradient(ofColor(30), ofColor::black, OF_GRADIENT_CIRCULAR);
+		ofBackgroundGradient(ofColor(40), ofColor::black, OF_GRADIENT_CIRCULAR);
+	}
+	else {
+		ofPushStyle();
+		ofSetColor(0,alpha_Back); //20);
+		ofRect(0,0,ofGetWidth(),ofGetHeight());
+		ofPopStyle();
+	}
+	
+	// Fondo Lab
+	ofPushStyle();
+    ofSetColor(255,100);
+    ofSetCircleResolution(60);
+    ofNoFill();
+    ofSetLineWidth(0.8);
+    ofEllipse(zentro.x, zentro.y, radioEscena*2.0/3.0*2, radioEscena*2.0/3.0*2);
+    ofEllipse(zentro.x, zentro.y, radioEscena*1.0/3.0*2, radioEscena*1.0/3.0*2);
+	ofPopStyle();
+	
+	
+	//
+	// PARTICULAS
+	//
+	
+	ofEnableSmoothing();
+	ofEnableAntiAliasing();
+    
+	if(bDrawCaminos) {
+		ofPushStyle();
+		ofSetColor(ofColor::lime, 60);
+		ofSetLineWidth(15);
+		camino.draw();
+	}
+	
+	
+	// Dibujar partículas
+	for(int i=0;i<particulas.size();i++) {
+		particulas[i].draw();
+        //		particulas[i].drawMemoPath();
+	}
+	
+	if(bDrawPtosChoque) {
+		ofPushStyle();
+        //		ofSetColor(255,0,0);
+        //		ofFill();
+		for(int i=0;i<ptsChoque.size();i++) {
+			ofCircle(ptsChoque[i].x, ptsChoque[i].y, 3);
+            //		ofDrawBitmapString(ofToString(ptsChoque[i].x)+","+ofToString(ptsChoque[i].y), ptsChoque[i]);
+		}
+		ofPopStyle();
+	}
+	
+	//
+	// NUCLEAR FUERTE
+	//
+	// Escena centrada y simetría circular
+	centroLab.draw();
+	ofPushMatrix();
+    ofTranslate(zentro.x, zentro.y, zentro.z);
+    // Decorados
+    
+	
+    // Emisores
+    emitter.draw();
+    for(int i=0; i<emitters.size(); i++) {
+        emitters[i].draw();
     }
-    else if(tipo==2){
-        cheapComm::getInstance()->sendSync4("/sync/strong_nuclear/hand_on_event",1.0,tipo,colorp2,(float)colorp3);
-        cheapComm::getInstance()->sendSync2("/sync/strong_nuclear/setColor",2.0,colorp2);
-        cheapComm::getInstance()->sendSync2("/sync/strong_nuclear/setColor",3.0,colorp3);
-    }
-    else if(tipo==3){
-        cheapComm::getInstance()->sendSync4("/sync/strong_nuclear/hand_on_event",1.0,tipo,(float)colorp3,(float)colorp1);
-        cheapComm::getInstance()->sendSync2("/sync/strong_nuclear/setColor",3.0,colorp3);
-        cheapComm::getInstance()->sendSync2("/sync/strong_nuclear/setColor",1.0,colorp1);
-    }    
-}
-void nuclear_fuerte::tuioRemoved(ofxTuioCursor &tuioCursor){
+	
+	ofPopMatrix();
+	
+	// Borde Escena
+	borde.draw();
+	
+	// decoración borde Exerior
+	// hay que animarla un poco
+	ofPushStyle();
+	// linea blanca
+	ofSetLineWidth(4);
+	ofSetColor(255);
+	ofNoFill();
+	circExt.draw();
+	
+	ofPushMatrix();
+	ofTranslate(zentro.x,zentro.y,0);
+	for(int i=0; i<6; i++) {
+		ofRotateZ(60);
+		ofColor cc = colores[i%3];
+		float nois = ofNoise((float)ofGetElapsedTimeMillis()*i/3000.0 );
+        //		ofLogNotice() << nois;
+		cc.setBrightness(cc.getBrightness()*(1-0.8*nois));
+		anilloExterior.setFillColor(cc);
+		anilloExterior.draw();
+	}
+	anilloExteriorLineas.draw();
+	ofPopMatrix();
+	ofPopStyle();
+	
+	//
+	// INFO
+	//
+	ofPushStyle();
+	ofSetColor(200);
+	int hLin = ofGetHeight()-25; int dLin = -15;
+	ofDrawBitmapString("Num Partics: " + ofToString(particulas.size()), 10,hLin); hLin+=dLin;
+	ofDrawBitmapString("Num Partics old: " + ofToString(particulas_old.size()), 10,hLin); hLin+=dLin;
+	ofDrawBitmapString("p clear partics", 10,hLin); hLin+=dLin;
+	ofDrawBitmapString("o clear emitters", 10,hLin); hLin+=dLin;
+	ofDrawBitmapString("Partics dentro: " + ofToString(centroLab.contadorPartics), 10,hLin); hLin+=dLin;
+	ofDrawBitmapString("FR: " + ofToString(ofGetFrameRate()), 10,hLin); hLin+=dLin;
+	ofPopStyle();
 }
 
-void nuclear_fuerte::tuioUpdated(ofxTuioCursor &tuioCursor){
-}
 
 void nuclear_fuerte::exchangeColors(int tipo){
     int ctmp;
@@ -76,5 +406,73 @@ void nuclear_fuerte::exchangeColors(int tipo){
 
 }
 
+void nuclear_fuerte::init_Scena() {
+        gui1->enable();
+	gui1->loadSettings("gui1Settings.xml");
+	ofBackgroundGradient(ofColor(40), ofColor::black, OF_GRADIENT_CIRCULAR);
+    
+	// Emisores
+	// Activar el emitter del mouse
+	emitter.bActivo = false;
+	totEmitters = 0;	// Para asignar identificadores a los emisores
+	emitter.setId(totEmitters);
+	totEmitters++;
+	
+	emitter.ratePartic = ratePartic;
+    
+}
 
+void nuclear_fuerte::sceneWillAppear( ofxScene * fromScreen ){  // reset our scene when we appear
+    init_Scena();
+    
+    
+    cheapComm::getInstance()->sendAudio0("/audio/strong_nuclear/start_event");
+    cheapComm::getInstance()->sendSync0("/sync/strong_nuclear/start_event");
+};
+
+
+//scene notifications
+void nuclear_fuerte::sceneWillDisappear( ofxScene * toScreen ){
+	gui1->saveSettings("gui1Settings.xml");
+	//	delete gui1;
+	
+	//    float *buffer;
+	//    ofImage *img;
+	//	delete[] buffer;
+	//    delete img;
+	
+	// borrar
+	// - emitters
+	// - particles
+	particulas.clear();
+	emitters.clear();
+    cheapComm::getInstance()->sendAudio0("/audio/strong_nuclear/end_event");
+    cheapComm::getInstance()->sendSync0("/sync/strong_nuclear/end_event");
+};
+
+
+
+void nuclear_fuerte::setupColores() {
+	colores[0] = ofColor::red;
+	colores[1] = ofColor::green;
+	colores[2] = ofColor::blue;
+	antiColores[0] = colores[0]; antiColores[0].invert();
+	antiColores[1] = colores[1]; antiColores[1].invert();
+	antiColores[2] = colores[2]; antiColores[2].invert();
+	for(int i=0; i<3; i++) {
+		coloresAll[i] = colores[i];
+		coloresAll[i+3] = antiColores[i];
+	}
+}
+
+void nuclear_fuerte::tiltCamino() {
+	ofPolyline pl = camino;
+	camino.clear();
+	
+	float maxDespl = 2.0;
+	for(int i=0; i<pl.size(); i++) {
+		camino.addVertex( pl[i]+ofVec2f(ofRandom(-maxDespl, maxDespl), ofRandom(-maxDespl, maxDespl)) );
+	}
+	camino.close();
+}
 
