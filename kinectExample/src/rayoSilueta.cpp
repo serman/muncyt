@@ -195,7 +195,7 @@ void rayoSilueta::draw(){
 	fboGeneral.begin();
     glEnable(GL_POINT_SMOOTH);
     ofEnableAlphaBlending();
-    ofSetColor(0 ,0,0,10);
+    ofSetColor(0 ,0,0,20);
     ofFill();
     ofRect(0, 0, ofGetWidth(), ofGetHeight());
     ofSetColor(255,255,255,255);

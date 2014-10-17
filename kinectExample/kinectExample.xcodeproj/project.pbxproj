@@ -63,6 +63,7 @@
 		F74CAAC219BBC9520037FCEA /* ToonPass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F74CAAA719BBC9520037FCEA /* ToonPass.cpp */; };
 		F74CAAC319BBC9520037FCEA /* VerticalTiltShifPass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F74CAAA919BBC9520037FCEA /* VerticalTiltShifPass.cpp */; };
 		F74CAAC419BBC9520037FCEA /* ZoomBlurPass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F74CAAAB19BBC9520037FCEA /* ZoomBlurPass.cpp */; };
+		F74D129019EB5F1400A544A5 /* highBloomPass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F74D128E19EB5F1400A544A5 /* highBloomPass.cpp */; };
 		F767CA58195D04BD004401E8 /* ofxDelaunay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F767CA52195D04BD004401E8 /* ofxDelaunay.cpp */; };
 		F767CA59195D04BD004401E8 /* Delaunay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F767CA56195D04BD004401E8 /* Delaunay.cpp */; };
 		F772533E1981A11800ADD13E /* ofxTCPClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F77253361981A11800ADD13E /* ofxTCPClient.cpp */; };
@@ -334,6 +335,7 @@
 		F72F1C5819E437C400453005 /* ofxMsgUnPacker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxMsgUnPacker.h; sourceTree = "<group>"; };
 		F72F1C5919E437DD00453005 /* include */ = {isa = PBXFileReference; lastKnownFileType = folder; path = include; sourceTree = "<group>"; };
 		F72F1C5B19E437FC00453005 /* msgpack_osx.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = msgpack_osx.a; sourceTree = "<group>"; };
+		F732CD4519F01080000DD176 /* utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = utils.h; sourceTree = "<group>"; };
 		F73625AA192842BC00964804 /* Particle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Particle.h; sourceTree = "<group>"; };
 		F74CAA7C19BBC9520037FCEA /* BleachBypassPass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BleachBypassPass.cpp; sourceTree = "<group>"; };
 		F74CAA7D19BBC9520037FCEA /* BleachBypassPass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BleachBypassPass.h; sourceTree = "<group>"; };
@@ -387,6 +389,8 @@
 		F74CAC5519BCAEB80037FCEA /* tunnel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tunnel.h; path = ../tunnel.h; sourceTree = "<group>"; };
 		F74D128B19EAA9B900A544A5 /* maskVideo.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = maskVideo.frag; sourceTree = "<group>"; };
 		F74D128D19EAF7DF00A544A5 /* videoMask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = videoMask.h; sourceTree = "<group>"; };
+		F74D128E19EB5F1400A544A5 /* highBloomPass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = highBloomPass.cpp; sourceTree = "<group>"; };
+		F74D128F19EB5F1400A544A5 /* highBloomPass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = highBloomPass.h; sourceTree = "<group>"; };
 		F767CA52195D04BD004401E8 /* ofxDelaunay.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxDelaunay.cpp; sourceTree = "<group>"; };
 		F767CA53195D04BD004401E8 /* ofxDelaunay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxDelaunay.h; sourceTree = "<group>"; };
 		F767CA56195D04BD004401E8 /* Delaunay.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Delaunay.cpp; sourceTree = "<group>"; };
@@ -1066,6 +1070,9 @@
 				F713076119DCD0D000A48FC1 /* ParticleEmitter.h */,
 				F713076219DCD0D000A48FC1 /* particleSourceHandler.cpp */,
 				F713076319DCD0D000A48FC1 /* particleSourceHandler.h */,
+				F74D128E19EB5F1400A544A5 /* highBloomPass.cpp */,
+				F74D128F19EB5F1400A544A5 /* highBloomPass.h */,
+				F732CD4519F01080000DD176 /* utils.h */,
 			);
 			name = utils;
 			sourceTree = "<group>";
@@ -1110,10 +1117,10 @@
 		F74CAA7B19BBC9520037FCEA /* src */ = {
 			isa = PBXGroup;
 			children = (
-				F74CAA7C19BBC9520037FCEA /* BleachBypassPass.cpp */,
-				F74CAA7D19BBC9520037FCEA /* BleachBypassPass.h */,
 				F74CAA7E19BBC9520037FCEA /* BloomPass.cpp */,
 				F74CAA7F19BBC9520037FCEA /* BloomPass.h */,
+				F74CAA7C19BBC9520037FCEA /* BleachBypassPass.cpp */,
+				F74CAA7D19BBC9520037FCEA /* BleachBypassPass.h */,
 				F74CAA8019BBC9520037FCEA /* ContrastPass.cpp */,
 				F74CAA8119BBC9520037FCEA /* ContrastPass.h */,
 				F74CAA8219BBC9520037FCEA /* ConvolutionPass.cpp */,
@@ -1919,6 +1926,7 @@
 				F74CAABC19BBC9520037FCEA /* PixelatePass.cpp in Sources */,
 				F7E3C069195C34A000D7724A /* Helpers.cpp in Sources */,
 				F74CAAAD19BBC9520037FCEA /* BleachBypassPass.cpp in Sources */,
+				F74D129019EB5F1400A544A5 /* highBloomPass.cpp in Sources */,
 				F7E3C06C195C34A000D7724A /* Tracker.cpp in Sources */,
 				F7E3C067195C34A000D7724A /* Distance.cpp in Sources */,
 				F7EBD1DB193358F3009805D5 /* OscPrintReceivedElements.cpp in Sources */,

@@ -109,7 +109,7 @@ void testApp::parseMenuOsc(string s,   ofxOscMessage &m){
 
 void testApp::toScene(int scn){
     appStatuses["escena"]=scn;
-    cout << "toScene" << scn <<endl;
+    cout << "toScene:  " << scn <<endl;
     if(appStatuses["escena"]==EM) {
         particleCloud.setMode(particleClouds::RUIDO);
         particleCloud.resetParticles();    
@@ -123,9 +123,9 @@ void testApp::toScene(int scn){
     }
     
     if(appStatuses["escena"]==MENU) {
-        pfbo.begin();
-            glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-        pfbo.end();
+        //pfbo.begin();
+        //    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+        //pfbo.end();
     }
 
 }

@@ -17,6 +17,7 @@
 #include "contours.h"
 #include "gridView.h"
 #include "ofxPostProcessing.h"
+#include "highBloomPass.h"
 #include "tunnel.h"
 #include "rayoSilueta.h"
 #include "menu.h"
@@ -28,7 +29,7 @@
 #endif
 
 
-#define USEFILE
+//#define USEFILE
 //#define TESTMODE
 
 	#include "ofxOpenNI2Grabber.h"

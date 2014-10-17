@@ -83,7 +83,7 @@ void testApp::keyPressed (int key) {
 			gui1->toggleVisible();
 			break;
 
-        case 'r':
+        case 'o':
             if(oniCamrecorder.isRecording==true)
                 oniCamrecorder.stopRecording();
             else
@@ -182,7 +182,7 @@ void testApp::guiEvent(ofxUIEventArgs &e)
         cout << "save";
 					guiTabBar->saveSettings("./config/gui/","espejo_");
 #ifndef EASYCAM
-		//saveCameraPose();
+		saveCameraPose();
 #endif
     }
 	else if(name == "load")

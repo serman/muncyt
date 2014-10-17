@@ -72,18 +72,18 @@ public:
                 particles.push_back(Particle(ofVec3f(rrho*cos(ang2),rrho*sin(ang2),-rr*cos(ang1)-1500) ,ofColor(255,255,255) ,x,y));*/
               //  ofVec3f p2=cam->screenToWorld(ofVec3f(x,y,0));
                 ofVec3f v=ofVec3f(x,y,0);
-#ifdef TESTMODE
-                v.rotate(rotateX,ofVec3f(1,0,0));
-                v.rotate(rotateZ,ofVec3f(0,0,1));
+//#ifdef TESTMODE
+             //   v.rotate(rotateX,ofVec3f(1,0,0));
+        /*        v.rotate(rotateZ,ofVec3f(0,0,1));
                 v.x+=tranX;
                 v.y+=tranY;
-                v.z+=tranZ;
-#else
-                v.rotate(-1.82,ofVec3f(0,0,1));
-                v.x+=-450;
-                v.y+=-229;
-                v.z+=757;
-#endif
+                v.z+=tranZ;*/
+//#else
+//                v.rotate(-1.82,ofVec3f(0,0,1));
+                v.x+=-212;
+                v.y+=-9;
+                v.z+=771;
+//#endif
                 particles.push_back(Particle(v , ofVec3f(0,ofRandom(-400,0),ofRandom(-400)), ofColor(255,255,255) ,x,y));
                 numParticles++ ;
             }
@@ -102,6 +102,8 @@ public:
     }
     
     void updateEM(){
+        //setupParticles(); //Descomentar para que se quede el rectangulo siempre y probar a alinearlo
+        //cloudState=RUIDO;
         meshParticles.clear();
         ofVec3f mdestPoint;
         ofVec3f diff ;
@@ -110,20 +112,22 @@ public:
         {
             if(cloudState==RUIDO){
                 p->steer(p->spawnPoint, false, speed, stopUmbral );
+               // p->position=p->spawnPoint; //Descomentar para que se quede el rectangulo siempre
                 p->update();
                     p->color=ofColor(255,255,255,ofRandom(0,200));
             }else if(cloudState==ESPEJO){
                 int distance=depthGenerator->currentRawPixels->getPixels()[p->_y * depthGenerator->width + p->_x];
                 if(distance> *zMin && distance < *zMax) {
                     p->recentlyUsed=5;
-                        mdestPoint=  oniCamGrabber->convertDepthToWorld(p->_x, p->_y);
+                        mdestPoint=  oniCamGrabber->convertDepthToWorld(p->_x, p->_y);// PARA TEST
                         p->steer(mdestPoint, true, speed, stopUmbral );
+                    //p->position=mdestPoint;
                         p->update();
                         p->color=ofColor(255,255,255,255);
                 }else{ // si las particulas están mas lejos
                     
                     if(!p->recentlyUsed>0){
-                        p->color=ofColor(255,255,255,200);
+                        p->color=ofColor(255,255,255,100);
                     }else{
                         p->color=ofColor(207,62,214,200);
                         p->recentlyUsed--;

@@ -50,21 +50,26 @@ public:
     
     void setup(){
         cout << "screen id que se ve en sendcontour" << SCREEN_ID;
-            string ip_espejo_1="127.0.0.1";
+            string ip_espejo_1="192.168.98.21";
             string ip_espejo_2="192.168.98.22";
-            string ip_espejo_3="192.168.98.101";
+            string ip_espejo_3="192.168.98.23";
         udpConnection.Create();
 //            SCREEN1 SENDS TO SCREEN 2 2->3 3->1
         
-        if(SCREEN_ID==3){
+        if(SCREEN_ID==1){
 
-            udpConnection.Connect(ip_espejo_1.c_str() ,11999);
+            udpConnection.Connect(ip_espejo_2.c_str() ,11999);
         }
         
-        if(SCREEN_ID==1){
+        if(SCREEN_ID==2){
+            udpConnection.Connect(ip_espejo_3.c_str(),11999);
+        }
+        if(SCREEN_ID==3){ //just for testing
             udpConnection.Connect(ip_espejo_1.c_str(),11999);
         }
-
+        if(SCREEN_ID==4){ //just for testing
+            udpConnection.Connect("127.0.0.1",11999);
+        }
             udpConnection.SetNonBlocking(true);
     }
     

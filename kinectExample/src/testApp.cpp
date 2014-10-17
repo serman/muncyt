@@ -1,10 +1,12 @@
 #include "testApp.h"
 #include <math.h>
 
+
 int  SCREEN_ID=0;
 
 //--------------------------------------------------------------
 void testApp::setup() {
+  //  cout << "ruta directorio:" << getenv("HOME");
     //particleCloud(oniCamGrabber,depthGenerator);
 	ofSetLogLevel(OF_LOG_VERBOSE);
 	
@@ -133,7 +135,7 @@ void testApp::setup() {
     
     post.init(ofGetWidth(), ofGetHeight());
     post.createPass<ZoomBlurPass>()->setEnabled(false);
-    post.createPass<BloomPass>()->setEnabled(false);
+    post.createPass<highBloomPass>()->setEnabled(false);
     post.createPass<VerticalTiltShifPass>()->setEnabled(false);
     post.createPass<ConvolutionPass>()->setEnabled(false);
     post.createPass<ContrastPass>()->setEnabled(false);
@@ -161,7 +163,7 @@ void testApp::setup() {
 }
 
 void testApp::setupStatus(){
-     appStatuses["escena"]=NUCLEAR_DEBIL;
+     appStatuses["escena"]=EM;
      appStatuses["em_ruido"]=true;
      appStatuses["alpha_ruido"]=255;
 }
@@ -269,6 +271,9 @@ void testApp::draw() {
     //fadeBG();
 	ofBackground(colorfondo);
     ofEnableAlphaBlending();
+//    oniCamGrabber.draw();
+//    oniCamGrabber.getDepthTextureReference().draw(0, 0);
+//    return;
     
     //Estas lineas que vienen son una copia de lo que hace ofxpostprocessing
 //    para dibujar en un fbo manteniendo la perspectiva de c‡mara. La idea de dibujar en el fbo es que podamos usar la t‡ctica de no borrar el fondo para conseguir ciertas animaciones aunque no se est‡ aplicando
@@ -281,7 +286,7 @@ void testApp::draw() {
         switch(appStatuses["escena"]){
             case EM:
                 //particleCloud.drawWithRectangles();
-                setShaders(VERTICAL_ON);
+                setShaders(0);
                     particleCloud.drawParticles();
 
             break;
@@ -497,13 +502,18 @@ void testApp::loadCameraPose() {
 }
 
 void testApp::loadScreenId(){
-    ofFile fileRead("./config/id.txt");
+    ofFile fileRead(ofToString(getenv("HOME"))+"/id_pantalla_flab.txt");
     int id;
     fileRead >> id;
+    
     SCREEN_ID=id;
     ofLogVerbose()<<"SCREEN ID:" << SCREEN_ID<<endl;
+    if(id==32){
+        ofLog() << "id_pantalla_flab.txt" << id;
+        exit();
+    }
 }
 
-    
+
 #endif
 
