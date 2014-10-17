@@ -17,7 +17,7 @@ class Emisor {
 
 public:
 	int idEmisor;
-	
+	int tuio_id;
 	// posicion
 	float rho;	// controlara la energia de las particulas emitidas
 	float ang;	// radians

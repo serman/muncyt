@@ -12,7 +12,7 @@
 #include <iostream>
 #include "ofxOsc.h"
 #include "consts.h"
-
+#include "ofxXmlSettings.h"
 
 //static ofEvent	<oscData> eventoOSC;
 
@@ -49,6 +49,7 @@ class cheapComm {
         void sendSync4(string, float , float, float,float);
     
     private:
+            ofxXmlSettings XML;
             cheapComm();
             cheapComm(cheapComm const&);              // Don't Implement
             void operator=(cheapComm const&); // Don't implement

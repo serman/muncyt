@@ -11,6 +11,7 @@
 #include "ofMain.h"
 #include <math.h>
 #include "ofxXmlSettings.h"
+#include "consts.h"
 #endif
 #define RECORDINGTIME 5000
 #define RECTANGLESIZE 128
@@ -87,7 +88,8 @@ class moveAndRecord {
             for (tobj=objectList.begin(); tobj != objectList.end(); tobj++) {
                 ofxTuioCursor *blob = (*tobj);
                 //cout << "blob size" << blobTracker.trackedBlobs.size() << "\n";
-                if ( triggerRectangle.inside( blob->getX()*640, blob->getY()*480) ){
+                ofPoint p=convertPoint( blob->getX(),blob->getY());
+                if ( triggerRectangle.inside( p.x, p.y) ){
                     state= blobInSquare;
                     timeLastDetection=ofGetElapsedTimeMillis();
                     return blob;
@@ -122,7 +124,8 @@ class moveAndRecord {
             for (tobj=objectList.begin(); tobj != objectList.end(); tobj++) {
                 ofxTuioCursor *blob = (*tobj);
                 //cout << "blob size" << blobTracker.trackedBlobs.size() << "\n";
-                if ( triggerRectangle.inside( blob->getX()*640, blob->getY()*480) ){
+                ofPoint p=convertPoint( blob->getX(),blob->getY());
+                if ( triggerRectangle.inside( p.x, p.y) ){
                     state= blobInSquare;
                     timeLastDetection=ofGetElapsedTimeMillis();
                     return blob;
@@ -189,6 +192,7 @@ class moveAndRecord {
         }
         
         ofRect(triggerRectangle);
+        //        ofRect(triggerRectangle.x-100,triggerRectangle.y-100, triggerRectangle.width, triggerRectangle.height);
         ofPopStyle();
         ofPopMatrix();
     };

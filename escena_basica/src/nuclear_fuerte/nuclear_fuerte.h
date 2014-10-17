@@ -10,7 +10,6 @@
 #define __escena_basica__nuclear_fuerte__
 
 #include <iostream>
-
 #pragma once
 #include "ofMain.h"
 #include "consts.h"
@@ -49,7 +48,7 @@ public:
 	
 	void init_Scena();
 	/*void exit_Scena();*/
-    
+    int getAvailableId();
     void keyPressed(int key);
   //  void keyReleased(int key);
   //  void mouseMoved(int x, int y);
@@ -98,7 +97,7 @@ public:
 	vector <Emisor>		emitters;
 	int		totEmitters;
 	bool	clearEMitters;
-	void	addEmisor(ofVec2f posTmp);
+	Emisor*	addEmisor(ofVec2f posTmp, int id_tuio=-1);
 	
 	Centro		centroLab;
 	
@@ -124,6 +123,7 @@ public:
     
     void sceneWillAppear( ofxScene * fromScreen );
     void sceneWillDisappear( ofxScene * fromScreen );
+    ofPoint transf_PosTUIO(ofxTuioCursor & tuioCursor);
     
 };
 

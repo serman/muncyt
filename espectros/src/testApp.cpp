@@ -50,12 +50,16 @@ void testApp::setup(){
     mjuego2->setTuioClient(&tuioClient);
     mjuego2->setSyphonClients(&mSyphonClient, &mSyphonClient2);
   
+    generativo1 *mgenerativo1=new generativo1();
+    mgenerativo1->setTuioClient(&tuioClient);
+    mgenerativo1->setSyphonClients(&mSyphonClient, &mSyphonClient2);
+    
     sceneManager->addScene( mjuego, SCENE_2);
     sceneManager->addScene( mjuego2, SCENE_3);
 	sceneManager->addScene( mglitch, SCENE_1);
-    
+	//sceneManager->addScene( mglitch, SCENE_1);
     sceneManager->addScene( mfantasmas, SCENE_0);
-//	sceneManager->addScene( mfaces, SCENE_3);
+	sceneManager->addScene( mgenerativo1, SCENE_4);
 
 
     
@@ -98,8 +102,8 @@ void testApp::keyPressed(int key){
 	if (key == '1') sceneManager->goToScene(SCENE_1); /* true >> regardless of curtain state (so u can change state while curtain is moving)*/
 	if (key == '2') sceneManager->goToScene(SCENE_2);
 	if (key == '3') sceneManager->goToScene(SCENE_3);
-//	if (key == '4') sceneManager->goToScene(SCENE_4);
-    sceneManager->keyPressed(key);
+	if (key == '4') sceneManager->goToScene(SCENE_4);
+    sceneManager->getCurrentScene()->keyPressed(key);
 }
 void testApp::keyReleased(int key){
     sceneManager->keyReleased(key);

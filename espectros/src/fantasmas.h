@@ -12,6 +12,7 @@
 #include "ofxImageSequence.h"
 #include <ofMath.h>
 #include "ofxScene.h"
+#include "consts.h"
 
 #define MAX_SEQUENCES 3
 class fantasmas : public ofxScene{

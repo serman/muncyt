@@ -574,6 +574,7 @@
 		F70E3F90191C6D050050DEB7 /* Wrappers.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Wrappers.cpp; sourceTree = "<group>"; };
 		F70E3F91191C6D050050DEB7 /* opencv.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = opencv.a; path = ../../../addons/ofxOpenCv/libs/opencv/lib/osx/opencv.a; sourceTree = "<group>"; };
 		F7269F96AC34A2B44A680D03 /* ofxCvFloatImage.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxCvFloatImage.h; path = ../../../addons/ofxOpenCv/src/ofxCvFloatImage.h; sourceTree = SOURCE_ROOT; };
+		F74D129619EC034A00A544A5 /* consts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = consts.h; sourceTree = "<group>"; };
 		F769C9261947E4F700E500E8 /* ofxImageSequence.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxImageSequence.cpp; sourceTree = "<group>"; };
 		F769C9271947E4F700E500E8 /* ofxImageSequence.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxImageSequence.h; sourceTree = "<group>"; };
 		F769C9281947E4F700E500E8 /* ofxImageSequence_Xtd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxImageSequence_Xtd.h; sourceTree = "<group>"; };
@@ -1449,6 +1450,7 @@
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				F77253981986692900ADD13E /* testApp.cpp */,
 				F77253991986692900ADD13E /* testApp.h */,
+				F74D129619EC034A00A544A5 /* consts.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;

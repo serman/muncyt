@@ -83,7 +83,7 @@ void juego1::draw(){
  
     ofPushMatrix();
     ofTranslate(100,100); //PINTO EN LA ZONA D ELA PANTALLA QUE QUIERO
-    ofRect(-2,-2,SCREEN_W+5,SCREEN_H+5);
+    //ofRect(-2,-2,SCREEN_W+5,SCREEN_H+5);
     ofSetColor(255);
     //  edge.draw(0,0);
     filter->begin() ;
