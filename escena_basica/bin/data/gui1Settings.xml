@@ -6,62 +6,57 @@
     <YPosition>0.000000000</YPosition>
 </Canvas>
 <Widget>
-    <Kind>4</Kind>
-    <Name>nivel_Noise</Name>
-    <Value>7.000000000</Value>
-</Widget>
-<Widget>
-    <Kind>4</Kind>
-    <Name>radio_Sol</Name>
-    <Value>26.903707504</Value>
-</Widget>
-<Widget>
-    <Kind>4</Kind>
-    <Name>fuerza_Sol</Name>
-    <Value>10000.000000000</Value>
-</Widget>
-<Widget>
-    <Kind>4</Kind>
-    <Name>fuerza_User</Name>
-    <Value>100.000000000</Value>
-</Widget>
-<Widget>
-    <Kind>4</Kind>
-    <Name>masa TUIO</Name>
-    <Value>10000.000000000</Value>
-</Widget>
-<Widget>
     <Kind>2</Kind>
-    <Name>TOGGLE_WireFrame</Name>
-    <Value>0</Value>
-</Widget>
-<Widget>
-    <Kind>2</Kind>
-    <Name>TOGGLE_Light</Name>
-    <Value>1</Value>
-</Widget>
-<Widget>
-    <Kind>2</Kind>
-    <Name>TOGGLE_OrthoCamera</Name>
-    <Value>0</Value>
-</Widget>
-<Widget>
-    <Kind>2</Kind>
-    <Name>TOGGLE_Texture</Name>
-    <Value>1</Value>
-</Widget>
-<Widget>
-    <Kind>2</Kind>
-    <Name>TOGGLE_Tex Web</Name>
+    <Name>(b) Magnetic Field ON/OFF</Name>
     <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
-    <Name>cam_z</Name>
-    <Value>446.809997559</Value>
+    <Name>Magnetic Force</Name>
+    <Value>0.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>(m) Modo Dibujo ON/OFF</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>(d) Difracción ON/OFF</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>(e) Draw Camino ON/OFF</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>(r) Draw Colisiones ON/OFF</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>(t) Tilt Camino ON/OFF</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>(o) Clear Emitters</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>BackGround New</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>Alpha background</Name>
+    <Value>0.000000000</Value>
 </Widget>
 <Widget>
     <Kind>42</Kind>
-    <Name>Rate_partics</Name>
-    <Value>30</Value>
+    <Name>(q/a)_Rate_partics</Name>
+    <Value>1</Value>
 </Widget>
