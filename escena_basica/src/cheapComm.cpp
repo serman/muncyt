@@ -7,6 +7,7 @@
 //
 
 #include "cheapComm.h"
+
 cheapComm* cheapComm::m_pInstance = NULL;
 
 cheapComm::cheapComm(){
@@ -14,12 +15,20 @@ cheapComm::cheapComm(){
 }
 
 void cheapComm::setup(){
+    string dstAudio="192.168.1.25";
+    string dstSync="192.168.98.255";
+    if( XML.loadFile("network_settings.xml") ){
+        dstAudio=XML.getValue("DST_AUDIO", "192.168.1.25");
+        dstSync=XML.getValue("DST_SYNC", "192.168.98.255");
+        cout <<"dst audio"  << dstAudio;
+        cout <<"dst SYNC"  << dstSync;
+    }
     int serverRecvPortData = 9000;
     int serverRecvPortAudio = 7777;
-    string dst="192.168.1.8";
-	myOscAudio.setup(dst, serverRecvPortAudio);
     
-    myOscData.setup("192.168.98.255",serverRecvPortData);
+	myOscAudio.setup(dstAudio, serverRecvPortAudio);
+    
+    myOscData.setup(dstSync,serverRecvPortData);
 	int maxServerMessages = 38;
 	ofLogNotice("> >> >>> >> > >> >>> >> > >> >>> >> > >> cheapComm::setup()");
 	

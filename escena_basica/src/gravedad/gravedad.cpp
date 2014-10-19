@@ -94,7 +94,7 @@ void gravedad::setup(){
     setupGUI();
     gui1->disable();
     ofAddListener(gui1->newGUIEvent,this,&gravedad::guiEvent);
-    gui1->loadSettings("guiSettings.xml");
+    gui1->loadSettings("guiSettings_gravedad.xml");
 	
     ofDisableAlphaBlending();
     blackHoleShader.load("", "shaders/blackHole.frag");
@@ -103,6 +103,10 @@ void gravedad::setup(){
 }
 
 void gravedad::init_Escena() {
+    
+    cheapComm::getInstance()->sendAudio0("/audio/gravity/start_event");
+    
+        ofSetBackgroundAuto(true);
 	    cout << "initScena gravedad" <<endl;
     ofBackground(34, 34, 34);
 	ofSetVerticalSync(false);
@@ -145,7 +149,7 @@ void gravedad::init_Escena() {
 }
 
 void gravedad::exit_Escena() {
-	
+    cheapComm::getInstance()->sendAudio0("/audio/gravity/end_event");
 	// borrar objetos
 	
 	
@@ -160,9 +164,10 @@ void gravedad::exit_Escena() {
 //    ofRemoveListener(button4.buttonEvent ,this, &gravedad::onButtonPressed);
 	//ofRemoveListener(gui1->newGUIEvent,this,&gravedad::guiEvent);
     
-	//gui1->saveSettings("gui1Settings.xml");
+	gui1->saveSettings("guiSettings_gravedad.xml");
     gui1->disable();
 	//delete gui1;
+
 }
 
 void gravedad::setupMeshSuperf() {
@@ -221,7 +226,7 @@ void gravedad::setupMeshSuperf() {
 void gravedad::update(float d1){
 	// aplicar noise y deformaciones por sol y hands
     if(masaSol>MAX_MASA_SOL && state==GROWING){
-//        initExplosion();
+        initExplosion();
     }
     if(( (initExplosionTime+DURACION_BLACK_HOLE)  < ofGetElapsedTimeMillis()) && state==EXPLOSION){
         if(status_sent_EOS_Sent==false){
@@ -337,7 +342,7 @@ void gravedad::sendSunParticlesOsc(){
         
 #ifdef DEBUGOSC
         ofLogNotice()  << "sun_particle: " << i << " " << angZentro << "(" << ofMap(angZentro,0,2*PI,0,1) << ")" <<
-        "dist" << sqdistance<< "("<< ofMap(sqdistance,0,768,0,1)  << ")"<< endl ;
+        "dist" << sqdistance<< "("<< ofMap(sqdistance,0,W_HEIGHT*W_HEIGHT/4,0,1)  << ")"<< endl ;
 #endif
 		}
     }

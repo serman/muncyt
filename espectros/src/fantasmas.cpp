@@ -12,9 +12,9 @@ void fantasmas::setup(){
     //Syphon client
 
 
-    fbo.allocate(640, 480, GL_RGBA);
+    fbo.allocate(SCREEN_W, SCREEN_H, GL_RGBA);
     //fboGeneral.allocate(640, 480, GL_RGB);
-    remoteBlobImgPxl.allocate(640,480,OF_PIXELS_RGBA);
+    remoteBlobImgPxl.allocate(SCREEN_W,SCREEN_H,OF_PIXELS_RGBA);
     
    // cameraImg.allocate(640, 480,OF_IMAGE_COLOR );
    //mPlayer.setup();
@@ -29,7 +29,7 @@ void fantasmas::setup(){
     
 
     
-     gui2 = new ofxUICanvas(500,0, 295,285);
+     gui2 = new ofxUICanvas(100,500, 200,200);
     gui2->disable();
     vector<string> vnames; vnames.push_back("0"); vnames.push_back("1"); vnames.push_back("2");
     gui2->addLabel("VERTICAL RADIO", OFX_UI_FONT_MEDIUM);
@@ -42,7 +42,6 @@ void fantasmas::setup(){
 }
 
 void fantasmas::setupSequences(){
-
     ofxXmlSettings settings;
     for(int i=0; i<MAX_SEQUENCES;i++){
         sequences.push_back(ofxImageSequence());
@@ -119,16 +118,18 @@ void fantasmas::update(float d){
   //  mPlayer.update();
 
  //   tuioclient->getMessage();
-
+//Cuando se est‡ capturando un fragmento y no reproduciendo se entra en este modo
     if(appStatuses["mode"]==CAPTURE){
         ofxTuioCursor* blobToRecord=moveandrecord.detectBlobinMouse(tuioclient->getTuioCursors(),ofGetMouseX(),ofGetMouseY());
         if(blobToRecord!=NULL && mRecorder.isRecording==false){
         //if(moveandrecord.detectMouseinSquare(mouseX, mouseY)){
             mRecorder.current_video=moveandrecord.currentRect;
             cout<< "width" << blobToRecord->width<< "height"<< blobToRecord->height;
+            ofPoint p1 = convertPoint(blobToRecord->getX(), blobToRecord->getY());
+            
             mRecorder.start(2000, 25, remoteBlobImgPxl,
-                            blobToRecord->width*640,blobToRecord->height*320,
-                           blobToRecord->getX()*640,blobToRecord->getY()*320
+                            blobToRecord->width*640*VIDEO_scale,blobToRecord->height*480*VIDEO_scale,
+                           p1.x, p1.y
                             );
             RecordingBlobId=blobToRecord->getSessionId();
         }
@@ -139,7 +140,8 @@ void fantasmas::update(float d){
             for (tobj=objectList.begin(); tobj != objectList.end(); tobj++) {
                 ofxTuioCursor *blob = (*tobj);
                 if(blob->getSessionId() == RecordingBlobId){
-                    if(mRecorder.update(blob->getX()*640-10 , blob->getY()*480-10)==true) RecordingBlobId=-1;
+                    ofPoint p2 = convertPoint(blob->getX(), blob->getY());
+                    if(mRecorder.update(p2.x-10 , p2.y-10)==true) RecordingBlobId=-1;
                     blobStillExists=true;
                     break;
                 }
@@ -164,19 +166,31 @@ void fantasmas::draw(){
     if(appStatuses["mode"]==CAPTURE){
          //ofDisableBlendMode();
 
-        mSyphonClient->draw(0, 0,640,480);
+        //mSyphonClient->draw(0, 0,640,480);
+        ofPushMatrix();
+        ofTranslate(100,100);
+//dibujo la imagen normal que se ve en pantalla
+        mSyphonClient2->drawSubsection(0,0,SCREEN_W,SCREEN_H,0,VIDEO_offset,640,SCREEN_H);
+
+    //DIBUJO LOS
         list<ofxTuioCursor*>::iterator tobj;
         list<ofxTuioCursor*> objectList = tuioclient->getTuioCursors();
         for (tobj=objectList.begin(); tobj != objectList.end(); tobj++) {
             ofxTuioCursor *blob = (*tobj);
-            		ofSetColor(255,0,0);
-            ofEllipse( blob->getX()*640, blob->getY()*480,9,9);
+            ofSetColor(255,0,0);
+            ofPoint p1 = convertPoint(blob->getX(), blob->getY());
+            ofEllipse( p1.x, p1.y,9,9);
             //cout << "blob size" << blobTracker.trackedBlobs.size() << "\n";
         }
-                    		ofSetColor(255);
+        ofSetColor(255);
+        moveandrecord.draw();
+        ofPopMatrix();
+        ofSetColor(255);
         fbo.begin();
+        
         ofClear(0, 0, 0, 0);
-        mSyphonClient2->draw(0,0,640,480);
+//        mSyphonClient2->draw(0,0,640,480);
+        mSyphonClient2->drawSubsection(0,0,SCREEN_W,SCREEN_H,0,VIDEO_offset,640,SCREEN_H);
         //mSyphonClient.draw(0, 0,640,480);
         fbo.end();
         //fbo.draw(640,480,320,240);
@@ -196,10 +210,12 @@ void fantasmas::draw(){
         //tuioclient.drawCursors();
         ofPopMatrix();
         
-        moveandrecord.draw();
+
     }else  if(appStatuses["mode"]==MOSAIC){
 		ofPushMatrix();
-        mSyphonClient->draw(0,0,640,480);
+        ofTranslate(100,100);
+//        mSyphonClient->draw(0,0,640,480);
+        mSyphonClient->drawSubsection(0,0,SCREEN_W,SCREEN_H,0,VIDEO_offset,640,SCREEN_H);
         ofSetColor(255,255,255);
 
         float tt = ofGetElapsedTimef();

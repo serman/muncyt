@@ -86,6 +86,7 @@ public:
             _h=srcImage.getHeight();
         }
     }
+    
     bool update(int x1=-1, int y1=-1 ){
         if(x1==-1 && y1 == -1){
         	x1=x0;

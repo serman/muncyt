@@ -29,6 +29,7 @@ void nuclear_fuerte::keyPressed(int key){
 		if(!bDrawPtosChoque) ptsChoque.clear();
 	}
 	else if(key=='t') bTiltCamino=!bTiltCamino;
+    //else if(key==)
 }
 
 
@@ -88,7 +89,16 @@ void nuclear_fuerte::mouseReleased(int x, int y, int button){
 
 
 void nuclear_fuerte::tuioAdded(ofxTuioCursor &tuioCursor){
-	ofPoint loc = ofPoint(tuioCursor.getX()*W_WIDTH,tuioCursor.getY()*W_HEIGHT);
+	//ofPoint loc = ofPoint(tuioCursor.getX()*W_WIDTH,tuioCursor.getY()*W_HEIGHT);
+    ofPoint loc = transf_PosTUIO(tuioCursor);
+    ofVec2f posTmp(loc.x,loc.y);
+    posTmp -= zentro;
+    if(posTmp.length()<=radioEscena) {
+        Emisor * e=addEmisor(posTmp,tuioCursor.getSessionId());
+        cheapComm::getInstance()->sendAudio0("/audio/strong_nuclear/hand_on_event");
+        
+    }
+    
     
     int tipo=(int)ofRandom(0,4);
     exchangeColors(tipo);
@@ -109,9 +119,25 @@ void nuclear_fuerte::tuioAdded(ofxTuioCursor &tuioCursor){
     }
 }
 void nuclear_fuerte::tuioRemoved(ofxTuioCursor &tuioCursor){
+    //hands.removeObjectByTuioID(tuioCursor.getSessionId() );
+    for(int i=0; i<emitters.size(); i++){
+        if(emitters[i].tuio_id==tuioCursor.getSessionId()) {
+            //elimino emisor
+            emitters.erase(emitters.begin() + i);
+            cheapComm::getInstance()->sendAudio0("/audio/strong_nuclear/hand_off_event");
+        }
+    }
 }
 
 void nuclear_fuerte::tuioUpdated(ofxTuioCursor &tuioCursor){
+    ofPoint loc = transf_PosTUIO(tuioCursor);
+    for(int i=0; i<emitters.size(); i++){
+        if(emitters[i].tuio_id==tuioCursor.getSessionId()) {
+            //actualizao posicion
+            emitters[i].setPos_XY(loc.x-zentro.x, loc.y-zentro.y);
+        }
+    }
+    
 }
 
 
@@ -168,11 +194,11 @@ void nuclear_fuerte::guiEvent(ofxUIEventArgs &e) {
 	}
 	else if(name=="Save") {
 		ofLogNotice("GRABAR");
-		gui1->saveSettings("gui1Settings.xml");
+		gui1->saveSettings("gui_nuclear_fuerte.xml");
 	}
 	else if(name=="Load") {
 		ofLogNotice("CARGAR");
-		gui1->loadSettings("gui1Settings.xml");
+		gui1->loadSettings("gui_nuclear_fuerte.xml");
 	}
 	
 }

@@ -62,7 +62,7 @@ void nuclear_fuerte::setup(){
 	centroLab.set(zentro, 50);
     
 	
-	ofSetBackgroundAuto(bSetBack);
+	
 	
 	setupGUI();
     
@@ -206,6 +206,24 @@ void nuclear_fuerte::update(float d1){
 	// Update emitter
 	emitter.setPos_XY(ofGetMouseX()-zentro.x, ofGetMouseY()-zentro.y);
 	
+    if(ofGetFrameNum() % 40==0){
+        //cheapComm::getInstance()->sendAudio3("/audio/strong_nuclear/hand_position",e->idEmisor, e->rho, e->ang);
+        
+        for(int i=0; i<emitters.size(); i++){
+            float angZentro = emitters[i].ang;
+            if(angZentro<0) angZentro+=PI;
+            cheapComm::getInstance()->sendAudio3("/audio/strong_nuclear/hand_position",
+                                                 emitters[i].idEmisor,
+                                                 ofMap(angZentro,0,2*PI,0,1),
+                                                 ofMap(emitters[i].rho,0,768/2,0,1)
+                                                );
+            ofLogNotice()  << "hand_particle: " << emitters[i].idEmisor << " angulo" << angZentro << "(" <<  ofMap(angZentro,0,2*PI,0,1) << ")"<<
+            "  dist: " << emitters[i].rho<< "("<< ofMap(emitters[i].rho,0,768/2,0,1) <<")"<< endl ;
+
+        }
+        
+    }
+
 
 }
 
@@ -242,13 +260,18 @@ void nuclear_fuerte::addParticleFromEmiter(Emisor &em) {
 			ParticleS p = ParticleS(pd);
 			p.idEmitter = em.idEmisor;
 			particulas.push_back(p);
+            float angZentro = em.ang;
+            if(angZentro<0) angZentro+=PI;
+            cheapComm::getInstance()->sendAudio3("/audio/strong_nuclear/new_particle_event", p.tipoPart,
+                                                 ofMap(angZentro,0,2*PI,0,1),
+                                                 ofMap(em.rho,0,768/2,0,1));
 		}
 	}
     //	ofLogNotice("addParticleFromEmiter FIN");
 	
 }
 
-void nuclear_fuerte::addEmisor(ofVec2f posTmp) {
+Emisor * nuclear_fuerte::addEmisor(ofVec2f posTmp, int id_tuio) {
 	Emisor emTmp;
 	float rhoTmp = posTmp.length();
 	float angTmp = atan2(posTmp.y, posTmp.x);
@@ -258,8 +281,11 @@ void nuclear_fuerte::addEmisor(ofVec2f posTmp) {
 	
     //	ofLogNotice(ofToString(angTmp));
 	ofColor cTmp = ofColor::fromHsb(ofMap(angTmp,-PI,PI, 0, 255), 255, 255, 255);
+    
+    int mid= getAvailableId();
 	emTmp.setColor(cTmp);
-	emTmp.setId(totEmitters);
+    emTmp.tuio_id=id_tuio;
+	emTmp.setId(mid);
 	emTmp.ratePartic = ratePartic;
 	totEmitters++;
 	
@@ -406,9 +432,32 @@ void nuclear_fuerte::exchangeColors(int tipo){
 
 }
 
+int nuclear_fuerte::getAvailableId(){
+    for(int idToCheck=0; idToCheck<8; idToCheck++){
+        int i=0;
+        for(i=0; i<emitters.size(); i++){
+            if(emitters[i].idEmisor==idToCheck) break;
+        }
+        if(i==emitters.size()){
+            return idToCheck;
+        }
+    }
+    return -1;
+}
+
+ofPoint nuclear_fuerte::transf_PosTUIO(ofxTuioCursor & tuioCursor) {
+    
+    int mx = W_WIDTH*tuioCursor.getX() + (ofGetScreenWidth()-W_WIDTH)/2.0;
+    int my = W_HEIGHT*tuioCursor.getY();
+    //	ofPoint loc = ofPoint(mx,my);
+    
+	return ofPoint(mx,my);
+}
+
 void nuclear_fuerte::init_Scena() {
+    ofSetBackgroundAuto(bSetBack);
         gui1->enable();
-	gui1->loadSettings("gui1Settings.xml");
+	gui1->loadSettings("gui_nuclear_fuerte.xml");
 	ofBackgroundGradient(ofColor(40), ofColor::black, OF_GRADIENT_CIRCULAR);
     
 	// Emisores
@@ -423,8 +472,7 @@ void nuclear_fuerte::init_Scena() {
 }
 
 void nuclear_fuerte::sceneWillAppear( ofxScene * fromScreen ){  // reset our scene when we appear
-    init_Scena();
-    
+    init_Scena();    
     
     cheapComm::getInstance()->sendAudio0("/audio/strong_nuclear/start_event");
     cheapComm::getInstance()->sendSync0("/sync/strong_nuclear/start_event");
@@ -446,6 +494,7 @@ void nuclear_fuerte::sceneWillDisappear( ofxScene * toScreen ){
 	// - particles
 	particulas.clear();
 	emitters.clear();
+    ofSetBackgroundAuto(true);
     cheapComm::getInstance()->sendAudio0("/audio/strong_nuclear/end_event");
     cheapComm::getInstance()->sendSync0("/sync/strong_nuclear/end_event");
 };

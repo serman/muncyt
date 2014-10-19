@@ -25,10 +25,7 @@
 #include "enemy.h"
 #include "particleSourceHandler.h"
 
-#define SCREEN_W 768
-#define SCREEN_H 384
-#define VIDEO_W 640
-#define VIDEO_H 480
+#include "consts.h"
 
 class juego2 : public ofxScene{
     
@@ -84,9 +81,9 @@ private:
     void drawEnemies();
 
     ofPoint convertPoint(float, float);
-    /** escalado video ajuste pantala */
+    /** escalado video ajuste pantala
     float VIDEO_scale=SCREEN_W/640;
-    float VIDEO_offset=((VIDEO_scale*480)-SCREEN_H)/2;
+    float VIDEO_offset=((VIDEO_scale*480)-SCREEN_H)/2;*/
     std::map<string, int> appStatuses;
     ofPixels gray;
     ofImage imgRecortada;

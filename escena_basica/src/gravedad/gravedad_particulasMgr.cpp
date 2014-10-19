@@ -35,7 +35,7 @@ void gravedad::addParticleOut() {
 		
 		// pos, vel, color, mass, charge
 		//		ParticleX pTmp = ParticleX(ofVec3f(0,ofRandom(ofGetHeight())) , ofVec3f(ofRandom(10.0, 30.0), 0) , ofColor::white, 1.0, 0.0);
-		cheapComm::getInstance()->sendAudio1("/audio/gravity/new_particle_event",ofMap(ang0,0,TWO_PI,0,1));
+		cheapComm::getInstance()->sendAudio1("/audio/gravity/new_particle_event",ofMap(p.getAngleRad(zentro),0,TWO_PI,0,1));
         
 	}
 	

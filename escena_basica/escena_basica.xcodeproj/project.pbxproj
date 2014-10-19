@@ -429,7 +429,6 @@
 		F732CD4A19F0F8D3000DD176 /* ParticleTipos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParticleTipos.h; sourceTree = "<group>"; };
 		F732CD4B19F0F8D3000DD176 /* utilsGeom.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = utilsGeom.cpp; sourceTree = "<group>"; };
 		F732CD4D19F0FE1F000DD176 /* nuclear_fuerte_input_gui.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuclear_fuerte_input_gui.cpp; sourceTree = "<group>"; };
-		F732CD4E19F0FE1F000DD176 /* nuclear_fuerte_input_gui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuclear_fuerte_input_gui.h; sourceTree = "<group>"; };
 		F74B89AD196EE2C5005F3893 /* consts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = consts.h; sourceTree = "<group>"; };
 		F74B89AE196EEE3C005F3893 /* consts.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = consts.cpp; sourceTree = "<group>"; };
 		F74B89B0196EF6E8005F3893 /* anilloButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = anilloButton.h; sourceTree = "<group>"; };
@@ -1208,7 +1207,6 @@
 				F74B8A07196F6F5F005F3893 /* nuclear_fuerte.cpp */,
 				F74B8A08196F6F5F005F3893 /* nuclear_fuerte.h */,
 				F732CD4D19F0FE1F000DD176 /* nuclear_fuerte_input_gui.cpp */,
-				F732CD4E19F0FE1F000DD176 /* nuclear_fuerte_input_gui.h */,
 			);
 			path = nuclear_fuerte;
 			sourceTree = "<group>";

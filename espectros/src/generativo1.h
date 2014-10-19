@@ -18,7 +18,7 @@
 #include "ofxTuio.h"
 #include <ofMath.h>
 #include "ofxScene.h"
-
+#include "consts.h"
 class generativo1 : public ofxScene{
     
 public:
@@ -33,6 +33,7 @@ public:
     ofPixels cameraPixels;
     ofImage cameraImg;
     
+    
     ofxTuioClient *tuioclient;
     
     void setTuioClient(ofxTuioClient *mtuioclient){
@@ -45,15 +46,21 @@ public:
         mSyphonClient2=mSyphonClient2_;
     }
     
-    /*    void	tuioAdded(ofxTuioCursor & tuioCursor);
+    
+    
+    
+        void	tuioAdded(ofxTuioCursor & tuioCursor);
      void	tuioRemoved(ofxTuioCursor & tuioCursor);
      void	tuioUpdated(ofxTuioCursor & tuioCursor);
-     */
+     
     void sceneWillAppear( ofxScene * fromScreen );
     void sceneWillDisappear( ofxScene * toScreen );
     void init_Escena();
     void exit_Escena();
+    
+    void keyPressed(int k);
 private:
+    int rotateAng=0;
     
 };
 
