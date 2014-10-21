@@ -124,7 +124,6 @@ void gravedad::init_Escena() {
 	light.setOrientation( ofVec3f(180,0, 0) );
     
     
-    
     gui1->enable();
     initSol(INIT_MASA_SOL);
 	
@@ -146,6 +145,7 @@ void gravedad::init_Escena() {
 //    ofAddListener(button3.buttonEvent ,this, &gravedad::onButtonPressed);
 //    ofAddListener(button4.buttonEvent ,this, &gravedad::onButtonPressed);
 	
+	ofSetBackgroundAuto(true);
 }
 
 void gravedad::exit_Escena() {
@@ -491,6 +491,7 @@ void gravedad::updateFBO() {
 
 void gravedad::draw(){
     
+	//ofBackground(0);
     //		ofLogNotice("***"+ofToString(superf.getMode()));
     
     //		imgWeb.draw(ofGetWidth()-200,0,200,200);
