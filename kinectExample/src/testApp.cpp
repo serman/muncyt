@@ -29,7 +29,7 @@ void testApp::setup() {
     oniSettings.useOniFile=false;
 #else
     oniSettings.useOniFile = true;
-	oniSettings.oniFilePath = "/Users/sergiogalan/MultimediaProgramming/of_v0.8.0_osx_release/apps/muncyt/kinectExample/bin/data/2014-06-26-14-33-34-445_depth_color_640w_480h_30fps.oni";
+	oniSettings.oniFilePath = "/Users/sergiogalan/MultimediaProgramming/of_v0.8.0_osx_release/apps/muncyt/kinectExample/bin/data/test_museo.oni";
 
     //will search this directory for an .oni file
 	//if not found will use the first available camera
@@ -114,9 +114,9 @@ void testApp::setup() {
     mvideoMask.setup();
     //gui1->loadSettings("./config/gui/gui_kinect.xml");
     guiTabBar->loadSettings("./config/gui/","espejo_");
-#ifndef EASYCAM
+    cameraMoves::getInstance()->setup(&camera);
     loadCameraPose();
-#endif
+
     
     //http://stackoverflow.com/questions/12018710/calculate-near-far-plane-vertices-using-three-frustum
  
@@ -191,7 +191,9 @@ void testApp::update() {
             case NUCLEAR_DEBIL:
                 //la nuclear debil utiliza la silueta en 2D
                         mcontour.update(); //procesa la silueta
-                        mrayoSil.setSilueta(mcontour.v[0]); //Detecta colisiones y genera los rayos
+                        if( mcontour.getMainSilhouette()!=NULL )
+                            mrayoSil.setSilueta( *mcontour.getMainSilhouette() ); //Detecta colisiones y genera los rayos
+                
                         mrayoSil.update(mcontour);
                 break;
                 
@@ -213,8 +215,8 @@ void testApp::update() {
                         mvideoMask.update();
                         mcontour.update();
                 //env’o la imagen local a donde toque.
-                        if( &mcontour.v[0] !=NULL)
-                            sender.send(mcontour.v[0]);
+                        if( mcontour.getMainSilhouette()!=NULL )
+                            sender.send( *mcontour.getMainSilhouette());
                         //Si no est‡ puesto activo el thread para leer el contorno remoto
                         if(rcvCont.isThreadRunning()==false){
                             cout << "receiver start" <<endl;
@@ -268,6 +270,11 @@ void testApp::startFBO(){
 }
 
 void testApp::draw() {
+    if(cameraMoves::getInstance()->shouldRestartCamera){
+        loadCameraPose();
+        cout << "load camera pose" <<endl;
+        cameraMoves::getInstance()->shouldRestartCamera=false;
+    }
     //fadeBG();
 	ofBackground(colorfondo);
     ofEnableAlphaBlending();

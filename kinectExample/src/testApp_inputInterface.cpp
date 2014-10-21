@@ -199,7 +199,9 @@ void testApp::guiEvent(ofxUIEventArgs &e)
 		ofxUIRadio *  wr = (ofxUIRadio *) e.widget;
 		ofLogNotice("MODO" + wr ->getActiveName() + " = " + ofToString(wr->getValue()));
         status_mode=wr->getValue();
-        appStatuses["escena"]=wr->getValue();
+        
+        //appStatuses["escena"]=wr->getValue();
+        toScene(wr->getValue());
         //		gui1->loadSettings("./config/gui/gui_kinect.xml");
     }
     else if(name=="RangoZ"){

@@ -35,6 +35,14 @@ public:
 
     }
     
+    ofPolyline *getMainSilhouette(){
+        if(v.size()>0){
+            if(v[0].size()>5)
+                return &(v[0]);
+        }
+        return NULL;
+    }
+    
     void update(){
         depthImg.setFromPixels( oniCamGrabber->getDepthPixels());
         depthImg.update();
@@ -210,9 +218,7 @@ public:
         
     }
     
-    void drawMaskVideo(){
-        
-    }
+
     
     
     
@@ -394,7 +400,7 @@ private:
             ofSetColor(yellowPrint);
             convexHull = contourFinder.getPolyline(i);
             convexHull.simplify();
-            convexHull=convexHull.getResampledBySpacing(30);
+            convexHull=convexHull.getResampledBySpacing(50);
             silhouettes.push_back (convexHull);
             //convexHull.draw();
             

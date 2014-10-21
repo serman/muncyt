@@ -51,6 +51,7 @@ public:
         cam=_cam;
         setupParticles();
         palete.loadImage("palette1.png");
+        testAmount=0;
 
     }
     void setupParticles(){
@@ -214,6 +215,7 @@ public:
         ofRotateY(rotateY);
         ofRotateZ(rotateZ);
         ofTranslate(tranX,tranY,tranZ);*/
+        
         meshParticles.setMode(OF_PRIMITIVE_POINTS);
         glPointSize(4);
         
@@ -259,6 +261,8 @@ public:
         gui->addSlider("tranX", -1800.0f, 1800.0f,  &(tranX));
                 gui->addSlider("tranY", -1800.0f, 1800.0f,  &(tranY));
                 gui->addSlider("tranZ", -2800.0f, 2800.0f,  &(tranZ));
+       
+        
         gui->addButton("fadeIn",&fadeIn_b );
         vector<string> names;
         names.push_back("RUIDO");
@@ -316,6 +320,7 @@ private:
     bool fadeIn_b;
     ofxOpenNI2Grabber *oniCamGrabber;
     extendedDepthSource *depthGenerator;
+    float testAmount;
 
 };
 

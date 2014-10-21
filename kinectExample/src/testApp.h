@@ -22,6 +22,7 @@
 #include "rayoSilueta.h"
 #include "menu.h"
 #include <math.h>
+#include "cameraMoves.h"
 //#define EASYCAM
 #include "consts.h"
 #ifndef EASYCAM
@@ -29,7 +30,7 @@
 #endif
 
 
-//#define USEFILE
+#define USEFILE
 //#define TESTMODE
 
 	#include "ofxOpenNI2Grabber.h"

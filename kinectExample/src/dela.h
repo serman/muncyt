@@ -9,6 +9,7 @@
 #ifndef kinectExample_rectangles_h
 #define kinectExample_rectangles_h
 #include "ofxDelaunay.h"
+#include "cameraMoves.h"
 class dela{    
 public:
     enum colores{ROJOS=0, AZULES,VERDES,FLUOR};
@@ -23,7 +24,7 @@ public:
         speed = 1.0;
         stopUmbral = 10000;
         alphaParticles = 255;
-       // cam=_cam;
+        cam=_cam;
        // setupParticles();
         blob.allocate(640,480,OF_IMAGE_GRAYSCALE);
         setColours();
@@ -32,6 +33,9 @@ public:
         paletteGreen.loadImage("palette_green.png");
         paletteBlue.loadImage("palette_blue.png");
         selectedPalette=&paletteBlue;
+        testAmount=0.0;
+        centralidad=ofVec3f(0,0,0);
+        
     }
     ofImage palette, paletteRed, paletteGreen,paletteBlue;
     ofImage *selectedPalette;
@@ -178,9 +182,15 @@ public:
     }
 
     void draw(){
+//        cam->dolly(testAmount);
+  
+        // cam->dolly(testAmount);
+        cameraMoves::getInstance()->zoomInAndCenter();
+       // cam->dolly(testAmount);
+        ofPushMatrix();
         ofSetColor(255,255,255);
         ofScale(1,-1,-1);
-//        ofTranslate(0, 0,-1000);
+        ofTranslate(0, 0,128);
         ofFill();
        // glPushAttrib(GL_ALL_ATTRIB_BITS);
        // glShadeModel(GL_FLAT);
@@ -200,7 +210,7 @@ public:
         ofSetColor(200);
         wireframeMesh.drawWireframe();
         ofPopMatrix();
-       // cam.end();
+        ofPopMatrix();
     }
     
     void setColours(){
@@ -221,7 +231,9 @@ public:
         gui->addSlider("changeColorFactor", 0, 1.0,  &(changeColorFactor));
         gui->addSlider("noiseAmount", 0, 10,  &(noiseAmount));
         gui->addToggle("useRealColors",&useRealColors);
+        gui->addSlider("testAmount", -900.0, 900.0,  &(testAmount));
         guiTabBar->addCanvas(gui);
+
     }
     int		cloudState;
     float *zMin, *zMax;
@@ -252,6 +264,8 @@ public:
         }
     }
     
+
+    
 private:
     int numParticles;
     int mode;
@@ -276,6 +290,9 @@ private:
     vector<ofColor> colorFluor;
     float changeColorConst=0.0;
     float changeColorFactor=0.01;
+    float testAmount;
+    ofCamera *cam;
+    ofVec3f centralidad;
 };
 
 

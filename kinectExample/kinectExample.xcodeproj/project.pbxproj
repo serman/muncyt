@@ -70,6 +70,7 @@
 		F772533F1981A11800ADD13E /* ofxTCPManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F77253381981A11800ADD13E /* ofxTCPManager.cpp */; };
 		F77253401981A11800ADD13E /* ofxTCPServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F772533A1981A11800ADD13E /* ofxTCPServer.cpp */; };
 		F77253411981A11800ADD13E /* ofxUDPManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F772533C1981A11800ADD13E /* ofxUDPManager.cpp */; };
+		F772E5A019F5CD04008062DE /* cameraMoves.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F772E59F19F5CD04008062DE /* cameraMoves.cpp */; };
 		F773695F1945D5A600548CEA /* DepthSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F77369201945D5A600548CEA /* DepthSource.cpp */; };
 		F77369601945D5A600548CEA /* DeviceController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F77369221945D5A600548CEA /* DeviceController.cpp */; };
 		F77369611945D5A600548CEA /* IRSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F77369241945D5A600548CEA /* IRSource.cpp */; };
@@ -407,6 +408,8 @@
 		F772533C1981A11800ADD13E /* ofxUDPManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxUDPManager.cpp; sourceTree = "<group>"; };
 		F772533D1981A11800ADD13E /* ofxUDPManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxUDPManager.h; sourceTree = "<group>"; };
 		F772537B1981E91A00ADD13E /* rcvContour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rcvContour.h; sourceTree = "<group>"; };
+		F772E59E19F5C6AB008062DE /* cameraMoves.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cameraMoves.h; sourceTree = "<group>"; };
+		F772E59F19F5CD04008062DE /* cameraMoves.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cameraMoves.cpp; sourceTree = "<group>"; };
 		F77369201945D5A600548CEA /* DepthSource.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DepthSource.cpp; sourceTree = "<group>"; };
 		F77369211945D5A600548CEA /* DepthSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DepthSource.h; sourceTree = "<group>"; };
 		F77369221945D5A600548CEA /* DeviceController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DeviceController.cpp; sourceTree = "<group>"; };
@@ -1047,6 +1050,8 @@
 				F79A3D7519D8B7A7009151E9 /* consts.h */,
 				F7E3CA8419D8D70500442BCA /* menu.h */,
 				F79CC82B19E1F65500DA7F17 /* dela.h */,
+				F772E59E19F5C6AB008062DE /* cameraMoves.h */,
+				F772E59F19F5CD04008062DE /* cameraMoves.cpp */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -2019,6 +2024,7 @@
 				63020F16C7E8DED980111241 /* ofxCvImage.cpp in Sources */,
 				F74CAAB119BBC9520037FCEA /* DofAltPass.cpp in Sources */,
 				F77369601945D5A600548CEA /* DeviceController.cpp in Sources */,
+				F772E5A019F5CD04008062DE /* cameraMoves.cpp in Sources */,
 				F7C17079192B76E30034A5CB /* ofxUISlider.cpp in Sources */,
 				F7EBD1D8193358F3009805D5 /* NetworkingUtils.cpp in Sources */,
 				F7EBD1D7193358F3009805D5 /* IpEndpointName.cpp in Sources */,

@@ -108,6 +108,8 @@ void testApp::parseMenuOsc(string s,   ofxOscMessage &m){
 //AQUI HAY QUE COLOCAR PARA CADA CAMBIO DE ESCENA LAS FUNCIONES A LAS QUE HAYA QUE LLAMAR PARA RESETEAR LA ENTRADA EN LA ESCENA ANTES DE EMPEZARLA O PONERLA EN MODO "ENTRADA"
 
 void testApp::toScene(int scn){
+//    Antes de Entrar en la escena se reinicia la camara
+    cameraMoves::getInstance()->reset();
     appStatuses["escena"]=scn;
     cout << "toScene:  " << scn <<endl;
     if(appStatuses["escena"]==EM) {
