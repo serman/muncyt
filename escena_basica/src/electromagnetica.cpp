@@ -95,9 +95,10 @@ void electromagnetica::update(float d1){
             //si no hay ninguna onda, sólo ruido, las partículas de alrededor de la mano son las que forman la onda.
             if(singleWaveIndex!=-1 &&
                p.distanceSquared( ofPoint( hands.objectsCol[singleWaveIndex]->x, hands.objectsCol[singleWaveIndex]->y ) ) <10000 ){
-                ofPoint p1=((noiseShadow *)hands.objectsCol[singleWaveIndex])->getDstPoint(particles[i]._x, particles[i]._y,tmpIndex);
-                particles[i].steer( p1, true, 3.4, 10);
-                tmpIndex++;
+                    ofPoint p1=((noiseShadow *)hands.objectsCol[singleWaveIndex])->getDstPoint(particles[i]._x, particles[i]._y,tmpIndex);
+                    particles[i].steer( p1, true, 7, 10);
+                    tmpIndex++;
+                    meshParticles.getColors()[i].set(ofColor(0,160,176,255));
             }else{
                 particles[i].steer( p, true, 7, 10);
             }
@@ -129,7 +130,7 @@ void electromagnetica::update(float d1){
             if(singleWaveIndex!=-1){
                 //ofPoint p= ofPoint(particlesAux[i]._x,particlesAux[i]._y);
                 ofPoint p1=((noiseShadow *)hands.objectsCol[singleWaveIndex])->getDstPoint2(particlesAux[i]._x, particlesAux[i]._y,i);
-                particlesAux[i].steer( p1, true, 8,20);
+                particlesAux[i].steer( p1, true, 7,20);
                 if(meshAux.getColors()[i].a<=1)
                     meshAux.getColors()[i].a+=0.5;
                 particlesAux[i].update();
@@ -137,8 +138,7 @@ void electromagnetica::update(float d1){
             }
             else{ // si ya ha retirado la mano le quitamos opacidad hasta que desaparezca
                 ofPoint p= ofPoint(particlesAux[i]._x,particlesAux[i]._y);
-               
-                particlesAux[i].steer( p, true, 10,20);
+                particlesAux[i].steer( p, true, 7,20);
                 particlesAux[i].update();
                 meshAux.getVertices()[i].set(particlesAux[i].position);
                 if(meshAux.getColors()[i].a>=0)
@@ -149,14 +149,13 @@ void electromagnetica::update(float d1){
         for(int i=0; i< meshParticles.getVertices().size(); i++){
             int num_onda=i % MAX_ONDAS; //num_onda es la onda a la que se va a asignar
             trIndices index= wavesm.num_onda(num_onda,i); //Aquí se asigna
-            //particles[i]._x;
             
             ofPoint p= wavesm.waveslist[index.n_wave].AbsPoints[index.new_index];
-            particles[i].steer(p , true, 5, 10);
+            particles[i].steer(p , true, 15, 20);
             
             int len=wavesm.waveslist[index.n_wave].npuntos;
-            ofColor color1=ofColor::fromHsb( ofMap(len, 0, 768, 0,360),255,255) ;
-            color1.a=180;
+            ofColor color1=ofColor::fromHsb( ofMap(len, 0, W_WIDTH, 0,360),255,255) ;
+            color1.a=230;
             meshParticles.getColors()[i].set(color1);
             particles[i].update();
             meshParticles.getVertices()[i].set(particles[i].position);
@@ -181,9 +180,9 @@ void electromagnetica::update(float d1){
         for(int i=0; i<wavesm.howManyWaves(); i++){
             int waveLength=wavesm.waveslist[i].getLength();
             if(wavesm.waveslist[i].waveID!=-1){
-            cheapComm::getInstance()->sendAudio2("/audio/electromagnetism/wave_length",wavesm.waveslist[i].waveID, ofMap(waveLength,0,768,1,0));
+            cheapComm::getInstance()->sendAudio2("/audio/electromagnetism/wave_length",wavesm.waveslist[i].waveID, ofMap(waveLength,0,W_WIDTH,1,0));
                 
-            cheapComm::getInstance()->sendSync2("/sync/electromagnetism/wave_length", wavesm.waveslist[i].waveID, ofMap(waveLength,0,768,1,0));
+            cheapComm::getInstance()->sendSync2("/sync/electromagnetism/wave_length", wavesm.waveslist[i].waveID, ofMap(waveLength,0,W_WIDTH,1,0));
             }
 #ifdef OSCDEBUG
             cout << wavesm.waveslist[i].waveID << " ";
@@ -200,7 +199,7 @@ void electromagnetica::draw(){
     ofBackground(0);
     
     ofEnableAlphaBlending();
-    ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+    ofEnableBlendMode(OF_BLENDMODE_SCREEN);
     ofPushMatrix(); //colocamos el canvas en su posicion centrada
     post.begin();
         ofTranslate((ofGetWidth()-W_WIDTH)/2, 0);
@@ -383,9 +382,9 @@ void electromagnetica::setupParticles(){
 void electromagnetica::resetExtraParticles(int x0, int y0){
     meshAux.clear();
     particlesAux.clear();
-    for ( int y =0 ; y < 768 ; y+=4 ){
-        for ( int x = -1 ; x < 768 ; x+=768 ){
-                Particle mparticle=Particle(ofVec3f(x,y,0) ,ofColor(255,255,255,0) ,x,y);
+    for ( int y =0 ; y < W_WIDTH ; y+=4 ){
+        for ( int x = -1 ; x < W_WIDTH ; x+=W_WIDTH ){
+                Particle mparticle=Particle(ofVec3f(x,y,0) ,ofColor(0,160,176,0) ,x,y);
                 particlesAux.push_back(mparticle);
                 meshAux.addVertex(mparticle.position );
                 meshAux.addColor(mparticle.color);
@@ -393,9 +392,9 @@ void electromagnetica::resetExtraParticles(int x0, int y0){
         }
     }
     
-    for ( int x =0 ; x < 768 ; x+=4 ){
-        for ( int y = -1 ; y < 768 ; y+=768 ){
-            Particle mparticle=Particle(ofVec3f(x,y,0) ,ofColor(255,255,255,0) ,x,y);
+    for ( int x =0 ; x < W_WIDTH ; x+=4 ){
+        for ( int y = -1 ; y < W_WIDTH ; y+=W_WIDTH ){
+            Particle mparticle=Particle(ofVec3f(x,y,0) ,ofColor(0,160,176,0) ,x,y);
             particlesAux.push_back(mparticle);
             meshAux.addVertex(mparticle.position );
             meshAux.addColor(mparticle.color);

@@ -57,7 +57,6 @@ void nuclear_fuerte::setup(){
 		anilloExteriorLineas.close();
 	}
 	
-	
 	// zona central
 	centroLab.set(zentro, 50);
     
@@ -215,10 +214,10 @@ void nuclear_fuerte::update(float d1){
             cheapComm::getInstance()->sendAudio3("/audio/strong_nuclear/hand_position",
                                                  emitters[i].idEmisor,
                                                  ofMap(angZentro,0,2*PI,0,1),
-                                                 ofMap(emitters[i].rho,0,768/2,0,1)
+                                                 ofMap(emitters[i].rho,0,W_WIDTH/2,0,1)
                                                 );
             ofLogNotice()  << "hand_particle: " << emitters[i].idEmisor << " angulo" << angZentro << "(" <<  ofMap(angZentro,0,2*PI,0,1) << ")"<<
-            "  dist: " << emitters[i].rho<< "("<< ofMap(emitters[i].rho,0,768/2,0,1) <<")"<< endl ;
+            "  dist: " << emitters[i].rho<< "("<< ofMap(emitters[i].rho,0,W_WIDTH/2,0,1) <<")"<< endl ;
 
         }
         
@@ -264,7 +263,7 @@ void nuclear_fuerte::addParticleFromEmiter(Emisor &em) {
             if(angZentro<0) angZentro+=PI;
             cheapComm::getInstance()->sendAudio3("/audio/strong_nuclear/new_particle_event", p.tipoPart,
                                                  ofMap(angZentro,0,2*PI,0,1),
-                                                 ofMap(em.rho,0,768/2,0,1));
+                                                 ofMap(em.rho,0,W_WIDTH/2,0,1));
 		}
 	}
     //	ofLogNotice("addParticleFromEmiter FIN");

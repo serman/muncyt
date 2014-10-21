@@ -59,7 +59,8 @@ public:
                 //ofRect(x,y,width,height);
                 
             }else{ //active bug hand is not on
-                ofSetColor(ofColor::blue);
+                ofSetColor(ofColor(252,108,85));
+                
                 //ofFill();
                // ofRect(x,y,width,height);
             }
@@ -82,7 +83,9 @@ public:
     void update(){}
 
     void update_prev(ofPoint p){
-        
+        //TEST Lo dejamos siempre activo:
+        status_active=true;
+        return;
         if(p.distance(ofPoint(x,y)) <200){
             status_active=true;            
         }

@@ -164,6 +164,21 @@
 		F79A3D6E19D784F9009151E9 /* gravedad_particulasMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F79A3D6B19D784F9009151E9 /* gravedad_particulasMgr.cpp */; };
 		F79A3D6F19D784F9009151E9 /* gravedad_SolMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F79A3D6C19D784F9009151E9 /* gravedad_SolMgr.cpp */; };
 		F79A3D7019D784F9009151E9 /* auxGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F79A3D6D19D784F9009151E9 /* auxGL.cpp */; };
+		F7BD30AE19F34DC700EDFE82 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7BD30AD19F34DC700EDFE82 /* CoreVideo.framework */; };
+		F7BD30D819F34F7A00EDFE82 /* ofxShivaVGRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7BD30B219F34F7A00EDFE82 /* ofxShivaVGRenderer.cpp */; };
+		F7BD30D919F34F7A00EDFE82 /* simpleVGContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7BD30B419F34F7A00EDFE82 /* simpleVGContext.cpp */; };
+		F7BD30DA19F34F7A00EDFE82 /* simpleVGPath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7BD30B619F34F7A00EDFE82 /* simpleVGPath.cpp */; };
+		F7BD30DB19F34F7A00EDFE82 /* shArrays.c in Sources */ = {isa = PBXBuildFile; fileRef = F7BD30C419F34F7A00EDFE82 /* shArrays.c */; };
+		F7BD30DC19F34F7A00EDFE82 /* shContext.c in Sources */ = {isa = PBXBuildFile; fileRef = F7BD30C619F34F7A00EDFE82 /* shContext.c */; };
+		F7BD30DD19F34F7A00EDFE82 /* shExtensions.c in Sources */ = {isa = PBXBuildFile; fileRef = F7BD30C919F34F7A00EDFE82 /* shExtensions.c */; };
+		F7BD30DE19F34F7A00EDFE82 /* shGeometry.c in Sources */ = {isa = PBXBuildFile; fileRef = F7BD30CB19F34F7A00EDFE82 /* shGeometry.c */; };
+		F7BD30DF19F34F7A00EDFE82 /* shImage.c in Sources */ = {isa = PBXBuildFile; fileRef = F7BD30CD19F34F7A00EDFE82 /* shImage.c */; };
+		F7BD30E019F34F7A00EDFE82 /* shPaint.c in Sources */ = {isa = PBXBuildFile; fileRef = F7BD30CF19F34F7A00EDFE82 /* shPaint.c */; };
+		F7BD30E119F34F7A00EDFE82 /* shParams.c in Sources */ = {isa = PBXBuildFile; fileRef = F7BD30D119F34F7A00EDFE82 /* shParams.c */; };
+		F7BD30E219F34F7A00EDFE82 /* shPath.c in Sources */ = {isa = PBXBuildFile; fileRef = F7BD30D219F34F7A00EDFE82 /* shPath.c */; };
+		F7BD30E319F34F7A00EDFE82 /* shPipeline.c in Sources */ = {isa = PBXBuildFile; fileRef = F7BD30D419F34F7A00EDFE82 /* shPipeline.c */; };
+		F7BD30E419F34F7A00EDFE82 /* shVectors.c in Sources */ = {isa = PBXBuildFile; fileRef = F7BD30D519F34F7A00EDFE82 /* shVectors.c */; };
+		F7BD30E519F34F7A00EDFE82 /* shVgu.c in Sources */ = {isa = PBXBuildFile; fileRef = F7BD30D719F34F7A00EDFE82 /* shVgu.c */; };
 		F7DFCE3619D4EC58002D7BBF /* BleachBypassPass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7DFCE0519D4EC58002D7BBF /* BleachBypassPass.cpp */; };
 		F7DFCE3719D4EC58002D7BBF /* BloomPass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7DFCE0719D4EC58002D7BBF /* BloomPass.cpp */; };
 		F7DFCE3819D4EC58002D7BBF /* ContrastPass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7DFCE0919D4EC58002D7BBF /* ContrastPass.cpp */; };
@@ -563,6 +578,40 @@
 		F79A3D6B19D784F9009151E9 /* gravedad_particulasMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gravedad_particulasMgr.cpp; sourceTree = "<group>"; };
 		F79A3D6C19D784F9009151E9 /* gravedad_SolMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gravedad_SolMgr.cpp; sourceTree = "<group>"; };
 		F79A3D6D19D784F9009151E9 /* auxGL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = auxGL.cpp; sourceTree = "<group>"; };
+		F7BD30AD19F34DC700EDFE82 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CoreVideo.framework; sourceTree = "<group>"; };
+		F7BD30B219F34F7A00EDFE82 /* ofxShivaVGRenderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxShivaVGRenderer.cpp; sourceTree = "<group>"; };
+		F7BD30B319F34F7A00EDFE82 /* ofxShivaVGRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxShivaVGRenderer.h; sourceTree = "<group>"; };
+		F7BD30B419F34F7A00EDFE82 /* simpleVGContext.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = simpleVGContext.cpp; sourceTree = "<group>"; };
+		F7BD30B519F34F7A00EDFE82 /* simpleVGContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = simpleVGContext.h; sourceTree = "<group>"; };
+		F7BD30B619F34F7A00EDFE82 /* simpleVGPath.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = simpleVGPath.cpp; sourceTree = "<group>"; };
+		F7BD30B719F34F7A00EDFE82 /* simpleVGPath.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = simpleVGPath.h; sourceTree = "<group>"; };
+		F7BD30BA19F34F7A00EDFE82 /* AUTHORS */ = {isa = PBXFileReference; lastKnownFileType = text; path = AUTHORS; sourceTree = "<group>"; };
+		F7BD30BB19F34F7A00EDFE82 /* COPYING */ = {isa = PBXFileReference; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
+		F7BD30BE19F34F7A00EDFE82 /* openvg.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = openvg.h; sourceTree = "<group>"; };
+		F7BD30BF19F34F7A00EDFE82 /* vgu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vgu.h; sourceTree = "<group>"; };
+		F7BD30C019F34F7A00EDFE82 /* NEWS */ = {isa = PBXFileReference; lastKnownFileType = text; path = NEWS; sourceTree = "<group>"; };
+		F7BD30C119F34F7A00EDFE82 /* README */ = {isa = PBXFileReference; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		F7BD30C319F34F7A00EDFE82 /* shArrayBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = shArrayBase.h; sourceTree = "<group>"; };
+		F7BD30C419F34F7A00EDFE82 /* shArrays.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = shArrays.c; sourceTree = "<group>"; };
+		F7BD30C519F34F7A00EDFE82 /* shArrays.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = shArrays.h; sourceTree = "<group>"; };
+		F7BD30C619F34F7A00EDFE82 /* shContext.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = shContext.c; sourceTree = "<group>"; };
+		F7BD30C719F34F7A00EDFE82 /* shContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = shContext.h; sourceTree = "<group>"; };
+		F7BD30C819F34F7A00EDFE82 /* shDefs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = shDefs.h; sourceTree = "<group>"; };
+		F7BD30C919F34F7A00EDFE82 /* shExtensions.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = shExtensions.c; sourceTree = "<group>"; };
+		F7BD30CA19F34F7A00EDFE82 /* shExtensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = shExtensions.h; sourceTree = "<group>"; };
+		F7BD30CB19F34F7A00EDFE82 /* shGeometry.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = shGeometry.c; sourceTree = "<group>"; };
+		F7BD30CC19F34F7A00EDFE82 /* shGeometry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = shGeometry.h; sourceTree = "<group>"; };
+		F7BD30CD19F34F7A00EDFE82 /* shImage.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = shImage.c; sourceTree = "<group>"; };
+		F7BD30CE19F34F7A00EDFE82 /* shImage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = shImage.h; sourceTree = "<group>"; };
+		F7BD30CF19F34F7A00EDFE82 /* shPaint.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = shPaint.c; sourceTree = "<group>"; };
+		F7BD30D019F34F7A00EDFE82 /* shPaint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = shPaint.h; sourceTree = "<group>"; };
+		F7BD30D119F34F7A00EDFE82 /* shParams.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = shParams.c; sourceTree = "<group>"; };
+		F7BD30D219F34F7A00EDFE82 /* shPath.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = shPath.c; sourceTree = "<group>"; };
+		F7BD30D319F34F7A00EDFE82 /* shPath.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = shPath.h; sourceTree = "<group>"; };
+		F7BD30D419F34F7A00EDFE82 /* shPipeline.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = shPipeline.c; sourceTree = "<group>"; };
+		F7BD30D519F34F7A00EDFE82 /* shVectors.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = shVectors.c; sourceTree = "<group>"; };
+		F7BD30D619F34F7A00EDFE82 /* shVectors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = shVectors.h; sourceTree = "<group>"; };
+		F7BD30D719F34F7A00EDFE82 /* shVgu.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = shVgu.c; sourceTree = "<group>"; };
 		F7DFCE0519D4EC58002D7BBF /* BleachBypassPass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BleachBypassPass.cpp; sourceTree = "<group>"; };
 		F7DFCE0619D4EC58002D7BBF /* BleachBypassPass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BleachBypassPass.h; sourceTree = "<group>"; };
 		F7DFCE0719D4EC58002D7BBF /* BloomPass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BloomPass.cpp; sourceTree = "<group>"; };
@@ -658,6 +707,7 @@
 				E4EB6799138ADC1D00A09F29 /* GLUT.framework in Frameworks */,
 				E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */,
 				E45BE97B0E8CC7DD009D7055 /* AGL.framework in Frameworks */,
+				F7BD30AE19F34DC700EDFE82 /* CoreVideo.framework in Frameworks */,
 				E45BE97C0E8CC7DD009D7055 /* ApplicationServices.framework in Frameworks */,
 				E45BE97D0E8CC7DD009D7055 /* AudioToolbox.framework in Frameworks */,
 				E45BE97E0E8CC7DD009D7055 /* Carbon.framework in Frameworks */,
@@ -980,6 +1030,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				F7BD30B019F34F7A00EDFE82 /* ofxShivaVG */,
 				F72F1C5E19E592F200453005 /* ofxSpriteSheetRenderer */,
 				F7DFCE0319D4EC58002D7BBF /* ofxPostProcessing */,
 				F772531D197FF94200ADD13E /* ofxSvg */,
@@ -1044,6 +1095,7 @@
 		E4B69B4A0A3A1720003C02F2 = {
 			isa = PBXGroup;
 			children = (
+				F7BD30AD19F34DC700EDFE82 /* CoreVideo.framework */,
 				E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */,
 				E4EB6923138AFD0F00A09F29 /* Project.xcconfig */,
 				F72F1C6D19E6D25100453005 /* shaders */,
@@ -1401,6 +1453,96 @@
 			path = src;
 			sourceTree = "<group>";
 		};
+		F7BD30B019F34F7A00EDFE82 /* ofxShivaVG */ = {
+			isa = PBXGroup;
+			children = (
+				F7BD30B119F34F7A00EDFE82 /* src */,
+				F7BD30B819F34F7A00EDFE82 /* libs */,
+			);
+			name = ofxShivaVG;
+			sourceTree = "<group>";
+		};
+		F7BD30B119F34F7A00EDFE82 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				F7BD30B219F34F7A00EDFE82 /* ofxShivaVGRenderer.cpp */,
+				F7BD30B319F34F7A00EDFE82 /* ofxShivaVGRenderer.h */,
+				F7BD30B419F34F7A00EDFE82 /* simpleVGContext.cpp */,
+				F7BD30B519F34F7A00EDFE82 /* simpleVGContext.h */,
+				F7BD30B619F34F7A00EDFE82 /* simpleVGPath.cpp */,
+				F7BD30B719F34F7A00EDFE82 /* simpleVGPath.h */,
+			);
+			name = src;
+			path = ../../../addons/ofxShivaVG/src;
+			sourceTree = "<group>";
+		};
+		F7BD30B819F34F7A00EDFE82 /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				F7BD30B919F34F7A00EDFE82 /* ShivaVG */,
+			);
+			name = libs;
+			path = ../../../addons/ofxShivaVG/libs;
+			sourceTree = "<group>";
+		};
+		F7BD30B919F34F7A00EDFE82 /* ShivaVG */ = {
+			isa = PBXGroup;
+			children = (
+				F7BD30BA19F34F7A00EDFE82 /* AUTHORS */,
+				F7BD30BB19F34F7A00EDFE82 /* COPYING */,
+				F7BD30BC19F34F7A00EDFE82 /* include */,
+				F7BD30C019F34F7A00EDFE82 /* NEWS */,
+				F7BD30C119F34F7A00EDFE82 /* README */,
+				F7BD30C219F34F7A00EDFE82 /* src */,
+			);
+			path = ShivaVG;
+			sourceTree = "<group>";
+		};
+		F7BD30BC19F34F7A00EDFE82 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				F7BD30BD19F34F7A00EDFE82 /* vg */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		F7BD30BD19F34F7A00EDFE82 /* vg */ = {
+			isa = PBXGroup;
+			children = (
+				F7BD30BE19F34F7A00EDFE82 /* openvg.h */,
+				F7BD30BF19F34F7A00EDFE82 /* vgu.h */,
+			);
+			path = vg;
+			sourceTree = "<group>";
+		};
+		F7BD30C219F34F7A00EDFE82 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				F7BD30C319F34F7A00EDFE82 /* shArrayBase.h */,
+				F7BD30C419F34F7A00EDFE82 /* shArrays.c */,
+				F7BD30C519F34F7A00EDFE82 /* shArrays.h */,
+				F7BD30C619F34F7A00EDFE82 /* shContext.c */,
+				F7BD30C719F34F7A00EDFE82 /* shContext.h */,
+				F7BD30C819F34F7A00EDFE82 /* shDefs.h */,
+				F7BD30C919F34F7A00EDFE82 /* shExtensions.c */,
+				F7BD30CA19F34F7A00EDFE82 /* shExtensions.h */,
+				F7BD30CB19F34F7A00EDFE82 /* shGeometry.c */,
+				F7BD30CC19F34F7A00EDFE82 /* shGeometry.h */,
+				F7BD30CD19F34F7A00EDFE82 /* shImage.c */,
+				F7BD30CE19F34F7A00EDFE82 /* shImage.h */,
+				F7BD30CF19F34F7A00EDFE82 /* shPaint.c */,
+				F7BD30D019F34F7A00EDFE82 /* shPaint.h */,
+				F7BD30D119F34F7A00EDFE82 /* shParams.c */,
+				F7BD30D219F34F7A00EDFE82 /* shPath.c */,
+				F7BD30D319F34F7A00EDFE82 /* shPath.h */,
+				F7BD30D419F34F7A00EDFE82 /* shPipeline.c */,
+				F7BD30D519F34F7A00EDFE82 /* shVectors.c */,
+				F7BD30D619F34F7A00EDFE82 /* shVectors.h */,
+				F7BD30D719F34F7A00EDFE82 /* shVgu.c */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		F7DFCE0319D4EC58002D7BBF /* ofxPostProcessing */ = {
 			isa = PBXGroup;
 			children = (
@@ -1692,6 +1834,7 @@
 				F74B8A85196F7AA7005F3893 /* ofxUIMovingGraph.cpp in Sources */,
 				7FFD07AC1913A0450022FA53 /* b2EdgeShape.cpp in Sources */,
 				F732CD4C19F0F8D3000DD176 /* utilsGeom.cpp in Sources */,
+				F7BD30DA19F34F7A00EDFE82 /* simpleVGPath.cpp in Sources */,
 				F79A3D6E19D784F9009151E9 /* gravedad_particulasMgr.cpp in Sources */,
 				7FFD07AD1913A0450022FA53 /* b2PolygonShape.cpp in Sources */,
 				7FFD07AE1913A0450022FA53 /* b2BlockAllocator.cpp in Sources */,
@@ -1706,6 +1849,9 @@
 				F74B8A7A196F7AA7005F3893 /* ofxUIFPS.cpp in Sources */,
 				F74B8A91196F7AA7005F3893 /* ofxUISpectrum.cpp in Sources */,
 				F74B8A95196F7AA7005F3893 /* ofxUITextInput.cpp in Sources */,
+				F7BD30E419F34F7A00EDFE82 /* shVectors.c in Sources */,
+				F7BD30DF19F34F7A00EDFE82 /* shImage.c in Sources */,
+				F7BD30DB19F34F7A00EDFE82 /* shArrays.c in Sources */,
 				F74B8A76196F7AA7005F3893 /* ofxUICircleSlider.cpp in Sources */,
 				7FFD07B01913A0450022FA53 /* b2Math.cpp in Sources */,
 				F72F1C6B19E592F200453005 /* PixelTexture.cpp in Sources */,
@@ -1718,14 +1864,17 @@
 				F7DFCE4119D4EC58002D7BBF /* KaleidoscopePass.cpp in Sources */,
 				F7DFCE4719D4EC58002D7BBF /* RenderPass.cpp in Sources */,
 				7FFD07B31913A0450022FA53 /* b2Timer.cpp in Sources */,
+				F7BD30E519F34F7A00EDFE82 /* shVgu.c in Sources */,
 				F7DFCE4319D4EC58002D7BBF /* LUTPass.cpp in Sources */,
 				F74B8A8D196F7AA7005F3893 /* ofxUIScrollableCanvas.cpp in Sources */,
 				F7DFCE3F19D4EC58002D7BBF /* GodRaysPass.cpp in Sources */,
 				7FFD07B41913A0450022FA53 /* b2Body.cpp in Sources */,
 				F774CF0C19DD61B000A4D1C0 /* particle2.cpp in Sources */,
+				F7BD30DD19F34F7A00EDFE82 /* shExtensions.c in Sources */,
 				7FFD07B51913A0450022FA53 /* b2ContactManager.cpp in Sources */,
 				7FFD07B61913A0450022FA53 /* b2Fixture.cpp in Sources */,
 				F74B8AA519704992005F3893 /* ofxSceneManager.cpp in Sources */,
+				F7BD30D819F34F7A00EDFE82 /* ofxShivaVGRenderer.cpp in Sources */,
 				F74B8A8B196F7AA7005F3893 /* ofxUIRectangle.cpp in Sources */,
 				F732CD4F19F0FE1F000DD176 /* nuclear_fuerte_input_gui.cpp in Sources */,
 				F7DFCE3819D4EC58002D7BBF /* ContrastPass.cpp in Sources */,
@@ -1784,8 +1933,10 @@
 				F74B8A97196F7AA7005F3893 /* ofxUIToggleMatrix.cpp in Sources */,
 				7FFD07CD1913A0450022FA53 /* b2WeldJoint.cpp in Sources */,
 				F74B8A81196F7AA7005F3893 /* ofxUILabel.cpp in Sources */,
+				F7BD30E319F34F7A00EDFE82 /* shPipeline.c in Sources */,
 				7FFD07CE1913A0450022FA53 /* b2WheelJoint.cpp in Sources */,
 				7FFD07CF1913A0450022FA53 /* b2Rope.cpp in Sources */,
+				F7BD30E019F34F7A00EDFE82 /* shPaint.c in Sources */,
 				F772532A197FF94200ADD13E /* ofxSvg.cpp in Sources */,
 				7FFD07D01913A0450022FA53 /* del_impl.cpp in Sources */,
 				F74B8A8A196F7AA7005F3893 /* ofxUIRangeSlider.cpp in Sources */,
@@ -1813,6 +1964,7 @@
 				F74B8A88196F7AA7005F3893 /* ofxUINumberDialer.cpp in Sources */,
 				7F93F38C19186382004761F3 /* Efectos.cpp in Sources */,
 				7F2CBE7C1926ED1400981859 /* nuclear_debil_Collisions.cpp in Sources */,
+				F7BD30E219F34F7A00EDFE82 /* shPath.c in Sources */,
 				F74B8A78196F7AA7005F3893 /* ofxUIDropDownList.cpp in Sources */,
 				F74B8A7F196F7AA7005F3893 /* ofxUIImageSlider.cpp in Sources */,
 				7F5FFFFD192A035000CA8725 /* tinyxml.cpp in Sources */,
@@ -1826,14 +1978,18 @@
 				F74B89F3196F5090005F3893 /* testApp.cpp in Sources */,
 				F7DFCE3C19D4EC58002D7BBF /* EdgePass.cpp in Sources */,
 				F72F1C6919E592F200453005 /* LinearTexture.cpp in Sources */,
+				F7BD30DE19F34F7A00EDFE82 /* shGeometry.c in Sources */,
 				F74B8A87196F7AA7005F3893 /* ofxUIMultiImageToggle.cpp in Sources */,
 				7F5F0007192A689200CA8725 /* nuclear_debil_xml.cpp in Sources */,
 				7F386C3A19713CD2003C9AF0 /* ofxAnimatable.cpp in Sources */,
 				7F386C3B19713CD2003C9AF0 /* ofxAnimatableFloat.cpp in Sources */,
+				F7BD30DC19F34F7A00EDFE82 /* shContext.c in Sources */,
 				F7DFCE3619D4EC58002D7BBF /* BleachBypassPass.cpp in Sources */,
 				7F386C3C19713CD2003C9AF0 /* ofxAnimatableOfColor.cpp in Sources */,
 				7F386C3D19713CD2003C9AF0 /* ofxAnimatableOfPoint.cpp in Sources */,
+				F7BD30E119F34F7A00EDFE82 /* shParams.c in Sources */,
 				7F307A8B19811704000DCABB /* menu.cpp in Sources */,
+				F7BD30D919F34F7A00EDFE82 /* simpleVGContext.cpp in Sources */,
 				7F307A9B1981795C000DCABB /* menu_interaccion.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1946,11 +2102,14 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					/Users/sergiogalan/MultimediaProgramming/of_v0.8.0_osx_release/apps/muncyt/escena_basica,
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../libs/glut/lib/osx\"";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_MODEL_TUNING = NONE;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				ICON = "$(ICON_NAME_DEBUG)";
 				ICON_FILE = "$(ICON_FILE_PATH)$(ICON)";
 				INFOPLIST_FILE = "openFrameworks-Info.plist";
@@ -2021,7 +2180,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = "example-SimpleDebug";
-				USER_HEADER_SEARCH_PATHS = ../../../addons/ofxOsc/libs/oscpack/src/;
+				USER_HEADER_SEARCH_PATHS = "../../../addons/ofxShivaVG/libs/ShivaVG/include/ ../../../addons/ofxOsc/libs/oscpack/src/ ../../../addons/ofxShivaVG-dev/libs/ShivaVG/include/";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -2034,10 +2193,13 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					/Users/sergiogalan/MultimediaProgramming/of_v0.8.0_osx_release/apps/muncyt/escena_basica,
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../libs/glut/lib/osx\"";
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_MODEL_TUNING = NONE;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				ICON = "$(ICON_NAME_RELEASE)";
 				ICON_FILE = "$(ICON_FILE_PATH)$(ICON)";
 				INFOPLIST_FILE = "openFrameworks-Info.plist";
@@ -2108,7 +2270,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = "example-Simple";
-				USER_HEADER_SEARCH_PATHS = ../../../addons/ofxOsc/libs/oscpack/src/;
+				USER_HEADER_SEARCH_PATHS = "../../../addons/ofxShivaVG/libs/ShivaVG/include/ ../../../addons/ofxOsc/libs/oscpack/src/ ../../../addons/ofxShivaVG-dev/libs/ShivaVG/include/";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

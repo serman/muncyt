@@ -164,6 +164,7 @@ bool sortVertically(  basicSprite * a, basicSprite * b ) {
 
 
 void nuclear_debil::init_Escena() {
+    ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 	// init variables
 	fpsAct = 370.0;
 	box2d.setFPS(fpsAct);
@@ -186,7 +187,6 @@ void nuclear_debil::init_Escena() {
 	for(int i =0; i<nCircs; i++) {
 		addNucleo(centro.x+ofRandom(-1,1), centro.y+ofRandom(-1,1), rNucleo);
 	}
-
 	
 	// addListeners
     box2d.enableEvents();
@@ -196,7 +196,8 @@ void nuclear_debil::init_Escena() {
     ofAddListener(buttonSpeed2.buttonEvent ,this, &nuclear_debil::onButtonPressed);
     ofAddListener(buttonSpeed1.buttonEvent ,this, &nuclear_debil::onButtonPressed);
     ofAddListener(buttonCollide.buttonEvent ,this, &nuclear_debil::onButtonPressed);
-	
+    sent_changeScene_message=false;
+
 }
 
 void nuclear_debil::exit_Escena() {
@@ -367,13 +368,13 @@ void nuclear_debil::update(float dt) {
                 spriteExp->addCenteredTile(&sprites[i]->animation, sprites[i]->pos.x, sprites[i]->pos.y,-1,F_NONE,0.5);
 		}
 	}
-    
+    cout << "num nucleos" << nucleos.size()<<endl;
     
 }
 
 //--------------------------------------------------------------
 void nuclear_debil::draw(){
-
+    ofEnableBlendMode(OF_BLENDMODE_ALPHA);
     ofColor colorCentro = ofColor::fromHsb(0, 0, 30+30*sin(ofGetElapsedTimef()/frecFondo*TWO_PI));
     ofBackgroundGradient (colorCentro, ofColor::black, OF_GRADIENT_CIRCULAR);
  //   ofBackground(colorCentro);
@@ -497,14 +498,19 @@ void nuclear_debil::draw(){
     
     ofPopStyle();
 
+    drawCenterDisplay();
+    
     spriteExp->draw();
 //    if(sprites.size()>0) // if we have sprites
 //MODO EXPLOSION FIN DE LA ESCENA
     if(status==EXPLOSION ){
         
-        if(init_explosion_time+5000 < ofGetElapsedTimeMillis()){
+        if(init_explosion_time+10000 < ofGetElapsedTimeMillis() || numNucleosActivos <3){ //la escena termina si no quedan nucleos o si ya ha pasado mucho tiempo desde la explosi—n
 				
-          //  ofSendMessage("changeScene" +ofToString(SCENE_MENU)); status==OFF;
+            if(sent_changeScene_message){
+             ofSendMessage("changeScene" +ofToString(SCENE_MENU)); status==OFF;
+                sent_changeScene_message=true;
+            }
         }
     }
         
@@ -553,6 +559,27 @@ void 	nuclear_debil::drawInfo(){
 	ofDrawBitmapString(info, 30, 30);
 }
 
+void nuclear_debil::drawCenterDisplay(){
+    ofPushMatrix();
+    ofPushStyle();
+    ofTranslate(W_WIDTH/2, W_HEIGHT/2);
+    int r=180;
+    int n_nucleos=numNucleosActivos;
+    ofSetColor(ofColor::fromHsb(ofMap(ofClamp(n_nucleos,0,NUCLEOS_TO_EXPLOSION),0,NUCLEOS_TO_EXPLOSION,100,250)
+                                ,250, 250,
+                                100+100*sin(ofGetElapsedTimef()/ofMap(ofClamp (n_nucleos,0,NUCLEOS_TO_EXPLOSION),0,NUCLEOS_TO_EXPLOSION,10.0,5.0)*TWO_PI)));
+    
+    // ofSetColor(27,117,187,200+50*sin(ofGetElapsedTimef()/2.0*TWO_PI));
+    for(int i=0; i<ofMap(abs(n_nucleos),0,NUCLEOS_TO_EXPLOSION,0,360); i+=8){
+            ofRotateZ(8);
+      /*  if( (i>=0 && i<10) || (i>73 && i<100) || (i>166 && i<190) || (i>342 && i<360)){
+            
+        }else*/
+            ofRect(-r,0,24,10);
+    }
+    ofPopStyle();
+    ofPopMatrix();
+}
 void nuclear_debil::drawFuerzaSelector() {
 	//	fuerzaWAng = ofDegToRad( ofMap(x, 0, W_WIDTH, 30, 360*6) );
 	//	fuerzaVal = ofDegToRad( ofMap(y, 0, ofGetHeight(), 0, 200) );

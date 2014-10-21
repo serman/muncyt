@@ -222,6 +222,9 @@ public:
     }
     void drawDisplay(){
         ofPushMatrix();
+        ofPushStyle();
+		ofEnableAlphaBlending();
+		ofFill();
         ofTranslate(W_WIDTH/2, W_HEIGHT/2);
         int r=740/2;
         ofSetColor(ofColor::fromHsb(ofMap(abs(wAng),0,wAngMax,150,250), 200, 200,150+70*sin(ofGetElapsedTimef()/ofMap(abs(wAng),0,wAngMax,4.0,1.0)*TWO_PI)));
@@ -233,6 +236,7 @@ public:
             }else
                 ofRect(-r,0,ancho-14,10);
         }
+        ofPopStyle();
         ofPopMatrix();
     }
     

@@ -192,7 +192,7 @@ void nuclear_debil::ball_inside_event(){
     float vvVal = anillo.getVelocNeutronLanz();
     float vvAng = HALF_PI;
     
-    if(abs(anillo.wAng)>=anillo.wAngMax*0.95){
+    if(abs(anillo.wAng)>=anillo.wAngMax*0.95 && numNucleosActivos>(NUCLEOS_TO_EXPLOSION-10)){
         status=nuclear_debil::EXPLOSION;
         init_explosion_time=ofGetElapsedTimeMillis();
         ofLogNotice() << "MODO explosion" <<endl;

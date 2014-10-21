@@ -1,13 +1,15 @@
 #include "ofMain.h"
 #include "testApp.h"
 #include "ofAppGlutWindow.h"
-
+#include "ofAppGLFWWindow.h"
 int main() {
 	
-    ofAppGlutWindow window;
+//    ofAppGlutWindow window;
+    ofPtr<ofAppGLFWWindow> win = ofPtr<ofAppGLFWWindow>(new ofAppGLFWWindow());
+    win->setStencilBits(8);
 //	ofSetupOpenGL(&window, 700, 700, OF_WINDOW);
-	ofSetupOpenGL(&window, 1024,768, OF_FULLSCREEN);
-     ofSetWindowPosition(1440,0);
+	ofSetupOpenGL(win, 1024,768, OF_FULLSCREEN);
+  //   ofSetWindowPosition(1440,0);
 	ofRunApp(new testApp());
 	
 }

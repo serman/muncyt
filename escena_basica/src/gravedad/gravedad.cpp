@@ -315,11 +315,11 @@ void gravedad::sendSunParticlesOsc(){
             cheapComm::getInstance()->sendAudio3("/audio/gravity/hand_particle",
                                                  j,
                                                  ofMap(angZentro,0,2*PI,0,1),
-                                                 ofMap(sqrt(minimun_dist),0,768,0,1)
+                                                 ofMap(sqrt(minimun_dist),0,W_WIDTH,0,1)
                                                  );
 #ifdef DEBUGOSC
             ofLogNotice()  << "hand_particle: " << j << " " << angZentro << "(" <<  ofMap(angZentro,0,2*PI,0,1) << ")"<<
-            "dist: " << sqrt(minimun_dist)<< "("<< ofMap(sqrt(minimun_dist),0,768,0,1) <<")"<< endl ;
+            "dist: " << sqrt(minimun_dist)<< "("<< ofMap(sqrt(minimun_dist),0,W_WIDTH,0,1) <<")"<< endl ;
 #endif
             
         }

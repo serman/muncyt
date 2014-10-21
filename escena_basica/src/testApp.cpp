@@ -15,7 +15,16 @@ void testApp::setup(){
 	ofAddListener(tuioClient.cursorRemoved,this,&testApp::tuioRemoved);
 	ofAddListener(tuioClient.cursorUpdated,this,&testApp::tuioUpdated);
 	///////////////////////////////////////
-	
+	_defaultRenderer = ofGetCurrentRenderer();
+    _shivaVGRenderer = ofPtr<ofxShivaVGRenderer>(new ofxShivaVGRenderer);
+   // ofSetCurrentRenderer(_shivaVGRenderer);
+    
+    _shivaVGRenderer->setLineJoinStyle(VG_JOIN_ROUND);
+    _shivaVGRenderer->setLineCapStyle(VG_CAP_ROUND);
+
+    
+    
+    
 	sceneManager = ofxSceneManager::instance();
     cheapComm *myComm;
     myComm=cheapComm::getInstance();
@@ -46,9 +55,10 @@ void testApp::setup(){
 	sceneManager->setCurtainRiseTime(0.2);
 	sceneManager->setOverlapUpdate(false);
     
-   // sceneManager->goToScene(SCENE_NUC_D);
+    sceneManager->goToScene(SCENE_NUC_D);
     timeToEndScene=-1;
 	// OSC
+    
 	
 	//ofAddListener(eventoOSC, this, &testApp::eventoOSC_Recibido  );
 }
@@ -102,6 +112,16 @@ void testApp::draw(){
 
 //if you require mouseMoved events in your scenes, fforward them to the SceneManager. Same for any other events
 void testApp::mousePressed( int x, int y, int button ){
+    /*if (ofGetCurrentRenderer() == _defaultRenderer)
+    {
+        ofSetCurrentRenderer(_shivaVGRenderer);
+        cout << "VG RENDER";
+    }
+    else
+    {
+        ofSetCurrentRenderer(_defaultRenderer);
+                cout << "DEFAULT RENDER";
+    }*/
 	sceneManager->mousePressed(x, y, button);
 }
 void testApp::mouseReleased( int x, int y, int button ){
@@ -109,11 +129,11 @@ void testApp::mouseReleased( int x, int y, int button ){
 }
 
 void testApp::keyPressed(int key){	
-	if (key == 'W'){ sceneManager->goToScene(SCENE_EM);  setTimeToEndScene(SCENE_EM);}
-    if (key == 'E'){ sceneManager->goToScene(SCENE_NUC_D, true); setTimeToEndScene(SCENE_NUC_D);}
-    if (key == 'R'){ sceneManager->goToScene(SCENE_NUC_F);setTimeToEndScene(SCENE_NUC_F);}
-    if (key == 'T') {sceneManager->goToScene(SCENE_GRAVEDAD);setTimeToEndScene(SCENE_GRAVEDAD);}
-    if (key == 'Q') {sceneManager->goToScene(SCENE_MENU);setTimeToEndScene(SCENE_MENU);}
+	if (key == 'c'){ sceneManager->goToScene(SCENE_EM);  setTimeToEndScene(SCENE_EM);}
+    if (key == 'v'){ sceneManager->goToScene(SCENE_NUC_D, true); setTimeToEndScene(SCENE_NUC_D);}
+    if (key == 'b'){ sceneManager->goToScene(SCENE_NUC_F);setTimeToEndScene(SCENE_NUC_F);}
+    if (key == 'n') {sceneManager->goToScene(SCENE_GRAVEDAD);setTimeToEndScene(SCENE_GRAVEDAD);}
+    if (key == 'm') {sceneManager->goToScene(SCENE_MENU);setTimeToEndScene(SCENE_MENU);}
 	
 	
     sceneManager->keyPressed(key);

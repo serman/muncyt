@@ -12,7 +12,7 @@
 #include "ofxTuio.h"
 #include "consts.h"
 #include "cheapComm.h"
-
+#include "ofxShivaVGRenderer.h"
 
 class testApp : public ofBaseApp{
 
@@ -45,7 +45,10 @@ class testApp : public ofBaseApp{
         long timeToEndScene;
 	
 		// Comunicacion OSC
-		
+private:
+    
+    ofPtr<ofBaseRenderer> _defaultRenderer;
+    ofPtr<ofxShivaVGRenderer> _shivaVGRenderer;
 	
   
 };

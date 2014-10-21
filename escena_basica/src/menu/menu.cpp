@@ -32,7 +32,7 @@ void menu::setup() {
 	
 	// Borde Negro circular
 	borde.clear();
-	ofColor ctmp = ofColor::red;//black;
+	ofColor ctmp = ofColor::black;
 	borde.setFillColor(ctmp);
 	//http://www.openframeworks.cc/documentation/graphics/ofPath.html#show_setPolyWindingMode
 	borde.setPolyWindingMode(OF_POLY_WINDING_ODD);

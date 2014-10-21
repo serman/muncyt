@@ -26,6 +26,7 @@
 //const int tipoNeutron = 1;
 
 #define N_SOUNDS 8
+#define NUCLEOS_TO_EXPLOSION 90
 
 // 
 
@@ -149,6 +150,7 @@ public:
 	
 	bool		swFuerza;
 	void		drawFuerza(ofPoint p, ofPoint gravity, float esc = 1.0);
+    void        drawCenterDisplay();
 	void		drawFuerzaSelector();
 	void		drawInfo();
 
@@ -225,6 +227,7 @@ public:
     void addSprite(int, int);
     int status;
     long init_explosion_time;
+    bool sent_changeScene_message;
     
     
 };
