@@ -142,7 +142,7 @@ void menu::init_Escena() {
     for(int i=0; i<buttons.size();i++){
         buttons[i].touchUpAll();
     }
-        hands.objectsCol.clear();
+    hands.objectsCol.clear();
 }
 
 void menu::exit_Escena() {

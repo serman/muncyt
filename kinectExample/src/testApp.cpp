@@ -363,17 +363,8 @@ void testApp::draw() {
                 
             case MENU:
                 post[1]->setEnabled(true);
-                pfbo.begin();
-                    //glMatrixMode(GL_PROJECTION);
-                    //glPushMatrix();
-                    ofEnableAlphaBlending();
-                    ofSetColor(0,0,0,2);
-                    ofRect(0,0,ofGetWidth(),ofGetHeight());
-                    mmenu.draw();
-                pfbo.end();
                 post.begin();
-                    ofSetColor(255, 255, 255);
-                    pfbo.draw(0,0);
+                    mmenu.draw();
                 post.end();
                 //post[1]->setEnabled(false);
                 break;
@@ -420,8 +411,10 @@ void testApp::draw() {
                 post2D[1]->setEnabled(true); //bloom
                 if(mcontour.bFill==true){
                     post2D[0]->setEnabled(true); //zoomblur
+                    //mrayoSil.bDrawTraza=true;
                 }else{
                     post2D[0]->setEnabled(false);
+                    //mrayoSil.bDrawTraza=false;
                 }
                 post2D.begin();
                 glPushMatrix();

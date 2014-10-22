@@ -134,7 +134,7 @@ void nuclear_debil::colisiona_N_n (Particula * pN, Particula * pn) {
 		// If MODO EXPLOSION ==> n=mucho
 		// If MODO BASICO ==> n=2 o 3
 		int nNewNeutrones = (status==EXPLOSION)? 12 : 2;
-		
+		timeLastColision=ofGetElapsedTimeMillis();
 		for(int i=0; i<nNewNeutrones; i++) {
 			
 			// recalcular posiciones
@@ -157,6 +157,7 @@ void nuclear_debil::colisiona_N_n (Particula * pN, Particula * pn) {
 										    tipoNeutron);
 			nuevasPartics.push_back(cdTmp);
 			addDestello(pNtmp.x, pNtmp.y);
+            
 		}
 		
 		

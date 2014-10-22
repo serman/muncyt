@@ -64,7 +64,7 @@ public:
         numParticles = 0;
         //Loop through all the columns
         // Distribuir las particulas por la escena
-        for ( int y = 0 ; y < h ; y+=sampling ){
+        for ( int y = h ; y >0 ; y-=sampling ){
             for ( int x = w ; x > 0 ; x-=sampling ){
               /*  float ang1 = ofRandom(PI);
                 float ang2 = ofRandom(TWO_PI);
@@ -217,9 +217,9 @@ public:
         ofTranslate(tranX,tranY,tranZ);*/
         
         meshParticles.setMode(OF_PRIMITIVE_POINTS);
-        glPointSize(4);
+        glPointSize(3);
         
-        //glEnable(GL_POINT_SMOOTH);	// Para que sean puntos redondos
+        glEnable(GL_POINT_SMOOTH);	// Para que sean puntos redondos
 
         ofEnableDepthTest();
 

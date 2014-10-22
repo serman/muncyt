@@ -42,6 +42,17 @@ void rayoSilueta::setup(){
     fboRayos.begin();
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
     fboRayos.end();
+    bDrawTraza=false;
+    
+}
+
+void rayoSilueta::reset(){
+    camino.clear();
+    camino1.clear();
+    ptsChoque.clear();    
+    testPath.clear();
+    particulas.clear();
+    bDrawTraza=false;
     
 }
 
@@ -195,10 +206,16 @@ void rayoSilueta::draw(){
 	fboGeneral.begin();
     glEnable(GL_POINT_SMOOTH);
     ofEnableAlphaBlending();
-    ofSetColor(0 ,0,0,20);
-    ofFill();
-    ofRect(0, 0, ofGetWidth(), ofGetHeight());
-    ofSetColor(255,255,255,255);
+    //if(bDrawTraza==true){
+        ofSetColor(0 ,0,0,20);
+        ofFill();
+        ofRect(0, 0, ofGetWidth(), ofGetHeight());
+    //}
+
+    //else
+    //    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+    
+       ofSetColor(255,255,255,255);
 	for(int i=0;i<particulas.size();i++) {
 		particulas[i].draw();
 	}
@@ -209,12 +226,14 @@ void rayoSilueta::draw(){
 		}
 		ofPopStyle();
 	}
-    mExplosionEfect.draw();
+    if(bDrawTraza) mExplosionEfect.draw();
+    
 	fboGeneral.end();
     //postp1.begin();
       //  glPushMatrix();
        // glViewport(0, 0, postp1.getRawRef().getWidth()*3,  postp1.getRawRef().getHeight()*3);
     fboGeneral.draw(0,0);
+    if(!bDrawTraza)mExplosionEfect.draw();
        // glPopMatrix();
     //postp1.end();
 

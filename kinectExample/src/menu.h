@@ -20,18 +20,18 @@ public:
     vector<ofPoint> emImgWP,weakImgWP,strongImgWP,gravityImgWP,flabImgWP;
     vector<ofPoint> *currentvector;
     ofImage texture1;
+    int density=14;
     void setup(){
         emImg.loadImage("emImg.png");
         weakImg.loadImage("weakImg.png");
         strongImg.loadImage("strongImg.png");
         gravityImg.loadImage("gravityImg.png");
-        flabImg.loadImage("flabImg.png");
+        flabImg.loadImage("flab-2a.png");
         texture1.loadImage("text1.png");
         
-        start(MENU);
-        
-        for ( int y = 0 ; y < ofGetHeight();  y+=12 ){
-             for ( int x = 0 ; x < ofGetWidth(); x+=12 ){
+        start(GRAVEDAD);
+        for ( int y = 0 ; y < ofGetHeight();  y+=density ){
+             for ( int x = 0 ; x < ofGetWidth(); x+=density ){
                 Particle mparticle=Particle(ofVec3f(x-1000,y-1000,0),
                                             ofVec3f(0,ofRandom(-400,0),ofRandom(-400)),
                                             ofColor(255,255,255) ,x,y);
@@ -49,36 +49,36 @@ public:
     }
     
     void analyzeImg( ){
-        for ( int y = 0 ; y < ofGetHeight();  y+=4 ){
-            for ( int x = 0 ; x < ofGetWidth(); x+=4 ){
+        for ( int y = 0 ; y < ofGetHeight();  y+=density/1.6 ){
+            for ( int x = 0 ; x < ofGetWidth(); x+=density/1.6 ){
                     if(emImg.getColor(x,y).getBrightness()>100)
                         emImgWP.push_back(ofPoint(x,y));
             }
         }
         
-        for ( int y = 0 ; y < ofGetHeight();  y+=4 ){
-            for ( int x = 0 ; x < ofGetWidth(); x+=4 ){
+        for ( int y = 0 ; y < ofGetHeight();  y+=density/1.6 ){
+            for ( int x = 0 ; x < ofGetWidth(); x+=density/1.6 ){
                 if(weakImg.getColor(x,y).getBrightness()>100)
                     weakImgWP.push_back(ofPoint(x,y));
             }
         }
         
-        for ( int y = 0 ; y < ofGetHeight();  y+=4 ){
-            for ( int x = 0 ; x < ofGetWidth(); x+=4 ){
+        for ( int y = 0 ; y < ofGetHeight();  y+=density/1.6 ){
+            for ( int x = 0 ; x < ofGetWidth(); x+=density/1.6 ){
                 if(strongImg.getColor(x,y).getBrightness()>100)
                     strongImgWP.push_back(ofPoint(x,y));
             }
         }
         
-        for ( int y = 0 ; y < ofGetHeight();  y+=4 ){
-            for ( int x = 0 ; x < ofGetWidth(); x+=4 ){
+        for ( int y = 0 ; y < ofGetHeight();  y+=density/1.6 ){
+            for ( int x = 0 ; x < ofGetWidth(); x+=density/1.6 ){
                 if(gravityImg.getColor(x,y).getBrightness()>100)
                     gravityImgWP.push_back(ofPoint(x,y));
             }
         }
         
-        for ( int y = 0 ; y < ofGetHeight();  y+=4 ){
-            for ( int x = 0 ; x < ofGetWidth(); x+=4 ){
+        for ( int y = 0 ; y < ofGetHeight();  y+=density/1.6 ){
+            for ( int x = 0 ; x < ofGetWidth(); x+=density/1.6 ){
                 if(flabImg.getColor(x,y).getBrightness()>100)
                     flabImgWP.push_back(ofPoint(x,y));
             }
@@ -89,12 +89,14 @@ public:
     
     void draw(){
         ofPushStyle();
-        ofEnableAlphaBlending();
+        ofDisableAlphaBlending();
+        
         ofSetColor(255/*,min( (int)(ofGetElapsedTimeMillis()-initTime)/2,255) */) ;
+        
         switch(state){
             case EM:
                 //emImg.draw(0,0,ofGetWidth(),ofGetHeight());
-                ofDrawBitmapString (ofToString(ofGetElapsedTimeMillis()-initTime),500,500);
+                //ofDrawBitmapString (ofToString(ofGetElapsedTimeMillis()-initTime),500,500);
                 currentImg=&emImg;
                 currentvector=&emImgWP;
                 
@@ -131,26 +133,29 @@ public:
     
     void drawImgParticles(){
         mesh.clear();
-        
         for ( int i = 0 ; i < particles.size();  i+=1 ){
             int index=i%currentvector->size();
             ofVec3f p=ofVec3f( (*currentvector)[index] );
-             particles[i].steer(p,true,4,4);
+            particles[i].steer(p,true,6,4);
             particles[i].update();
             mesh.addVertex(particles[i].position);
-            mesh.addTexCoord(ofVec2f(4, 4));
-            //mesh.addColor(
+            
+            //mesh.addTexCoord(ofVec2f(4, 4));
+            mesh.addColor(ofColor(76,165,255));
             //currentImg->getColor(particles[i]._x,particles[i]._y)
             //              );
           //  mesh.addColor( ofColor(180 + 30*sin(  0.5*PI * (float) ofGetElapsedTimeMillis()/1000 ) ) ) ;
-              mesh.addColor( ofColor(140 + 70* ofNoise( (float) ofGetElapsedTimeMillis()/1000 )) ) ;
+             // mesh.addColor( ofColor(140 + 70* ofNoise( (float) ofGetElapsedTimeMillis()/1000 )) ) ;
 //            mesh.addColor(ofColor(255, 255, 255));
         }
         mesh.setMode(OF_PRIMITIVE_POINTS);
-        glPointSize(2);
-        texture1.bind();
+        glEnable(GL_POINT_SMOOTH);
+        glPointSize(4);
+        //texture1.bind();
+        ofEnableDepthTest();
         mesh.draw();
-        texture1.unbind();
+        ofDisableDepthTest();
+        //texture1.unbind();
 
         
         

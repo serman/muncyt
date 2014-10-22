@@ -21,12 +21,13 @@
 #include "glitch.h"
 #include "faces.h"
 #include "generativo1.h"
+#include "generativo2.h"
 #include "juego1.h"
 #include "juego2.h"
 #include "joy2key.h"
 class testApp : public ofBaseApp{
     
-	enum Scenes{ SCENE_0= 0, SCENE_1, SCENE_2, SCENE_3,SCENE_4 };
+	enum Scenes{ SCENE_0= 0, SCENE_1, SCENE_2, SCENE_3,SCENE_4,SCENE_5 };
 	
 public:
     void setup();

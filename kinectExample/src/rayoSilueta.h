@@ -39,11 +39,12 @@ public:
     vector<ofVec2f>		tangChoque;
     bool				swDifraccion;
     float vel;
-
+    void reset();
     ofPath	testPath;
 
     bool	bDrawCaminos;
     bool	bDrawPtosChoque;
+    bool    bDrawTraza;
     ofxUICanvas *gui;
     void	setUI(ofxUITabBar *guiTabBar);
     void guiEvent(ofxUIEventArgs &e);

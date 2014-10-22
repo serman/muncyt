@@ -54,13 +54,17 @@ void testApp::setup(){
     mgenerativo1->setTuioClient(&tuioClient);
     mgenerativo1->setSyphonClients(&mSyphonClient, &mSyphonClient2);
     
+    generativo2 *mgenerativo2=new generativo2();
+    mgenerativo2->setTuioClient(&tuioClient);
+    mgenerativo2->setSyphonClients(&mSyphonClient, &mSyphonClient2);
+    
     sceneManager->addScene( mjuego, SCENE_2);
     sceneManager->addScene( mjuego2, SCENE_3);
 	sceneManager->addScene( mglitch, SCENE_1);
 	//sceneManager->addScene( mglitch, SCENE_1);
     sceneManager->addScene( mfantasmas, SCENE_0);
 	sceneManager->addScene( mgenerativo1, SCENE_4);
-
+    sceneManager->addScene( mgenerativo2, SCENE_5);
 
     
     //sceneManager->goToScene(SCENE_4);
@@ -85,7 +89,7 @@ void testApp::draw(){
 	sceneManager->draw();
 	ofPushStyle();
 	ofSetColor(200,200,200);
-    ofRect(0,0,1024,768);
+    ofRect(0,0,1280,720);
 	ofDrawBitmapString( "press 1, 2, 3 or 4 to change scene", ofGetWidth() - 290, ofGetHeight() - 10);
 	ofPopStyle();
 
@@ -103,6 +107,7 @@ void testApp::keyPressed(int key){
 	if (key == '2') sceneManager->goToScene(SCENE_2);
 	if (key == '3') sceneManager->goToScene(SCENE_3);
 	if (key == '4') sceneManager->goToScene(SCENE_4);
+    if (key == '5') sceneManager->goToScene(SCENE_5);
     sceneManager->getCurrentScene()->keyPressed(key);
 }
 void testApp::keyReleased(int key){

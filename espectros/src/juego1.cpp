@@ -87,8 +87,7 @@ void juego1::draw(){
     ofSetColor(255);
     //  edge.draw(0,0);
     filter->begin() ;
-        fbo.draw(0, 0);
-    
+        fbo.draw(0, 0);    
     filter->end() ;
     if(appStatuses["game_status"]==PLAYING){
             drawControls();

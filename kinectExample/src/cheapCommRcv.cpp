@@ -27,9 +27,9 @@ void cheapCommRcv::update(){
 		ofxOscMessage m;
 		myosc.getNextMessage(&m);
 		// check for mouse moved message
-        cout << m.getAddress()<<endl;
+        //cout << m.getAddress()<<endl;
         
-        ((testApp*)ofGetAppPtr());
+        //((testApp*)ofGetAppPtr());
         
         int pattrOffset =  0;
         int addrOffset  =  0;
@@ -52,9 +52,12 @@ void cheapCommRcv::update(){
                 ((testApp*)ofGetAppPtr())->toScene(NUCLEAR_FUERTE);
             if(m.getAddress()=="/sync/menu/start_event")
                 ((testApp*)ofGetAppPtr())->toScene(MENU);
-            return;
+            //return;
+           /* pattrOffset =  0;            addrOffset  =  0;            matchResult1 = 0;            matchResult2 = 0;
+             addr = (char*)(m.getAddress()).c_str();
+            myosc.getNextMessage(&m);
+            */
         }
-        
         
         pattern="/sync/*/end_event";
         matchResult1 = osc_match(pattern.c_str(), addr, &pattrOffset, &addrOffset);
@@ -70,7 +73,7 @@ void cheapCommRcv::update(){
                 ((testApp*)ofGetAppPtr())->endScene(NUCLEAR_FUERTE);
             if(m.getAddress()=="/sync/menu/end_event")
                 ((testApp*)ofGetAppPtr())->endScene(MENU);
-            return;
+            //return;
         }
         
         /** si no dentro de cada escena recibe lo suyo **/
@@ -79,37 +82,37 @@ void cheapCommRcv::update(){
         matchResult1 = osc_match(pattern.c_str(), addr, &pattrOffset, &addrOffset);
         if(matchResult1==2) {
             ((testApp*)ofGetAppPtr())->parseEmOsc(m.getAddress().substr(addrOffset),m );
-            return;
+            //return;
         }
         pattern="/sync/weak_nuclear";
         matchResult1 = osc_match(pattern.c_str(), addr, &pattrOffset, &addrOffset);
         if(matchResult1==2){ ((testApp*)ofGetAppPtr())->parseWeakOsc(m.getAddress().substr(addrOffset),m);
-            return;
+            //return;
         }
         
         pattern="/sync/strong_nuclear";
         matchResult1 = osc_match(pattern.c_str(), addr, &pattrOffset, &addrOffset);
         if(matchResult1==2){
             ((testApp*)ofGetAppPtr())->parseStrongOsc(m.getAddress().substr(addrOffset),m);
-            return;
+            //return;
         }
         
         pattern="/sync/gravity";
         matchResult1 = osc_match(pattern.c_str(), addr, &pattrOffset, &addrOffset);
         if(matchResult1==2){
             ((testApp*)ofGetAppPtr())->parseGravityOsc(m.getAddress().substr(addrOffset),m);
-            return;
+            //return;
         }
         
         pattern="/sync/menu";
         matchResult1 = osc_match(pattern.c_str(), addr, &pattrOffset, &addrOffset);
             if(matchResult1==2){
                 ((testApp*)ofGetAppPtr())->parseMenuOsc(m.getAddress().substr(addrOffset),m);
-                return;
+                //return;
             }
-        cout << "matchresult"<< matchResult1 << endl;
+     /*   cout << "matchresult"<< matchResult1 << endl;
         cout << "addrOffset"<< addrOffset << "     ";
         cout << "pattrOffset"<< m.getAddress().substr(addrOffset) << endl;
-
+*/
     }
 }

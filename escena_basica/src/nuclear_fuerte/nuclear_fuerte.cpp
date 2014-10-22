@@ -68,9 +68,7 @@ void nuclear_fuerte::setup(){
 	init_Scena();
     gui1->disable();
 
-	colorp1=0; //red
-    colorp2=1; //blue
-    colorp3=2;//green
+
 	
     
 }
@@ -467,6 +465,9 @@ void nuclear_fuerte::init_Scena() {
 	totEmitters++;
 	
 	emitter.ratePartic = ratePartic;
+    colorp1=0; //red
+    colorp2=1; //green
+    colorp3=2;//blue
     
 }
 

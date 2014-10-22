@@ -4,7 +4,7 @@
 int main() {
     ofAppGlutWindow window;
   //  ofSetCurrentRenderer(ofGLProgrammableRenderer::TYPE);
-    ofSetupOpenGL(&window,1920, 1080, OF_FULLSCREEN);
+    ofSetupOpenGL(&window,1920, 1080, OF_WINDOW);
   //  ofSetupOpenGL(1280, 720, OF_FULLSCREEN);
 	ofRunApp(new testApp());
 }

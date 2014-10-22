@@ -229,6 +229,8 @@ public:
     long init_explosion_time;
     bool sent_changeScene_message;
     
+    long timeLastColision;
+    
     
 };
 

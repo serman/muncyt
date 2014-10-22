@@ -16,8 +16,7 @@ void testApp::parseStrongOsc(string s,ofxOscMessage &m){
         int color= round(m.getArgAsFloat(1));
         cout << "parse strong nuclear: " << s << " "<<target <<" "<< color <<" " << SCREEN_ID << endl;
         if(SCREEN_ID==target){
-
-            mcontour.setColor(color);
+            mdela.setColor(color);
         }
     }
     
@@ -30,10 +29,16 @@ void testApp::parseWeakOsc(string s,  ofxOscMessage &m){
         mrayoSil.triggerParticles(angle);
         
     }
-    else if(s=="chain_reaction_event"){
+    else if(s=="/colisiones"){
+        mcontour.bFill=true;
+    }
+    else if(s=="/nocolisiones"){
+        mcontour.bFill=false;
+    }
+    else if(s=="/chain_reaction_event"){
         
     }
-    else if(s=="acceleration_event"){
+    else if(s=="/acceleration_event"){
         
     }
     
@@ -116,15 +121,22 @@ void testApp::toScene(int scn){
         particleCloud.setMode(particleClouds::RUIDO);
         particleCloud.resetParticles();    
     }
-    if(appStatuses["escena"]==NUCLEAR_DEBIL) {
+    else if(appStatuses["escena"]==NUCLEAR_DEBIL) {
+        mrayoSil.reset();
         mcontour.reset();
         mcontour.modoFill=0;
+        mcontour.bFill=false;
     }
-    if(appStatuses["escena"]==GRAVEDAD){
+    
+    else if(appStatuses["escena"]==NUCLEAR_FUERTE) {
+        mcontour.reset();
+    }
+    
+    else if(appStatuses["escena"]==GRAVEDAD){
         mgrid.fadeIn();
     }
     
-    if(appStatuses["escena"]==MENU) {
+    else if(appStatuses["escena"]==MENU) {
         //pfbo.begin();
         //    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
         //pfbo.end();

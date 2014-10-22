@@ -185,6 +185,8 @@ void nuclear_debil::init_Escena() {
     destellos.clear();
 	borrar_neutrones();
     borrar_nucleos();
+    timeLastColision=0;
+    
     nCircs = 60 + floor(  ofRandom(20) );
 	for(int i =0; i<nCircs; i++) {
 		addNucleo(centro.x+ofRandom(-1,1), centro.y+ofRandom(-1,1), rNucleo);
@@ -321,6 +323,14 @@ void nuclear_debil::update(float dt) {
 //        CUAL ES EL MAXIMO DE NUCLEOS AQUI?
     }
     cheapComm::getInstance()->sendSync2("/sync/weak_nuclear/ball", ofWrapRadians(anillo.angT,0,2.0*PI),ofMap(abs(anillo.wAng),0,abs(anillo.wAngMax),0,1));
+   
+    if ( ofGetElapsedTimeMillis() < (timeLastColision+2000)){
+        cheapComm::getInstance()->sendSync0("/sync/weak_nuclear/colisiones");
+
+    }
+    else
+        cheapComm::getInstance()->sendSync0("/sync/weak_nuclear/nocolisiones");
+    
     /********/
 
 //TUIOS

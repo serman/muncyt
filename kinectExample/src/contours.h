@@ -16,7 +16,7 @@ using namespace ofxCv;
 using namespace cv;
 class contours{
 public:
-    enum colores{ROJOS=0, AZULES,VERDES,FLUOR};
+    enum colores{ROJOS=1, VERDES,AZULES, FLUOR};
     ofImage paletteRadio, paletteBlackhole;
     vector<ofPolyline> v;
     int numPointsXtra;
@@ -58,8 +58,8 @@ public:
         
         if(numPointsXtra<10){ bAddPts=false; doTriang=false;}
         if(numPointsXtra>10) {bAddPts=true; doTriang=true;}
-        if(numPointsXtra<100) bFill=false;
-        else bFill=true;
+       // if(numPointsXtra<100) bFill=false;
+       // else bFill=true;
         
     }
     
