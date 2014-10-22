@@ -216,8 +216,8 @@ void nuclear_fuerte::update(float d1){
                                                  ofMap(angZentro,0,2*PI,0,1),
                                                  ofMap(emitters[i].rho,0,W_WIDTH/2,0,1)
                                                 );
-            ofLogNotice()  << "hand_particle: " << emitters[i].idEmisor << " angulo" << angZentro << "(" <<  ofMap(angZentro,0,2*PI,0,1) << ")"<<
-            "  dist: " << emitters[i].rho<< "("<< ofMap(emitters[i].rho,0,W_WIDTH/2,0,1) <<")"<< endl ;
+           // ofLogNotice()  << "hand_particle: " << emitters[i].idEmisor << " angulo" << angZentro << "(" <<  ofMap(angZentro,0,2*PI,0,1) << ")"<<
+           // "  dist: " << emitters[i].rho<< "("<< ofMap(emitters[i].rho,0,W_WIDTH/2,0,1) <<")"<< endl ;
 
         }
         
@@ -480,7 +480,9 @@ void nuclear_fuerte::sceneWillAppear( ofxScene * fromScreen ){  // reset our sce
 
 //scene notifications
 void nuclear_fuerte::sceneWillDisappear( ofxScene * toScreen ){
-	gui1->saveSettings("gui1Settings.xml");
+	gui1->saveSettings("gui_nuclear_fuerte.xml");
+    gui1->disable();
+    
 	//	delete gui1;
 	
 	//    float *buffer;

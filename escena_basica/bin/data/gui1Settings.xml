@@ -8,12 +8,12 @@
 <Widget>
     <Kind>2</Kind>
     <Name>(b) Magnetic Field ON/OFF</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>Magnetic Force</Name>
-    <Value>0.000000000</Value>
+    <Value>0.142857194</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -28,7 +28,7 @@
 <Widget>
     <Kind>2</Kind>
     <Name>(e) Draw Camino ON/OFF</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -48,15 +48,15 @@
 <Widget>
     <Kind>2</Kind>
     <Name>BackGround New</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>Alpha background</Name>
-    <Value>0.000000000</Value>
+    <Value>6.280787945</Value>
 </Widget>
 <Widget>
     <Kind>42</Kind>
     <Name>(q/a)_Rate_partics</Name>
-    <Value>1</Value>
+    <Value>27</Value>
 </Widget>

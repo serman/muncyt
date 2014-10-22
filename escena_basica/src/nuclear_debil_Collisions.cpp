@@ -83,7 +83,7 @@ void nuclear_debil::colisiona_N_n (Particula * pN, Particula * pn) {
 		
 		addDestello(ptChoque.x, ptChoque.y);
         
-		addSprite(ptChoque.x, ptChoque.y);
+		//addSprite(ptChoque.x, ptChoque.y);
 		
 		// add un nuevo neutron
 		

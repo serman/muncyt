@@ -52,13 +52,22 @@ public:
 	
 	tangiblesHandler hands;			// hands: representacion de los cursores TUIO
 	tangiblesHandler touchElements;	// 
-	menuButton button1, button2, button3, button4;	// Habrá 4 botones touchElements
+	//menuButton button1, button2, button3, button4;	// Habrá 4 botones touchElements
+    vector<menuButton> buttons;
+    
     void	tuioAdded(ofxTuioCursor & tuioCursor);
 	void	tuioRemoved(ofxTuioCursor & tuioCursor);
 	void	tuioUpdated(ofxTuioCursor & tuioCursor);
 	
 	ofPoint transf_PosTUIO(ofxTuioCursor & tuioCursor);
 	
+    
+    // TUIOs
+    ofxTuioClient *tuioclient;
+    void setTuio(ofxTuioClient *_client){
+        tuioclient=_client;
+    }
+    
     void    onButtonPressed(BUTTON_TYPE1 &mtype);
 	
 	
@@ -100,9 +109,9 @@ public:
 	
 	vector<ofPolyline>	sectores;
 	void setupSectores();
-	
+	void interactionUpdate();
 	ofPath borde;
-
+    char currentButton;
 	ofVec2f centro;
 	float distConf;
 	

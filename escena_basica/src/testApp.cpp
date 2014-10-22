@@ -31,7 +31,7 @@ void testApp::setup(){
     myComm->setup();
     
     menu *m1=new menu();
-  //  m1->setComm(&myComm);
+    m1->setTuio(&tuioClient);
 	sceneManager->addScene( m1, SCENE_MENU);
     
     electromagnetica *electrom=new electromagnetica();

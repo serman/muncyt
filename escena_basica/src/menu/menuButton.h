@@ -19,7 +19,7 @@ enum BUTTON_TYPE1 {TYPE_ACC1,TYPE_CRASH1};
 class menuButton : public tangibleObject{
     
 public:
-    bool status_handIsOn;
+    char status_handIsOn;
     bool status_active;
     long lastCollision;
 	
@@ -27,22 +27,18 @@ public:
 	float timePressed;
 	float timeIntervActivacion;	// en millis
 	bool	pulsado;
-	
 	ofColor	cF;
-	
 	bool last_hadOn;
 	
 	int nombre;
 	display *mdisplay;
     ofEvent<BUTTON_TYPE1> buttonEvent;
-	
     menuButton(){
-        status_handIsOn=false;
+        status_handIsOn=0;
         status_active=true;
 		timeTouch = 0.0;
 		timePressed = 0.0;
 		timeIntervActivacion = 2000.0;
-        
 		pulsado = false;
     }
     
@@ -70,8 +66,8 @@ public:
             //ofRect(x,y,width,height);
         }
         
-        else{ //non active Status
-            if(status_handIsOn ==true){
+        else{ // active Status
+            if(status_handIsOn >0){
                 ofSetColor(cF, 30);
                 ofFill();
                 ofRect(x,y,width,height);

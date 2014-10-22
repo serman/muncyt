@@ -13,7 +13,7 @@
 #include <ofMain.h>
 #include "cheapComm.h"
 #define RADIO 130
-#define LOADINGTIME 6
+#define LOADINGTIME 4
 
 /*
  DISPLAY CENTRAL 
@@ -61,7 +61,7 @@ public:
         if(status==COUNTING) a<255?a+=10:a; //velocidad del fade
         if(status==OFF) return;
         if(status==PREVIOUS){
-            if (ofGetElapsedTimeMillis()-time0 >2000){
+            if (ofGetElapsedTimeMillis()-time0 >800){
                 init_time=ofGetElapsedTimeMillis();                
                 rotation_angle=0;
                 a=0;
@@ -70,17 +70,18 @@ public:
             }
             return;
         }
-
-        
         
         int tim=ofGetElapsedTimeMillis()-init_time;
         int timeleft=LOADINGTIME*1000-tim;
         if(timeleft<0) {
             init_time=ofGetElapsedTimeMillis(); a=0; ofSendMessage("changeScene" +ofToString(scene)); status==OFF;
-            return;}
+            return;
+        }
         int timeleft_sec=ceil(timeleft/1000);
         
         string timeleft_str=ofToString(timeleft_sec);
+        
+        
         ofPushMatrix();
             ofPushStyle();
             ofTranslate((ofGetWidth()-W_WIDTH)/2, 0);

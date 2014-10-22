@@ -61,23 +61,28 @@ void menu::setup() {
 	//
 
 	//buttonSpeed1.set(centro.x-rMed-(dRad*0.9/2),centro.y-(dRad*0.9/2), dRad*0.9,dRad*0.9);
+    menuButton button1;
 	button1.set(0, 0, centro.x, centro.y);
 //	button1.setup("E·M", ofColor::fromHex(0xF70D1A) );	// ferrary red
 	button1.setup(EM, ofColor::fromHex(0xF70D1A) , &mdisplay);	// ferrary red
+    buttons.push_back(button1);
 	
+    menuButton button2;
 	button2.set(centro.x, 0, centro.x, centro.y);
 	button2.setup(FUERTE, ofColor::chartreuse, &mdisplay);
-
+    buttons.push_back(button2);
+    menuButton button3;
 	button3.set(centro.x,centro.y, centro.x, centro.y);
 	button3.setup(GRAVEDAD, ofColor::skyBlue, &mdisplay);//	fromHex(0x64E986) );	// Algae Green	// Emerald
-
+    buttons.push_back(button3);
+    menuButton button4;
 	button4.set(0, centro.y, centro.x, centro.y);
 	button4.setup(DEBIL, ofColor::pink , &mdisplay);
- 
-	touchElements.addObject(button1);
-	touchElements.addObject(button2);
-	touchElements.addObject(button3);
-	touchElements.addObject(button4);
+     buttons.push_back(button4);
+	touchElements.addObject(buttons[0]);
+	touchElements.addObject(buttons[1]);
+	touchElements.addObject(buttons[2]);
+	touchElements.addObject(buttons[3]);
 
 	
 //	init_Escena();
@@ -133,7 +138,11 @@ void menu::init_Escena() {
 		
 	ofLogNotice("menu - init_escena - fin");
    
-	
+	currentButton=-1;
+    for(int i=0; i<buttons.size();i++){
+        buttons[i].touchUpAll();
+    }
+        hands.objectsCol.clear();
 }
 
 void menu::exit_Escena() {
@@ -149,10 +158,10 @@ void menu::exit_Escena() {
 //	ofRemoveListener(box2d.contactStartEvents, this, &menu::contactStart);
 //	ofRemoveListener(box2d.contactEndEvents, this, &menu::contactEnd);
 	
-    ofRemoveListener(button1.buttonEvent ,this, &menu::onButtonPressed);
-    ofRemoveListener(button2.buttonEvent ,this, &menu::onButtonPressed);
-    ofRemoveListener(button3.buttonEvent ,this, &menu::onButtonPressed);
-    ofRemoveListener(button4.buttonEvent ,this, &menu::onButtonPressed);
+    ofRemoveListener(buttons[0].buttonEvent ,this, &menu::onButtonPressed);
+    ofRemoveListener(buttons[1].buttonEvent ,this, &menu::onButtonPressed);
+    ofRemoveListener(buttons[2].buttonEvent ,this, &menu::onButtonPressed);
+    ofRemoveListener(buttons[3].buttonEvent ,this, &menu::onButtonPressed);
 	
 	ofLogNotice("menu - exit_escena - fine");
 	
@@ -348,6 +357,7 @@ void menu::update(float d1) {
 		interaccion_point(ofPoint(h->x,h->y), bPar);
 		
 	}
+    interactionUpdate();
 	
 	
 }

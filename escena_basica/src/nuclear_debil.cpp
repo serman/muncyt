@@ -152,7 +152,6 @@ void nuclear_debil::setup() {
     
     spriteExp = new ofxSpriteSheetRenderer(1, 1000, 0, 100); //declare a new renderer with 1 layer, 10000 tiles per layer, default layer of 0, tile size of 32
 	spriteExp->loadTexture("exp__Spritesheet.png", 2800, GL_NEAREST); // load the spriteSheetExample.png texture of size 256x256 into the sprite sheet. set it's scale mode to nearest since it's pixel art
-	ofEnableAlphaBlending();
 
 }
 // comparison routine for sort...
@@ -183,11 +182,14 @@ void nuclear_debil::init_Escena() {
 	// crear cosas
 	// add some nucleos
 	nucleos.clear();
+    destellos.clear();
+	borrar_neutrones();
+    borrar_nucleos();
     nCircs = 60 + floor(  ofRandom(20) );
 	for(int i =0; i<nCircs; i++) {
 		addNucleo(centro.x+ofRandom(-1,1), centro.y+ofRandom(-1,1), rNucleo);
 	}
-	
+
 	// addListeners
     box2d.enableEvents();
 	ofAddListener(box2d.contactStartEvents, this, &nuclear_debil::contactStart);
@@ -197,6 +199,7 @@ void nuclear_debil::init_Escena() {
     ofAddListener(buttonSpeed1.buttonEvent ,this, &nuclear_debil::onButtonPressed);
     ofAddListener(buttonCollide.buttonEvent ,this, &nuclear_debil::onButtonPressed);
     sent_changeScene_message=false;
+	ofEnableAlphaBlending();
 
 }
 
@@ -332,21 +335,23 @@ void nuclear_debil::update(float dt) {
 	int ttAct = ofGetElapsedTimeMillis();
 	float sqLim = (radioInt*radioInt)*0.9;
 	int limTime = floor(1000/ofGetFrameRate())+20;
-	for(int i=0; i<hands.objectsCol.size(); i++) {
-//		ofLogNotice("handShadow num: " + ofToString(i));
-		handShadow * h = (handShadow *) hands.objectsCol[i];
-//		ofLogNotice("x,y: " + ofToString(h->x)+"/"+ofToString(h->y)+ "   age: " + ofToString(h->age));
-		// si esta en la parte central del c’rculo
-		ofVec2f vHand = ofVec2f(h->x,h->y);
-//		ofVec2f vHandCentro = ofVec2f(x-W_WIDTH/2.0,y-W_HEIGHT/2.0);
-		if(vHand.squareDistance(ofVec2f(W_WIDTH/2.0,W_HEIGHT/2.0)) < sqLim ) {
-			int dtt = ttAct-h->age;
-			if(dtt%500<limTime) {
-				addNucleo(h->x, h->y);
-			}
-		}
-	}
     
+    
+    //ANIADIMOS NUCLEOS SOLO SI NO HAY YA DEMASIADOS
+    if(numNucleosActivos<NUCLEOS_TO_EXPLOSION*1.5){
+        for(int i=0; i<hands.objectsCol.size(); i++) {
+            handShadow * h = (handShadow *) hands.objectsCol[i];
+            // si esta en la parte central del c’rculo
+            ofVec2f vHand = ofVec2f(h->x,h->y);
+    //		ofVec2f vHandCentro = ofVec2f(x-W_WIDTH/2.0,y-W_HEIGHT/2.0);
+            if(vHand.squareDistance(ofVec2f(W_WIDTH/2.0,W_HEIGHT/2.0)) < sqLim ) {
+                int dtt = ttAct-h->age;
+                if(dtt%1000<limTime) {
+                    addNucleo(h->x, h->y);
+                }
+            }
+        }
+    }
     
     /*** Sprite update ***/
     spriteExp->clear(); // clear the sheet
@@ -504,11 +509,10 @@ void nuclear_debil::draw(){
 //    if(sprites.size()>0) // if we have sprites
 //MODO EXPLOSION FIN DE LA ESCENA
     if(status==EXPLOSION ){
-        
-        if(init_explosion_time+10000 < ofGetElapsedTimeMillis() || numNucleosActivos <3){ //la escena termina si no quedan nucleos o si ya ha pasado mucho tiempo desde la explosi—n
-				
-            if(sent_changeScene_message){
-             ofSendMessage("changeScene" +ofToString(SCENE_MENU)); status==OFF;
+        if(init_explosion_time+20000 < ofGetElapsedTimeMillis() ){ //la escena termina si ya ha pasado mucho tiempo desde la explosi—n
+            if(sent_changeScene_message==false){
+                ofSendMessage("changeScene" +ofToString(SCENE_MENU));
+                status==OFF;
                 sent_changeScene_message=true;
             }
         }
@@ -520,8 +524,6 @@ void nuclear_debil::draw(){
 	// Info
 	drawInfo();
 
-//	ofSetColor(255);
-//	ofLine(ofGetMouseX()*W_WIDTH/ofGetScreenWidth(),0,ofGetMouseX()*ofGetScreenWidth()/W_WIDTH,ofGetHeight());
 
 }
 

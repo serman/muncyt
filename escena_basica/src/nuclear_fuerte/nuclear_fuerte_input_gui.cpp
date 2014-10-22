@@ -102,18 +102,19 @@ void nuclear_fuerte::tuioAdded(ofxTuioCursor &tuioCursor){
     
     int tipo=(int)ofRandom(0,4);
     exchangeColors(tipo);
+    cout << " sending tipo: " << tipo;
     if(tipo==1){
-        cheapComm::getInstance()->sendSync4("/sync/strong_nuclear/hand_on_event",1.0,tipo,colorp1,(float)colorp2);
+        cheapComm::getInstance()->sendSync4("/sync/strong_nuclear/hand_on_event",1.0,(float)tipo,(float)colorp1,(float)colorp2);
         cheapComm::getInstance()->sendSync2("/sync/strong_nuclear/setColor",1.0,colorp1);
         cheapComm::getInstance()->sendSync2("/sync/strong_nuclear/setColor",2.0,colorp2);
     }
     else if(tipo==2){
-        cheapComm::getInstance()->sendSync4("/sync/strong_nuclear/hand_on_event",1.0,tipo,colorp2,(float)colorp3);
+        cheapComm::getInstance()->sendSync4("/sync/strong_nuclear/hand_on_event",1.0,(float)tipo,(float)colorp2,(float)colorp3);
         cheapComm::getInstance()->sendSync2("/sync/strong_nuclear/setColor",2.0,colorp2);
         cheapComm::getInstance()->sendSync2("/sync/strong_nuclear/setColor",3.0,colorp3);
     }
     else if(tipo==3){
-        cheapComm::getInstance()->sendSync4("/sync/strong_nuclear/hand_on_event",1.0,tipo,(float)colorp3,(float)colorp1);
+        cheapComm::getInstance()->sendSync4("/sync/strong_nuclear/hand_on_event",1.0,(float)tipo,(float)colorp3,(float)colorp1);
         cheapComm::getInstance()->sendSync2("/sync/strong_nuclear/setColor",3.0,colorp3);
         cheapComm::getInstance()->sendSync2("/sync/strong_nuclear/setColor",1.0,colorp1);
     }

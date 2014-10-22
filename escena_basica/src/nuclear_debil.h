@@ -153,7 +153,7 @@ public:
     void        drawCenterDisplay();
 	void		drawFuerzaSelector();
 	void		drawInfo();
-
+    void        reset();
 	ofRectangle marco;
 	// TUT en https://www.iforce2d.net/b2dtut/fixtures
 	

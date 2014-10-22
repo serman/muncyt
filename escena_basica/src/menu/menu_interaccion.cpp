@@ -71,6 +71,42 @@ void menu::interaccion_point(ofVec2f ptF, bool isNeg) {
 
 }
 
+void menu::interactionUpdate(){
+    list<ofxTuioCursor*>::iterator tobj;
+    list<ofxTuioCursor*> objectList = tuioclient->getTuioCursors();
+    
+//    1º Miro si hay algun blob en el botón pulsado actualmente
+    if(currentButton!=-1){
+        for (tobj=objectList.begin(); tobj != objectList.end(); tobj++) {
+            ofxTuioCursor *blob = (*tobj);
+            ofPoint p=transf_PosTUIO(*blob);
+            if(buttons[currentButton].inside(p.x, p.y)){
+                return; // sigue habiendo un blob en el boton
+            }
+        } //si este for termina sin llegar al return es que el boton no esta pulsado ya
+        buttons[currentButton].touchUp(-1);
+        currentButton=-1;
+    }
+    
+    
+// 2º Si no hay ninguna mano en ese elemento recorro los demás buscando manos. Si alguna mano está sobre el botón este pasa a ser el principal
+    for (tobj=objectList.begin(); tobj != objectList.end(); tobj++) {
+        ofxTuioCursor *blob = (*tobj);
+        ofPoint p=transf_PosTUIO(*blob);
+        for(int i=0; i<buttons.size(); i++){
+            if(buttons[i].inside(p.x, p.y)){
+                currentButton=i; // sigue habiendo un blob en el boton
+                buttons[i].touch(p.x, p.y,blob->getSessionId());
+                return;
+            }
+        }
+    } //si este for termina sin llegar al return es que el boton no esta pulsado ya
+
+    currentButton=-1;
+    
+//Si no hay manos boton seleccionado es ninguno
+}
+
 //--------------------------------------------------------------
 void menu::keyPressed(int key) {
 	
@@ -167,7 +203,7 @@ void menu::tuioAdded(ofxTuioCursor &tuioCursor){
     h1->setup();
     hands.addObject(*h1);
     hands.notifyTouch(loc.x, loc.y,tuioCursor.getSessionId());
-    touchElements.notifyTouch(loc.x, loc.y,tuioCursor.getSessionId());
+   // touchElements.notifyTouch(loc.x, loc.y,tuioCursor.getSessionId());
 }
 
 void menu::tuioUpdated(ofxTuioCursor &tuioCursor){
@@ -180,7 +216,7 @@ void menu::tuioUpdated(ofxTuioCursor &tuioCursor){
 //	cout << "Point n" << tuioCursor.getSessionId() << " updated at " << loc << endl;
     
     hands.notifySlide(loc.x, loc.y, tuioCursor.getSessionId(),tuioCursor.getMotionAccel());
-    touchElements.notifySlide(loc.x, loc.y,tuioCursor.getSessionId(),tuioCursor.getMotionAccel());
+ //   touchElements.notifySlide(loc.x, loc.y,tuioCursor.getSessionId(),tuioCursor.getMotionAccel());
 }
 
 void menu::tuioRemoved(ofxTuioCursor &tuioCursor){
@@ -199,7 +235,7 @@ void menu::tuioRemoved(ofxTuioCursor &tuioCursor){
     
 	//    
     hands.removeObjectByTuioID(tuioCursor.getSessionId() );
-    touchElements.notifyTouchUp( tuioCursor.getSessionId() );
+   // touchElements.notifyTouchUp( tuioCursor.getSessionId() );
     
 }
 
