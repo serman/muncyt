@@ -62,3 +62,5 @@ Temporary Items
 
 mainScreen/bin/data/recordings/*
 espectros/bin/data/recordings/*
+
+.sync/
