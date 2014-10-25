@@ -128,7 +128,7 @@ void fantasmas::update(float d){
             ofPoint p1 = convertPoint(blobToRecord->getX(), blobToRecord->getY());
             
             mRecorder.start(2000, 25, remoteBlobImgPxl,
-                            blobToRecord->width*640*VIDEO_scale,blobToRecord->height*480*VIDEO_scale,
+                            blobToRecord->width*VIDEO_W*VIDEO_scale,blobToRecord->height*VIDEO_H*VIDEO_scale,
                            p1.x, p1.y
                             );
             RecordingBlobId=blobToRecord->getSessionId();
@@ -170,7 +170,7 @@ void fantasmas::draw(){
         ofPushMatrix();
         ofTranslate(100,100);
 //dibujo la imagen normal que se ve en pantalla
-        mSyphonClient2->drawSubsection(0,0,SCREEN_W,SCREEN_H,0,VIDEO_offset,640,SCREEN_H);
+        mSyphonClient2->drawSubsection(0,0,SCREEN_W,SCREEN_H,0,VIDEO_offset,VIDEO_W,SCREEN_H);
 
     //DIBUJO LOS
         list<ofxTuioCursor*>::iterator tobj;
@@ -190,7 +190,7 @@ void fantasmas::draw(){
         
         ofClear(0, 0, 0, 0);
 //        mSyphonClient2->draw(0,0,640,480);
-        mSyphonClient2->drawSubsection(0,0,SCREEN_W,SCREEN_H,0,VIDEO_offset,640,SCREEN_H);
+        mSyphonClient2->drawSubsection(0,0,SCREEN_W,SCREEN_H,0,VIDEO_offset,VIDEO_W,SCREEN_H);
         //mSyphonClient.draw(0, 0,640,480);
         fbo.end();
         //fbo.draw(640,480,320,240);
@@ -215,7 +215,7 @@ void fantasmas::draw(){
 		ofPushMatrix();
         ofTranslate(100,100);
 //        mSyphonClient->draw(0,0,640,480);
-        mSyphonClient->drawSubsection(0,0,SCREEN_W,SCREEN_H,0,VIDEO_offset,640,SCREEN_H);
+        mSyphonClient->drawSubsection(0,0,SCREEN_W,SCREEN_H,0,VIDEO_offset,VIDEO_W,SCREEN_H);
         ofSetColor(255,255,255);
 
         float tt = ofGetElapsedTimef();

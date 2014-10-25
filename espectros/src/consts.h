@@ -12,20 +12,33 @@
 
 #define SCREEN_W 768
 #define SCREEN_H 384
-#define VIDEO_W 640
-#define VIDEO_H 480
+#define VIDEO_W 720
+#define VIDEO_H 576
 
+//la imagen que se recibe hay que escalarla por este ratio para que se convierta en pantalla completa
 static float VIDEO_scale=SCREEN_W/VIDEO_W;
+
+//Como el ratio de imagen en la pantalla es de 2:1 y no de 4:3 como el vídeo, tomamos la franja central de la imagen a partir de un offset:
+//VIDEO_scale*VIDEO_H es el alto del video que se obtiene tras escalar
+
 static  float VIDEO_offset=((VIDEO_scale*VIDEO_H)-SCREEN_H)/2;
 
 //devuelve (-1, -1) si el punto está fuera de la pantalla
+// Recibe un valor entre 0 y 1 sin escalar
+
 static ofPoint convertPoint(float x1, float y1){
-    if(y1*VIDEO_H*VIDEO_scale>(VIDEO_offset-30)
-       && y1*VIDEO_H*VIDEO_scale>VIDEO_offset <  (VIDEO_offset + SCREEN_H+30) ){
-        ofPoint p1=ofPoint((float)x1*SCREEN_W, (float)y1*VIDEO_H*VIDEO_scale-VIDEO_offset);
+    float y1px=y1*VIDEO_H*VIDEO_scale;
+    
+    if(y1px >(VIDEO_offset) /* el punto está dentro de la franja que se muetra ( que comienza en VIDEO_offset*/
+       && y1px < (VIDEO_offset + SCREEN_H)
+       /* Y termina en video_offset+ screen_h*/
+       ){
+        ofPoint p1=ofPoint((float)x1*SCREEN_W, (float)y1px-VIDEO_offset);
         return p1;
     }
     else return ofPoint(-1,-1);
 }
+
+
 
 #endif

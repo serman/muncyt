@@ -16,7 +16,7 @@ void testApp::parseStrongOsc(string s,ofxOscMessage &m){
         int color= round(m.getArgAsFloat(1));
         cout << "parse strong nuclear: " << s << " "<<target <<" "<< color <<" " << SCREEN_ID << endl;
         if(SCREEN_ID==target){
-            mdela.setColor(color);
+            mPuntosFormas.setColor(color);
         }
     }
     

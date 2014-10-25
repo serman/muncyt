@@ -27,8 +27,7 @@
 #include "consts.h"
 #define SCREEN_W 768
 #define SCREEN_H 384
-#define VIDEO_W 640
-#define VIDEO_H 480
+
 
 class juego1 : public ofxScene{
     
@@ -89,7 +88,7 @@ private:
     bool isGoal;
     void moveGoal();
     void randomMoveGoal();
-    ofPoint convertPoint(float, float);
+    //ofPoint convertPoint(float, float);
     /** escalado video ajuste pantala
     float VIDEO_scale=SCREEN_W/640;
     float VIDEO_offset=((VIDEO_scale*480)-SCREEN_H)/2;*/
@@ -115,7 +114,7 @@ private:
     
     void reset();
     void setLevel();
-    
+        int helpLinesCount;
     
     //Parametros tocables float density, float bounce, float friction)
     float ballDensity=0.89;
@@ -130,6 +129,9 @@ private:
     
     float goalHeight=80;
     bool goalDown=false;
+    ofImage flecha;
+        ofImage ballImg;
+    ofImage goalImg;
     
 };
 

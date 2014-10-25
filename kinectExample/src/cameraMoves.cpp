@@ -13,13 +13,13 @@ cameraMoves::cameraMoves(){}
 
 
     void cameraMoves::setup(ofCamera *_cam){
-        zoomSpeed=3.0;
+        zoomSpeed=20.0;
         shouldRestartCamera=false;
         cam=_cam;
     }
     void cameraMoves::zoomInAndCenter(){
         if(zoomInFirstTime){
-            cam->dolly(-500.0);
+            cam->dolly(-2000.0);
             //cam->tilt(-10.0);
             zoomInFirstTime=false;
         }else{
@@ -38,6 +38,6 @@ cameraMoves::cameraMoves(){}
         ofLog()<< "RESET CAMERA MOVES"<<endl;
         shouldRestartCamera=true;
         zoomInFirstTime=true;
-        zoomInCounter=500;
+        zoomInCounter=2000;
         tiltCounter=10;
     }

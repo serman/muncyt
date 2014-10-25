@@ -52,8 +52,8 @@ public:
         setupParticles();
         palete.loadImage("palette1.png");
         testAmount=0;
-
     }
+    
     void setupParticles(){
         //int w= oniSettings.width;
         //int h= oniSettings.height;
@@ -224,6 +224,7 @@ public:
         ofEnableDepthTest();
 
             meshParticles.draw();
+        //drawWithRectangles();
         ofDisableDepthTest();
 
 //        ofPopMatrix();

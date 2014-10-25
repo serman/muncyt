@@ -458,6 +458,7 @@
 		F79A3D7419D8964A009151E9 /* osc_match.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = osc_match.h; sourceTree = "<group>"; };
 		F79A3D7519D8B7A7009151E9 /* consts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = consts.h; sourceTree = "<group>"; };
 		F79A3D7619D8BDDD009151E9 /* testApp_osc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testApp_osc.cpp; sourceTree = "<group>"; };
+		F79BF32919FAB44400FD4864 /* puntosFormas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = puntosFormas.h; sourceTree = "<group>"; };
 		F79CC82B19E1F65500DA7F17 /* dela.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dela.h; sourceTree = "<group>"; };
 		F7A515A81975740000028875 /* testApp_Drawing.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testApp_Drawing.cpp; sourceTree = "<group>"; };
 		F7A515AB197574C100028875 /* testApp_inputInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testApp_inputInterface.cpp; sourceTree = "<group>"; };
@@ -1047,6 +1048,7 @@
 				F772533019819DC600ADD13E /* sendContour.h */,
 				F772537B1981E91A00ADD13E /* rcvContour.h */,
 				F7A657D619B0C62E004E0E78 /* particleClouds.h */,
+				F79BF32919FAB44400FD4864 /* puntosFormas.h */,
 				F79A3D7519D8B7A7009151E9 /* consts.h */,
 				F7E3CA8419D8D70500442BCA /* menu.h */,
 				F79CC82B19E1F65500DA7F17 /* dela.h */,

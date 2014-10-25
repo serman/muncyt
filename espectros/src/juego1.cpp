@@ -19,7 +19,7 @@ void juego1::setup(){
 	box2d.registerGrabbing();
     
     goal.setPhysics(0, 0.53, 0.8);
-    goal.setup(box2d.getWorld(),SCREEN_W-20, SCREEN_H-100, 10,goalHeight);
+    goal.setup(box2d.getWorld(),SCREEN_W-20, SCREEN_H-100, 15,goalHeight);
     datoObjeto *porteria=new datoObjeto;
     porteria->tipo=GOAL;
     goal.setData(porteria);
@@ -48,6 +48,9 @@ void juego1::setup(){
     addObstacle(ofPoint(ofGetMouseX(), ofGetMouseY()), -100,0.05,0.05);;
     
     setupUI();
+    flecha.loadImage("flecha.png");
+    ballImg.loadImage("ball.png");
+    goalImg.loadImage("stick.png");
     //eff.setup();
 }
 /*
@@ -59,7 +62,7 @@ void juego1::draw(){
     fbo.begin();
         ofClear(0, 0, 0, 0);
         //  IMPORTANTE ESTOY DIBUJANDO SOBRE UN FBO DE TAMAÑO DEFINIDO CON LO QUE AL PINTAR FUERA NO SE VE
-        mSyphonClient2->drawSubsection(0,0,SCREEN_W,SCREEN_H,0,VIDEO_offset,640,SCREEN_H);
+        mSyphonClient2->drawSubsection(0,0,SCREEN_W,SCREEN_H,0,VIDEO_offset,VIDEO_W,SCREEN_H);
     fbo.end();
     /*convertColor(cam, gray, CV_RGB2GRAY);
     Canny(gray, edge, mouseX, mouseY, 3);
@@ -91,7 +94,7 @@ void juego1::draw(){
     filter->end() ;
     if(appStatuses["game_status"]==PLAYING){
             drawControls();
-         eff.draw();
+            eff.draw();
     }
     
     else if(appStatuses["game_status"]==WIN){
@@ -123,7 +126,7 @@ void juego1::draw(){
     }
     ofPopMatrix();
     
-    showDebug();
+    //showDebug();
     
 
     
@@ -158,6 +161,8 @@ void juego1::update(float f){
         int dif= ofGetElapsedTimeMillis()-appStatuses["lastTimeRead"] ;
         appStatuses["time"]-=dif;
         appStatuses["lastTimeRead"]= ofGetElapsedTimeMillis();
+        
+        
         //chequeo si el tiempo que tenia la pelota para lanzar ya ha terminado
         if( (ofGetElapsedTimeMillis()-appStatuses["counterThisLife"] >4000 ) &&  appStatuses["game_sub_status"]==BOUNCING)
         {
@@ -206,6 +211,7 @@ void juego1::reset(){
     appStatuses["level"]=0;
     appStatuses["vidas"]=3;
     appStatuses["counterThisLife"]=0;
+    helpLinesCount=0;
     
     //reset ball
     datoObjeto *mdata=(datoObjeto *)ball.getData();
@@ -219,7 +225,7 @@ void juego1::reset(){
     mdata=(datoObjeto *)goal.getData();
     goal.destroy();
     goal.setPhysics(0, 0.53, 0.8);
-    goal.setup(box2d.getWorld(),SCREEN_W-20, SCREEN_H-100, 10,goalHeight);
+    goal.setup(box2d.getWorld(),SCREEN_W-20, SCREEN_H-100, 15,goalHeight);
     goal.setData(mdata);
 
 }
@@ -250,6 +256,8 @@ void juego1::showDebug(){
     ofDrawBitmapString("Framerate " + ofToString(ofGetFrameRate()), 20, 40);
     ofDrawBitmapString("Level " + ofToString(appStatuses["level"]), 20, 55);
     ofDrawBitmapString("Lifes " + ofToString(appStatuses["vidas"]), 20, 70);
+    if(appStatuses["game_sub_status"]==THROW)
+    ofDrawBitmapString("THROW STATUS " , 20, 90);
 }
 
 
@@ -375,26 +383,77 @@ void juego1::gui2Event(ofxUIEventArgs &e)
 void juego1::drawControls(){
     
     ofPushMatrix();
-    ofTranslate(0,SCREEN_H);
+    ofPushStyle();
+   // ofLine(0,0,throwDirection.x,throwDirection.y);
    // ofSetColor(0,136,136);
     ofSetColor(124, 124, 124);
-    ofLine(0,0, throwDirection.x, throwDirection.y);
-    float ang= atan(throwDirection.y/throwDirection.y);
-    ofLine(throwDirection.x-10, throwDirection.y, throwDirection.x, throwDirection.y);
-    ofLine(throwDirection.x, throwDirection.y+10, throwDirection.x, throwDirection.y);
+
+    //float ang= atan(throwDirection.x/throwDirection.y);
+    ofTranslate(0,SCREEN_H);
+    ofRotateZ(-throwDirection.angle(ofVec2f(1,0)));
+    //ofRect(0,0, 100, 10);
+
+    ofEnableAlphaBlending();
+    ofSetColor(255,220+35*sin(ofGetElapsedTimef()/6.0*TWO_PI));
+    flecha.draw(0, -flecha.height/2);
+
+    for (int i=0; i<helpLinesCount; i++){
+//    ofLine(130, 0, 135, 0);
+    ofLine(130+8*i, 0, 135+8*i, 0);
+    }
+    if(ofGetFrameNum()%5==0)
+        helpLinesCount++;
+    if(helpLinesCount>10) helpLinesCount=0;
+    
+    //ofLine(throwDirection.x-10, throwDirection.y, throwDirection.x, throwDirection.y);
+//    ofLine(throwDirection.x, throwDirection.y+10, throwDirection.x, throwDirection.y);
+    ofPopStyle();
     ofPopMatrix();
 
-    
-    ofNoFill();
-    ofRect(0,0,SCREEN_W,SCREEN_H);
-    ofRect(0,0,200,20);
+
+       // ofDrawBitmapString("Fuerza:",20,20);
+    ofRect(20,20,200,20);
     ofFill();
-    ofRect(0,0,amountForce,20);
+    ofSetColor(33,148,18);
+    ofRect(20,20,amountForce,20);
+
+    
     
     ofNoFill();
-    ball.draw();
-    box2d.drawGround();
-    goal.draw();
+    //ball.draw();
+    ofPushMatrix();
+    ofPushStyle();
+    ofSetRectMode(OF_RECTMODE_CENTER);
+        ofSetColor(255,230+25*sin(ofGetElapsedTimef()/3.0*TWO_PI));
+        ofTranslate(ball.getPosition());
+        ofRotateZ(ball.getRotation());
+        ballImg.draw(-ballImg.width/2, -ballImg.width/2);
+    ofSetRectMode(OF_RECTMODE_CORNER);
+    ofPopStyle();
+    ofPopMatrix();
+    
+
+    //goal.draw();
+    ofPushMatrix();
+        ofPushStyle();
+    ofSetRectMode(OF_RECTMODE_CENTER);
+        ofSetColor(255,230+25*sin(ofGetElapsedTimef()/1.0*TWO_PI));
+        ofTranslate(goal.getPosition());
+        //ofRotateZ(ball.getRotation());
+        float imgTocanvasH=194/119*1.6;
+            float imgTocanvasW=100/25;
+        float ratio= goalImg.height/goal.getHeight();
+    
+        goalImg.draw(0, 0,
+                     goal.getWidth()*imgTocanvasW,
+                     goal.getHeight()*imgTocanvasH);
+    ofSetRectMode(OF_RECTMODE_CORNER);
+        ofPopStyle();
+    ofPopMatrix();
+   //
+    
+
+    
     ofSetColor(124, 124, 124);
     for(int i=0; i<circles.size(); i++) {
         
@@ -402,7 +461,11 @@ void juego1::drawControls(){
               //  if(mdata->id==-100){
                     circles[i].get()->draw();
               //  }
-        	}
+    }
+    //box2d.drawGround();
+    ofSetColor(255);
+    ofNoFill();
+    ofRect(0,0,SCREEN_W,SCREEN_H);
 }
 
 

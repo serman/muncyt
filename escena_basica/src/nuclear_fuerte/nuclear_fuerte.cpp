@@ -465,9 +465,9 @@ void nuclear_fuerte::init_Scena() {
 	totEmitters++;
 	
 	emitter.ratePartic = ratePartic;
-    colorp1=0; //red
-    colorp2=1; //green
-    colorp3=2;//blue
+    colorp1=ROJOS; //red
+    colorp2=VERDES; //green
+    colorp3=AZULES;//blue
     
 }
 

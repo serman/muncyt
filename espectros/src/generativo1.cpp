@@ -32,7 +32,7 @@ void generativo1::draw(){
     ofClear(0, 0, 0, 0);
         ofSetColor(255);
     mSyphonClient->drawSubsection(0,0,SCREEN_W,SCREEN_H,
-                                  0,VIDEO_offset,640,SCREEN_H);
+                                  0,VIDEO_offset,VIDEO_W,SCREEN_H);
     fbo.end();
     fbo.readToPixels(cameraPixels);
     cameraImg.setFromPixels(cameraPixels);

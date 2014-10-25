@@ -116,7 +116,6 @@ void juego2::draw(){
     
         drawControls();
         //dibujo enemigos
-    
         drawEnemies();
 
         if(appStatuses["game_status"]==WIN){
@@ -144,7 +143,7 @@ void juego2::drawBgRegion(){
     ofClear(0, 0, 0, 0);
     //  IMPORTANTE ESTOY DIBUJANDO SOBRE UN FBO DE TAMAÑO DEFINIDO CON LO QUE AL PINTAR FUERA NO SE VE
     ofSetColor(255);
-    mSyphonClient->drawSubsection(0,0,SCREEN_W,SCREEN_H,0,VIDEO_offset,640,SCREEN_H);
+    mSyphonClient->drawSubsection(0,0,SCREEN_W,SCREEN_H,0,VIDEO_offset,VIDEO_W,SCREEN_H);
     fbo.end();
     fbo.readToPixels(remoteBlobImgPxl);
     //  remoteBlobImgPxl.update();

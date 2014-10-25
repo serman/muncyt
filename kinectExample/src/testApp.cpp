@@ -24,7 +24,7 @@ void testApp::setup() {
 
 	oniSettings.colorPixelFormat = PIXEL_FORMAT_RGB888;
 	//oniSettings.irPixelFormat = PIXEL_FORMAT_GRAY16;
-	oniSettings.doRegisterDepthToColor = true;
+	oniSettings.doRegisterDepthToColor = false;
 #ifndef USEFILE
     oniSettings.useOniFile=false;
 #else
@@ -64,6 +64,7 @@ void testApp::setup() {
     }
     depthGenerator.setup(oniCamGrabber.deviceController);
     	rgbGenerator.setup(oniCamGrabber.deviceController);
+            //oniCamGrabber.depthSource.setDepthClipping(300,6000);
     cout << "width: " <<  rgbGenerator.width << " hei: " <<rgbGenerator.height;
     
     //depthGenerator.videoStream.setMirroringEnabled(true);
@@ -111,6 +112,7 @@ void testApp::setup() {
     mgrid.setup(oniSettings.width, oniSettings.height, &zMin, &zMax, &oniCamGrabber, &depthGenerator);
     particleCloud.setup(oniSettings.width, oniSettings.height, &zMin, &zMax, &oniCamGrabber, &depthGenerator,&camera);
     mdela.setup(oniSettings.width, oniSettings.height, &zMin, &zMax, &oniCamGrabber, &depthGenerator,&camera);
+    mPuntosFormas.setup(oniSettings.width, oniSettings.height, &zMin, &zMax, &oniCamGrabber, &depthGenerator,&camera);
     mvideoMask.setup();
     //gui1->loadSettings("./config/gui/gui_kinect.xml");
     guiTabBar->loadSettings("./config/gui/","espejo_");
@@ -176,6 +178,7 @@ void testApp::update() {
     if (isReady)
     {
         oniCamGrabber.update();
+        if( appStatuses["escena"]==TESTING) return;
 /// ACTUALIZACION CONTINUA
         switch(appStatuses["escena"]){
             case EM:
@@ -199,7 +202,7 @@ void testApp::update() {
                 
             case NUCLEAR_FUERTE:
                 //la nuclear fuerte usa un delaunay en 3D muy colorido
-                mdela.update();
+                //mdela.update();
                 break;
                 
         }
@@ -270,18 +273,35 @@ void testApp::startFBO(){
 }
 
 void testApp::draw() {
+    if(appStatuses["escena"]==TESTING){
+        ofDisableAlphaBlending();
+        ofBackground(0,40,100);
+        ofTexture& depth = oniCamGrabber.getDepthTextureReference();
+        ofSetColor(0, 200, 0);
+        depth.draw(0, 0,640,480);
+        
+        ofMesh m;
+        for(int y = 0; y < depth.getHeight(); y++){
+            for(int x = 0; x < depth.getWidth(); x++){
+                m.addVertex(oniCamGrabber.convertDepthToWorld(x, y));
+            }
+        }
+        m.drawVertices();
+        return;
+    }
+    
+    
     if(cameraMoves::getInstance()->shouldRestartCamera){
         loadCameraPose();
         cout << "load camera pose" <<endl;
         cameraMoves::getInstance()->shouldRestartCamera=false;
     }
     //fadeBG();
-	ofBackground(colorfondo);
+
+    ofSetColor(255);
+
+    ofBackground(colorfondo);
     ofEnableAlphaBlending();
-//    oniCamGrabber.draw();
-//    oniCamGrabber.getDepthTextureReference().draw(0, 0);
-//    return;
-    
     //Estas lineas que vienen son una copia de lo que hace ofxpostprocessing
 //    para dibujar en un fbo manteniendo la perspectiva de c‡mara. La idea de dibujar en el fbo es que podamos usar la t‡ctica de no borrar el fondo para conseguir ciertas animaciones aunque no se est‡ aplicando
     startFBO();
@@ -318,7 +338,7 @@ void testApp::draw() {
             case NUCLEAR_FUERTE:
                 //apago los shdaers que no tocan Dejo el glow
                 setShaders(GLOW_ON);
-                mdela.draw();
+                mPuntosFormas.drawWithRectangles();
                 break;
         }
 	ofPopMatrix();

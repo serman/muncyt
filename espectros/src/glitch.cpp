@@ -7,13 +7,13 @@
 //
 
 #include "glitch.h"
-
+#include "consts.h"
 
 void glitch::setup(){
-    fbo.allocate(640, 480, GL_RGBA);
-    fboGlitches.allocate(640, 480, GL_RGBA);
+    fbo.allocate(VIDEO_W, VIDEO_H, GL_RGBA);
+    fboGlitches.allocate(VIDEO_W, VIDEO_H, GL_RGBA);
     //fboGeneral.allocate(640, 480, GL_RGB);
-    remoteBlobImgPxl.allocate(640,480,OF_PIXELS_RGBA);
+    remoteBlobImgPxl.allocate(VIDEO_W,VIDEO_H,OF_PIXELS_RGBA);
     fboGlitches.begin();
     ofClear(0,255);
     fboGlitches.end();
@@ -33,7 +33,7 @@ void glitch::draw(){
     fbo.begin();
     
     ofClear(0, 0, 0, 0);
-    mSyphonClient->draw(0,0,640,480);
+    mSyphonClient->draw(0,0,VIDEO_W,VIDEO_H);
     fbo.end();
     fbo.readToPixels(remoteBlobImgPxl);
     cameraImg.setFromPixels(remoteBlobImgPxl);
@@ -47,12 +47,12 @@ void glitch::draw(){
     fboGlitches.begin();
     ofEnableAlphaBlending();
     ofSetColor(255,255,255,2);
-    ofRect(0,0,640,480);
+    ofRect(0,0,VIDEO_W,VIDEO_H);
     ofSetColor(255,255,255,255);
         for (tobj=objectList.begin(); tobj != objectList.end(); tobj++) {
             ofxTuioCursor *blob = (*tobj);
-            int x1=blob->getX()*640;
-            int y1=blob->getY()*480;
+            int x1=blob->getX()*VIDEO_W;
+            int y1=blob->getY()*VIDEO_H;
            // drawBigPixels(x1,y1,(blob->width)*640,(blob->height)*480);
         }
         ofDisableAlphaBlending();
@@ -67,7 +67,7 @@ void glitch::draw(){
     }
     ofRotate(ofRandom(-20,20));
 
-    mSyphonClient2->draw(0,0,640,480);
+    mSyphonClient2->draw(0,0,VIDEO_W,VIDEO_H);
         ofPopMatrix();
     ofPopStyle();
     fboGlitches.end();

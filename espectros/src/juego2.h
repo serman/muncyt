@@ -80,7 +80,7 @@ private:
     void contactStart(ofxBox2dContactArgs &e);
     void drawEnemies();
 
-    ofPoint convertPoint(float, float);
+    //ofPoint convertPoint(float, float);
     /** escalado video ajuste pantala
     float VIDEO_scale=SCREEN_W/640;
     float VIDEO_offset=((VIDEO_scale*480)-SCREEN_H)/2;*/

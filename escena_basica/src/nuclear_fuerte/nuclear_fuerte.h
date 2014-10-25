@@ -30,7 +30,7 @@
 class nuclear_fuerte : public ofxScene {
 
 public:
-    enum colores{ROJOS=0, AZULES,VERDES,FLUOR};
+    enum colores{ROJOS=0, VERDES,AZULES,FLUOR};
     
     
     void	tuioAdded(ofxTuioCursor & tuioCursor);

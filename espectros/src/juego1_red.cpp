@@ -39,14 +39,14 @@ void juego1::tuioRemoved(ofxTuioCursor &tuioCursor){
 }
 
 //returns bloob position only if it is within the range
-ofPoint juego1::convertPoint(float x1, float y1){
+/*ofPoint juego1::convertPoint(float x1, float y1){
     if(y1*VIDEO_H*VIDEO_scale>(VIDEO_offset-30)
        && y1*VIDEO_H*VIDEO_scale>VIDEO_offset <  (VIDEO_offset + SCREEN_H+30) ){
         ofPoint p1=ofPoint((float)x1*SCREEN_W, (float)y1*VIDEO_H*VIDEO_scale-VIDEO_offset);
         return p1;
     }
     else return ofPoint(-1,-1);
-}
+}*/
 
 
 

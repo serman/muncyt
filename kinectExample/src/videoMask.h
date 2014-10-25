@@ -47,7 +47,7 @@ public:
         
         path.close();  
         path.simplify();
-        ofColor c1= ofColor(192,0,0);
+        ofColor c1= ofColor(255,0,0);
         path.setFillColor(c1);
         
         fboMascara.begin();

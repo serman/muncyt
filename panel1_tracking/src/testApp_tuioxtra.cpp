@@ -7,6 +7,7 @@
 //
 
 #include "testApp.h"
+
 void testApp::setupTUIO(){
     string localhost = "127.0.0.1";
     int TUIOPort= 3333;
@@ -58,7 +59,7 @@ void testApp::sendTUIO(std::vector<ofxBlob> * objectBlobs){
                 set_obj.addFloatArg(blob_obj->boundingRect.getWidth());	// wd
                 set_obj.addFloatArg(blob_obj->boundingRect.getHeight());	// ht
                 if (blob_obj->id%3==0)
-                cout << blob_obj->id << " : " << blob_obj->boundingRect.getHeight()*480  <<endl;
+                cout << blob_obj->id << " : " << blob_obj->boundingRect.getHeight()*VIDEOHEIGHT  <<endl;
             }
             b_obj.addMessage( set_obj );							// add message to bundle
             alive_obj.addIntArg(blob_obj->id);				// add blob to list of ALL active IDs
@@ -93,26 +94,27 @@ void testApp::keyPressed(int key){
             gui2->disable();
     }
     else if(key==' '){
-        bLearnBackground=true;
+        bCaptureBackground=true;
     }
     else if(key=='r'){
         
     }
+    else if(key=='s'){
+        gui2->saveSettings("gui_settings.xml");
+    }
 }
 void testApp::setupGui(){
     gui2 = new ofxUICanvas(790,280, 295,285);
-    
-    
     gui2->addIntSlider("blob_threshold", 0, 255, &blobThreshold);
 	gui2->addIntSlider("min blob size", 0, 1000, &minBlobSize);
-	gui2->addIntSlider("max blob size", 0, 6000, &maxBlobSize);
+	gui2->addIntSlider("max blob size", 0, 20000, &maxBlobSize);
 	gui2->addIntSlider("amplify", 0, 100, &amplify);
     gui2->addIntSlider("smooth", 0, 10, &smooth);
     gui2->addSpacer();
     gui2->addToggle("Adaptative", false);
     gui2->addSlider("learnRate", 0	, 0.001f, &fLearnRate) ;
     ofAddListener(gui2->newGUIEvent,this,&testApp::gui2Event);
-
+    gui2->loadSettings("gui_settings.xml");
 }
 
 //--------------------------------------------------------------

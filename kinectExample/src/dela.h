@@ -12,7 +12,7 @@
 #include "cameraMoves.h"
 class dela{    
 public:
-    enum colores{ROJOS=0, AZULES,VERDES,FLUOR};
+    enum colores{ROJOS=0, VERDES, AZULES, FLUOR};
     void setup(int _w, int _h, float *_zMin, float *_zMax, ofxOpenNI2Grabber *_oniCamGrabber, extendedDepthSource *_depthGenerator, ofCamera *_cam){
         w=_w;
         h=_h;

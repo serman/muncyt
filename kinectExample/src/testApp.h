@@ -15,6 +15,7 @@
 #include "rcvContour.h"
 #include "videoMask.h"
 #include "contours.h"
+#include "puntosFormas.h"
 #include "gridView.h"
 #include "ofxPostProcessing.h"
 #include "highBloomPass.h"
@@ -30,7 +31,7 @@
 #endif
 
 
-#define USEFILE
+//#define USEFILE
 //#define TESTMODE
 
 	#include "ofxOpenNI2Grabber.h"
@@ -173,6 +174,7 @@ public:
     rayoSilueta mrayoSil;
     videoMask mvideoMask;
     menu mmenu;
+    puntosFormas mPuntosFormas;
     ofVec3f tr, tl, bl, br;
     ofMesh mesh1;
     ofLight light;

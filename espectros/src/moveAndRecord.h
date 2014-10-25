@@ -55,7 +55,7 @@ class moveAndRecord {
     
         for (int j=0; j<blobTracker.trackedBlobs.size(); j++){
             //cout << "blob size" << blobTracker.trackedBlobs.size() << "\n";
-            if ( triggerRectangle.inside( blobTracker[j].lastCentroid.x*640, blobTracker[j].lastCentroid.y*480) ){
+            if ( triggerRectangle.inside( blobTracker[j].lastCentroid.x*VIDEO_W, blobTracker[j].lastCentroid.y*VIDEO_H) ){
                 state= blobInSquare;
                 timeLastDetection=ofGetElapsedTimeMillis();
                 return true;

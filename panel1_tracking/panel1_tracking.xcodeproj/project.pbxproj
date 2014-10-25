@@ -69,7 +69,6 @@
 		E7E077E815D3B6510020DFD4 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E077E715D3B6510020DFD4 /* QTKit.framework */; };
 		E7F985F815E0DEA3003869B5 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7F985F515E0DE99003869B5 /* Accelerate.framework */; };
 		EBCDE831EFAE08274E799C97 /* Calibration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 402C8F4015542356D362AC88 /* Calibration.cpp */; };
-		F73625921923A1C500964804 /* ofxVideoSaver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F73625911923A1C500964804 /* ofxVideoSaver.cpp */; };
 		F73625981923B6C800964804 /* ofxVideoRecorder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F73625961923B6C800964804 /* ofxVideoRecorder.cpp */; };
 		F76B4A79BD8DE4854141CB47 /* fdog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2D8249D46647E3C51769CDE /* fdog.cpp */; };
 		F79985521964DACF00A7AC7C /* ofxSimpleMask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F79985501964DACF00A7AC7C /* ofxSimpleMask.cpp */; };
@@ -367,8 +366,6 @@
 		F66993296A3AEEC70FD444F5 /* ofxNetwork.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxNetwork.h; path = ../../../addons/ofxNetwork/src/ofxNetwork.h; sourceTree = SOURCE_ROOT; };
 		F7269F96AC34A2B44A680D03 /* ofxCvFloatImage.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxCvFloatImage.h; path = ../../../addons/ofxOpenCv/src/ofxCvFloatImage.h; sourceTree = SOURCE_ROOT; };
 		F736258E192247A000964804 /* mosaicRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mosaicRecorder.h; sourceTree = "<group>"; };
-		F73625901923A1BC00964804 /* ofxVideoSaver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxVideoSaver.h; sourceTree = "<group>"; };
-		F73625911923A1C500964804 /* ofxVideoSaver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxVideoSaver.cpp; sourceTree = "<group>"; };
 		F73625961923B6C800964804 /* ofxVideoRecorder.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxVideoRecorder.cpp; sourceTree = "<group>"; };
 		F73625971923B6C800964804 /* ofxVideoRecorder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxVideoRecorder.h; sourceTree = "<group>"; };
 		F79985501964DACF00A7AC7C /* ofxSimpleMask.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxSimpleMask.cpp; sourceTree = "<group>"; };
@@ -941,7 +938,6 @@
 				18240ECCE4076FB0833A8578 /* ofxNetwork */,
 				A0B90D3B0ADB9C1716816714 /* ofxOpenCv */,
 				E6053AB7FEC63D5F83825B88 /* ofxOsc */,
-				E8AEC772E961A4500E6FF09C /* ofxBlobTracker */,
 				6025FAF6414C2CA589764D26 /* ofxCv */,
 				75EB0AF61893793AEE09033E /* ofxTldTracker */,
 			);
@@ -1119,7 +1115,7 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				F73625931923A1CC00964804 /* ofxVideoSaver */,
+				E8AEC772E961A4500E6FF09C /* ofxBlobTracker */,
 				F736258E192247A000964804 /* mosaicRecorder.h */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */,
@@ -1156,15 +1152,7 @@
 				D42C5FF1DDE5423BDF2CEC8E /* src */,
 			);
 			name = ofxBlobTracker;
-			sourceTree = "<group>";
-		};
-		F73625931923A1CC00964804 /* ofxVideoSaver */ = {
-			isa = PBXGroup;
-			children = (
-				F73625911923A1C500964804 /* ofxVideoSaver.cpp */,
-				F73625901923A1BC00964804 /* ofxVideoSaver.h */,
-			);
-			name = ofxVideoSaver;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		F73625941923B6C800964804 /* ofxVideoRecorder */ = {
@@ -1564,7 +1552,6 @@
 				63020F16C7E8DED980111241 /* ofxCvImage.cpp in Sources */,
 				F7B27DAC191333760022B207 /* ofxUI2DPad.cpp in Sources */,
 				D3301F6A0B43BB293ED97C1D /* ofxCvShortImage.cpp in Sources */,
-				F73625921923A1C500964804 /* ofxVideoSaver.cpp in Sources */,
 				72A929D3561B8232A182ABFC /* ofxOscBundle.cpp in Sources */,
 				5864AD82E20F15536D054EA3 /* ofxOscMessage.cpp in Sources */,
 				F7B27DD4191333760022B207 /* ofxUIWaveform.cpp in Sources */,

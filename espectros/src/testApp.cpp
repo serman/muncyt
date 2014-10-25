@@ -88,6 +88,7 @@ void testApp::draw(){
     
 	sceneManager->draw();
 	ofPushStyle();
+    ofNoFill();
 	ofSetColor(200,200,200);
     ofRect(0,0,1280,720);
 	ofDrawBitmapString( "press 1, 2, 3 or 4 to change scene", ofGetWidth() - 290, ofGetHeight() - 10);

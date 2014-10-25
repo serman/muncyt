@@ -1,0 +1,35 @@
+<Widget>
+    <Kind>42</Kind>
+    <Name>blob_threshold</Name>
+    <Value>24</Value>
+</Widget>
+<Widget>
+    <Kind>42</Kind>
+    <Name>min blob size</Name>
+    <Value>300</Value>
+</Widget>
+<Widget>
+    <Kind>42</Kind>
+    <Name>max blob size</Name>
+    <Value>10000</Value>
+</Widget>
+<Widget>
+    <Kind>42</Kind>
+    <Name>amplify</Name>
+    <Value>10</Value>
+</Widget>
+<Widget>
+    <Kind>42</Kind>
+    <Name>smooth</Name>
+    <Value>9</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>Adaptative</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>learnRate</Name>
+    <Value>0.001000000</Value>
+</Widget>

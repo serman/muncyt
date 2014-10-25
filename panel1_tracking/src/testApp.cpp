@@ -14,7 +14,8 @@ void testApp::setup(){
 		cam.setDesiredFrameRate(30);
         cam.initGrabber(VIDEOWITH,VIDEOHEIGHT);
     #else
-        vidPlayer.loadMovie("test1.mov");
+//        vidPlayer.loadMovie("test1.mov");
+    vidPlayer.loadMovie("muncyt2-menoszoom.mov");
         vidPlayer.play();
     #endif
     consoleFont.loadFont("Menlo.ttc",17);
@@ -24,7 +25,7 @@ void testApp::setup(){
     grayBg.allocate(VIDEOWITH,VIDEOHEIGHT);
 	previousImg.allocate(VIDEOWITH,VIDEOHEIGHT);
     exposureStartTime = ofGetElapsedTimeMillis();
-       bLearnBackground=true;
+       bCaptureBackground=true;
     setupGui();
     individualTextureSyphonServer.setName("CameraOutput");
     onlyBlobsImageSyphonServer.setName("onlyBlobs");
@@ -40,8 +41,8 @@ void testApp::setup(){
     
     };
     
-    maskMaker.setup("shaders/composite_rgb",ofRectangle(0, 0, 640, 480));
-    fbo1.allocate(640,480,GL_RGBA);
+    maskMaker.setup("shaders/composite_rgb",ofRectangle(0, 0, VIDEOWITH,VIDEOHEIGHT));
+    fbo1.allocate(VIDEOWITH,VIDEOHEIGHT,GL_RGBA);
     
 }
 
@@ -83,45 +84,25 @@ void testApp::update(){
             blobTracker.setBg(grayBg);
         }
         //recapature the background until image/camera is fully exposed
-        if((ofGetElapsedTimeMillis() - exposureStartTime) < CAMERA_EXPOSURE_TIME) bLearnBackground = true;
-//CAMBIA FONDO
-        if (bLearnBackground == true){
+        if((ofGetElapsedTimeMillis() - exposureStartTime) < CAMERA_EXPOSURE_TIME) bCaptureBackground = true;
+
+        //Capura fondo si se ha indicado
+        if (bCaptureBackground == true){
             floatBgImg = sourceColorImg;
             blobTracker.setBg(grayImage);
-            bLearnBackground = false;
+            bCaptureBackground = false;
         }
-        //blobTracker.setBg(grayBg);
         blobTracker.update(grayImage, blobThreshold,minBlobSize,maxBlobSize);
         
-        #ifndef TESTMODE
-                setMaskedImageBlobs();
-                //myComm.sendBlobs( blobTracker.trackedBlobs);
-                blobTracker.setFiltersParam(amplify, smooth);
-        #endif
+
+        setMaskedImageBlobs();
+        //myComm.sendBlobs( blobTracker.trackedBlobs);
+        blobTracker.setFiltersParam(amplify, smooth);
+
 
 	}    
 #endif
 //CUENTA CANTIDAD DE MOVIMIENTO
-#ifdef CANTIDADMOVIMIENTO
-   previousImg-=grayImage;
-	previousImg.threshold(128);
-    
-    nonZero= previousImg.countNonZeroInRegion(0,0, previousImg.width, previousImg.height);
-	movementAverage[counterAverage]=nonZero;
-    counterAverage++; if(counterAverage>=50) counterAverage=0;
-    nonZero=0;
-    for (int j=0;j<50;j++){
-        nonZero+=movementAverage[j];
-    }
-    nonZero=nonZero/50;
-    
-	//cout  << "non zero" << nonZero << "\n";
-    
-    previousImg=grayImage;*/
-#endif
-    
-
-    
 
 }
 
@@ -153,7 +134,8 @@ void testApp::setMaskedImageBlobs(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
-    if(ofGetFrameNum()==20 || ofGetFrameNum()%150==0)
+    //ofScale(0.8, 0.8);
+    if(ofGetFrameNum()==19 || ofGetFrameNum()%150==0)
         bg.draw(0,0,1280,1024);
     ofPushMatrix();
     cleanBackgrounds();
@@ -164,7 +146,7 @@ void testApp::draw(){
 // fbo1 contiene  las imagenes con la mascara ya aplicada.
     fbo1.begin();
 	ofClear(0, 0, 0, 0);    //ofSetColor(255,255,255,255);
-	maskMaker.drawMask(sourceColorImg.getTextureReference(), contourMaskOF.getTextureReference(), 0,0,255,640,480 );
+	maskMaker.drawMask(sourceColorImg.getTextureReference(), contourMaskOF.getTextureReference(), 0,0,255,VIDEOWITH,VIDEOHEIGHT);
     fbo1.end();
     //maskMaker.drawScrollingMask(sourceColorImg.getTextureReference(), contourMaskOF.getTextureReference(), 0, 255);
  #ifndef TESTMODE

@@ -1440,7 +1440,7 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				F772E5A319F5E04B008062DE /* generativo2 */,
+				F772E5A319F5E04B008062DE /* joyDivision */,
 				F7A657C019A56535004E0E78 /* juego2 */,
 				F77253C71986AED800ADD13E /* juego1 */,
 				F77253C61986AEC200ADD13E /* generativo1 */,
@@ -1835,13 +1835,13 @@
 			name = juego1;
 			sourceTree = "<group>";
 		};
-		F772E5A319F5E04B008062DE /* generativo2 */ = {
+		F772E5A319F5E04B008062DE /* joyDivision */ = {
 			isa = PBXGroup;
 			children = (
 				F772E5A419F5E061008062DE /* generativo2.cpp */,
 				F772E5A519F5E061008062DE /* generativo2.h */,
 			);
-			name = generativo2;
+			name = joyDivision;
 			sourceTree = "<group>";
 		};
 		F773697B1946950300548CEA /* ofxImageSequenceRecorder */ = {

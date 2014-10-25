@@ -13,9 +13,10 @@
 #include "mosaicRecorder.h"
 #include "ofxSimpleMask.h"
 #include <math.h>
+
 //#define _USE_LIVE_VIDEO		// uncomment this to use a live camera
-#define VIDEOWITH 640
-#define VIDEOHEIGHT 480
+#define VIDEOWITH 720
+#define VIDEOHEIGHT 576
 #define VIDEO_PROC_SCALE 2;
 #define CAMERA_EXPOSURE_TIME  2200.0f
 //#define TESTMODE
@@ -61,7 +62,7 @@ class testApp : public ofBaseApp{
         bool refreshBackground=false;
 	    bool adaptativeBackground=false;
 	    float fLearnRate= 0.005f;
-        bool bLearnBackground=true;	//a boolean to indicate whether to instruct the addon to learn the background again, defaults to true
+        bool bCaptureBackground=true;	//a boolean to indicate whether to instruct the addon to capture the background again, defaults to true
     	cheapComm myComm;
 	    //vector <ofPoint> positions;
     	int rectCounter=0;

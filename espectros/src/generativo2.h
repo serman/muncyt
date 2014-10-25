@@ -79,8 +79,8 @@ private:
 
     int lineDistance=8;
     ofPolyline p;
-  /*  float tx1;
-    float ty1,tx2,ty2 ;*/
+    float tx1;
+    float ty1,tx2,ty2 ;
     AbstractFilter *filter;
     
     vector<ofPoint> people;

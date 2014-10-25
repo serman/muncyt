@@ -20,7 +20,7 @@ void generativo2::setup(){
     //Create filter
    // filterr = new float[lineW];
     for (int i = 0; i < lineW; i++){
-        filterr[i]= pow( 1 - (abs(i-lineW/2) / 390.00) , 4)*2;
+        filterr[i]= pow( 1 - (abs(i-lineW/2) / 190.00) , 4)*2;
     }
     filter=new SobelEdgeDetectionFilter(VIDEO_W, VIDEO_H);
     
@@ -40,6 +40,8 @@ void generativo2::update(float f){
         ofxTuioCursor *blob = (*tobj);
         ofPoint p1 = convertPoint(blob->getX(), blob->getY());
         if(p1.x != -1 && p1.y!=-1){
+            p1.x=ofClamp(p1.x, 0, SCREEN_W);
+            p1.y=ofClamp(p1.y, 0, SCREEN_H);
             people.push_back(p1);
         }
     }
@@ -51,20 +53,21 @@ void generativo2::update(float f){
 
 void generativo2::draw(){
     ofSetColor(255);
-   /* fbo.begin();
+    fbo.begin();
     ofClear(0, 0, 0, 0);
     //  IMPORTANTE ESTOY DIBUJANDO SOBRE UN FBO DE TAMAÑO DEFINIDO CON LO QUE AL PINTAR FUERA NO SE VE
-        mSyphonClient2->drawSubsection(0,0,SCREEN_W,SCREEN_H,0,VIDEO_offset,640,SCREEN_H);
+        mSyphonClient2->drawSubsection(0,0,SCREEN_W,SCREEN_H,0,VIDEO_offset,VIDEO_W,SCREEN_H);
     fbo.end();
-    */
+    
+    
+    
     ofPushMatrix();
+    
     ofTranslate(100,100); //PINTO EN LA ZONA D ELA PANTALLA QUE QUIERO
     //ofRect(-2,-2,SCREEN_W+5,SCREEN_H+5);
     ofSetColor(255);
-    //  edge.draw(0,0);
     filter->begin() ;
-    mSyphonClient2->drawSubsection(0,0,SCREEN_W,SCREEN_H,0,VIDEO_offset,640,SCREEN_H);
-   // fbo.end();
+    fbo.draw(0, 0);
     filter->end() ;
     
     //fin procesado imagen video que llega
@@ -86,11 +89,9 @@ void generativo2::draw(){
         ofNoFill();
         ofSetColor(255);
         ofSetLineWidth(2);
-        //beginShape();
         for(int j = 0; j< lineW; j++){
             p.addVertex(j, lineP-abs(lines[i][j])*filterr[j]*lineS-0.5);
         }
-        //endShape();
         p.draw();
         p.clear();
         lineP = lineP + lineDistance;
@@ -98,18 +99,16 @@ void generativo2::draw(){
     
     ofSetColor(250,0,0);
     ofSetLineWidth(2);
-  /* dibujar puntos px1 =x[0];
-    py1 = y[0];
-    px2 =x[1];
-    py2 = y[1];
-    rect(px1,py1,7,7);
-    rect(px2,py2,7,7);*/
-    
-   /* px1 =ofNoise(tx1) *600;
-    py1 = ofNoise(ty1) *300  ;
+   //dibujar puntos px1 =x[0];
+
+    //ofRect(px1,py1,7,7);
+    //ofRect(px2,py2,7,7);
+  
+    px1 =ofNoise(tx1) *768;
+    py1 = ofNoise(ty1) *384  ;
     tx1 +=0.01;
-    ty1 += 0.01;
-    
+    ty1 += 0.02;
+   /*
     px2 = ofNoise(tx2) *500;//min(mouseX,screenWidth);//
     py2 = ofNoise(ty2) *600  ;// min(mouseY,screenHeight);//
     tx2 +=0.01;
@@ -122,8 +121,8 @@ void generativo2::draw(){
         //Spread
         for (int i = 0; i < NLINES-1; i++){
             for(int j = 0; j < lineW; j++){
-                if(lines[i][j]>0)    lines[i][j] = lines[i][j]-0.05;
-                else if(lines[i][j]<0.1)  lines[i][j]=ofRandom(-0.05,0.05);
+                if(lines[i][j]>0)    lines[i][j] = lines[i][j]-0.08;
+                else if(lines[i][j]<0.1)  lines[i][j]=ofRandom(-0.08,0.08);
             }
         }
     }//framecount
@@ -131,19 +130,19 @@ void generativo2::draw(){
     
 
     for (int j=0; j< people.size(); j++){
-        
-        int px1=people[j].x;
-        int py1=people[j].y;
-        int line1=(int)round(py1/lineDistance);
+        int px=people[j].x;
+        int py=people[j].y;
+       // ofRect(px,py,7,7);
+        int line1=(int)round(py/lineDistance);
         for (int i=0; i<lineW; i++){
-    //Si los puntos están junto a un blob los dibujo mayores
-            if(i>(px1-20) && i<(px1+20)){
+            //Si los puntos están junto a un blob los dibujo mayores
+            if(i>(px-20) && i<(px+20)){
                 if(i<20 || i>lineW-20) continue;
                 else
-                    lines[line1][i]=cos(ofDegToRad(px1-i)*5)/1.5+ofRandom(-0.05,0.05);
+                    lines[line1][i]=cos(ofDegToRad(px-i)*5)/1.5+ofRandom(-0.05,0.05); // A los puntos que están 20 pixels alrededor del blog se los reemplaza por este valor
             }
         }
-        ofSetColor(255, 100, 0);
+        //ofSetColor(255, 100, 0);
       //  ofRect(px1,py1,7,7);
     }
     ofPopMatrix();
