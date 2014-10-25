@@ -1,4 +1,0 @@
-ofxOpenCv
-ofxOsc
-ofxSyphon
-ofxUI
