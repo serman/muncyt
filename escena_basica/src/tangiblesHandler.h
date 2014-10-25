@@ -20,6 +20,13 @@ public:
         id_counter=1;
     }    
 
+    void reset(){
+        for (int i=0; i<objectsCol.size(); i++){
+            delete objectsCol[i];
+        }
+        objectsCol.clear();
+        
+    }
 
     
     void addObject(tangibleObject &mobject){

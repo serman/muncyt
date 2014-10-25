@@ -404,16 +404,22 @@ void electromagnetica::resetExtraParticles(int x0, int y0){
 }
 
 
+
 void electromagnetica::resetParticles(){
     particles.clear();
     setupParticles();
 }
 
+void electromagnetica::reset(){
+   // resetParticles();
+    wavesm.reset();
+    hands.reset();
+    ofLog() << "reset waves manager"<<endl;
+}
 //scene notifications
 void electromagnetica::sceneWillAppear( ofxScene * fromScreen ){  // reset our scene when we appear
     gui1->enable();
-
-
+    reset();
     cheapComm::getInstance()->sendAudio0("/audio/electromagnetism/start_event");
     cheapComm::getInstance()->sendSync0("/sync/electromagnetism/start_event");
 };

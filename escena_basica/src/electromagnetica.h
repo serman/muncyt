@@ -57,6 +57,7 @@ public:
     void	setupShader();
    	void	drawNoise();
     bool	boolDrawNoise;
+    void reset();
     void setupParticles();
     void resetParticles();
     void resetExtraParticles(int x0=0, int y0=0);

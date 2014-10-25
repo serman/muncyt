@@ -322,7 +322,7 @@ void nuclear_debil::update(float dt) {
         //cout << nucleos.size()<< " ";
 //        CUAL ES EL MAXIMO DE NUCLEOS AQUI?
     }
-    cheapComm::getInstance()->sendSync2("/sync/weak_nuclear/ball", ofWrapRadians(anillo.angT,0,2.0*PI),ofMap(abs(anillo.wAng),0,abs(anillo.wAngMax),0,1));
+    cheapComm::getInstance()->sendSync3("/sync/weak_nuclear/ball", ofWrapRadians(anillo.angT,0,2.0*PI),ofMap(abs(anillo.wAng),0,abs(anillo.wAngMax),0,1),ofSign(anillo.wAng) );
    
     if ( ofGetElapsedTimeMillis() < (timeLastColision+2000)){
         cheapComm::getInstance()->sendSync0("/sync/weak_nuclear/colisiones");

@@ -23,7 +23,7 @@ class wavesManager : public tangibleObject{
     public:
     vector<waves> waveslist;
     waves *singleWave;
-    int waves_id_counter;
+//    int waves_id_counter;
 
     int howManyWaves(){
         return num_waves;
@@ -44,6 +44,14 @@ class wavesManager : public tangibleObject{
         for(int i=0; i<waveslist.size(); i++){
             waveslist[i].setup(); // esta funcion descarta el id si no lo tiene
         }
+    }
+    
+    void reset(){
+        waveslist.clear();
+        delete singleWave;
+        singleWave=NULL;
+        setup();
+                countWaves();
     }
 
     void draw(){

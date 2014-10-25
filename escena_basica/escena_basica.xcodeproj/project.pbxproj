@@ -1240,8 +1240,8 @@
 			isa = PBXGroup;
 			children = (
 				F74B89F5196F6860005F3893 /* electromagnetica.cpp */,
-				F74B8AA619721818005F3893 /* wavesManager.h */,
 				F74B89F6196F6860005F3893 /* electromagnetica.h */,
+				F74B8AA619721818005F3893 /* wavesManager.h */,
 				F74B8A9D196F8838005F3893 /* waves.h */,
 				F74B8A9F19703632005F3893 /* noiseShadow.h */,
 			);
