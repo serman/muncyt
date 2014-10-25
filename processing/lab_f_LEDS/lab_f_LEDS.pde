@@ -1,6 +1,6 @@
 OPC opc;
 PImage dot;
-int NUMPARTIC = 4;
+int NUMPARTIC = 2;
 int separacion =10;
 int separacionV =3;
 int OPC_counter=0;
@@ -21,7 +21,7 @@ int initYTira2=initY+INTERTIRA+lengthTramo*2;
 int initYTira1=initY+INTERTIRA+lengthTramo;
 
 int screen1Pos=initX+separacion*5;
-int screen2Pos=initX+separacion*12;
+int screen2Pos=initX+separacion*13;
 int screen3Pos=initX+separacion*21;
 
 import oscP5.*;
@@ -40,7 +40,9 @@ boolean bDrawGridCircles, bDrawLine,bExchange, bdrawOff=false;
 randomParticle randomP[]=new randomParticle[NUMPARTIC];
 circles mcircle;
 PImage gridImg;
+PImage maskImage;
 
+PImage maskImageVert;
 
 float exchangeTime; int exchangeSection;
 color exchangeC1, exchangeC2;
@@ -49,7 +51,9 @@ void setup()
   size(400, 400, P2D);
   // Load a sample image
   dot = loadImage("color-dot.png");
-  frameRate(30);
+  maskImage=loadImage("mask.png");
+  maskImageVert=loadImage("maskVertical.png");
+  frameRate(25);
   // Connect to the local instance of fcserver
   opc = new OPC(this, "127.0.0.1", 7890);
   int i=0;
@@ -63,6 +67,7 @@ void setup()
     OPC_counter+=8;  
 
     i++;
+    if(i==5 || i==13  || i==21) continue;
     opc.ledStrip(OPC_counter, 8, initX+separacion*i, initY+lengthTramo/2, separacionV, -PI/2, true);
     OPC_counter+=8;
     opc.ledStrip(OPC_counter, 8, initX+separacion*i, initY+lengthTramo/2+INTERTIRA, separacionV, -PI/2, true);
@@ -117,7 +122,12 @@ void draw()
   if (bdrawOff) off();
   if (bDrawLine) drawLine();
   if(bExchange)  exchangeDraw(exchangeTime, exchangeSection, exchangeC1, exchangeC2);
+  
   drawScreens();
+  //drawTest();
+  //rotateDraw(5);
+  //mcircle.draw();
+  text(frameRate,width-40,height-40);
 }
 
 
@@ -136,4 +146,16 @@ void allOff() {
   bdrawOff=false;
   bExchange=false;
 }
+
+void keyPressed() {
+  if (key == 'd') opc.setDithering(false);
+  if (key == 'i') opc.setInterpolation(false);
+  if (key == 'l') opc.setStatusLed(true);
+}
+
+void keyReleased() {
+  if (key == 'd') opc.setDithering(true);
+  if (key == 'i') opc.setInterpolation(true);
+  if (key == 'l') opc.setStatusLed(false);
+}  
 

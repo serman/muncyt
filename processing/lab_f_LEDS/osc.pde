@@ -23,6 +23,7 @@ oscP5.plug(this,"drawMenu","/sync/menu/start_event");
   oscP5.plug(this,"drawOff","/sync/gravity/collapse_stop_event");
 
 // Nuclear Fuerte
+oscP5.plug(this,"start_nuclear_f","/sync/strong_nuclear/start_event");
   oscP5.plug(this,"exchangeColors","/sync/strong_nuclear/hand_on_event");
 
 //Nuclear Debil
@@ -32,40 +33,57 @@ oscP5.plug(this,"drawMenu","/sync/menu/start_event");
 
 // si llga un evento test con dos parametros i1 e i2 se vendría a esta función por el plug de antes
 void startEM(){
+  allOff();
   bdrawNoise=true;
   fade=1;  
 }
 
 void drawWaves(float f){
+  allOff();
     if(debugOSC) println("Function: drawWaves: " + f);
+    if((int) f==0) {
+      bdrawNoise=true;
+    bdrawWaves=false;
+    } 
+    else{
     bdrawNoise=false;
     bdrawWaves=true;
     nWaves=(int)f;
+    }
 }
 
 void drawMenu(){
+  allOff();
     if(debugOSC) println("Function: drawMenu: ");
     bDrawRandomParticles=true;
 }
 
 void Explosion(){  
+  allOff();
   movieExp.play();
   bDrawMovie=true;
 }
 
 void startGravity(){
+  allOff();
  bDrawGridImage=true; 
 }
+void start_nuclear_f(){
+  allOff();
 
+}
 void blackHole(){
+  allOff();
 bDrawGridCircles=true;
 }
 
 void drawOff(){
+  allOff();
   bdrawOff=true;
 }
 
 void drawRotating(float angle, float speed){
+  allOff();
    println ("draw rotating" + angle + " " + speed);
    rotatePos=round(map(angle,0,2*PI,0,lengthPared));
    bDrawLine=true;
@@ -73,20 +91,22 @@ void drawRotating(float angle, float speed){
 
 void exchangeColors(float time, float section, float color1, float color2){
   println ("draw exchangeColors" + time + " " + section);
-  exchangeTime= time;
+  allOff();  
+  exchangeTime= time*1.5;
   exchangeSection=(int)section; 
   setupExchange((int)section);
   color mcolor1;
-  if(color1==1) mcolor1=color(150,0,0);
-  if(color1==2) mcolor1=color(0,150,0);
+  if(color1==0) mcolor1=color(150,0,0);
+  else if(color1==1) mcolor1=color(0,150,0);
   else mcolor1=color(0,0,150);
+  
   color mcolor2;
-  if(color2==1) mcolor2=color(150,0,0);
-  if(color2==2) mcolor2=color(0,150,0);
+  if(color2==0) mcolor2=color(150,0,0);
+  else if(color2==1) mcolor2=color(0,150,0);
   else mcolor2=color(0,0,150);
   
-  exchangeC1=(int) mcolor1; 
-  exchangeC2=(int) mcolor2;
+  exchangeC2=(int) mcolor1; 
+  exchangeC1=(int) mcolor2;
 
   bExchange=true;
 }

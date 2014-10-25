@@ -7,24 +7,27 @@ void drawTest() {
 
   float dotSize = width * 0.2;
   //image(dot, mouseX - dotSize*5/2, mouseY - dotSize/2, dotSize*5, dotSize);
-  fill(50, 50, 50);
-  rect(mouseX, mouseY, 300, lengthTramo+10);
+      // fill(color(0,255,0));
+      tint(color(255,0,0));
+      image(maskImage,mouseX, mouseY,100,10);
+      //fill(50, 50, 50);
+  //rect(mouseX, mouseY, 300, lengthTramo+10);
 }
 
 int rotatePos=initX;
 void rotateDraw(float T) {
   background(0);
-  fill(0, 10);
-  rect(0, 0, width, height);
+
   //freq= rotaciones/seg;
   //T = periodo en segundos
   float pix_second=lengthPared/T;  
   int inc_pix=round( pix_second/frameRate ); 
   pushStyle();
-  fill(10, 100, 10);
+  fill(255);
+  tint(10, 100, 10);
   noStroke();
-  rect(rotatePos, initY, 30, lengthTira+10);
-
+  image(maskImageVert,rotatePos-15, initY, 30, lengthTira+10);
+  //rect(rotatePos, initY, 30, lengthTira+10);  
   if (rotatePos>endX) rotatePos=initX;
   rotatePos+=inc_pix;
   popStyle();
@@ -36,40 +39,44 @@ int ex1Pos;
 int ex2Pos;
 void exchangeDraw(float T,int section,color colour1 , color colour2) {
   background(0);
+
   float pix_second=(lengthPared/3)/T; 
   int inc_pix=round( pix_second/frameRate ); 
   //println ( section + " ex1Pos " + ex1Pos + "||| ex2Pos "+ ex2Pos +" ||| 1: "  +screen1Pos  +" |||| 2: "+  screen3Pos + "  incpix " + inc_pix + " pared: " +lengthPared);
   if(section==1){
     if((ex1Pos<screen2Pos) && (ex2Pos >screen1Pos)){
-      //println("aaa");
-      noStroke();
+     // noStroke();
       //colour1=color(200,0,0);
-      fill(colour1);
-      rect(ex1Pos, initY,       3,  lengthTramo);
-      fill(colour2);
-      rect(ex2Pos, initYTira2,  3,  lengthTramo);    
+     // fill(colour1);
+     //movimiento izquierda a derecha
+      tint(colour1);
+      imageMode(CORNERS);
+      image(maskImage,ex1Pos-10, initY-10,ex1Pos+10,initY+20);
+      tint(colour2);
+      image(maskImage,ex2Pos-10, initYTira2-10,ex2Pos+10,initYTira2+25);      
       ex1Pos+=inc_pix;
       ex2Pos-=inc_pix;
     }
   }
    if(section==2){
     if((ex1Pos<screen3Pos) && (ex2Pos >screen2Pos)){
-      noStroke();
-      fill(colour1);
-      rect(ex1Pos, initY,       3,  lengthTramo);
-      fill(colour2);
-      rect(ex2Pos, initYTira2,  3,  lengthTramo);    
+       tint(colour1);
+      imageMode(CORNERS);
+      image(maskImage,ex1Pos-10, initY-10,ex1Pos+10,initY+20);
+      tint(colour2);
+      image(maskImage,ex2Pos-10, initYTira2-10,ex2Pos+10,initYTira2+25);     
       ex1Pos+=inc_pix;
       ex2Pos-=inc_pix;
     }
   }
   if(section==3){
     if( (ex1Pos>=screen3Pos && ex1Pos<=lengthPared+initX) || (ex1Pos>=0 && ex1Pos<screen1Pos) ){
-      noStroke();
-      fill(colour1);
-      rect(ex1Pos, initY,       5,  lengthTramo);
-      fill(colour2);
-      rect(ex2Pos, initYTira2,  5,  lengthTramo);    
+       tint(colour1);
+      imageMode(CORNERS);
+      image(maskImage,ex1Pos-10, initY-10,ex1Pos+10,initY+20);
+      tint(colour2);
+      image(maskImage,ex2Pos-10, initYTira2-10,ex2Pos+10,initYTira2+25);   
+      
       ex1Pos+=inc_pix;
       ex2Pos-=inc_pix;
       if(ex1Pos>=lengthPared+initX) ex1Pos=initX;
@@ -95,9 +102,12 @@ void setupExchange(int section){
 void drawLine() {
   background(0);
   pushStyle();
-  fill(10, 100, 10);
-  noStroke();
-  rect(initX+rotatePos, initY-3, 10, lengthTira+10);
+    fill(255);
+    
+    //rect(initX+rotatePos, initY-3, 10, lengthTira+10);
+    tint(10, 100, 10);
+    noStroke();
+    image(maskImageVert,initX+rotatePos-10, initY-3, 20, lengthTira+10);
   popStyle();
 }
 
@@ -105,7 +115,7 @@ void drawLine() {
 
 void noiseDraw() {
   background(0);
-  int psize = 4;
+  int psize = 8;
   int x_count = (lengthPared/psize); 
   int y_count = (lengthTira/psize);
   pushStyle();
@@ -157,16 +167,16 @@ void waveDraw() {
   strokeWeight(10);
   for (int n=1; n<=min (nWaves, 3); n++) {
      pushMatrix();
-    if (n==1) translate(initX, initY+ lengthTira/2);
-    if (n==2) translate(initX, initY+ lengthTramo/2);
-    if (n==3) translate(initX, initY+ lengthTramo*2+ INTERTIRA+ lengthTramo/2);
+    if (n==1){ translate(initX, initY+ lengthTira/2); stroke(0, 20, 80); }
+    if (n==2){ translate(initX, initY+ lengthTramo/2);  stroke(0, 80, 20); }
+    if (n==3){  translate(initX, initY+ lengthTramo*2+ INTERTIRA+ lengthTramo/2);  stroke(80, 20, 0); }
 
     beginShape();
     for (int i = 0; i < numPoints; i++) {     
       // calculate where we are along x
       x = angle*i;     
       // y is determined by our function
-      y = sin(x*frequency+phi)* amplitude;
+      y = sin(x*frequency+phi+PI*n)* amplitude;
       vertex(x, y);
       
     }
@@ -204,6 +214,7 @@ void drawGridImage(){
   translate(initX+lengthPared/2,initY+lengthTira/2);
   rotate(angle);
   //
+  tint(255,100);
    image(gridImg,-gridImg.width/2,-gridImg.width/2); 
   popMatrix();
   angle+=0.02;
