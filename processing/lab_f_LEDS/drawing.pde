@@ -131,7 +131,6 @@ void noiseDraw() {
       rect(initX+j*psize, initY+i*psize, psize, psize);
     }
   } 
-
   popStyle();
 }
 
@@ -238,6 +237,39 @@ void drawMovie() {
 
 }
 
+float lengthFading=0;
+float initFadingX=0;
+float initFadingY=0;
+float HueFading=100;
+float fadingSpeed=1;
+void drawFading(){
+  background(0);
+  imageMode(CORNERS);
+  colorMode(HSB,255);
+  tint(HueFading,200,160);
+  if(fadingSpeed>0)
+    image(maskImage2,initFadingX,initY+initFadingY,initFadingX+lengthFading,initFadingY+lengthTramo*1.8+initY);
+  else{
+
+    pushMatrix();
+    scale(-1,1);
+    translate(-400,0);
+    //image(maskImage2,initFadingX-lengthFading,initY+initFadingY,lengthFading,lengthTramo*1.8);
+    image(maskImage2,initFadingX,initY+initFadingY,initFadingX-lengthFading,initFadingY+lengthTramo*1.8+initY);
+    popMatrix();
+  }
+  lengthFading+=fadingSpeed;
+  if(abs(lengthFading)>200){
+    initFadingX=random(0,lengthPared-50);
+    lengthFading=0;
+    float signo=random(-2,2);
+    if(signo>0) fadingSpeed=1; else fadingSpeed=-1;
+    initFadingY=random(0,lengthTira-lengthTramo);
+    HueFading=random(70,150);
+  }
+  imageMode(CORNER);
+  colorMode(RGB);
+}
 
 Ball[] myBall;
 int ballAmount = 115;
@@ -266,6 +298,16 @@ void drawWeird1() {
       }
     }
   }
+}
+int bottomTopCounter=200;
+void drawBottomTop(){
+  tint(30,200,100);
+ image(maskImageHlong,initX-10,bottomTopCounter,300,30);
+  bottomTopCounter-=3;
+ if(bottomTopCounter<-20){
+ bottomTopCounter=200;
+ }
+  
 }
 
 void drawScreens(){

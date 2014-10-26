@@ -36,14 +36,16 @@ boolean bDrawRandomParticles=false;
 boolean bDrawMovie=false;
 boolean bDrawGridImage=false;
 boolean bDrawGridCircles, bDrawLine,bExchange, bdrawOff=false;
-
+boolean bDrawFading;
 randomParticle randomP[]=new randomParticle[NUMPARTIC];
 circles mcircle;
 PImage gridImg;
 PImage maskImage;
+PImage maskImage2;
 PImage maskImagelong;
 
 PImage maskImageVert;
+PImage maskImageHlong;
 PImage maskImageVertSmall;
 float exchangeTime; int exchangeSection;
 color exchangeC1, exchangeC2;
@@ -56,6 +58,8 @@ void setup()
   maskImagelong=loadImage("masklong.png");
   maskImageVert=loadImage("maskVertical.png");
   maskImageVertSmall=loadImage("maskVerticalSmall.png");
+  maskImage2=loadImage("mask2.png");
+  maskImageHlong=loadImage("masHLong.png");
   frameRate(25);
   // Connect to the local instance of fcserver
   opc = new OPC(this, "127.0.0.1", 7890);
@@ -125,7 +129,7 @@ void draw()
   if (bdrawOff) off();
   if (bDrawLine) drawLine();
   if(bExchange)  exchangeDraw(exchangeTime, exchangeSection, exchangeC1, exchangeC2);
-  
+  if (bDrawFading) drawFading();
   drawScreens();
   //drawRandomParticles();
  // nWaves=2;
@@ -133,6 +137,8 @@ void draw()
   //drawTest();
   //rotateDraw(5);
   //mcircle.draw();
+  //drawFading();
+  drawBottomTop();
   text(frameRate,width-40,height-40);
 }
 
@@ -151,6 +157,7 @@ void allOff() {
   bDrawLine=false; 
   bdrawOff=false;
   bExchange=false;
+  bDrawFading=false;
 }
 
 void keyPressed() {

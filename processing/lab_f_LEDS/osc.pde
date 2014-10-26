@@ -82,8 +82,8 @@ void Explosion(){
 }
 
 void startGravity(){
-  allOff();
- bDrawGridImage=true; 
+  allOff(); 
+ bDrawFading=true;
 }
 void start_nuclear_f(){
   allOff();
