@@ -13,6 +13,7 @@ void setupOSC() {
 //EM  
   oscP5.plug(this,"startEM","/sync/electromagnetism/start_event"); //direccionamiento con más sentido  
   oscP5.plug(this,"drawWaves","/sync/electromagnetism/number_waves"); //direccionamiento con más sentido
+    oscP5.plug(this,"setWavesOptions","/sync/electromagnetism/wave_length"); //direccionamiento con más sentido
 
 //MENU
  
@@ -29,6 +30,8 @@ oscP5.plug(this,"start_nuclear_f","/sync/strong_nuclear/start_event");
 //Nuclear Debil
   oscP5.plug(this,"Explosion","/sync/weak_nuclear/chain_reaction_event"); //
   oscP5.plug(this,"drawRotating","/sync/weak_nuclear/ball"); 
+  oscP5.plug(this,"end_event","/sync/electromagnetism/end_event");
+  oscP5.plug(this,"start_event","/sync/menu/start_event");
 }
 
 // si llga un evento test con dos parametros i1 e i2 se vendría a esta función por el plug de antes
@@ -40,7 +43,7 @@ void startEM(){
 
 void drawWaves(float f){
   allOff();
-    if(debugOSC) println("Function: drawWaves: " + f);
+    //if(debugOSC) println("Function: drawWaves: " + f);
     if((int) f==0) {
       bdrawNoise=true;
     bdrawWaves=false;
@@ -51,7 +54,21 @@ void drawWaves(float f){
     nWaves=(int)f;
     }
 }
-
+void setWavesOptions(float id, float dist){
+  println( "waves options " +id + " dist" +dist);
+  colorMode(HSB);
+  if((int)id==0){
+      waveColor0=color(map(dist,0,768,0,255),255,255);
+    println("color0 opt" + waveColor0);
+  }
+  else if((int)id==1){
+    waveColor1=color(map(dist,0,768,0,170),255,255);
+  }
+  else if((int)id==2){
+    waveColor2=color(map(dist,0,768,0,170),255,255);
+  }
+  colorMode(RGB);
+}
 void drawMenu(){
   allOff();
     if(debugOSC) println("Function: drawMenu: ");
@@ -82,7 +99,7 @@ void drawOff(){
   bdrawOff=true;
 }
 
-void drawRotating(float angle, float speed){
+void drawRotating(float angle, float speed, float direction){
   allOff();
    println ("draw rotating" + angle + " " + speed);
    rotatePos=round(map(angle,0,2*PI,0,lengthPared));
@@ -136,6 +153,16 @@ void oscEvent(OscMessage oscMsg) {
   if(oscMsg.addrPattern().equals("/modo")) {
     int modo_Rcv = oscMsg.get(0).intValue();
   }    
+  
+}
+void end_event(){
+  println("end Event");
+  println("------------------");
+  
+}
+
+void start_event(){
+  println("start Event");
   
 }
 

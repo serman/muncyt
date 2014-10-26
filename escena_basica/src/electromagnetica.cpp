@@ -154,7 +154,7 @@ void electromagnetica::update(float d1){
             particles[i].steer(p , true, 15, 20);
             
             int len=wavesm.waveslist[index.n_wave].npuntos;
-            ofColor color1=ofColor::fromHsb( ofMap(len, 0, W_WIDTH, 0,360),255,255) ;
+            ofColor color1=ofColor::fromHsb( ofMap(len, 0, W_WIDTH, 0,170),255,255) ;
             color1.a=230;
             meshParticles.getColors()[i].set(color1);
             particles[i].update();
@@ -182,7 +182,7 @@ void electromagnetica::update(float d1){
             if(wavesm.waveslist[i].waveID!=-1){
             cheapComm::getInstance()->sendAudio2("/audio/electromagnetism/wave_length",wavesm.waveslist[i].waveID, ofMap(waveLength,0,W_WIDTH,1,0));
                 
-            cheapComm::getInstance()->sendSync2("/sync/electromagnetism/wave_length", wavesm.waveslist[i].waveID, ofMap(waveLength,0,W_WIDTH,1,0));
+                cheapComm::getInstance()->sendSync2("/sync/electromagnetism/wave_length", wavesm.waveslist[i].waveID, waveLength);
             }
 #ifdef OSCDEBUG
             cout << wavesm.waveslist[i].waveID << " ";

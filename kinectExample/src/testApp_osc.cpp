@@ -137,11 +137,8 @@ void testApp::toScene(int scn){
     }
     
     else if(appStatuses["escena"]==MENU) {
-        //pfbo.begin();
-        //    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-        //pfbo.end();
+        mmenu.reset();
     }
-
 }
 
 //SE EJECUTA CUANDO COMIENZA LA TRANSICION PARA SALIR DE LA ESCENA

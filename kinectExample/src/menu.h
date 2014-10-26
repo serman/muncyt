@@ -48,6 +48,13 @@ public:
         
     }
     
+    void reset(){
+        for ( int i = 0 ; i < particles.size();  i++ ){
+            particles[i].position=ofVec3f(-1,i%ofGetWidth(),0);
+            particles[i].update();
+        }
+    }
+    
     void analyzeImg( ){
         for ( int y = 0 ; y < ofGetHeight();  y+=density/1.6 ){
             for ( int x = 0 ; x < ofGetWidth(); x+=density/1.6 ){
@@ -135,6 +142,7 @@ public:
         mesh.clear();
         for ( int i = 0 ; i < particles.size();  i+=1 ){
             int index=i%currentvector->size();
+            if( (i/currentvector->size() )>1) return;
             ofVec3f p=ofVec3f( (*currentvector)[index] );
             particles[i].steer(p,true,6,4);
             particles[i].update();

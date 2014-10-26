@@ -50,10 +50,10 @@ void testApp::setup(){
  //   grave->setComm(&myComm);
     sceneManager->addScene( grave, SCENE_GRAVEDAD);
 	sceneManager->setDrawDebug(true);
-	sceneManager->setCurtainDropTime(0.2);
-	sceneManager->setCurtainStayTime(0.0);
-	sceneManager->setCurtainRiseTime(0.2);
-	sceneManager->setOverlapUpdate(false);
+	sceneManager->setCurtainDropTime(1);
+	sceneManager->setCurtainStayTime(0.6);
+	sceneManager->setCurtainRiseTime(1);
+	sceneManager->setOverlapUpdate(true);
     
     sceneManager->goToScene(SCENE_NUC_F);
     timeToEndScene=-1;
@@ -127,14 +127,15 @@ void testApp::mouseReleased( int x, int y, int button ){
 }
 
 void testApp::keyPressed(int key){	
-	if (key == 'c'){ sceneManager->goToScene(SCENE_EM);  setTimeToEndScene(SCENE_EM);}
-    if (key == 'v'){ sceneManager->goToScene(SCENE_NUC_D, true); setTimeToEndScene(SCENE_NUC_D);}
-    if (key == 'b'){ sceneManager->goToScene(SCENE_NUC_F);setTimeToEndScene(SCENE_NUC_F);}
-    if (key == 'n') {sceneManager->goToScene(SCENE_GRAVEDAD);setTimeToEndScene(SCENE_GRAVEDAD);}
-    if (key == 'm') {sceneManager->goToScene(SCENE_MENU);setTimeToEndScene(SCENE_MENU);}
+	if (key == 'c'){ sceneManager->goToScene(SCENE_EM);     setTimeToEndScene(SCENE_EM);}
+    else if (key == 'v'){ sceneManager->goToScene(SCENE_NUC_D);  setTimeToEndScene(SCENE_NUC_D);}
+    else if (key == 'b'){ sceneManager->goToScene(SCENE_NUC_F);  setTimeToEndScene(SCENE_NUC_F);}
+    else if (key == 'n') {sceneManager->goToScene(SCENE_GRAVEDAD);setTimeToEndScene(SCENE_GRAVEDAD);}
+    else if (key == 'm') {sceneManager->goToScene(SCENE_MENU);   setTimeToEndScene(SCENE_MENU);}
 	
-	
+	else{
     sceneManager->keyPressed(key);
+    }
 	
 	
 }

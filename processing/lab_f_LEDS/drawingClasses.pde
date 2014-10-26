@@ -1,30 +1,36 @@
 class randomParticle {
-  int particlePosX;
-  int particlePosY;
+  float particlePosX;
+  float particlePosY;
   color mcolor;
-  float incr=0.1;
+  float incr=0;
+  float incr2=0;
+  float tasa=0;
+  float speed;
   void setup() {
      particlePosX=initX+(int)random(0,endX-20);
      particlePosY=initY+(int)random(0,lengthTira);
     colorMode(HSB);  
      mcolor=color(random(90,210), random(90,210), random(90,210));
     colorMode(RGB);
+    tasa=random(0.01,0.04);
+    speed=random(5,10);
   }
 
   void draw() {
     pushStyle();
     noStroke(); 
      //  colorMode(HSB); 
-  fill(255);   
+      fill(255);   
       tint(mcolor);
       //rect(particlePosX, particlePosY, 5, 5);
-      image(maskImage,particlePosX, particlePosY, 20, 5);
-      particlePosX+=4*(noise(100+incr)-0.5);
-      particlePosY+=4*(noise(100+incr)-0.5);
-      incr+=0.01;
+      image(maskImage,particlePosX, particlePosY, 60, 5);
+      particlePosX +=speed;//initX+lengthPared*(noise(incr)-0.5);
+      particlePosY=initY + lengthTira*(noise(incr2));
+      incr+=tasa;
+      incr2+=tasa;
       if (particlePosX>endX) { 
         particlePosX=initX; 
-        particlePosY=initY+(int)random(0,lengthTira);
+        //particlePosY=initY+(int)random(0,lengthTira);
         mcolor=color(random(100,200), 200, 200);
       }
       popStyle();

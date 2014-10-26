@@ -83,6 +83,8 @@ void exchangeDraw(float T,int section,color colour1 , color colour2) {
       if(ex2Pos<=initX) ex2Pos=lengthPared+initX;
     }
   }
+  imageMode(CORNER);
+  
 }
 void setupExchange(int section){
   if(section==1){
@@ -145,17 +147,18 @@ void drawRandomParticles(){
 float phi =  0; // the phase shift offset amount
 float amplitude = lengthTramo/2; // the amplitude of our wave
 float frequency = 1.0/32; // slow down our wave so we can see it better
-int numPoints = 100; // the granularity of our drawing
+int numPoints = 30; // the granularity of our drawing
 int nWaves=0;
+color waveColor2, waveColor1, waveColor0=color(200,255,255);;
 void waveDraw() {
-  stroke(0, 40, 100);
+  /*stroke(0, 40, 100);
   fill(0, 200);
   rect(0, 0, width, height);
   noFill();
-  smooth();
+  smooth();*/
   background(0);
 
-
+  
   float x = 0;
   float y = 0;
 
@@ -163,28 +166,35 @@ void waveDraw() {
   // of radians between points
   //float angle = lengthPared+initX/numPoints;probar esto!!!!!!
   float angle = (lengthPared+initX)/numPoints;
-
-  strokeWeight(10);
+  smooth();
+  imageMode(CENTER);
+  colorMode(HSB);
+  strokeWeight(3);
   for (int n=1; n<=min (nWaves, 3); n++) {
      pushMatrix();
-    if (n==1){ translate(initX, initY+ lengthTira/2); stroke(0, 20, 80); }
-    if (n==2){ translate(initX, initY+ lengthTramo/2);  stroke(0, 80, 20); }
-    if (n==3){  translate(initX, initY+ lengthTramo*2+ INTERTIRA+ lengthTramo/2);  stroke(80, 20, 0); }
+     fill(255);
+    if (n==1){ translate(initX, initY+ lengthTira/2); tint(waveColor0); }
+    if (n==2){ translate(initX, initY+ lengthTramo/2);  tint(waveColor1); }
+    if (n==3){  translate(initX, initY+ lengthTramo*2+ INTERTIRA+ lengthTramo/2);  tint(waveColor2); }
 
-    beginShape();
+    //beginShape();
+noStroke();
+
     for (int i = 0; i < numPoints; i++) {     
       // calculate where we are along x
       x = angle*i;     
       // y is determined by our function
       y = sin(x*frequency+phi+PI*n)* amplitude;
-      vertex(x, y);
+      //vertex(x, y, i, y);
+      image(maskImageVertSmall,x,y);
       
     }
-    endShape();    
+    //endShape();    
     popMatrix();
   }
   phi -= .10;
-
+imageMode(CORNER);
+colorMode(RGB);
 }
 
 

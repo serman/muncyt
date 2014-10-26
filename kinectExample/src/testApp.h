@@ -31,7 +31,7 @@
 #endif
 
 
-//#define USEFILE
+#define USEFILE
 //#define TESTMODE
 
 	#include "ofxOpenNI2Grabber.h"

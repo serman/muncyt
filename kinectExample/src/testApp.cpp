@@ -29,7 +29,7 @@ void testApp::setup() {
     oniSettings.useOniFile=false;
 #else
     oniSettings.useOniFile = true;
-	oniSettings.oniFilePath = "/Users/sergiogalan/MultimediaProgramming/of_v0.8.0_osx_release/apps/muncyt/kinectExample/bin/data/test_museo.oni";
+	oniSettings.oniFilePath = "/Users/sergiogalan/MultimediaProgramming/of_v0.8.4_osx_release/apps/muncyt/kinectExample/bin/data/test_museo.oni";
 
     //will search this directory for an .oni file
 	//if not found will use the first available camera
@@ -129,6 +129,7 @@ void testApp::setup() {
     light.setPosition(0, 100, 0);
     // light.enable();
     ofDisableLighting();
+   //Este es un shader a 1/3 de tama–o de pantalla que s—lo uso en la silueta 2d de la nuclear debil
     post2D.init(ofGetWidth()/3, ofGetHeight()/3);
     post2D.createPass<ZoomBlurPass>()->setEnabled(false);
     post2D.createPass<BloomPass>()->setEnabled(false);
@@ -382,7 +383,8 @@ void testApp::draw() {
                 break;
                 
             case MENU:
-                post[1]->setEnabled(true);
+                //post[1]->setEnabled(true);
+                setShaders(GLOW_ON);
                 post.begin();
                     mmenu.draw();
                 post.end();
