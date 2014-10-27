@@ -27,29 +27,30 @@
 #define VIDEOSIZE_Y 140
 
 static ofEvent<int> finishedRecordingEvent;
+//static ofEvent<int> recordingAborted;
 
 class mosaicRecorder {
 public:
 
-    int current_video=0;
+    int current_video=0; //identificador del video que se está grabando
     vector<ofPoint> points;
+    ofxImageSequenceRecorder videoSaver;
     
     void setup(){
         for (int i=0; i<MAX_VIDEOS;i++){
-            ofDirectory dir((ofToDataPath("recordings/"+filename+"_"+ ofToString(i))));
+            ofDirectory dir((ofToDataPath("recordings/"+filename1+"_"+ ofToString(i))));
             if(!dir.exists() ){
                dir.create(true);
             }
-            
         }
-        
+        isRecording=false;
     }
 
     int x0,y0,w,h;
     mosaicRecorder(){
         croppedImg.allocate(VIDEOSIZE_X,VIDEOSIZE_Y,OF_PIXELS_RGB);
     }
-    	ofxImageSequenceRecorder videoSaver;
+
 
 
     void start(int _time, int _FPS,  ofPixels  &srcImage, int _w, int _h , int _x0=0, int _y0=0  ){ //graba en la carpeta video1
@@ -71,7 +72,6 @@ public:
         videoSaver.setPrefix(ofToDataPath("recordings/video_"+ ofToString(current_video)+"_tmp/frame"));
         	// this directory must already exist
         	videoSaver.setFormat("png");
-        
               //  videoSaver.setup(filename+"_"+ ofToString(current_video)+".mov", _w, _h,FPS );
         videoSaver.startThread();
 		points.clear();
@@ -87,39 +87,39 @@ public:
         }
     }
     
-    bool update(int x1=-1, int y1=-1 ){
+    /*Returns true when recording hast just finished in this call. False otherwise*/
+    bool update(  int x1=-1, int y1=-1 ,int _w=0, int _h=0){
         if(x1==-1 && y1 == -1){
         	x1=x0;
             y1=y0;
         }
-        
-    	cout << "x: "<< x1 << "  ___ y: "<< y1<<"\n";
         if(isRecording==true){
             if(1000*(++frameCount)/FPS>time){ //FIN. ha terminado de grabar una secuencia   si la grabación ha terminado correcta se graba en otra carpeta
                 finishVRecording();
-                return;
+                return true;
             }
             else{
                 points.push_back(ofPoint(x1,y1));
-                currentImage->cropTo( croppedImg ,x1,y1,80,100);
+                currentImage->cropTo( croppedImg ,x1,y1,_w,_h);
                 videoSaver.addFrame(croppedImg);
                 //cout << "added Frame";
             }
-
         }else{
             if(videoSaver.q.size()==0){
-                videoSaver.stopThread();
-                
+              //  ofLog() << "La cola es 0. Cerrando thread \n";
+                if(videoSaver.isThreadRunning() ){
+                    videoSaver.stopThread();
+                }
             }
         }
         return false;
-        
     }
+    
     
     void finishVRecording(){
         if(videoSaver.q.size()>0) return;
     //CHANGE CLASS STATUES
-        cout << "stopRecorder\n";
+        ofLog() << "Recording finished. Success. stopRecorder\n";
         frameCount=0;
         videoSaver.counter=0;
         isRecording=false;
@@ -157,7 +157,7 @@ public:
 
     }
     
-    void cancel(){//cancela la grabación
+    void abort(){//cancela la grabación
         frameCount=0;
         videoSaver.counter=0;
         isRecording=false;
@@ -169,7 +169,7 @@ private:
 	ofPixels *currentImage;
     ofVideoPlayer recordedVideoPlayback;
 
-    string filename="video";
+    string filename1="video";
 
     
 

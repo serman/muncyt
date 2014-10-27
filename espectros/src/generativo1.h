@@ -61,7 +61,7 @@ public:
     void keyPressed(int k);
 private:
     int rotateAng=0;
-    
+     ofImage backgroundImg;
 };
 
 

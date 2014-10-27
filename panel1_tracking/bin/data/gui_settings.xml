@@ -1,27 +1,27 @@
 <Widget>
     <Kind>42</Kind>
     <Name>blob_threshold</Name>
-    <Value>24</Value>
+    <Value>16</Value>
 </Widget>
 <Widget>
     <Kind>42</Kind>
     <Name>min blob size</Name>
-    <Value>300</Value>
+    <Value>993</Value>
 </Widget>
 <Widget>
     <Kind>42</Kind>
     <Name>max blob size</Name>
-    <Value>10000</Value>
+    <Value>18188</Value>
 </Widget>
 <Widget>
     <Kind>42</Kind>
     <Name>amplify</Name>
-    <Value>10</Value>
+    <Value>6</Value>
 </Widget>
 <Widget>
     <Kind>42</Kind>
     <Name>smooth</Name>
-    <Value>9</Value>
+    <Value>5</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>

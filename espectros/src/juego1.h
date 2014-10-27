@@ -132,6 +132,9 @@ private:
     ofImage flecha;
         ofImage ballImg;
     ofImage goalImg;
+    ofImage backgroundImg;
+    
+
     
 };
 

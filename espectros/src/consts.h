@@ -15,6 +15,8 @@
 #define VIDEO_W 720
 #define VIDEO_H 576
 
+extern ofTrueTypeFont courierFont;
+
 //la imagen que se recibe hay que escalarla por este ratio para que se convierta en pantalla completa
 static float VIDEO_scale=SCREEN_W/VIDEO_W;
 

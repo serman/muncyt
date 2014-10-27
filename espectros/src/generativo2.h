@@ -84,7 +84,7 @@ private:
     AbstractFilter *filter;
     
     vector<ofPoint> people;
-    
+     ofImage backgroundImg;
     
 };
 

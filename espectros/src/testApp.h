@@ -27,7 +27,7 @@
 #include "joy2key.h"
 class testApp : public ofBaseApp{
     
-	enum Scenes{ SCENE_0= 0, SCENE_1, SCENE_2, SCENE_3,SCENE_4,SCENE_5 };
+	enum Scenes{ FANTASMAS= 0, BOLA, COMEPANTALLA, SCENE_3,SCENE_4,SCENE_5 };
 	
 public:
     void setup();

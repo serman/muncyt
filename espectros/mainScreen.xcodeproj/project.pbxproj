@@ -242,6 +242,7 @@
 		F7B132CD19BF48380078B97C /* particle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7B132C519BF48380078B97C /* particle.cpp */; };
 		F7B132CE19BF48380078B97C /* ParticleEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7B132C719BF48380078B97C /* ParticleEmitter.cpp */; };
 		F7B132D019BF48380078B97C /* particleSourceHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7B132CB19BF48380078B97C /* particleSourceHandler.cpp */; };
+		F7CD6D7019FDD19B00DEEE8C /* fantasmas_aux.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7CD6D6F19FDD19B00DEEE8C /* fantasmas_aux.cpp */; };
 		F8D05F7C7F785CE323983B47 /* ofxUITextInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06C7032F68D99A145A53CB6F /* ofxUITextInput.cpp */; };
 		F9C20834354ACC8337320B8C /* ofxUIMultiImageToggle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C5ED4467DFF0AC3482E9362 /* ofxUIMultiImageToggle.cpp */; };
 		FB09C6B2A1DA0EA217240CB8 /* ofxCvGrayscaleImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 057122A817D12571F8C0C7A4 /* ofxCvGrayscaleImage.cpp */; };
@@ -870,6 +871,7 @@
 		F7B132C819BF48380078B97C /* ParticleEmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParticleEmitter.h; sourceTree = "<group>"; };
 		F7B132CB19BF48380078B97C /* particleSourceHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = particleSourceHandler.cpp; sourceTree = "<group>"; };
 		F7B132CC19BF48380078B97C /* particleSourceHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = particleSourceHandler.h; sourceTree = "<group>"; };
+		F7CD6D6F19FDD19B00DEEE8C /* fantasmas_aux.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = fantasmas_aux.cpp; sourceTree = "<group>"; };
 		F7FBC56859535E597B24BB91 /* NetworkingUtils.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = NetworkingUtils.h; path = ../../../addons/ofxOsc/libs/oscpack/src/ip/NetworkingUtils.h; sourceTree = SOURCE_ROOT; };
 		F886EBA3F8F05C7F74633933 /* devmem2d.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = devmem2d.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/gpu/devmem2d.hpp; sourceTree = SOURCE_ROOT; };
 		F9A4454B00CCFD7265D3CA85 /* ofxUILabelButton.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUILabelButton.cpp; path = ../../../addons/ofxUI/src/ofxUILabelButton.cpp; sourceTree = SOURCE_ROOT; };
@@ -1441,8 +1443,8 @@
 			isa = PBXGroup;
 			children = (
 				F772E5A319F5E04B008062DE /* joyDivision */,
-				F7A657C019A56535004E0E78 /* juego2 */,
-				F77253C71986AED800ADD13E /* juego1 */,
+				F7A657C019A56535004E0E78 /* comePantalla */,
+				F77253C71986AED800ADD13E /* lanzaBola */,
 				F77253C61986AEC200ADD13E /* generativo1 */,
 				F77253BF1986ADD200ADD13E /* faces */,
 				F77253BB1986A37200ADD13E /* glitch */,
@@ -1732,6 +1734,7 @@
 				F773691B194206B000548CEA /* moveAndRecord.h */,
 				E4B69E1E0A3A1BDC003C02F2 /* fantasmas.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* fantasmas.h */,
+				F7CD6D6F19FDD19B00DEEE8C /* fantasmas_aux.cpp */,
 			);
 			name = fantasmas;
 			sourceTree = "<group>";
@@ -1823,7 +1826,7 @@
 			name = generativo1;
 			sourceTree = "<group>";
 		};
-		F77253C71986AED800ADD13E /* juego1 */ = {
+		F77253C71986AED800ADD13E /* lanzaBola */ = {
 			isa = PBXGroup;
 			children = (
 				F77253CB1986AF3400ADD13E /* juego1.cpp */,
@@ -1832,7 +1835,7 @@
 				F7775B2A199D09FD008C334D /* juego1_red.cpp */,
 				F7A657D319AEBADC004E0E78 /* gameAdmin.h */,
 			);
-			name = juego1;
+			name = lanzaBola;
 			sourceTree = "<group>";
 		};
 		F772E5A319F5E04B008062DE /* joyDivision */ = {
@@ -2075,7 +2078,7 @@
 			path = triangle;
 			sourceTree = "<group>";
 		};
-		F7A657C019A56535004E0E78 /* juego2 */ = {
+		F7A657C019A56535004E0E78 /* comePantalla */ = {
 			isa = PBXGroup;
 			children = (
 				F7B132C419BF48100078B97C /* particles */,
@@ -2086,7 +2089,7 @@
 				F7A657C819A60F65004E0E78 /* pyl.h */,
 				F7A657C419A56591004E0E78 /* juego2_red.cpp */,
 			);
-			name = juego2;
+			name = comePantalla;
 			sourceTree = "<group>";
 		};
 		F7B1320219BE0D420078B97C /* ofxFilterLibrary */ = {
@@ -2398,6 +2401,7 @@
 				169D3C72FDE6C5590A1616F5 /* ofxCvFloatImage.cpp in Sources */,
 				FB09C6B2A1DA0EA217240CB8 /* ofxCvGrayscaleImage.cpp in Sources */,
 				E212C821D1064B92DD953A42 /* ofxCvHaarFinder.cpp in Sources */,
+				F7CD6D7019FDD19B00DEEE8C /* fantasmas_aux.cpp in Sources */,
 				63020F16C7E8DED980111241 /* ofxCvImage.cpp in Sources */,
 				F7775AFD199B8D99008C334D /* b2TimeOfImpact.cpp in Sources */,
 				F7B132CE19BF48380078B97C /* ParticleEmitter.cpp in Sources */,
@@ -2793,7 +2797,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
-					/Users/sergiogalan/MultimediaProgramming/of_v0.8.0_osx_release/addons/ofxSyphon/libs/Syphon/lib/osx,
+					../../../addons/ofxSyphon/libs/Syphon/lib/osx,
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../libs/glut/lib/osx\"";
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -2947,7 +2951,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
-					/Users/sergiogalan/MultimediaProgramming/of_v0.8.0_osx_release/addons/ofxSyphon/libs/Syphon/lib/osx,
+					../../../addons/ofxSyphon/libs/Syphon/lib/osx,
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../libs/glut/lib/osx\"";
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;

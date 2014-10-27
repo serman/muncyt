@@ -62,6 +62,7 @@ void juego2::setup(){
     contourFinder.setThreshold(threshold);
     contourFinder.findContours(mask1);
     createBigEnemy();
+    backgroundImg.loadImage("fondos/juego1.png");
     
 }
 
@@ -97,6 +98,7 @@ void juego2::draw(){
     
     
     ofPushMatrix();
+        backgroundImg.draw(0,0,1280,720);
         ofTranslate(100,100); //PINTO EN LA ZONA DE LA PANTALLA QUE QUIERO
        // mask1.draw(0,0);   
         ofSetColor(255,255,255);

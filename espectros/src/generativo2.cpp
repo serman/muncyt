@@ -23,7 +23,7 @@ void generativo2::setup(){
         filterr[i]= pow( 1 - (abs(i-lineW/2) / 190.00) , 4)*2;
     }
     filter=new SobelEdgeDetectionFilter(VIDEO_W, VIDEO_H);
-    
+    backgroundImg.loadImage("fondos/juego1.png");
 }
 
 void generativo2::keyPressed(int k){
@@ -46,23 +46,21 @@ void generativo2::update(float f){
         }
     }
     
-
-    
     
 }
 
 void generativo2::draw(){
     ofSetColor(255);
+    
     fbo.begin();
     ofClear(0, 0, 0, 0);
-    //  IMPORTANTE ESTOY DIBUJANDO SOBRE UN FBO DE TAMAÑO DEFINIDO CON LO QUE AL PINTAR FUERA NO SE VE
+        //  IMPORTANTE ESTOY DIBUJANDO SOBRE UN FBO DE TAMAÑO DEFINIDO CON LO QUE AL PINTAR FUERA NO SE VE
         mSyphonClient2->drawSubsection(0,0,SCREEN_W,SCREEN_H,0,VIDEO_offset,VIDEO_W,SCREEN_H);
     fbo.end();
     
     
-    
     ofPushMatrix();
-    
+    backgroundImg.draw(0,0,1280,720);
     ofTranslate(100,100); //PINTO EN LA ZONA D ELA PANTALLA QUE QUIERO
     //ofRect(-2,-2,SCREEN_W+5,SCREEN_H+5);
     ofSetColor(255);

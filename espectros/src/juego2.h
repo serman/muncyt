@@ -147,7 +147,7 @@ private:
         return p1;
     }
     void createBigEnemy();
-
+    ofImage backgroundImg;
 };
 
 

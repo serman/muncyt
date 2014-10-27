@@ -11,7 +11,7 @@ void generativo1::setup(){
     fbo.allocate(SCREEN_W, SCREEN_H, GL_RGBA);
     //fboGeneral.allocate(640, 480, GL_RGB);
     cameraPixels.allocate(SCREEN_W,SCREEN_H,OF_PIXELS_RGBA);
-    
+    backgroundImg.loadImage("fondos/juego1.png");
 }
 
 void generativo1::keyPressed(int k){
@@ -27,6 +27,7 @@ void generativo1::update(float f){
 }
 
 void generativo1::draw(){
+    backgroundImg.draw(0,0,1280,720);
     fbo.begin();
     
     ofClear(0, 0, 0, 0);

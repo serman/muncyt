@@ -1,7 +1,7 @@
 #include "testApp.h"
 //#include "consts.h"
 
-
+ofTrueTypeFont courierFont;
 void testApp::setup(){
     
 	ofSetFrameRate(60);
@@ -9,7 +9,6 @@ void testApp::setup(){
 	ofSetVerticalSync(true);
 	ofBackground(32, 32, 32);
 	//ofEnableSmoothing();
-    
     tuioClient.start(3333);
     ofAddListener(tuioClient.cursorAdded,this,   &testApp::tuioAdded);
 	ofAddListener(tuioClient.cursorRemoved,this, &testApp::tuioRemoved);
@@ -58,22 +57,23 @@ void testApp::setup(){
     mgenerativo2->setTuioClient(&tuioClient);
     mgenerativo2->setSyphonClients(&mSyphonClient, &mSyphonClient2);
     
-    sceneManager->addScene( mjuego, SCENE_2);
-    sceneManager->addScene( mjuego2, SCENE_3);
-	sceneManager->addScene( mglitch, SCENE_1);
+    sceneManager->addScene( mjuego, BOLA);
+    sceneManager->addScene( mjuego2, COMEPANTALLA);
 	//sceneManager->addScene( mglitch, SCENE_1);
-    sceneManager->addScene( mfantasmas, SCENE_0);
+	//sceneManager->addScene( mglitch, SCENE_1);
+    sceneManager->addScene( mfantasmas, FANTASMAS);
 	sceneManager->addScene( mgenerativo1, SCENE_4);
     sceneManager->addScene( mgenerativo2, SCENE_5);
 
     
-    //sceneManager->goToScene(SCENE_4);
-	sceneManager->setDrawDebug(true);
+    sceneManager->goToScene(FANTASMAS);
+	sceneManager->setDrawDebug(false);
 	sceneManager->setCurtainDropTime(0.2);
 	sceneManager->setCurtainStayTime(0.0);
 	sceneManager->setCurtainRiseTime(0.2);
 	sceneManager->setOverlapUpdate(true);
 
+    courierFont.loadFont("CourierNew.ttf", 11);
     
 }
 
@@ -85,15 +85,12 @@ void testApp::update(){
 
 
 void testApp::draw(){
-    
 	sceneManager->draw();
 	ofPushStyle();
     ofNoFill();
 	ofSetColor(200,200,200);
-    ofRect(0,0,1280,720);
-	ofDrawBitmapString( "press 1, 2, 3 or 4 to change scene", ofGetWidth() - 290, ofGetHeight() - 10);
+    ofRect(-1,-1,1282,722);
 	ofPopStyle();
-
 }
 
 
@@ -103,9 +100,9 @@ void testApp::mousePressed( int x, int y, int button ){
 }
 
 void testApp::keyPressed(int key){
-    if (key == '0') sceneManager->goToScene(SCENE_0);
-	if (key == '1') sceneManager->goToScene(SCENE_1); /* true >> regardless of curtain state (so u can change state while curtain is moving)*/
-	if (key == '2') sceneManager->goToScene(SCENE_2);
+    if (key == '0') sceneManager->goToScene(FANTASMAS);
+	if (key == '1') sceneManager->goToScene(BOLA); /* true >> regardless of curtain state (so u can change state while curtain is moving)*/
+	if (key == '2') sceneManager->goToScene(COMEPANTALLA);
 	if (key == '3') sceneManager->goToScene(SCENE_3);
 	if (key == '4') sceneManager->goToScene(SCENE_4);
     if (key == '5') sceneManager->goToScene(SCENE_5);

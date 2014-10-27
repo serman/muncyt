@@ -4,7 +4,10 @@
 //
 //  Created by Sergio Galan on 5/27/14.
 //
-//
+//Esta clase en origen contiene funciones para detectar si un blob pasa por un recuadro determinado y activar la grabación de ese blog
+
+//También contiene una función que activa la grabación de un blob con ID determinado
+
 
 #ifndef panel1_tracking_moveAndRecord_h
 #define panel1_tracking_moveAndRecord_h
@@ -12,7 +15,7 @@
 #include <math.h>
 #include "ofxXmlSettings.h"
 #include "consts.h"
-#endif
+
 #define RECORDINGTIME 5000
 #define RECTANGLESIZE 128
 
@@ -21,11 +24,14 @@
 
 #define TUIOMODE
 class moveAndRecord {
+    
     public:
     ofRectangle triggerRectangle;
    // bool blobInSquare=false;
 	long timeLastDetection, timeHidden;
-    enum statesDrawing{blobInSquare,blobOutSquare,hidden};
+    enum statesDrawing{blobInSquare,blobOutSquare,hidden}; // blobInSquare= el blob está en el cuadrado seleccionado
+                                                        // hidden no dibuja el blob
+                                                        // blobOutSquare
     int state;
     int currentRect;
     //este es el "update"
@@ -161,10 +167,9 @@ class moveAndRecord {
                     timeLastDetection=ofGetElapsedTimeMillis();
                     return true;
                 }
-            
         }
         return false;
-    }
+    }    
 
     
  #endif
@@ -192,7 +197,7 @@ class moveAndRecord {
         }
         
         ofRect(triggerRectangle);
-        //        ofRect(triggerRectangle.x-100,triggerRectangle.y-100, triggerRectangle.width, triggerRectangle.height);
+        //       ofRect(triggerRectangle.x-100,triggerRectangle.y-100, triggerRectangle.width, triggerRectangle.height);
         ofPopStyle();
         ofPopMatrix();
     };
@@ -212,3 +217,5 @@ class moveAndRecord {
 
 
 };
+
+#endif

@@ -37,13 +37,13 @@ class fantasmas : public ofxScene{
         void exit_Escena();
     
     
-    	ofxSyphonClient *mSyphonClient;
-        ofxSyphonClient *mSyphonClient2;
+    	ofxSyphonClient *syphonFullImage;
+        ofxSyphonClient *syphonOnlyBlobs;
     
         void setSyphonClients( ofxSyphonClient *mSyphonClient_,ofxSyphonClient *mSyphonClient2_ ){
             cout << "settings syphon client" <<endl;
-            mSyphonClient=mSyphonClient_;
-            mSyphonClient2=mSyphonClient2_;
+            syphonFullImage=mSyphonClient_;
+            syphonOnlyBlobs=mSyphonClient2_;
         }
     
 	    cheapComm myOSCcomm;
@@ -61,7 +61,7 @@ class fantasmas : public ofxScene{
 	void	tuioRemoved(ofxTuioCursor & tuioCursor);
 	void	tuioUpdated(ofxTuioCursor & tuioCursor);
     */
-    moveAndRecord moveandrecord;
+  //  moveAndRecord moveandrecord;
     mosaicRecorder mRecorder;
     ofPixels remoteBlobImgPxl;
     ofImage testImg;
@@ -69,7 +69,7 @@ class fantasmas : public ofxScene{
     ofxUICanvas *gui2;
     std::map<string, int> appStatuses;
      void setupStatus();
-    enum mode{CAPTURE, MOSAIC};
+    enum mode{CAPTURE, REPLAYING};
     
     
     void setupSequences();
@@ -86,6 +86,16 @@ class fantasmas : public ofxScene{
     void gui2Event(ofxUIEventArgs &e);
     int currentImg=0;
     int maxFrame=50;
+     ofImage backgroundImg;
     
-    
+    int selectedBlobId;
+    ofxTuioCursor* selectedBlob;
+    bool recordThisBlob;
+    int videoCounter;
+    long showAbortRecordUntil;
+    long showSuccessRecordUntil;
+    void drawDisplays();
+    void selectNextPhantom();
+    std::queue<int> videoQueue;
+    int secuence_to_play;
 };
