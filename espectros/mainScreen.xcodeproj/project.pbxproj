@@ -872,6 +872,7 @@
 		F7B132CB19BF48380078B97C /* particleSourceHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = particleSourceHandler.cpp; sourceTree = "<group>"; };
 		F7B132CC19BF48380078B97C /* particleSourceHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = particleSourceHandler.h; sourceTree = "<group>"; };
 		F7CD6D6F19FDD19B00DEEE8C /* fantasmas_aux.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = fantasmas_aux.cpp; sourceTree = "<group>"; };
+		F7CD6D7219FFEFA400DEEE8C /* Cara.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cara.h; sourceTree = "<group>"; };
 		F7FBC56859535E597B24BB91 /* NetworkingUtils.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = NetworkingUtils.h; path = ../../../addons/ofxOsc/libs/oscpack/src/ip/NetworkingUtils.h; sourceTree = SOURCE_ROOT; };
 		F886EBA3F8F05C7F74633933 /* devmem2d.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = devmem2d.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/gpu/devmem2d.hpp; sourceTree = SOURCE_ROOT; };
 		F9A4454B00CCFD7265D3CA85 /* ofxUILabelButton.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUILabelButton.cpp; path = ../../../addons/ofxUI/src/ofxUILabelButton.cpp; sourceTree = SOURCE_ROOT; };
@@ -1811,6 +1812,7 @@
 		F77253BF1986ADD200ADD13E /* faces */ = {
 			isa = PBXGroup;
 			children = (
+				F7CD6D7219FFEFA400DEEE8C /* Cara.h */,
 				F77253C31986AE4000ADD13E /* faces.cpp */,
 				F77253C41986AE4000ADD13E /* faces.h */,
 			);

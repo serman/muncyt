@@ -19,7 +19,9 @@
 #include "ofxTuio.h"
 #include <ofMath.h>
 #include "ofxScene.h"
-
+#include "Cara.h"
+#include "consts.h"
+#define NCARAS 8
 class faces : public ofxScene{
     
 public:
@@ -54,7 +56,20 @@ public:
     void sceneWillDisappear( ofxScene * toScreen );
     void init_Escena();
     void exit_Escena();
+	void keyPressed(int key);
+    
+    void cargaCaras();
+	
+	bool	swEnLinea;
+	bool	swWireframe;
+	
+    Cara	cara;
+    
+    vector<Cara> caras;
+    void drawMemoryLoading();
 private:
+    ofImage backgroundImg;
+    bool swTexture;
     
 };
 

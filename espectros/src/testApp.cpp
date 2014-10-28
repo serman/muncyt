@@ -35,12 +35,12 @@ void testApp::setup(){
     glitch *mglitch=new glitch();
     mglitch->setTuioClient(&tuioClient);
     mglitch->setSyphonClients(&mSyphonClient, &mSyphonClient2);
-/*
+
     
    faces *mfaces=new faces();
     mfaces->setTuioClient(&tuioClient);
     mfaces->setSyphonClients(&mSyphonClient, &mSyphonClient2);
-  */
+ 
     juego1 *mjuego=new juego1();
     mjuego->setTuioClient(&tuioClient);
     mjuego->setSyphonClients(&mSyphonClient, &mSyphonClient2);
@@ -59,14 +59,14 @@ void testApp::setup(){
     
     sceneManager->addScene( mjuego, BOLA);
     sceneManager->addScene( mjuego2, COMEPANTALLA);
-	//sceneManager->addScene( mglitch, SCENE_1);
+	sceneManager->addScene( mfaces, CARAS3D);
 	//sceneManager->addScene( mglitch, SCENE_1);
     sceneManager->addScene( mfantasmas, FANTASMAS);
 	sceneManager->addScene( mgenerativo1, SCENE_4);
     sceneManager->addScene( mgenerativo2, SCENE_5);
 
     
-    sceneManager->goToScene(FANTASMAS);
+    sceneManager->goToScene(CARAS3D);
 	sceneManager->setDrawDebug(false);
 	sceneManager->setCurtainDropTime(0.2);
 	sceneManager->setCurtainStayTime(0.0);
@@ -85,7 +85,9 @@ void testApp::update(){
 
 
 void testApp::draw(){
+    ofPushStyle();
 	sceneManager->draw();
+    	ofPopStyle();
 	ofPushStyle();
     ofNoFill();
 	ofSetColor(200,200,200);
@@ -106,6 +108,7 @@ void testApp::keyPressed(int key){
 	if (key == '3') sceneManager->goToScene(SCENE_3);
 	if (key == '4') sceneManager->goToScene(SCENE_4);
     if (key == '5') sceneManager->goToScene(SCENE_5);
+        if (key == '6') sceneManager->goToScene(CARAS3D);
     sceneManager->getCurrentScene()->keyPressed(key);
 }
 void testApp::keyReleased(int key){
