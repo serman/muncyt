@@ -3,6 +3,7 @@
 #include "ofMain.h"
 #include "ofxOpenCv.h"
 #include "ofxCv.h"
+#include "ofxFaceTracker.h"
 
 struct faceData {
 	ofRectangle rect;
@@ -62,5 +63,16 @@ class testApp : public ofBaseApp{
 		ofxCv::ObjectFinder	finder_ofxcv;
 
 		// MODO FACETRACKER
-
+//		ofxFaceTrackerThreaded tracker;
+		ofxFaceTracker tracker;
+	
+		void			update_faceTracker();	
+		ofMesh			LEyeRect, REyeRect, mouthRect;
+		ofVec2f			position;
+		float			scale;
+		ofMatrix4x4		rotationMatrix;
+		void			drawFaceTracker();
+	
+	
+	
 };
