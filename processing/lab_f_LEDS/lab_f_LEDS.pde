@@ -138,7 +138,8 @@ void draw()
   //rotateDraw(5);
   //mcircle.draw();
   //drawFading();
-  drawBottomTop();
+  //drawBottomTop();
+  noiseDraw();
   text(frameRate,width-40,height-40);
 }
 

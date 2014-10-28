@@ -127,7 +127,9 @@ void noiseDraw() {
   for (int i=0; i<=y_count; i++) {
     for (int j=0; j<=x_count; j++) {
       //pick a random grayscale value before drawing each rectangle. (thanks subpixel!)
-      fill(int(random(50)));
+      float ruido=random(170);
+      if(ruido<130) fill(0);
+      else fill(ruido);
       rect(initX+j*psize, initY+i*psize, psize, psize);
     }
   } 
