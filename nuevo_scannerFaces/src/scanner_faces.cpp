@@ -677,6 +677,7 @@ void scanner_faces::hacerFoto_haarViz() {
 		faceImage.crop(rectHaar.x, rectHaar.y, rectHaar.width, rectHaar.height);
 		saveScanImg2HaarViz(faceImage, nPersonaAct);
 	}
+	
 }
 
 

@@ -66,7 +66,11 @@ public:
 	float		radioEscena;
 	ofPath		borde;
 	ofPolyline	circExt;
-	
+	float		radioZentro;
+	float		r1, r2;
+
+	ofVbo	anilloFondo1, anilloFondo2;
+		
 	ofPath		anilloExterior;
 	ofPath		anilloExteriorLineas;
 	ofMesh		ringExt;
@@ -103,6 +107,7 @@ public:
 	
 	float	magnetField;
 	bool	swMagnetField;
+	bool	changeMagneticField;
 	
 	
 	bool	bDrawingMode;
@@ -118,6 +123,7 @@ public:
 	ofImage	imgPunto;
 	
 	ParticleData newParticleData(int tipo);
+	vector<ParticleS>	particulas_out, particulas_out_old;
 	
     void exit();
     

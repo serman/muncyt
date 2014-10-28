@@ -1,5 +1,8 @@
 #include "testApp.h"
 
+using namespace ofxCv;
+using namespace cv;
+
 //--------------------------------------------------------------
 void testApp::setup(){
 
@@ -48,6 +51,12 @@ void testApp::setupFinders() {
 	finder_ofxcv.setMultiScaleFactor(1.09);
 	
 	modoDetect = MODO_OFXCV;
+	
+	
+	// Face Tracker
+	tracker.setup();
+	tracker.setRescale(.5);
+	
 }
 
 //--------------------------------------------------------------
@@ -111,8 +120,24 @@ void testApp::update(){
 			}
 		}
 		
+//		else if(mode==MODO_FCTRACKer) {
+//			tracker.update(toCv((ofImage)images[iImgAct]));
+////			if(tracker.update(toCv((ofImage)images[iImgAct]))) {
+////				classifier.classify(tracker);
+////			}			
+//		}
+		
 		
 	}
+	
+	if(modoDetect==MODO_FCTRACKer) {
+		tracker.update(toCv(images[iImgAct]));
+		//			if(tracker.update(toCv((ofImage)images[iImgAct]))) {
+		//				classifier.classify(tracker);
+		//			}			
+	}
+
+	
 }
 
 //--------------------------------------------------------------
@@ -187,6 +212,16 @@ void testApp::draw(){
 		// dibujar la cara recortada en un lateral		
 		
 	}
+	
+	if(modoDetect==MODO_FCTRACKer) {
+		tracker.draw();
+		ofPushMatrix();
+//		ofTranslate(ofGetWidth()-300,100,0);
+			//ofScale(5,5,5);
+			//tracker.getObjectMesh().drawWireframe();
+			tracker.getImageMesh().drawWireframe();
+		ofPopMatrix();
+	}
 
 	ofDrawBitmapString("Seleccion Images (n/m): " + ofToString(iImgAct)+"/"+ofToString(images.size()), ofPoint(10,ofGetHeight()-110));
 	ofDrawBitmapString("ModoAct (z): " + ofToString(modoDetect), ofPoint(10,ofGetHeight()-90));
@@ -201,15 +236,17 @@ void testApp::keyPressed(int key){
 		iImgAct++;
 		iImgAct%=images.size();
 		isAnalisisDone = false;
+		tracker.reset();
 	}
 	else if(key=='n') {
 		iImgAct--;
 		iImgAct= (iImgAct<0)? images.size()-1 : iImgAct;
 		isAnalisisDone = false;
+		tracker.reset();
 	}
 	else if(key=='z') {
 		modoDetect++;
-		if(modoDetect>=2) modoDetect=0;
+		if(modoDetect>=3) modoDetect=0;
 		isAnalisisDone = false;
 	}
 	if(key=='q') {
@@ -224,6 +261,17 @@ void testApp::keyPressed(int key){
 	else if(key=='e') {
 		finder_ofxcv.setPreset(ofxCv::ObjectFinder::Sensitive);
 		if(modoDetect==MODO_OFXCV) 		isAnalisisDone = false;
+	}
+	
+	else if(key=='s') {
+		if(modoDetect==MODO_FCTRACKer) {
+			string nombre = "capturas/imagen_"+ofToString(iImgAct);
+			images[iImgAct].saveImage(nombre+".jpg");
+			tracker.getImageMesh().save(nombre+"_ImageMesh.ply");
+			tracker.getObjectMesh().save(nombre+"_ObjectMesh.ply");
+			tracker.getMeanObjectMesh().save(nombre+"_MeanObjectMesh.ply");
+		}
+		
 	}
 	
 	
