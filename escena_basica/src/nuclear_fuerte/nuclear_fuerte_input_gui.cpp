@@ -160,6 +160,7 @@ void nuclear_fuerte::setupGUI() {
 	//    gui1->addSpacer();
 	gui1->addLabel("Magnetic Field");
 	gui1->addToggle("(b) Magnetic Field ON/OFF", &swMagnetField );
+	gui1->addToggle("Variar Auto MagnetF ON/OFF", &changeMagneticField );
 	gui1->addSlider("Magnetic Force", -1.0, 1.0, &magnetField);
 	
 	gui1->addSpacer();

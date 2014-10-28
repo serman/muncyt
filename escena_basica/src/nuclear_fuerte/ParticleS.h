@@ -166,40 +166,40 @@ class ParticleS
 			m = 1.0;
 			q = 0;
 			amortV = 1.0;
-			tLife = 5.0;
+			tLife = 4.0;
 		}
 		else if(tipo==1) {
 			m = 1.0;
 			q = 0;
 			amortV = 2.0;
-			tLife = 5.0;
+			tLife = 4.0;
 		}
 		else if(tipo==2) {
-			m = 1.0;
+			m = 1.5;
 			q = -1.0;
 			amortV = 3.0;
 			tLife = 3.0;
 		}
 		else if(tipo==3) {
-			m = 1.0;
+			m = 2.0;
 			q = 1.0;
 			amortV = 2.0;
 			tLife = 2.0;
 		}
 		else if(tipo==4) {
-			m = 1.0;
+			m = 2.2;
 			q = 2.0;
 			amortV = 3.0;
 			tLife = 2.0;
 		}
 		else if(tipo==5) {
-			m = 1.0;
+			m = 3.0;
 			q = -2.0;
 			amortV = 4.0;
 			tLife = 1.0;
 		}
+		tLife*=5;
 		
-		tLife*=10;
 	}
 	
 	
@@ -219,6 +219,8 @@ class ParticleS
 		
     	velocity += acceleration/m*dt;
 		
+		velocity-=velocity*amortV/300.0;
+
 		// muy graciosete:
 		//	https://sites.google.com/site/ofauckland/examples/curly-moving-particles		
 		//		angle += ofSignedNoise(position.x, position.y)*PI;
@@ -238,7 +240,15 @@ class ParticleS
 		
 		// puntos dentro de un polyline
 		if(inside) {
-			memoPaths[memoPaths.size()-1].addVertex(position);
+			int nn = memoPaths.size();
+			if(nn>0) {
+				if(memoPaths[nn-1].size()==0) {
+					//				memoPaths
+					// si ya hay paths, creados
+					// coger el ultimo y poner el punto en el penultimo punto
+					memoPaths[nn-1].addVertex(position);
+				}
+			}
 		}
 		
         acceleration=acceleration*0;
@@ -250,15 +260,17 @@ class ParticleS
 	// Los modos de dibujo variarán dependiendo del tipo	
 	void draw() {
 		ofPushStyle();
-
-		ofSetColor(colorTail);
+		
+		ofColor ct = colorTail;//Excited;
+		ct.a = 100.0;
+		ofSetColor(ct);
 		ofNoFill();
-		ofSetLineWidth(1);
+		ofSetLineWidth(4);//1.5);
 		
 		if(bDrawLife) {
 			lifePath.draw();			
 		}
-
+		
 		if(bDrawMemoPath) {
 			drawMemoPath();
 		}		
@@ -271,10 +283,11 @@ class ParticleS
 			ofEndShape(false);
 			//ofLine(position_prev.x, position_prev.y, position.x, position.y);
 		}	
-
+		
 		ofPushStyle();
+		
 		ofSetColor(color);
-//		ofLogNotice(ofToString(color));
+		//		ofLogNotice(ofToString(color));
 		ofFill();
 		ofPushMatrix();
 		ofTranslate(position.x, position.y);		
@@ -282,22 +295,22 @@ class ParticleS
 			ofEllipse(0,0, 4,4);
 		}
 		else if(tipoPart==1) {
-				ofRotate(ofGetElapsedTimeMillis());	// degrees
-				ofSetLineWidth(1);
-				ofLine(-4, 0, 4, 0);
+			ofRotate(ofGetElapsedTimeMillis());	// degrees
+			ofSetLineWidth(2);
+			ofLine(-4, 0, 4, 0);
 		}
 		else if(tipoPart==2) {
 			ofRect(-2, -2, 4,4);
 		}
 		else if(tipoPart==3) {
 			ofTriangle(3,3, -3,-3, 0,3);
-//			ofRect(-1, -3, 2,6);
+			//			ofRect(-1, -3, 2,6);
 		}
 		else if(tipoPart==4) {
-			ofEllipse(-3, -3, 4,4);
+			ofEllipse(0, 0, 4,4);
 		}
 		else if(tipoPart==5) {
-			ofRect(-3, -3, 6,6);
+			ofRect(-4, -4, 8,8);
 		}
 		ofPopMatrix();		
 		ofPopStyle();
@@ -309,7 +322,7 @@ class ParticleS
 			ofPopStyle();
 		}
 		
-//		ofPopMatrix();
+		//		ofPopMatrix();
 		ofPopStyle();
 	}
 	

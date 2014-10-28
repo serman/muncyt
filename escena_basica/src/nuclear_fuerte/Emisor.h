@@ -79,8 +79,11 @@ public:
 	}
 	
 	void setColor(ofColor cc) {
+		ofColor cPrev = c;
 		c = cc;
-		setupIcono();
+		if(c!=cPrev) {
+			setupIcono();
+		}
 	}
 	
 	void setupIcono() {
@@ -148,7 +151,7 @@ public:
 		// velocidad
 		// se da mas velocidad cuanto más lejos este del centro 
 		// (resize de pos bastaría)
-		float ddMax = 384;
+		float ddMax = W_HEIGHT/2.0*0.97;
 		float ddMin = 50.0;	// radio de la zona central
 		float dd = pos.length();
 		pos.normalize();	
