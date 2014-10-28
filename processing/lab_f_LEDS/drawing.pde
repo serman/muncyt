@@ -116,8 +116,9 @@ void drawLine() {
 
 
 void noiseDraw() {
+  frameRate(6);
   background(0);
-  int psize = 8;
+  int psize = 4;
   int x_count = (lengthPared/psize); 
   int y_count = (lengthTira/psize);
   pushStyle();
@@ -127,8 +128,8 @@ void noiseDraw() {
   for (int i=0; i<=y_count; i++) {
     for (int j=0; j<=x_count; j++) {
       //pick a random grayscale value before drawing each rectangle. (thanks subpixel!)
-      float ruido=random(170);
-      if(ruido<130) fill(0);
+      float ruido=random(120);
+      if(ruido<100) fill(0);
       else fill(ruido);
       rect(initX+j*psize, initY+i*psize, psize, psize);
     }
@@ -265,7 +266,7 @@ void drawFading(){
     initFadingX=random(0,lengthPared-50);
     lengthFading=0;
     float signo=random(-2,2);
-    if(signo>0) fadingSpeed=1; else fadingSpeed=-1;
+    if(signo>0) fadingSpeed=8; else fadingSpeed=-8;
     initFadingY=random(0,lengthTira-lengthTramo);
     HueFading=random(70,150);
   }

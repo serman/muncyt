@@ -108,6 +108,7 @@ void setup()
 
 void draw()
 {
+  frameRate(25);
   background(0);
   /* stroke(255,0,0);
    fill(0,0,200);
@@ -139,7 +140,7 @@ void draw()
   //mcircle.draw();
   //drawFading();
   //drawBottomTop();
-  noiseDraw();
+  //noiseDraw();
   text(frameRate,width-40,height-40);
 }
 
