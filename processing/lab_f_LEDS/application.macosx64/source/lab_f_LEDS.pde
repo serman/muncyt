@@ -52,9 +52,6 @@ color exchangeC1, exchangeC2;
 void setup()
 {
   size(400, 400, P2D);
-  
-  frame.setLocation(1000,700);
-  
   // Load a sample image
   dot = loadImage("color-dot.png");
   maskImage=loadImage("mask.png");
