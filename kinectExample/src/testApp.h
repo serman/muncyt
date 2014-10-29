@@ -31,7 +31,7 @@
 #endif
 
 
-#define USEFILE
+//#define USEFILE
 //#define TESTMODE
 
 	#include "ofxOpenNI2Grabber.h"
@@ -193,7 +193,7 @@ public:
         q.makeRotate(rot.x, xax, rot.y, yax, rot.z, zax);
         light.setOrientation(q);
     }
-    dela mdela;
+   // dela mdela;
     
     void setShaders(unsigned int  shaderFlags);
 

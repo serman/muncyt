@@ -73,6 +73,9 @@ void fantasmas::setup(){
     gui2->addLabel("GRABACION", OFX_UI_FONT_MEDIUM);
     gui2->addToggle("grabacion", false);
     videoCounter=0;
+    for(int i=0; i< MAX_SEQUENCES; i++){
+        videoQueue.push(i);
+    }
 }
 
 void fantasmas::setupSequences(){
@@ -288,8 +291,13 @@ void fantasmas::draw(){
                 ofEllipse(p1.x, p1.y, 5, 5);
             }
         }
-        
-
+        if(secuence_to_play!=-1){
+         playImage(secuence_to_play);
+        }
+    
+        if(ofGetFrameNum()%130==0){
+            selectNextPhantom();
+        }
 
     }else  if(appStatuses["mode"]==REPLAYING){
         backgroundImg.draw(0,0,1280,720);
@@ -535,6 +543,7 @@ void fantasmas::init_Escena(){
         recordThisBlob=false;
     showSuccessRecordUntil=0;
     showAbortRecordUntil=0;
+    secuence_to_play=-1;
 }
 
 void fantasmas::exit_Escena(){

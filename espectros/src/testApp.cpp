@@ -66,7 +66,7 @@ void testApp::setup(){
     sceneManager->addScene( mgenerativo2, SCENE_5);
 
     
-    sceneManager->goToScene(CARAS3D);
+    sceneManager->goToScene(FANTASMAS);
 	sceneManager->setDrawDebug(false);
 	sceneManager->setCurtainDropTime(0.2);
 	sceneManager->setCurtainStayTime(0.0);

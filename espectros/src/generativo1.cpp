@@ -62,8 +62,6 @@ void generativo1::draw(){
                     ofPopMatrix();
             }
         }
-
-    
 }
 
 
