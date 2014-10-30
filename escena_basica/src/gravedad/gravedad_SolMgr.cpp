@@ -28,7 +28,7 @@ void	gravedad::addMasaSol(float m) {
 
 void	gravedad::setRfromM() {
 	rSol = sqrt(masaSol/densSol);
-	sol.setRadius(rSol);	
+	sole.setRadius(rSol);	
 }
 
 void	gravedad::setMfromR() {
@@ -38,11 +38,10 @@ void	gravedad::setMfromR() {
 void gravedad::drawSol() {
 	ofPushStyle();
 	ofSetColor(255,255,0,  100+120*ofNoise(ofGetElapsedTimef() / 10.0) );
-	sol.setPosition(0,0,0);
+	sole.setPosition(0,0,0);
 	ofPushMatrix();
 	ofRotateX(90);
-	sol.draw();
+	sole.draw();
 	ofPopMatrix();
 	ofPopStyle();
 }
-

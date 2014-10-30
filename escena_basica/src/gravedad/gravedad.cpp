@@ -19,6 +19,8 @@ void gravedad::setup(){
 	//we load a font and tell OF to make outlines so we can draw it as GL shapes rather than textures
 	font.loadFont("type/verdana.ttf", 100, true, false, true, 0.4, 72);
 	
+	ofLogNotice() << 1;
+	
 	// Meshes
 	// superficie
 	setupMeshSuperf();
@@ -90,19 +92,22 @@ void gravedad::setup(){
     //cam.setAutoDistance(false);
     
 	ratePartic = 30;
+
+	ofLogNotice() << "gravedad:::setup " << 2;
     
     setupGUI();
-    gui1->disable();
-    ofAddListener(gui1->newGUIEvent,this,&gravedad::guiEvent);
-    gui1->loadSettings("guiSettings_gravedad.xml");
+	ofLogNotice() << "gravedad:::setup " << 3;
 	
-    ofDisableAlphaBlending();
+    gui1->disable();
+	ofLogNotice() << "gravedad:::setup " << 4;
     blackHoleShader.load("", "shaders/blackHole.frag");
   
+	ofLogNotice() << "gravedad:::setup " << 5;
     
 }
 
 void gravedad::init_Escena() {
+	ofLogNotice() << "gravedad::init_Escena: " << 0;
     
     cheapComm::getInstance()->sendAudio0("/audio/gravity/start_event");
     
@@ -124,14 +129,18 @@ void gravedad::init_Escena() {
 	light.setOrientation( ofVec3f(180,0, 0) );
     
     
-    gui1->enable();
+	ofLogNotice() << "gravedad::init_Escena: " << 1;
+	
+//    gui1->enable();
     initSol(INIT_MASA_SOL);
+	ofLogNotice() << "gravedad::init_Escena: " << 2;
 	
 	cam.setDistance(zCam);
     state=GROWING;
     status_sent_EOS_Sent=false;
     // Crear las particulas
 	
+	ofLogNotice() << "gravedad::init_Escena: " << 3;
 	
 	// addListeners
 	// Aqui no hacemos nada (por ahora) con las colisiones y otros eventos
@@ -707,7 +716,7 @@ void gravedad::guiEvent(ofxUIEventArgs &e) {
 	{
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
 		rSol = slider->getScaledValue();
-		sol.setRadius(rSol);
+		sole.setRadius(rSol);
 		setMfromR();
 	}
 	else if(name == "cam_z")

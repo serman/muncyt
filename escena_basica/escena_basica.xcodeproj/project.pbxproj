@@ -278,6 +278,7 @@
 		7FB6BF4619389B7C00C396A4 /* ofxTuioCursor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTuioCursor.h; sourceTree = "<group>"; };
 		7FB6BF4719389B7C00C396A4 /* ofxTuioObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTuioObject.h; sourceTree = "<group>"; };
 		7FB6BF4819389B7C00C396A4 /* ofxTuioPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTuioPoint.h; sourceTree = "<group>"; };
+		7FC37F321A031E1A0070DC21 /* Sol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sol.h; sourceTree = "<group>"; };
 		7FFD07211913A0450022FA53 /* Box2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Box2D.h; sourceTree = "<group>"; };
 		7FFD07231913A0450022FA53 /* b2BroadPhase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = b2BroadPhase.cpp; sourceTree = "<group>"; };
 		7FFD07241913A0450022FA53 /* b2BroadPhase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2BroadPhase.h; sourceTree = "<group>"; };
@@ -1266,6 +1267,7 @@
 		F74B8A0A196F6F6C005F3893 /* gravedad */ = {
 			isa = PBXGroup;
 			children = (
+				7FC37F321A031E1A0070DC21 /* Sol.h */,
 				F79A3D6A19D784F9009151E9 /* ParticleX.h */,
 				F79A3D6B19D784F9009151E9 /* gravedad_particulasMgr.cpp */,
 				F79A3D6C19D784F9009151E9 /* gravedad_SolMgr.cpp */,
