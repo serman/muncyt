@@ -41,7 +41,8 @@ int imgSize;
 ArrayList stages;
 float stageScale;
 String[] xmlFiles;
-
+String[] fotoFiles={"test640.jpg","test640_2.jpg","test640_3.jpg"};
+int currentPhoto=0;
 String path; // sketch path
 
 PGraphics mgraphics; //haar features are drawn here
@@ -98,7 +99,7 @@ void setup() {
           .setSize(200, 19).setCaptionLabel("refresh")
             ;
   }
-  
+  cp5.hide();
   path = sketchPath; // an environment variable
   
   fakeDetectedfaces=new ArrayList<Rectangle>();
@@ -119,7 +120,9 @@ void setup() {
     xposition+=xAxeMovement;
   }
   imagebg=loadImage("background.jpg");
+  doProcess=true;
 } //end setup
+
 
 
 void draw() {
@@ -251,7 +254,11 @@ void loadNewPhoto(String name){
 
 //loads new image and define how fast the rectangles will move
 void refresh(){
-  loadNewPhoto("test640_2.jpg"); //TODO TAKE NEW PHOTO FROM LISTS OR WHATEVER
+  currentPhoto++; 
+  if(currentPhoto>=fotoFiles.length){
+  currentPhoto=0;
+  }
+  loadNewPhoto(fotoFiles[currentPhoto]); //TODO TAKE NEW PHOTO FROM LISTS OR WHATEVER
   fakeDetectedfaces.clear();
   //setupCurrentIteration();
   minimages.reset();
