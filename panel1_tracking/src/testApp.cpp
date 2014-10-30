@@ -4,7 +4,7 @@
 void testApp::setup(){
     setupStatus();
     if(ofToString(getenv("USER"))=="instalaciones"){
-        ofSetFrameRate(30);
+        ofSetFrameRate(40);
     }
     else{
         ofSetFrameRate(19);
@@ -195,7 +195,7 @@ void testApp::setMaskedImageBlobs(){
 void testApp::draw(){
     //ofScale(0.8, 0.8);
     if(ofGetFrameNum()==19 || ofGetFrameNum()%150==0)
-        bg.draw(0,0,1280,1024);
+        bg.draw(-1,-1,1281,1025);
     ofPushMatrix();
     cleanBackgrounds();
     
@@ -214,8 +214,7 @@ void testApp::draw(){
     contourMaskOF.draw(766,275,480,360); //masked image = sourceGrayImage en este momento, aunque en otro formato de pixels (8 bits)
 #endif
 
-    ofSetColor(0);
-    ofRect(1391,139,320,240);
+
         ofSetColor(255,255,255,255);
     	blobTracker.draw(57,602,480,360);//img + blobs}
    // 	maskedImageOF.draw(1391,139,320,240);
@@ -235,8 +234,13 @@ void testApp::draw(){
 }
 
 void testApp::showDebug(){
+    ofPushStyle();
+    ofFill();
+    ofSetColor(0);
+    ofRect(20,0,300,60);
     ofDrawBitmapString("Framerate " + ofToString(ofGetFrameRate()) + "/"+ofToString(ofGetTargetFrameRate()), 20, 20);
         ofDrawBitmapString("NonZero " + ofToString(nonZero), 20, 40);
+     ofPopStyle();
 }
 
 
@@ -250,7 +254,7 @@ void testApp::cleanBackgrounds(){
     ofRect(59, 169, 480, 360);
     ofRect(766, 275, 480, 360);
     ofRect(57, 602, 480, 360);
-    ofRect(20,0,300,60);
+    
     ofPopStyle();
     
 }

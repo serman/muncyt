@@ -134,6 +134,7 @@ void testApp::setupGui(){
    // gui1->loadSettings("gui_settingsCamera1.xml");
     guiTabBar->addCanvas(gui1);
     guiTabBar->loadSettings("./","camera_settings");
+    guiTabBar->disable();
 }
 
 //--------------------------------------------------------------
