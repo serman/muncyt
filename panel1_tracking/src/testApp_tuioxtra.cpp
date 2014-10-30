@@ -58,8 +58,8 @@ void testApp::sendTUIO(std::vector<ofxBlob> * objectBlobs){
             {
                 set_obj.addFloatArg(blob_obj->boundingRect.getWidth());	// wd
                 set_obj.addFloatArg(blob_obj->boundingRect.getHeight());	// ht
-                if (blob_obj->id%3==0)
-                cout << blob_obj->id << " : " << blob_obj->boundingRect.getHeight()*VIDEOHEIGHT  <<endl;
+               // if (blob_obj->id%3==0)
+               // cout << blob_obj->id << " : " << blob_obj->boundingRect.getHeight()*VIDEOHEIGHT  <<endl;
             }
             b_obj.addMessage( set_obj );							// add message to bundle
             alive_obj.addIntArg(blob_obj->id);				// add blob to list of ALL active IDs

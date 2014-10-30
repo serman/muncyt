@@ -123,6 +123,6 @@ class testApp : public ofBaseApp{
     bool firstTimeCeilCamera;
     int configIndex;
     void loadCameraOrVideo();
-    
+    unsigned char * videoMirror;
     
 };

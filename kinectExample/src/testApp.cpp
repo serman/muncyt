@@ -26,13 +26,11 @@ void testApp::setup() {
 	//oniSettings.irPixelFormat = PIXEL_FORMAT_GRAY16;
 	oniSettings.doRegisterDepthToColor = false;
 //#ifndef USEFILE
-    if(ofToString(getenv("USER"))=="instalaciones"){
+    if(ofToString(getenv("USER"))=="instalaciones" ||ofToString(getenv("USER"))=="muncyt0" ){
         oniSettings.useOniFile=false;}
     else{
     //#else
         oniSettings.useOniFile = true;
-        
-        
         oniSettings.oniFilePath = "/Users/sergiogalan/MultimediaProgramming/of_v0.8.4_osx_release/apps/muncyt/kinectExample/bin/data/test_museo.oni";
 
         //will search this directory for an .oni file

@@ -137,6 +137,7 @@ void testApp::toScene(int scn){
     }
     
     else if(appStatuses["escena"]==MENU) {
+        mmenu.start(MENU);
         mmenu.reset();
     }
 }

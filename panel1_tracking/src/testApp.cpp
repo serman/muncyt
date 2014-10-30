@@ -34,7 +34,7 @@ void testApp::setup(){
         currentVid=&vidPlayerCeil;
     }
     consoleFont.loadFont("Menlo.ttc",17);
-    
+    sourceColorImg.allocate(VIDEOWITH,VIDEOHEIGHT);
     sourceGrayImage.allocate(VIDEOWITH,VIDEOHEIGHT);
     floatBgImgCameraCeil.allocate(VIDEOWITH,VIDEOHEIGHT);	//ofxShortImage used for simple dynamic background subtraction
     floatBgImgCameraFront.allocate(VIDEOWITH,VIDEOHEIGHT);
@@ -66,6 +66,7 @@ void testApp::setup(){
     
     maskMaker.setup("shaders/composite_rgb",ofRectangle(0, 0, VIDEOWITH,VIDEOHEIGHT));
     fbo1.allocate(VIDEOWITH,VIDEOHEIGHT,GL_RGBA);
+    videoMirror = new unsigned char[VIDEOWITH*VIDEOHEIGHT*3];
 }
 
 
@@ -86,9 +87,46 @@ void testApp::update(){
     if (isNewFrame){
         appStatuses["isCameraReady"]=true;
         if( USE_LIVE_VIDEO){
-                sourceColorImg.setFromPixels(currentCam->getPixels(), VIDEOWITH,VIDEOHEIGHT);
+                unsigned char * pixels = currentCam->getPixels();
+                for (int i = 0; i < VIDEOHEIGHT; i++) {
+                    for (int j = 0; j < VIDEOWITH*3; j+=3) {
+                        // pixel number
+                        int pix1 = (i*VIDEOWITH*3) + j;
+                        int pix2 = (i*VIDEOWITH*3) + (j+1);
+                        int pix3 = (i*VIDEOWITH*3) + (j+2);
+                        // mirror pixel number
+                        int mir1 = (i*VIDEOWITH*3)+1 * (VIDEOWITH*3 - j-3);
+                        int mir2 = (i*VIDEOWITH*3)+1 * (VIDEOWITH*3 - j-2);
+                        int mir3 = (i*VIDEOWITH*3)+1 * (VIDEOWITH*3 - j-1);
+                        // swap pixels
+                        videoMirror[pix1] = pixels[mir1];
+                        videoMirror[pix2] = pixels[mir2];
+                        videoMirror[pix3] = pixels[mir3];	
+                    }
+                }
+                sourceColorImg.setFromPixels(pixels, VIDEOWITH,VIDEOHEIGHT);
+            //invertir imagen
          }else{
-                sourceColorImg.setFromPixels(currentVid->getPixels(), VIDEOWITH,VIDEOHEIGHT);
+               // sourceColorImg.setFromPixels(currentVid->getPixels(), VIDEOWITH,VIDEOHEIGHT);
+             unsigned char * pixels = currentVid->getPixels();
+             for (int i = 0; i < VIDEOHEIGHT; i++) {
+                 for (int j = 0; j < VIDEOWITH*3; j+=3) {
+                     // pixel number
+                     int pix1 = (i*VIDEOWITH*3) + j;
+                     int pix2 = (i*VIDEOWITH*3) + (j+1);
+                     int pix3 = (i*VIDEOWITH*3) + (j+2);
+                     // mirror pixel number
+                     int mir1 = (i*VIDEOWITH*3)+1 * (VIDEOWITH*3 - j-3);
+                     int mir2 = (i*VIDEOWITH*3)+1 * (VIDEOWITH*3 - j-2);
+                     int mir3 = (i*VIDEOWITH*3)+1 * (VIDEOWITH*3 - j-1);
+                     // swap pixels
+                     videoMirror[pix1] = pixels[mir1];
+                     videoMirror[pix2] = pixels[mir2];
+                     videoMirror[pix3] = pixels[mir3];
+                 }
+             }
+             sourceColorImg.setFromPixels(pixels, VIDEOWITH,VIDEOHEIGHT);
+            //invertir imagen
         }
         sourceColorImg.updateTexture();
         sourceGrayImage = sourceColorImg;
@@ -241,7 +279,7 @@ void testApp::showDebug(){
 }
 
 void testApp::setupStatus(){
-    cout << "staupstatus" <<endl;
+    //cout << "staupstatus" <<endl;
     appStatuses["syphonEnabled"]=true;
     appStatuses["debug"]=false;
     appStatuses["adaptativeBackground"]=false;

@@ -114,16 +114,16 @@ void testApp::mousePressed( int x, int y, int button ){
 
 void testApp::keyPressed(int key){
     
-    if (key == '0') {sceneManager->goToScene(FANTASMAS);
+    if (key == '0') {sceneManager->goToScene(FANTASMAS,false);
     timeToEndScene=ofGetElapsedTimeMillis()+ABS_MAX_TIME_SCENE;
     }
-	if (key == '1'){ sceneManager->goToScene(BOLA); timeToEndScene=ofGetElapsedTimeMillis()+ABS_MAX_TIME_SCENE;
+	if (key == '1'){ sceneManager->goToScene(BOLA,false); timeToEndScene=ofGetElapsedTimeMillis()+ABS_MAX_TIME_SCENE;
     }/* true >> regardless of curtain state (so u can change state while curtain is moving)*/
-    if (key == '2'){ sceneManager->goToScene(COMEPANTALLA);timeToEndScene=ofGetElapsedTimeMillis()+ABS_MAX_TIME_SCENE;
+    if (key == '2'){ sceneManager->goToScene(COMEPANTALLA,false);timeToEndScene=ofGetElapsedTimeMillis()+ABS_MAX_TIME_SCENE;
     }
-    if (key == '3'){ sceneManager->goToScene(JOY_WAVES);timeToEndScene=ofGetElapsedTimeMillis()+ABS_MAX_TIME_SCENE;
+    if (key == '3'){ sceneManager->goToScene(JOY_WAVES,false);timeToEndScene=ofGetElapsedTimeMillis()+ABS_MAX_TIME_SCENE;
     }
-    if (key == '4'){ sceneManager->goToScene(CARAS3D);timeToEndScene=ofGetElapsedTimeMillis()+ABS_MAX_TIME_SCENE;
+    if (key == '4'){ sceneManager->goToScene(CARAS3D,false);timeToEndScene=ofGetElapsedTimeMillis()+ABS_MAX_TIME_SCENE;
     }
     
     sceneManager->getCurrentScene()->keyPressed(key);
@@ -162,7 +162,7 @@ void testApp::gotMessage(ofMessage m){
     if(m.message=="endOfScene"){
         int nextS=chooseScene();
         timeToEndScene=ofGetElapsedTimeMillis()+ABS_MAX_TIME_SCENE;
-        sceneManager->goToScene(nextS, true);
+        sceneManager->goToScene(nextS, false);
     }
     
 }
