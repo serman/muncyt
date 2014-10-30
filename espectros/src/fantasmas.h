@@ -13,8 +13,10 @@
 #include <ofMath.h>
 #include "ofxScene.h"
 #include "consts.h"
+#include "cheapComm.h"
 
 #define MAX_SEQUENCES 3
+
 class fantasmas : public ofxScene{
 	public:
 		void setup();
@@ -46,7 +48,6 @@ class fantasmas : public ofxScene{
             syphonOnlyBlobs=mSyphonClient2_;
         }
     
-	    cheapComm myOSCcomm;
     //32 bits red, 32 bits green, 32 bits blue, from 0 to 1 in 'infinite' steps
     ofFbo fbo; // with alpha
     ofPixels cameraPixels;
@@ -56,6 +57,7 @@ class fantasmas : public ofxScene{
     void setTuioClient(ofxTuioClient *mtuioclient){
         tuioclient=mtuioclient;
     }
+    bool checkPosibleCollision();
     
 /*    void	tuioAdded(ofxTuioCursor & tuioCursor);
 	void	tuioRemoved(ofxTuioCursor & tuioCursor);
@@ -84,6 +86,7 @@ class fantasmas : public ofxScene{
     void playImage(int i);
     int playImgIndex[MAX_SEQUENCES];
     void gui2Event(ofxUIEventArgs &e);
+    ofxTuioCursor* getNextBlob( list<ofxTuioCursor*>::iterator &tobj, list<ofxTuioCursor*> &objectList  );
     int currentImg=0;
     int maxFrame=50;
      ofImage backgroundImg;
@@ -98,4 +101,5 @@ class fantasmas : public ofxScene{
     void selectNextPhantom();
     std::queue<int> videoQueue;
     int secuence_to_play;
+
 };

@@ -20,8 +20,9 @@
 #include "ofxScene.h"
 #include "consts.h"
 #include "ofxFilterLibrary.h"
+#include "cheapComm.h"
 class generativo2 : public ofxScene{
-    
+#define DURACION_ESCENA 120*1000
 public:
     void setup();
     void update(float );
@@ -85,7 +86,8 @@ private:
     
     vector<ofPoint> people;
      ofImage backgroundImg;
-    
+    long time_since_init_scene;
+
 };
 
 

@@ -8,30 +8,44 @@ void testApp::setup(){
     bg.loadImage("bg.jpg");
     ofSetBackgroundAuto(false);
     #ifdef _USE_LIVE_VIDEO
-        cam.listDevices();
-    	cam.setDeviceID(1);
-		cam.listDevices();
-		cam.setDesiredFrameRate(30);
-        cam.initGrabber(VIDEOWITH,VIDEOHEIGHT);
+        camCeil.listDevices();
+    	camCeil.setDeviceID(1);
+
+		camCeil.setDesiredFrameRate(30);
+        camCeil.initGrabber(VIDEOWITH,VIDEOHEIGHT);
+    //cam
+        camFront.setDeviceID(2);
+        camFront.setDesiredFrameRate(30);
+        camFront.initGrabber(VIDEOWITH,VIDEOHEIGHT);
+        currentCam=&camCeil;
     #else
-//        vidPlayer.loadMovie("test1.mov");
-    vidPlayer.loadMovie("muncyt2-menoszoom.mov");
-        vidPlayer.play();
+        vidPlayerCeil.loadMovie("muncyt-test-intermedio.mov");
+        vidPlayerCeil.play();
+    
+        vidPlayerFront.loadMovie("muncyt2-menoszoom.mov");
+        vidPlayerFront.play();
+        currentVid=&vidPlayerCeil;
     #endif
     consoleFont.loadFont("Menlo.ttc",17);
     
     grayImage.allocate(VIDEOWITH,VIDEOHEIGHT);
-    floatBgImg.allocate(VIDEOWITH,VIDEOHEIGHT);	//ofxShortImage used for simple dynamic background subtraction
-    grayBg.allocate(VIDEOWITH,VIDEOHEIGHT);
-	previousImg.allocate(VIDEOWITH,VIDEOHEIGHT);
+    
+    floatBgImgCameraCeil.allocate(VIDEOWITH,VIDEOHEIGHT);	//ofxShortImage used for simple dynamic background subtraction
+    floatBgImgCameraFront.allocate(VIDEOWITH,VIDEOHEIGHT);
+    floatBgImg=&floatBgImgCameraCeil;
+    
+    grayBgCameraCeil.allocate(VIDEOWITH,VIDEOHEIGHT);
+    grayBgCameraFront.allocate(VIDEOWITH,VIDEOHEIGHT);
+    grayBg=&grayBgCameraCeil;
+    
     exposureStartTime = ofGetElapsedTimeMillis();
        bCaptureBackground=true;
     setupGui();
     individualTextureSyphonServer.setName("CameraOutput");
     onlyBlobsImageSyphonServer.setName("onlyBlobs");
     tex.allocate(VIDEOWITH,VIDEOHEIGHT, GL_RGB);
-    
-    myComm.setup();
+    myComm=new cheapComm();
+    myComm->setup();
     //mRecorder.setup();
     
     
@@ -58,37 +72,39 @@ void testApp::setupStatus(){
 
 //--------------------------------------------------------------
 void testApp::update(){
+        myComm->oscRcvUpdate();
+    
     #ifdef _USE_LIVE_VIDEO
-        cam.update();
-        isNewFrame=cam.isFrameNew();
+        currentCam->update();
+        isNewFrame=cam->isFrameNew();
     #else
-        vidPlayer.update();
-        isNewFrame = vidPlayer.isFrameNew();
+        currentVid->update();
+        isNewFrame = currentVid->isFrameNew();
     #endif
 #ifndef TESTMODE
     if (isNewFrame){
         appStatuses["isCameraReady"]=true;
         #ifdef _USE_LIVE_VIDEO
-                sourceColorImg.setFromPixels(cam.getPixels(), VIDEOWITH,VIDEOHEIGHT);
+                sourceColorImg.setFromPixels(currentCam->getPixels(), VIDEOWITH,VIDEOHEIGHT);
         #else
-                sourceColorImg.setFromPixels(vidPlayer.getPixels(), VIDEOWITH,VIDEOHEIGHT);
+                sourceColorImg.setFromPixels(currentVid->getPixels(), VIDEOWITH,VIDEOHEIGHT);
         #endif
         sourceColorImg.updateTexture();
         grayImage = sourceColorImg;
 
 //MEJORA FONDO HACIENDOLO ADAPTATIVO
         if(appStatuses["adaptativeBackground"]==true){
-            floatBgImg.addWeighted( grayImage, fLearnRate); //we add a new bg image to the current bg image but we add it with the weight of the learn rate
-            grayBg=floatBgImg; //convertimos a la imagen a grises
-            grayBg.flagImageChanged();
-            blobTracker.setBg(grayBg);
+            floatBgImg->addWeighted( grayImage, fLearnRate); //we add a new bg image to the current bg image but we add it with the weight of the learn rate
+            *grayBg= *floatBgImg; //convertimos a la imagen a grises
+            grayBg->flagImageChanged();
+            blobTracker.setBg(*grayBg);
         }
         //recapature the background until image/camera is fully exposed
         if((ofGetElapsedTimeMillis() - exposureStartTime) < CAMERA_EXPOSURE_TIME) bCaptureBackground = true;
 
         //Capura fondo si se ha indicado
         if (bCaptureBackground == true){
-            floatBgImg = sourceColorImg;
+            *floatBgImg = sourceColorImg;
             blobTracker.setBg(grayImage);
             bCaptureBackground = false;
         }
@@ -106,7 +122,28 @@ void testApp::update(){
 
 }
 
+void testApp::setFrontCamera(){
+        #ifdef _USE_LIVE_VIDEO
+            currentCam=&camFront;
+        #else
+                    currentVid=&vidPlayerFront;
+        #endif
+    floatBgImg=&floatBgImgCameraFront;
+    grayBg=&grayBgCameraFront;
 
+}
+
+
+void testApp::setCeilCamera(){
+        #ifdef _USE_LIVE_VIDEO
+            currentCam=&camCeil;
+        #else
+           currentVid=&vidPlayerCeil;
+        #endif
+    floatBgImg=&floatBgImgCameraCeil;
+    grayBg=&grayBgCameraCeil;
+    
+}
 void testApp::setMaskedImageBlobs(){
     //Paso las imagenes originales a openCV
     cv::Mat fullimageCV;

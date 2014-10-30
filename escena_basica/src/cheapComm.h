@@ -23,11 +23,6 @@ class cheapComm {
     
 	    void setup();
 
-		//void eventoOSC( oscData &mydata );
-	
-		void sendPosition( float sector, float speed );
-    	void sendExplosion();
-
 	    ofxOscSender myOscAudio;
         ofxOscSender myOscData;
     

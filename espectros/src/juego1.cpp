@@ -350,6 +350,7 @@ void juego1::init_Escena(){
     ofAddListener(box2d.contactStartEvents, this, &juego1::contactStart);
     ofAddListener(gui2->newGUIEvent,this,&juego1::gui2Event);
     gui2->enable();
+    cheapComm::getInstance()->showVideoCeil();
 }
 
 void juego1::exit_Escena(){

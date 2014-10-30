@@ -23,8 +23,9 @@
 #include "ofxCv.h"
 #include "ofxFilterLibrary.h"
 #include "effects.h"
-#include "tr1/boost_shared_ptr.h"
+
 #include "consts.h"
+#include "cheapComm.h"
 #define SCREEN_W 768
 #define SCREEN_H 384
 

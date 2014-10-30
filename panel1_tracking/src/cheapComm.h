@@ -11,9 +11,10 @@
 
 #include <iostream>
 #include "ofxOsc.h"
-#include "ofxBlob.h"
-#endif /* defined(__panel1_tracking__cheapComm__) */
 
+
+#include "testApp.h"
+class testApp;
 
 class cheapComm {
 	public:
@@ -23,7 +24,7 @@ class cheapComm {
 	    ofxOscReceiver myosc;
     	
     private:
-        
     
 
 };
+#endif /* defined(__panel1_tracking__cheapComm__) */

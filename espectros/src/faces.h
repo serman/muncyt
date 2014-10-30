@@ -70,9 +70,16 @@ public:
 private:
     ofImage backgroundImg;
     bool swTexture;
-    
+    enum statuses{LOADINGFACE, FACE_FINISHED, PREPARE_NEW_FACE, ALL_FACES_LOADED};
+    int status;
+    int currentFace;
+    int timeStatusChanged;
+    ofTrueTypeFont fuente;
+    long time_init_scene;
+    bool end_of_scene_sent;
 };
-
-
+#define LOADINGFACE_TIME 5000
+#define LOADEDFACE_TIME 2500
+#define ALL_FACES_LOADED_TIME 8000
 
 #endif /* defined(__mainScreen__faces__) */

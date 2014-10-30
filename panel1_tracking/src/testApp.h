@@ -20,13 +20,18 @@
 #define VIDEO_PROC_SCALE 2;
 #define CAMERA_EXPOSURE_TIME  2200.0f
 //#define TESTMODE
+class cheapComm;
 class testApp : public ofBaseApp{
     private:
         ofImage bg;
         #ifdef _USE_LIVE_VIDEO
-            ofVideoGrabber 		cam;
+            ofVideoGrabber 		camCeil;
+            ofVideoGrabber 		camFront;
+            ofVideoGrabber      *currentCam;
         #else
-            ofVideoPlayer 		vidPlayer;
+            ofVideoPlayer 		vidPlayerCeil;
+            ofVideoPlayer 		vidPlayerFront;
+            ofVideoPlayer 		*currentVid;
         #endif
         bool isNewFrame;
 /*** ADDONS **/
@@ -39,10 +44,14 @@ class testApp : public ofBaseApp{
         ofTrueTypeFont consoleFont;
     	/** intermediate images for tracking ***/
 	    ofxCvColorImage		sourceColorImg;			//a place to save the live video frame
-        ofxCvGrayscaleImage		previousImg;			//a place to save the live video frame
     	ofxCvGrayscaleImage grayImage;
-        ofxCvShortImage		floatBgImg;
-	    ofxCvGrayscaleImage grayBg; //
+        ofxCvShortImage		*floatBgImg;
+        ofxCvShortImage		floatBgImgCameraCeil;
+        ofxCvShortImage		floatBgImgCameraFront;
+    
+	    ofxCvGrayscaleImage *grayBg; //
+        ofxCvGrayscaleImage grayBgCameraCeil; //
+        ofxCvGrayscaleImage grayBgCameraFront; //
         ofImage maskedImageOF;
   
     ofImage contourMaskOF;
@@ -63,7 +72,7 @@ class testApp : public ofBaseApp{
 	    bool adaptativeBackground=false;
 	    float fLearnRate= 0.005f;
         bool bCaptureBackground=true;	//a boolean to indicate whether to instruct the addon to capture the background again, defaults to true
-    	cheapComm myComm;
+    	cheapComm *myComm;
 	    //vector <ofPoint> positions;
     	int rectCounter=0;
     int alphaCounter=0;
@@ -102,5 +111,8 @@ class testApp : public ofBaseApp{
     	void setupTUIO();
     ofxSimpleMask maskMaker;
     ofFbo fbo1;
+    void setFrontCamera();
+    void setCeilCamera();
+    
     
 };

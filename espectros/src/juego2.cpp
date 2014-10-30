@@ -367,6 +367,7 @@ void juego2::sceneWillDisappear( ofxScene * toScreen ){
 };
 
 void juego2::init_Escena(){
+        cheapComm::getInstance()->showVideoCeil();
     //   ofAddListener(box2d.contactStartEvents, this, &nuclear_debil::contactStart);
     //	ofAddListener(box2d.contactEndEvents, this, &nuclear_debil::contactEnd);
 	ofSetFrameRate(40);

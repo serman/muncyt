@@ -27,8 +27,8 @@
 #include "joy2key.h"
 class testApp : public ofBaseApp{
     
-	enum Scenes{ FANTASMAS= 0, BOLA, COMEPANTALLA, SCENE_3,SCENE_4,SCENE_5 ,CARAS3D };
-	
+	enum Scenes{ FANTASMAS= 0, BOLA, COMEPANTALLA, JOY_WAVES ,CARAS3D };
+#define NUM_SCENES 5
 public:
     void setup();
     void update();
@@ -52,4 +52,8 @@ public:
     ofxSyphonClient mSyphonClient;
     ofxSyphonClient mSyphonClient2;
     joy2key j2key;
+    void gotMessage(ofMessage m);
+    long timeToEndScene;
+    int chooseScene();
+    
 };
