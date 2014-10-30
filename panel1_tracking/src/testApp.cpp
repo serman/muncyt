@@ -3,6 +3,7 @@
 //--------------------------------------------------------------
 void testApp::setup(){
     setupStatus();
+    loadCameraOrVideo();
     if(ofToString(getenv("USER"))=="instalaciones"){
         ofSetFrameRate(40);
     }
@@ -13,7 +14,7 @@ void testApp::setup(){
     adminMode=false;
     bg.loadImage("bg.jpg");
     ofSetBackgroundAuto(false);
-    #ifdef _USE_LIVE_VIDEO
+    if( USE_LIVE_VIDEO){
         camCeil.listDevices();
     	camCeil.setDeviceID(1);
 
@@ -24,14 +25,14 @@ void testApp::setup(){
         camFront.setDesiredFrameRate(30);
         camFront.initGrabber(VIDEOWITH,VIDEOHEIGHT);
         currentCam=&camCeil;
-    #else
+    }else{
         vidPlayerCeil.loadMovie("muncyt-test-intermedio.mov");
         vidPlayerCeil.play();
     
         vidPlayerFront.loadMovie("muncyt2-menoszoom.mov");
         vidPlayerFront.play();
         currentVid=&vidPlayerCeil;
-    #endif
+    }
     consoleFont.loadFont("Menlo.ttc",17);
     
     sourceGrayImage.allocate(VIDEOWITH,VIDEOHEIGHT);
@@ -61,43 +62,34 @@ void testApp::setup(){
     if(appStatuses["sendTUIO"]==true){
         frameseq=0;
         setupTUIO();
-    
-    };
+    }
     
     maskMaker.setup("shaders/composite_rgb",ofRectangle(0, 0, VIDEOWITH,VIDEOHEIGHT));
     fbo1.allocate(VIDEOWITH,VIDEOHEIGHT,GL_RGBA);
-    
 }
 
-void testApp::setupStatus(){
-        appStatuses["syphonEnabled"]=true;
-    	appStatuses["debug"]=false;
-    	appStatuses["adaptativeBackground"]=false;
-	    appStatuses["blobInSquare"]=false;
-	    appStatuses["sendTUIO"]=true;
-        appStatuses["isCameraReady"]=false;
-    
-}
+
 
 //--------------------------------------------------------------
 void testApp::update(){
         myComm->oscRcvUpdate();
     
-    #ifdef _USE_LIVE_VIDEO
+    if( USE_LIVE_VIDEO){
         currentCam->update();
-        isNewFrame=cam->isFrameNew();
-    #else
+        isNewFrame=currentCam->isFrameNew();
+    }else{
         currentVid->update();
         isNewFrame = currentVid->isFrameNew();
-    #endif
+    }
+    
 #ifndef TESTMODE
     if (isNewFrame){
         appStatuses["isCameraReady"]=true;
-        #ifdef _USE_LIVE_VIDEO
+        if( USE_LIVE_VIDEO){
                 sourceColorImg.setFromPixels(currentCam->getPixels(), VIDEOWITH,VIDEOHEIGHT);
-        #else
+         }else{
                 sourceColorImg.setFromPixels(currentVid->getPixels(), VIDEOWITH,VIDEOHEIGHT);
-        #endif
+        }
         sourceColorImg.updateTexture();
         sourceGrayImage = sourceColorImg;
 
@@ -134,11 +126,11 @@ void testApp::update(){
 }
 //camara 1
 void testApp::setFrontCamera(){
-        #ifdef _USE_LIVE_VIDEO
+        if( USE_LIVE_VIDEO){
             currentCam=&camFront;
-        #else
+        }else{
                     currentVid=&vidPlayerFront;
-        #endif
+        }
     floatBgImg=&floatBgImgCameraFront;
     //grayBg=&grayBgCameraFront;
     if(firstTimeFrontCamera){
@@ -151,11 +143,11 @@ void testApp::setFrontCamera(){
 
 //camara0
 void testApp::setCeilCamera(){
-        #ifdef _USE_LIVE_VIDEO
+        if( USE_LIVE_VIDEO){
             currentCam=&camCeil;
-        #else
+        }else{
            currentVid=&vidPlayerCeil;
-        #endif
+        }
     floatBgImg=&floatBgImgCameraCeil;
     //grayBg=&grayBgCameraCeil;
     if(firstTimeCeilCamera){
@@ -240,10 +232,24 @@ void testApp::showDebug(){
     ofRect(20,0,300,60);
     ofDrawBitmapString("Framerate " + ofToString(ofGetFrameRate()) + "/"+ofToString(ofGetTargetFrameRate()), 20, 20);
         ofDrawBitmapString("NonZero " + ofToString(nonZero), 20, 40);
+
+    if(configIndex==FRONT_INDEX)
+       ofDrawBitmapString("FRONT CAMERA", 20, 60);
+     else  ofDrawBitmapString("CEIL CAMERA", 20, 60);
+
      ofPopStyle();
 }
 
-
+void testApp::setupStatus(){
+    cout << "staupstatus" <<endl;
+    appStatuses["syphonEnabled"]=true;
+    appStatuses["debug"]=false;
+    appStatuses["adaptativeBackground"]=false;
+    appStatuses["blobInSquare"]=false;
+    appStatuses["sendTUIO"]=true;
+    appStatuses["isCameraReady"]=false;
+    
+}
 
 
 
