@@ -34,7 +34,7 @@ void juego2::setup(){
     appStatuses["hold_key"]=false;
     appStatuses["isOnContour"]=true;
     appStatuses["lastMovement"]=NONE;
-    
+    bshowDebug=false;
 
     mask1.allocate(SCREEN_W, SCREEN_H,OF_IMAGE_COLOR);
     //maskFbo.allocate(SCREEN_W, SCREEN_H,GL_LUMINANCE);
@@ -135,7 +135,7 @@ void juego2::draw(){
     ofPopMatrix();
 
 
-    showDebug();
+    if(bshowDebug) showDebug();
        //     imgRecortada.draw(900,0);
     
 }
@@ -423,7 +423,9 @@ void juego2::keyPressed(int key){
     }
     else if(key=='p')
         startProcessing=true;
-
+    
+    else if(key=='g')
+        bshowDebug=!bshowDebug;
     
 }
 

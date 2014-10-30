@@ -80,7 +80,7 @@ void fantasmas::setupSequences(){
          it != sequences.end(); ++it){
     	//it->loadSequence(ofToDataPath("recordings/video_"+ofToString(ii)+"/frame" , "png", 0, 75, 4);
         it->loadSequence(ofToDataPath("recordings/video_"+ofToString(ii)));
-        it->setFrameRate(25);
+        it->setFrameRate(30);
         it->preloadAllFrames();
         
     //LOAD POINTS
@@ -113,7 +113,7 @@ void fantasmas::setupSequences(){
 void fantasmas::setupSequence(int seq){
         ofLog() <<" Entering setupSequence " << seq;
         sequences[seq].loadSequence(ofToDataPath("recordings/video_"+ofToString(seq)));
-        sequences[seq].setFrameRate(25);
+        sequences[seq].setFrameRate(30);
         sequences[seq].preloadAllFrames();
         ofxXmlSettings settings;
         vector<ofPoint> mpoints;

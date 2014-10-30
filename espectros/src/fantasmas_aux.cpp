@@ -144,7 +144,7 @@ void fantasmas::init_Escena(){
     selectedBlobId=-1;
     ofAddListener(gui2->newGUIEvent,this,&fantasmas::gui2Event);
     ofAddListener(finishedRecordingEvent,this, &fantasmas::onRecordingFinished);
-    ofSetFrameRate(20);
+    ofSetFrameRate(30);
     recordThisBlob=false;
     showSuccessRecordUntil=0;
     showAbortRecordUntil=0;

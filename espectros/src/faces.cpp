@@ -128,11 +128,9 @@ void faces::draw(){
 	ofSetColor(255);
     ofPopMatrix();//fin del translate al punto de pantalla
 
-	ofDrawBitmapString("'m' para cambiar modo de presentación", 20, 20);
-	ofDrawBitmapString("'w' para dibujar wireframe", 20, 35);
-	ofDrawBitmapString("'t' para dibujar texturas", 20, 50);
-    
-    ofDrawBitmapString(ofToString(ofGetMouseX()) +" Y: " + ofToString(ofGetMouseY()) , 20, 55);
+    if(bshowDebug)
+        showDebug();
+
     /*for(int i=0; i<nCaras; i++){
         caras[i].img.draw(i*300,100);
     }*/
@@ -141,6 +139,14 @@ void faces::draw(){
 void faces::drawMemoryLoading(){
     
     
+}
+
+void faces::showDebug(){
+    ofDrawBitmapString("'m' para cambiar modo de presentación", 20, 20);
+	ofDrawBitmapString("'w' para dibujar wireframe", 20, 35);
+	ofDrawBitmapString("'t' para dibujar texturas", 20, 50);
+    
+    ofDrawBitmapString(ofToString(ofGetMouseX()) +" Y: " + ofToString(ofGetMouseY()) , 20, 55);
 }
 
 void faces::update(float f){
@@ -191,6 +197,7 @@ void faces::sceneWillDisappear( ofxScene * toScreen ){
 };
 
 void faces::init_Escena(){
+    ofSetFrameRate(60);
     currentFace=0;
     timeStatusChanged=ofGetElapsedTimeMillis();
     time_init_scene=ofGetElapsedTimeMillis();
@@ -207,4 +214,6 @@ void faces::keyPressed(int key){
 	if(key=='m') swEnLinea=!swEnLinea;
 	else if(key=='w') swWireframe=!swWireframe;
 	else if(key=='t') swTexture=!swTexture;
+    else if(key=='g')
+        bshowDebug=!bshowDebug;
 }
