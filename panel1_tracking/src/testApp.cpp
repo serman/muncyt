@@ -3,8 +3,14 @@
 //--------------------------------------------------------------
 void testApp::setup(){
     setupStatus();
-    ofSetFrameRate(19);
-    adminMode=true;
+    if(ofToString(getenv("USER"))=="instalaciones"){
+        ofSetFrameRate(30);
+    }
+    else{
+        ofSetFrameRate(19);
+    }
+    
+    adminMode=false;
     bg.loadImage("bg.jpg");
     ofSetBackgroundAuto(false);
     #ifdef _USE_LIVE_VIDEO
@@ -28,22 +34,25 @@ void testApp::setup(){
     #endif
     consoleFont.loadFont("Menlo.ttc",17);
     
-    grayImage.allocate(VIDEOWITH,VIDEOHEIGHT);
-    
+    sourceGrayImage.allocate(VIDEOWITH,VIDEOHEIGHT);
     floatBgImgCameraCeil.allocate(VIDEOWITH,VIDEOHEIGHT);	//ofxShortImage used for simple dynamic background subtraction
     floatBgImgCameraFront.allocate(VIDEOWITH,VIDEOHEIGHT);
     floatBgImg=&floatBgImgCameraCeil;
     
-    grayBgCameraCeil.allocate(VIDEOWITH,VIDEOHEIGHT);
-    grayBgCameraFront.allocate(VIDEOWITH,VIDEOHEIGHT);
-    grayBg=&grayBgCameraCeil;
-    
+    grayBg.allocate(VIDEOWITH,VIDEOHEIGHT);
+   // grayBgCameraFront.allocate(VIDEOWITH,VIDEOHEIGHT);
+   // grayBg=&grayBgCameraCeil;
+    setCeilCamera();
     exposureStartTime = ofGetElapsedTimeMillis();
-       bCaptureBackground=true;
+    bCaptureBackground=true;
+    firstTimeFrontCamera=true;
+    firstTimeCeilCamera=true;
+    
     setupGui();
     individualTextureSyphonServer.setName("CameraOutput");
     onlyBlobsImageSyphonServer.setName("onlyBlobs");
     tex.allocate(VIDEOWITH,VIDEOHEIGHT, GL_RGB);
+    
     myComm=new cheapComm();
     myComm->setup();
     //mRecorder.setup();
@@ -62,7 +71,7 @@ void testApp::setup(){
 
 void testApp::setupStatus(){
         appStatuses["syphonEnabled"]=true;
-    	appStatuses["debug"]=true;
+    	appStatuses["debug"]=false;
     	appStatuses["adaptativeBackground"]=false;
 	    appStatuses["blobInSquare"]=false;
 	    appStatuses["sendTUIO"]=true;
@@ -90,14 +99,14 @@ void testApp::update(){
                 sourceColorImg.setFromPixels(currentVid->getPixels(), VIDEOWITH,VIDEOHEIGHT);
         #endif
         sourceColorImg.updateTexture();
-        grayImage = sourceColorImg;
+        sourceGrayImage = sourceColorImg;
 
 //MEJORA FONDO HACIENDOLO ADAPTATIVO
         if(appStatuses["adaptativeBackground"]==true){
-            floatBgImg->addWeighted( grayImage, fLearnRate); //we add a new bg image to the current bg image but we add it with the weight of the learn rate
-            *grayBg= *floatBgImg; //convertimos a la imagen a grises
-            grayBg->flagImageChanged();
-            blobTracker.setBg(*grayBg);
+            floatBgImg->addWeighted( sourceGrayImage, fLearnRate); //we add a new bg image to the current bg image but we add it with the weight of the learn rate
+            grayBg= *floatBgImg; //convertimos a la imagen a grises
+            grayBg.flagImageChanged();
+            blobTracker.setBg(grayBg);
         }
         //recapature the background until image/camera is fully exposed
         if((ofGetElapsedTimeMillis() - exposureStartTime) < CAMERA_EXPOSURE_TIME) bCaptureBackground = true;
@@ -105,15 +114,17 @@ void testApp::update(){
         //Capura fondo si se ha indicado
         if (bCaptureBackground == true){
             *floatBgImg = sourceColorImg;
-            blobTracker.setBg(grayImage);
+            blobTracker.setBg(sourceGrayImage);
             bCaptureBackground = false;
+            
         }
-        blobTracker.update(grayImage, blobThreshold,minBlobSize,maxBlobSize);
+        /* Esta funcion devuelve sourceGrayImage modificada. Dentro se le aplica el Bg substraction */
+        blobTracker.update(sourceGrayImage, blobThreshold[configIndex],minBlobSize[configIndex],maxBlobSize[configIndex]);
         
 
         setMaskedImageBlobs();
         //myComm.sendBlobs( blobTracker.trackedBlobs);
-        blobTracker.setFiltersParam(amplify, smooth);
+        blobTracker.setFiltersParam(amplify[configIndex], smooth[configIndex]);
 
 
 	}    
@@ -121,7 +132,7 @@ void testApp::update(){
 //CUENTA CANTIDAD DE MOVIMIENTO
 
 }
-
+//camara 1
 void testApp::setFrontCamera(){
         #ifdef _USE_LIVE_VIDEO
             currentCam=&camFront;
@@ -129,11 +140,16 @@ void testApp::setFrontCamera(){
                     currentVid=&vidPlayerFront;
         #endif
     floatBgImg=&floatBgImgCameraFront;
-    grayBg=&grayBgCameraFront;
+    //grayBg=&grayBgCameraFront;
+    if(firstTimeFrontCamera){
+        bCaptureBackground=true;
+        firstTimeFrontCamera=false;
+    }
+    configIndex=FRONT_INDEX;
 
 }
 
-
+//camara0
 void testApp::setCeilCamera(){
         #ifdef _USE_LIVE_VIDEO
             currentCam=&camCeil;
@@ -141,15 +157,21 @@ void testApp::setCeilCamera(){
            currentVid=&vidPlayerCeil;
         #endif
     floatBgImg=&floatBgImgCameraCeil;
-    grayBg=&grayBgCameraCeil;
+    //grayBg=&grayBgCameraCeil;
+    if(firstTimeCeilCamera){
+        bCaptureBackground=true;
+        firstTimeCeilCamera=false;
+    }
+    configIndex=CEIL_INDEX;
     
 }
+/* esta funcion toma el resultado del blob tracking y lo usa como m‡scara sobre la imagen original. De esta fomra queda la imagen original, pero solo la zona donde hay blob */
 void testApp::setMaskedImageBlobs(){
     //Paso las imagenes originales a openCV
     cv::Mat fullimageCV;
     fullimageCV=ofxCv::toCv(sourceColorImg);
     cv::Mat grayimageCV;
-    grayimageCV=ofxCv::toCv(grayImage); //imagen en escala de grises con los blobs
+    grayimageCV=ofxCv::toCv(sourceGrayImage); //imagen en escala de grises con los blobs
     
     //creo la matriz donde se va a guardar la imagen de la mascara en blanco y negro. Negro donde no hay blob blanco donde lo hay
     cv::Mat contourMaskCV;//(640,480,CV_8U);
@@ -189,7 +211,7 @@ void testApp::draw(){
  #ifndef TESTMODE
     ofSetColor(0, 255, 123, 100);
     ofSetColor(255,255,255,255);
-    contourMaskOF.draw(766,275,480,360); //masked image
+    contourMaskOF.draw(766,275,480,360); //masked image = sourceGrayImage en este momento, aunque en otro formato de pixels (8 bits)
 #endif
 
     ofSetColor(0);
@@ -202,11 +224,12 @@ void testApp::draw(){
         individualTextureSyphonServer.publishTexture(&sourceColorImg.getTextureReference());
         onlyBlobsImageSyphonServer.publishTexture(&fbo1.getTextureReference());
     }
-    if(appStatuses["debug"] && adminMode) showDebug();
+    if( adminMode) showDebug();
     if(appStatuses["sendTUIO"]==true){
         sendTUIO(&(blobTracker.trackedBlobs));
     };
 
+   // sourceGrayImage.draw(0,0);
     ofPopMatrix();
   //  maskedImageOF.draw(0,0,320,240);
 }

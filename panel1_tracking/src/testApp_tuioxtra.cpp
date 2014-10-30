@@ -89,9 +89,9 @@ void testApp::keyPressed(int key){
 	if(key=='a'){
         adminMode=!adminMode;
         if(adminMode)
-            gui2->enable();
+            guiTabBar->enable();
         else
-            gui2->disable();
+            guiTabBar->disable();
     }
     else if(key==' '){
         bCaptureBackground=true;
@@ -100,21 +100,40 @@ void testApp::keyPressed(int key){
         
     }
     else if(key=='s'){
-        gui2->saveSettings("gui_settings.xml");
+      //  gui0->saveSettings("gui_settingsCamera0.xml");
+      //  gui1->saveSettings("gui_settingsCamera1.xml");
+        guiTabBar->saveSettings("./","camera_settings");
     }
 }
 void testApp::setupGui(){
-    gui2 = new ofxUICanvas(790,280, 295,285);
-    gui2->addIntSlider("blob_threshold", 0, 255, &blobThreshold);
-	gui2->addIntSlider("min blob size", 0, 1000, &minBlobSize);
-	gui2->addIntSlider("max blob size", 0, 20000, &maxBlobSize);
-	gui2->addIntSlider("amplify", 0, 100, &amplify);
-    gui2->addIntSlider("smooth", 0, 10, &smooth);
-    gui2->addSpacer();
-    gui2->addToggle("Adaptative", false);
-    gui2->addSlider("learnRate", 0	, 0.001f, &fLearnRate) ;
-    ofAddListener(gui2->newGUIEvent,this,&testApp::gui2Event);
-    gui2->loadSettings("gui_settings.xml");
+  //CEIL CAMARA
+    guiTabBar = new ofxUITabBar(50,50, 295,285);
+    gui0 = new ofxUICanvas(50,50, 295,285);
+    gui0->setName("Camera0");
+    gui0->addIntSlider("blob_threshold0", 0, 255, &blobThreshold[0]);
+	gui0->addIntSlider("min blob size0", 0, 1000, &minBlobSize[0]);
+	gui0->addIntSlider("max blob size0", 0, 20000, &maxBlobSize[0]);
+	gui0->addIntSlider("amplify0", 0, 100, &amplify[0]);
+    gui0->addIntSlider("smooth0", 0, 10, &smooth[0]);
+
+    guiTabBar->addCanvas(gui0);
+    
+ //FRONT CAMARA
+    gui1 = new ofxUICanvas(50,50, 295,285);
+    gui1->setName("Camera1" );
+    gui1->addIntSlider("blob_threshold", 0, 255, &blobThreshold[1]);
+	gui1->addIntSlider("min blob size", 0, 1000, &minBlobSize[1]);
+	gui1->addIntSlider("max blob size", 0, 20000, &maxBlobSize[1]);
+	gui1->addIntSlider("amplify", 0, 100, &amplify[1]);
+    gui1->addIntSlider("smooth", 0, 10, &smooth[1]);
+    
+    gui1->addSpacer();
+    gui1->addToggle("Adaptative", false);
+    gui1->addSlider("learnRate", 0	, 0.001f, &fLearnRate) ;
+    ofAddListener(gui1->newGUIEvent,this,&testApp::gui2Event);
+   // gui1->loadSettings("gui_settingsCamera1.xml");
+    guiTabBar->addCanvas(gui1);
+    guiTabBar->loadSettings("./","camera_settings");
 }
 
 //--------------------------------------------------------------
