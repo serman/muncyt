@@ -20,6 +20,7 @@
 #include "ofxXmlSettings.h"
 #include "ofxUI.h"
 #include "ParticleX.h"
+#include "Sol.h"
 #include "tangiblesHandler.h"
 #include "handShadow.h"
 // -------------------------------------------------
@@ -55,8 +56,6 @@ public:
     ofTrueTypeFont font;
 	
     ofVec2f		zentro;
-	
-	
 	
 	ofMesh	superf, superfOrig;
 	int		superfW, superfH;
@@ -104,7 +103,8 @@ public:
 	
 	
 	// SOL
-	ofSpherePrimitive sol;
+	Sol sol;
+	ofSpherePrimitive sole;
 	float		rSol;
 	ofVec2f		posSol;
 	float		masaSol;
@@ -128,7 +128,7 @@ public:
 	// camara-z
 	float zCam;
 	
-	
+	float lon, lat;
 	
 	
 	// Particulas

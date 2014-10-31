@@ -8,14 +8,22 @@
  */
 
 int MAXBRILLO = 180;
-int led = 9;           // the pin that the LED is attached to
+int led = 11;           // the pin that the LED is attached to
 int brightness = 230;    // how bright the LED is
 int fadeAmount = 5;    // how many points to fade the LED by
 
+boolean bOff = true; 
+
 // the setup routine runs once when you press reset:
 void setup()  { 
-  // declare pin 6 to be an output:
+  
+  Serial.begin(9600);
+  
+  // initialize the digital pin as an output.
   pinMode(led, OUTPUT);
+
+  bOff = true;  
+    
 } 
 
 // the loop routine runs over and over again forever:

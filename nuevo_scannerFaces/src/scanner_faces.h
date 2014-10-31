@@ -84,9 +84,14 @@ public:
 	bool	doFaceTracker;
 	bool	doDrawHaarFace, doDrawFaceTracker;
 	
+	bool	bFlipH, bFlipV;
+	bool	swFullScreen;
 	
 	// FaceTracker
 	ofxFaceTrackerThreaded tracker;
+	
+	// Imagen para flip
+	ofImage	flipImage;
 	
 	void			update_faceTracker();	
 	ofMesh			LEyeRect, REyeRect, mouthRect;

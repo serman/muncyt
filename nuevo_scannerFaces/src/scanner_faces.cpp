@@ -8,6 +8,11 @@ void scanner_faces::setup() {
 	ofSetVerticalSync(true);
 	ofEnableSmoothing();
 	
+	ofLogNotice("START");
+	cam.listDevices();
+	ofLogNotice("Devices ya listados!!!");
+	
+	
 	// utils
 	colores.push_back(ofColor::paleVioletRed);
 	colores.push_back(ofColor::lightSeaGreen);
@@ -68,6 +73,12 @@ void scanner_faces::setup() {
 	ofClear(0,255);
 	fboScan.end();
 	
+	// imagen para flip camara
+	flipImage.allocate(wCam,hCam, OF_IMAGE_COLOR);
+	
+	bFlipH = false;
+	bFlipV = true;
+	
 	// timers
 	setupTimers();
 	
@@ -83,6 +94,10 @@ void scanner_faces::setup() {
 	nPersonaAct = 0;
 	nZonaAct = 0;
 	snd_click.loadSound("sounds/click_214632.aiff");
+		
+	swFullScreen = true;
+	
+	
 	
 	
 }
@@ -132,6 +147,15 @@ void scanner_faces::update() {
 	
 	if(cam.isFrameNew()) {
 
+		// Flip Cam
+		// http://forum.openframeworks.cc/t/reversing-mirroring-video-input-to-ofxfacetracker/8701/3
+		// 
+//		if(bFlipH || bFlipV) {
+		flipImage.setFromPixels(cam.getPixelsRef());  
+		flipImage.mirror(bFlipV, bFlipH);
+//		}
+		
+		// HaarFinder
 		if(doHaarFace) {
 			bFaceDetected = false;
 			update_haarFinder();
@@ -149,7 +173,8 @@ void scanner_faces::update() {
 }
 
 void scanner_faces::update_haarFinder() {
-	finder.update(cam);
+//	finder.update(cam);
+	finder.update(flipImage);
 	
 	if(finder.size()>0) {
 		bFaceDetected = true;
@@ -171,7 +196,8 @@ void scanner_faces::update_haarFinder() {
 		
 		if(swHaarEyes) {
 			// Paso la imagen al finder de ojos
-			faceImage.setFromPixels(cam.getPixels(), cam.width, cam.height, OF_IMAGE_COLOR );
+//			faceImage.setFromPixels(cam.getPixels(), cam.width, cam.height, OF_IMAGE_COLOR );
+			faceImage.setFromPixels(flipImage.getPixels(), cam.width, cam.height, OF_IMAGE_COLOR );
 			faceImage.crop(faceRectAmpl.x, faceRectAmpl.y, faceRectAmpl.width, faceRectAmpl.height);
 			finderEyes.update(faceImage);
 		}
@@ -184,7 +210,9 @@ void scanner_faces::update_haarFinder() {
 }
 
 void scanner_faces::update_faceTracker() {
-	tracker.update(toCv(cam));
+//	tracker.update(toCv(cam));
+	tracker.update(toCv(flipImage));
+	
 	
 	position = tracker.getPosition();
 	scale = tracker.getScale();
@@ -315,7 +343,8 @@ void scanner_faces::draw() {
 			ofTranslate(ofGetWidth()-(ofGetWidth()-ww)/2,(ofGetScreenHeight()-hh)/2);
 			ofScale(-ww/cam.width,hh/cam.height);
 			
-			cam.draw(0,0);
+//			cam.draw(0,0);
+			flipImage.draw(0,0);
 
 			// - - - - 
 			// Este bloque debe ir enla zona de escenas 
@@ -444,6 +473,8 @@ void scanner_faces::draw() {
 	int hLin = 10;
 	ofDrawBitmapStringHighlight("(t) FullScreen", 10,hLin); hLin+=20;
 	ofDrawBitmapStringHighlight("(q) " + nombreEscena, 10,hLin); hLin+=20;
+	ofDrawBitmapStringHighlight("(i) FlipH : " + ofToString(bFlipH), 10,hLin); hLin+=20;
+	ofDrawBitmapStringHighlight("(o) FlipV : " + ofToString(bFlipV), 10,hLin); hLin+=20;
 	ofDrawBitmapStringHighlight("(d) do HaarFace: " + ofToString(doHaarFace), 10,hLin); hLin+=20;
 	ofDrawBitmapStringHighlight("(f) do FaceTracker: " + ofToString(doFaceTracker), 10,hLin); hLin+=20;
 	ofDrawBitmapStringHighlight("(e) draw HaarFace: " + ofToString(doDrawHaarFace), 10,hLin); hLin+=20;
@@ -595,6 +626,9 @@ void scanner_faces::keyPressed(int key) {
 		modoDrawFT = FT_TEXTURE;
 	}
 	
+	if(key=='i') bFlipH = !bFlipH;
+	if(key=='o') bFlipV = !bFlipV;
+
 		
 	if(key=='6') {
 		finder.setPreset(ObjectFinder::Fast);
@@ -644,7 +678,8 @@ void scanner_faces::keyPressed(int key) {
 void scanner_faces::hacerFoto() {
 	
 	if(hayPersona()) {
-		faceImage.setFromPixels(cam.getPixels(), cam.width, cam.height, OF_IMAGE_COLOR );
+//		faceImage.setFromPixels(cam.getPixels(), cam.width, cam.height, OF_IMAGE_COLOR );
+		faceImage.setFromPixels(flipImage.getPixels(), cam.width, cam.height, OF_IMAGE_COLOR );
 		faceImage.crop(faceRectAmpl.x, faceRectAmpl.y, faceRectAmpl.width, faceRectAmpl.height);
 		saveScanImg(faceImage, nPersonaAct, nZonaAct);
 		nZonaAct++;
@@ -673,7 +708,8 @@ void scanner_faces::saveScanImg(ofImage &imgScan, int nPers, int nImg) {
 void scanner_faces::hacerFoto_haarViz() {
 
 	if(hayPersona()) {
-		faceImage.setFromPixels(cam.getPixels(), cam.width, cam.height, OF_IMAGE_COLOR );
+//		faceImage.setFromPixels(cam.getPixels(), cam.width, cam.height, OF_IMAGE_COLOR );
+		faceImage.setFromPixels(flipImage.getPixels(), cam.width, cam.height, OF_IMAGE_COLOR );
 		faceImage.crop(rectHaar.x, rectHaar.y, rectHaar.width, rectHaar.height);
 		saveScanImg2HaarViz(faceImage, nPersonaAct);
 	}
