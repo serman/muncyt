@@ -29,7 +29,7 @@ public:
         flabImg.loadImage("flab-2a.png");
         texture1.loadImage("text1.png");
         
-        start(GRAVEDAD);
+        start(MENU);
         for ( int y = 0 ; y < ofGetHeight();  y+=density ){
              for ( int x = 0 ; x < ofGetWidth(); x+=density ){
                 Particle mparticle=Particle(ofVec3f(x-1000,y-1000,0),
@@ -40,6 +40,7 @@ public:
         }
         analyzeImg();
         currentvector=&emImgWP;
+                start(MENU);
     }
     
     void start(int _state){

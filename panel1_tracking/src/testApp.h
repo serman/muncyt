@@ -23,20 +23,21 @@
 #define NCAMARAS 2
 #define CEIL_INDEX 0
 #define FRONT_INDEX 1
+
 //#define TESTMODE
 class cheapComm;
 class testApp : public ofBaseApp{
     private:
+
         ofImage bg;
-        #ifdef _USE_LIVE_VIDEO
             ofVideoGrabber 		camCeil;
             ofVideoGrabber 		camFront;
             ofVideoGrabber      *currentCam;
-        #else
+    
             ofVideoPlayer 		vidPlayerCeil;
             ofVideoPlayer 		vidPlayerFront;
             ofVideoPlayer 		*currentVid;
-        #endif
+    
         bool isNewFrame;
 /*** ADDONS **/
     	//ofxBackground		backgroundAddon;	//the addon that allows you to use a variety of methods for background/foreground segmentation
@@ -107,7 +108,7 @@ class testApp : public ofBaseApp{
 		ofTexture tex;
     
     	std::map<string, int> appStatuses;
-    	
+        bool USE_LIVE_VIDEO;
 
     /***TUIO **/
 	    void sendTUIO(std::vector<ofxBlob> * objectBlobs);
@@ -121,6 +122,7 @@ class testApp : public ofBaseApp{
     bool firstTimeFrontCamera;
     bool firstTimeCeilCamera;
     int configIndex;
-    
+    void loadCameraOrVideo();
+    unsigned char * videoMirror;
     
 };

@@ -46,7 +46,10 @@ void generativo2::update(float f){
         }
     }
     if( ofGetElapsedTimeMillis()- time_since_init_scene > DURACION_ESCENA){
-        ofSendMessage("endOfScene");
+        if(end_of_scene_sent==false){
+            ofSendMessage("endOfScene");
+            end_of_scene_sent=true;
+        }
     }
     
     
@@ -167,7 +170,8 @@ void generativo2::sceneWillDisappear( ofxScene * toScreen ){
 void generativo2::init_Escena(){
     cheapComm::getInstance()->showVideoFront();
     time_since_init_scene=ofGetElapsedTimeMillis();
-    ofSetFrameRate(60);
+    ofSetFrameRate(50);
+    end_of_scene_sent=false;
     // tx1 = ofRandom(0,9);
     //ty1 = ofRandom(0,9);
 }

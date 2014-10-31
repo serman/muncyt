@@ -58,8 +58,8 @@ void testApp::sendTUIO(std::vector<ofxBlob> * objectBlobs){
             {
                 set_obj.addFloatArg(blob_obj->boundingRect.getWidth());	// wd
                 set_obj.addFloatArg(blob_obj->boundingRect.getHeight());	// ht
-                if (blob_obj->id%3==0)
-                cout << blob_obj->id << " : " << blob_obj->boundingRect.getHeight()*VIDEOHEIGHT  <<endl;
+               // if (blob_obj->id%3==0)
+               // cout << blob_obj->id << " : " << blob_obj->boundingRect.getHeight()*VIDEOHEIGHT  <<endl;
             }
             b_obj.addMessage( set_obj );							// add message to bundle
             alive_obj.addIntArg(blob_obj->id);				// add blob to list of ALL active IDs
@@ -86,7 +86,7 @@ void testApp::blobDeleted(ofxBlob &_blob){
 
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
-	if(key=='a'){
+	if(key=='g'){
         adminMode=!adminMode;
         if(adminMode)
             guiTabBar->enable();
@@ -107,8 +107,8 @@ void testApp::keyPressed(int key){
 }
 void testApp::setupGui(){
   //CEIL CAMARA
-    guiTabBar = new ofxUITabBar(50,50, 295,285);
-    gui0 = new ofxUICanvas(50,50, 295,285);
+    guiTabBar = new ofxUITabBar(50,100, 295,285);
+    gui0 = new ofxUICanvas(50,100, 295,285);
     gui0->setName("Camera0");
     gui0->addIntSlider("blob_threshold0", 0, 255, &blobThreshold[0]);
 	gui0->addIntSlider("min blob size0", 0, 1000, &minBlobSize[0]);
@@ -119,7 +119,7 @@ void testApp::setupGui(){
     guiTabBar->addCanvas(gui0);
     
  //FRONT CAMARA
-    gui1 = new ofxUICanvas(50,50, 295,285);
+    gui1 = new ofxUICanvas(50,100, 295,285);
     gui1->setName("Camera1" );
     gui1->addIntSlider("blob_threshold", 0, 255, &blobThreshold[1]);
 	gui1->addIntSlider("min blob size", 0, 1000, &minBlobSize[1]);
@@ -135,6 +135,20 @@ void testApp::setupGui(){
     guiTabBar->addCanvas(gui1);
     guiTabBar->loadSettings("./","camera_settings");
     guiTabBar->disable();
+}
+
+void testApp::loadCameraOrVideo(){
+    ofLogVerbose()<<"entrando en live video"  <<endl;
+    ofFile fileRead(ofToString(getenv("HOME"))+"/cameraOrVideo.txt");
+    
+    int id;
+    fileRead >> id;
+    USE_LIVE_VIDEO=id;
+    ofLogVerbose()<<"using live video" << id<<endl;
+    if(id==32){
+        ofLog() << "Falta archivo cameraOrVideo.txt" << id;
+        USE_LIVE_VIDEO=0;
+    }
 }
 
 //--------------------------------------------------------------

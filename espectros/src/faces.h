@@ -79,6 +79,7 @@ private:
     bool end_of_scene_sent;
     void showDebug();
     bool bshowDebug;
+    
 };
 #define LOADINGFACE_TIME 5000
 #define LOADEDFACE_TIME 2500
