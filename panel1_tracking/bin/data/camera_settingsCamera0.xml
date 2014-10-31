@@ -1,0 +1,25 @@
+<Widget>
+    <Kind>42</Kind>
+    <Name>blob_threshold0</Name>
+    <Value>16</Value>
+</Widget>
+<Widget>
+    <Kind>42</Kind>
+    <Name>min blob size0</Name>
+    <Value>993</Value>
+</Widget>
+<Widget>
+    <Kind>42</Kind>
+    <Name>max blob size0</Name>
+    <Value>22188</Value>
+</Widget>
+<Widget>
+    <Kind>42</Kind>
+    <Name>amplify0</Name>
+    <Value>6</Value>
+</Widget>
+<Widget>
+    <Kind>42</Kind>
+    <Name>smooth0</Name>
+    <Value>5</Value>
+</Widget>

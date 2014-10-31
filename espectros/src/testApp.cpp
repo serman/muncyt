@@ -24,6 +24,12 @@ void testApp::setup(){
     mSyphonClient2.setup();
     mSyphonClient2.set("onlyBlobs","");
     
+    
+    cheapComm *myComm;
+    myComm=cheapComm::getInstance();
+    myComm->setup();
+
+    
     j2key.setup();
     
     
@@ -35,12 +41,12 @@ void testApp::setup(){
     glitch *mglitch=new glitch();
     mglitch->setTuioClient(&tuioClient);
     mglitch->setSyphonClients(&mSyphonClient, &mSyphonClient2);
-/*
+
     
    faces *mfaces=new faces();
     mfaces->setTuioClient(&tuioClient);
     mfaces->setSyphonClients(&mSyphonClient, &mSyphonClient2);
-  */
+ 
     juego1 *mjuego=new juego1();
     mjuego->setTuioClient(&tuioClient);
     mjuego->setSyphonClients(&mSyphonClient, &mSyphonClient2);
@@ -49,9 +55,9 @@ void testApp::setup(){
     mjuego2->setTuioClient(&tuioClient);
     mjuego2->setSyphonClients(&mSyphonClient, &mSyphonClient2);
   
-    generativo1 *mgenerativo1=new generativo1();
+    /*generativo1 *mgenerativo1=new generativo1();
     mgenerativo1->setTuioClient(&tuioClient);
-    mgenerativo1->setSyphonClients(&mSyphonClient, &mSyphonClient2);
+    mgenerativo1->setSyphonClients(&mSyphonClient, &mSyphonClient2);*/
     
     generativo2 *mgenerativo2=new generativo2();
     mgenerativo2->setTuioClient(&tuioClient);
@@ -59,18 +65,20 @@ void testApp::setup(){
     
     sceneManager->addScene( mjuego, BOLA);
     sceneManager->addScene( mjuego2, COMEPANTALLA);
-	//sceneManager->addScene( mglitch, SCENE_1);
+	sceneManager->addScene( mfaces, CARAS3D);
 	//sceneManager->addScene( mglitch, SCENE_1);
     sceneManager->addScene( mfantasmas, FANTASMAS);
-	sceneManager->addScene( mgenerativo1, SCENE_4);
-    sceneManager->addScene( mgenerativo2, SCENE_5);
+//	sceneManager->addScene( mgenerativo1, SCENE_4);
+    sceneManager->addScene( mgenerativo2, JOY_WAVES);
 
     
-    sceneManager->goToScene(FANTASMAS);
+    sceneManager->goToScene(CARAS3D);
+    timeToEndScene=ofGetElapsedTimeMillis()+ABS_MAX_TIME_SCENE;
+    
 	sceneManager->setDrawDebug(false);
-	sceneManager->setCurtainDropTime(0.2);
+	sceneManager->setCurtainDropTime(0.8);
 	sceneManager->setCurtainStayTime(0.0);
-	sceneManager->setCurtainRiseTime(0.2);
+	sceneManager->setCurtainRiseTime(0.8);
 	sceneManager->setOverlapUpdate(true);
 
     courierFont.loadFont("CourierNew.ttf", 11);
@@ -81,11 +89,16 @@ void testApp::update(){
     j2key.update();
 	tuioClient.getMessage();
 	sceneManager->update(  0.016666666 );
+    if(timeToEndScene !=-1 && timeToEndScene<ofGetElapsedTimeMillis()){
+        ofSendMessage("endOfScene");
+    }
 }
 
 
 void testApp::draw(){
+    ofPushStyle();
 	sceneManager->draw();
+    	ofPopStyle();
 	ofPushStyle();
     ofNoFill();
 	ofSetColor(200,200,200);
@@ -100,12 +113,19 @@ void testApp::mousePressed( int x, int y, int button ){
 }
 
 void testApp::keyPressed(int key){
-    if (key == '0') sceneManager->goToScene(FANTASMAS);
-	if (key == '1') sceneManager->goToScene(BOLA); /* true >> regardless of curtain state (so u can change state while curtain is moving)*/
-	if (key == '2') sceneManager->goToScene(COMEPANTALLA);
-	if (key == '3') sceneManager->goToScene(SCENE_3);
-	if (key == '4') sceneManager->goToScene(SCENE_4);
-    if (key == '5') sceneManager->goToScene(SCENE_5);
+    
+    if (key == '0') {sceneManager->goToScene(FANTASMAS);
+    timeToEndScene=ofGetElapsedTimeMillis()+ABS_MAX_TIME_SCENE;
+    }
+	if (key == '1'){ sceneManager->goToScene(BOLA); timeToEndScene=ofGetElapsedTimeMillis()+ABS_MAX_TIME_SCENE;
+    }/* true >> regardless of curtain state (so u can change state while curtain is moving)*/
+    if (key == '2'){ sceneManager->goToScene(COMEPANTALLA);timeToEndScene=ofGetElapsedTimeMillis()+ABS_MAX_TIME_SCENE;
+    }
+    if (key == '3'){ sceneManager->goToScene(JOY_WAVES);timeToEndScene=ofGetElapsedTimeMillis()+ABS_MAX_TIME_SCENE;
+    }
+    if (key == '4'){ sceneManager->goToScene(CARAS3D);timeToEndScene=ofGetElapsedTimeMillis()+ABS_MAX_TIME_SCENE;
+    }
+    
     sceneManager->getCurrentScene()->keyPressed(key);
 }
 void testApp::keyReleased(int key){
@@ -134,6 +154,28 @@ void testApp::tuioRemoved(ofxTuioCursor &tuioCursor){
     sceneManager->getCurrentScene()->tuioRemoved(tuioCursor);
     
 }
+
+void testApp::gotMessage(ofMessage m){
+    cout << "message event";
+    cout << m.message << endl;
+    
+    if(m.message=="endOfScene"){
+        int nextS=chooseScene();
+        timeToEndScene=ofGetElapsedTimeMillis()+ABS_MAX_TIME_SCENE;
+        sceneManager->goToScene(nextS, true);
+    }
+    
+}
+
+
+int testApp::chooseScene(){
+    int id=sceneManager->getCurrentSceneID();
+    id++;
+    if(id>=NUM_SCENES) // si se han acabado las escenas volver
+        return 0;
+    else return id;
+}
+
 
 
 

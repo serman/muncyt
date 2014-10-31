@@ -25,28 +25,33 @@ void testApp::setup() {
 	oniSettings.colorPixelFormat = PIXEL_FORMAT_RGB888;
 	//oniSettings.irPixelFormat = PIXEL_FORMAT_GRAY16;
 	oniSettings.doRegisterDepthToColor = false;
-#ifndef USEFILE
-    oniSettings.useOniFile=false;
-#else
-    oniSettings.useOniFile = true;
-	oniSettings.oniFilePath = "/Users/sergiogalan/MultimediaProgramming/of_v0.8.4_osx_release/apps/muncyt/kinectExample/bin/data/test_museo.oni";
+//#ifndef USEFILE
+    if(ofToString(getenv("USER"))=="instalaciones"){
+        oniSettings.useOniFile=false;}
+    else{
+    //#else
+        oniSettings.useOniFile = true;
+        
+        
+        oniSettings.oniFilePath = "/Users/sergiogalan/MultimediaProgramming/of_v0.8.4_osx_release/apps/muncyt/kinectExample/bin/data/test_museo.oni";
 
-    //will search this directory for an .oni file
-	//if not found will use the first available camera
-	ofDirectory currentONIDirectory(ofToDataPath("current", true));
-    
-	if (currentONIDirectory.exists())
-	{
-		currentONIDirectory.listDir();
-		vector<ofFile> files = currentONIDirectory.getFiles();
-		if (files.size()>0)
-		{
-			oniSettings.useOniFile = true;
-			oniSettings.oniFilePath = files[0].path();
-			ofLogVerbose() << "using oniFilePath : " << oniSettings.oniFilePath;
-		}
-	}
-#endif
+        //will search this directory for an .oni file
+        //if not found will use the first available camera
+        ofDirectory currentONIDirectory(ofToDataPath("current", true));
+        
+        if (currentONIDirectory.exists())
+        {
+            currentONIDirectory.listDir();
+            vector<ofFile> files = currentONIDirectory.getFiles();
+            if (files.size()>0)
+            {
+                oniSettings.useOniFile = true;
+                oniSettings.oniFilePath = files[0].path();
+                ofLogVerbose() << "using oniFilePath : " << oniSettings.oniFilePath;
+            }
+        }
+    }
+//#endif
 	isReady = oniCamGrabber.setup(oniSettings);
 
 #ifndef USEFILE
@@ -111,7 +116,7 @@ void testApp::setup() {
     mrayoSil.setup();
     mgrid.setup(oniSettings.width, oniSettings.height, &zMin, &zMax, &oniCamGrabber, &depthGenerator);
     particleCloud.setup(oniSettings.width, oniSettings.height, &zMin, &zMax, &oniCamGrabber, &depthGenerator,&camera);
-    mdela.setup(oniSettings.width, oniSettings.height, &zMin, &zMax, &oniCamGrabber, &depthGenerator,&camera);
+    //mdela.setup(oniSettings.width, oniSettings.height, &zMin, &zMax, &oniCamGrabber, &depthGenerator,&camera);
     mPuntosFormas.setup(oniSettings.width, oniSettings.height, &zMin, &zMax, &oniCamGrabber, &depthGenerator,&camera);
     mvideoMask.setup();
     //gui1->loadSettings("./config/gui/gui_kinect.xml");

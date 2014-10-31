@@ -19,30 +19,44 @@
 #define VIDEOHEIGHT 576
 #define VIDEO_PROC_SCALE 2;
 #define CAMERA_EXPOSURE_TIME  2200.0f
+
+#define NCAMARAS 2
+#define CEIL_INDEX 0
+#define FRONT_INDEX 1
 //#define TESTMODE
+class cheapComm;
 class testApp : public ofBaseApp{
     private:
         ofImage bg;
         #ifdef _USE_LIVE_VIDEO
-            ofVideoGrabber 		cam;
+            ofVideoGrabber 		camCeil;
+            ofVideoGrabber 		camFront;
+            ofVideoGrabber      *currentCam;
         #else
-            ofVideoPlayer 		vidPlayer;
+            ofVideoPlayer 		vidPlayerCeil;
+            ofVideoPlayer 		vidPlayerFront;
+            ofVideoPlayer 		*currentVid;
         #endif
         bool isNewFrame;
 /*** ADDONS **/
     	//ofxBackground		backgroundAddon;	//the addon that allows you to use a variety of methods for background/foreground segmentation
 		ofxBlobTracker          blobTracker;
     
-    
-        ofxUICanvas *gui2;
+        ofxUICanvas *gui0;
+        ofxUICanvas *gui1;
+        ofxUITabBar *guiTabBar;
     
         ofTrueTypeFont consoleFont;
     	/** intermediate images for tracking ***/
 	    ofxCvColorImage		sourceColorImg;			//a place to save the live video frame
-        ofxCvGrayscaleImage		previousImg;			//a place to save the live video frame
-    	ofxCvGrayscaleImage grayImage;
-        ofxCvShortImage		floatBgImg;
+    	ofxCvGrayscaleImage sourceGrayImage;
+        ofxCvShortImage		*floatBgImg;
+        ofxCvShortImage		floatBgImgCameraCeil;
+        ofxCvShortImage		floatBgImgCameraFront;
+    
 	    ofxCvGrayscaleImage grayBg; //
+       // ofxCvGrayscaleImage grayBgCameraCeil; //
+       // ofxCvGrayscaleImage grayBgCameraFront; //
         ofImage maskedImageOF;
   
     ofImage contourMaskOF;
@@ -54,17 +68,17 @@ class testApp : public ofBaseApp{
     int counterAverage=0;
 	    ofFbo fbo;
     /*** tracking parameters ***/
-    	int minBlobSize=300;
-	    int maxBlobSize=4500;
-    	int blobThreshold=30;
-	    int amplify=10;
-    	int smooth=2;
-        bool refreshBackground=false;
+    	int minBlobSize[NCAMARAS];
+        int maxBlobSize[NCAMARAS];
+    	int blobThreshold[NCAMARAS];
+	    int amplify[NCAMARAS];
+    	int smooth[NCAMARAS];
+                        
 	    bool adaptativeBackground=false;
 	    float fLearnRate= 0.005f;
         bool bCaptureBackground=true;	//a boolean to indicate whether to instruct the addon to capture the background again, defaults to true
-    	cheapComm myComm;
-	    //vector <ofPoint> positions;
+    	cheapComm *myComm;
+	    //vector <ofPoint> positgui_settingsCamera0.xml"guiions;
     	int rectCounter=0;
     int alphaCounter=0;
 	public:
@@ -102,5 +116,11 @@ class testApp : public ofBaseApp{
     	void setupTUIO();
     ofxSimpleMask maskMaker;
     ofFbo fbo1;
+    void setFrontCamera();
+    void setCeilCamera();
+    bool firstTimeFrontCamera;
+    bool firstTimeCeilCamera;
+    int configIndex;
+    
     
 };

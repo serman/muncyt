@@ -349,7 +349,8 @@ void juego1::init_Escena(){
         box2d.enableEvents();   // <-- turn on the event listener
     ofAddListener(box2d.contactStartEvents, this, &juego1::contactStart);
     ofAddListener(gui2->newGUIEvent,this,&juego1::gui2Event);
-    gui2->enable();
+    gui2->disable();
+    cheapComm::getInstance()->showVideoCeil();
 }
 
 void juego1::exit_Escena(){
@@ -485,8 +486,13 @@ void juego1::keyPressed(int key){
     }
     else if(key=='t'){
         moveGoal();
+    }    
+    else if(key=='g'){
+        if(gui2->isEnabled())
+            gui2->disable();
+        else
+            gui2->disable();
     }
-    
 }
 
 void juego1::keyReleased(int key){

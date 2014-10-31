@@ -5,15 +5,7 @@
 using namespace ofxCv;
 using namespace cv;
 
-void
-getNextBlob(list<ofxTuioCursor*>::iterator tobj, list<ofxTuioCursor*> objectList  ){
-    // Si hay algun elemento después devuelve ese elemento
-    for(tobj; tobj != objectList.end(); ++tobj){
-        return tobj;
-    }
-    //si no lo hay devuelve el inicial
-    tobj=objectList.begin();
-}
+
 
 bool
 idExist(ofxTuioClient *tuioclient,  int mId  ){
@@ -44,7 +36,6 @@ ofxTuioCursor* recordSelectedBlob(list<ofxTuioCursor*> objectList,int mId){
 void fantasmas::setup(){
 
     setupStatus();
-    myOSCcomm.setup();
     //Syphon client
 
 
@@ -73,6 +64,9 @@ void fantasmas::setup(){
     gui2->addLabel("GRABACION", OFX_UI_FONT_MEDIUM);
     gui2->addToggle("grabacion", false);
     videoCounter=0;
+    for(int i=0; i< MAX_SEQUENCES; i++){
+        videoQueue.push(i);
+    }
 }
 
 void fantasmas::setupSequences(){
@@ -86,7 +80,7 @@ void fantasmas::setupSequences(){
          it != sequences.end(); ++it){
     	//it->loadSequence(ofToDataPath("recordings/video_"+ofToString(ii)+"/frame" , "png", 0, 75, 4);
         it->loadSequence(ofToDataPath("recordings/video_"+ofToString(ii)));
-        it->setFrameRate(25);
+        it->setFrameRate(30);
         it->preloadAllFrames();
         
     //LOAD POINTS
@@ -119,7 +113,7 @@ void fantasmas::setupSequences(){
 void fantasmas::setupSequence(int seq){
         ofLog() <<" Entering setupSequence " << seq;
         sequences[seq].loadSequence(ofToDataPath("recordings/video_"+ofToString(seq)));
-        sequences[seq].setFrameRate(25);
+        sequences[seq].setFrameRate(30);
         sequences[seq].preloadAllFrames();
         ofxXmlSettings settings;
         vector<ofPoint> mpoints;
@@ -186,20 +180,7 @@ void fantasmas::update(float d){
             }
             
         }
-        
-       /* ofxTuioCursor* blobToRecord=moveandrecord.detectBlobinMouse(tuioclient->getTuioCursors(),ofGetMouseX(),ofGetMouseY());
-        if(blobToRecord!=NULL && mRecorder.isRecording==false){
-        //if(moveandrecord.detectMouseinSquare(mouseX, mouseY)){
-            mRecorder.current_video=moveandrecord.currentRect;
-            cout<< "width" << blobToRecord->width<< "height"<< blobToRecord->height;
-            ofPoint p1 = convertPoint(blobToRecord->getX(), blobToRecord->getY());
-            
-            mRecorder.start(2000, 25, remoteBlobImgPxl,
-                            blobToRecord->width*VIDEO_W*VIDEO_scale,blobToRecord->height*VIDEO_H*VIDEO_scale,
-                           p1.x, p1.y
-                            );
-            RecordingBlobId=blobToRecord->getSessionId();
-        }*/
+
         
         if( mRecorder.isRecording ){
             bool blobStillExists=false;
@@ -232,7 +213,11 @@ void fantasmas::update(float d){
         }else{
             mRecorder.update();
         }
-    }
+        if(ofGetFrameNum()%3==0){
+            if(checkPosibleCollision()==true)
+                selectNextPhantom();
+        }
+    } // END STATUSES CAPTURE
 }
 
 
@@ -256,7 +241,7 @@ void fantasmas::draw(){
             ofxTuioCursor *blob = (*tobj);
             ofSetColor(255,0,0);
             ofPoint p1 = convertPoint(blob->getX(), blob->getY());
-            ofEllipse( p1.x, p1.y,9,9);
+           // ofEllipse( p1.x, p1.y,9,9);
             //cout << "blob size" << blobTracker.trackedBlobs.size() << "\n";
             if(blob->getSessionId() == selectedBlobId){
                 ofSetColor(255,0,0);
@@ -266,7 +251,11 @@ void fantasmas::draw(){
         }
         ofSetColor(255);
 
-        //moveandrecord.draw();
+
+        if(secuence_to_play!=-1){
+            playImage(secuence_to_play);
+        }
+  /**************** FIN TRANSLATE 100 100 ********/
         ofPopMatrix();
         drawDisplays();
         
@@ -282,16 +271,11 @@ void fantasmas::draw(){
         //feedImg.setFromPixels(remoteBlobImgPxl);
         //feedImg.update();
         
-        if(mRecorder.isRecording){
-            if(selectedBlob!=NULL){
-                ofPoint p1 = convertPoint(selectedBlob->getX(), selectedBlob->getY());
-                ofEllipse(p1.x, p1.y, 5, 5);
-            }
-        }
-        
+
+    
 
 
-    }else  if(appStatuses["mode"]==REPLAYING){
+    }else  if(appStatuses["mode"]==REPLAYING){ //este metodo al final casi que n ose usa mas que para test
         backgroundImg.draw(0,0,1280,720);
 		ofPushMatrix();
         ofTranslate(100,100);
@@ -398,7 +382,6 @@ void fantasmas::onRecordingFinished(int &num){
 
 
 
-
 //--------------------------------------------------------------
 void fantasmas::keyReleased(int key){
     if(key=='r'){
@@ -418,7 +401,7 @@ void fantasmas::keyReleased(int key){
         }
         else {
             appStatuses["debug"]=true;
-        gui2->enable();
+            gui2->enable();
         }
     }
     
@@ -427,26 +410,33 @@ void fantasmas::keyReleased(int key){
         list<ofxTuioCursor*> objectList = tuioclient->getTuioCursors();
         
         if(selectedBlobId==-1){
+            cout << "selected blog = -1"<<endl;
             if(objectList.size()>0) {
                 selectedBlobId=(*objectList.begin())->getSessionId();
             }
             return;
         }
-        
-
-        for (tobj=objectList.begin(); tobj != objectList.end(); tobj++) {
-            ofxTuioCursor *blob = (*tobj);
-            if(blob->getSessionId() == selectedBlobId){
-                getNextBlob(tobj,objectList);
-                selectedBlobId=(*tobj)->getSessionId();
+        else{
+            for (tobj=objectList.begin(); tobj != objectList.end(); tobj++) {
+                ofxTuioCursor *blob = (*tobj);
+                if(blob->getSessionId() == selectedBlobId){
+                    cout << "get next blob" << endl;
+                    ofxTuioCursor* nextb=getNextBlob(tobj,objectList);
+                    if(nextb!=NULL)
+                        selectedBlobId=nextb->getSessionId();
+                    else
+                        ofLogError()<<"next blog was null" <<endl;
+                }
             }
         }
     }
+    
     else if(key=='s'){
         recordThisBlob=true;
     }
-
+    
 }
+
 
 
 
@@ -483,66 +473,6 @@ void fantasmas::gotMessage(ofMessage msg){
 //--------------------------------------------------------------
 void fantasmas::dragEvent(ofDragInfo dragInfo){ 
 
-}
-
-void fantasmas::gui2Event(ofxUIEventArgs &e)
-{
-    cout << "event";
-	string name = e.widget->getName();
-	int kind = e.widget->getKind();
-    cout << "name" << name << "\n";
-    cout << "kind" << kind << "\n";
-    if(kind==2){
-        if(name == "2")
-        {
-            currentImg=2;
-        }
-        if(name == "1")
-        {
-            currentImg=1;
-        }
-        if(name == "0")
-        {
-            currentImg=0;
-        }
-    }
-    if(kind==OFX_UI_WIDGET_TOGGLE && name=="grabacion"){
-        if(appStatuses["mode"]==CAPTURE)
-            appStatuses["mode"]=REPLAYING;
-        else appStatuses["mode"]=CAPTURE;
-    }
-}
-
-
-//scene notifications
-void fantasmas::sceneWillAppear( ofxScene * fromScreen ){  // reset our scene when we appear
-    init_Escena();
-};
-
-
-//scene notifications
-void fantasmas::sceneWillDisappear( ofxScene * toScreen ){
-    
-	exit_Escena();
-};
-
-void fantasmas::init_Escena(){
-        //gui2->enable();
-        selectedBlobId=-1;
-        ofAddListener(gui2->newGUIEvent,this,&fantasmas::gui2Event);
-        ofAddListener(finishedRecordingEvent,this, &fantasmas::onRecordingFinished);
-        ofSetFrameRate(20);
-        recordThisBlob=false;
-    showSuccessRecordUntil=0;
-    showAbortRecordUntil=0;
-}
-
-void fantasmas::exit_Escena(){
-    ofRemoveListener(finishedRecordingEvent,this, &fantasmas::onRecordingFinished);
-    ofRemoveListener(gui2->newGUIEvent,this,&fantasmas::gui2Event);
-    gui2->disable();
-    
-    
 }
 
 

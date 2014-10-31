@@ -226,7 +226,6 @@ void nuclear_fuerte::update(float d1){
 	
 	// limitar a 100 las particulas
 	if(particulas_old.size()>100) particulas_old.erase(particulas_old.begin()+(particulas_old.size()-100) );
-	
     
 	// update centro
 	if(centroLab.updateEnd( ratePartic )) {
@@ -245,6 +244,35 @@ void nuclear_fuerte::update(float d1){
 			particulas.push_back(p);
 			//			}
 		}
+        if(centroLab.energyMeanT>300 && centroLab.pMeanT.length()<10){
+            //envio mensaje explosion
+            int energia =centroLab.energyMeanT;
+            energia=ofClamp(energia, 300, 800);
+            cheapComm::getInstance()->sendAudio1("/audio/strong_nuclear/explosion",
+                                                 ofMap(energia,300,500,0,1)    );
+            ofLogNotice()  << "explosion: " <<    "  potencia: " << centroLab.energyMeanT<< "("<< ofMap(energia,300,800,0,1) <<")"<< endl ;
+        }
+        else{
+//            float angulo1= centroLab.pMean.angleRad(zentro);
+  
+            float angulo1= atan2(centroLab.pMeanT.y, centroLab.pMeanT.x);
+            if(angulo1<0) angulo1+=PI;
+            
+            int energia =centroLab.energyMeanT;
+            energia=ofClamp(energia, 0, 500);
+            cheapComm::getInstance()->sendAudio2("/audio/strong_nuclear/beam",
+                                                 ofMap(angulo1,0,2*PI,0,1) ,
+                                                 ofMap(energia,0,500,0,1)
+                                                 );
+            ofLogNotice()  << "beam: " << " angulo" << atan2(centroLab.pMeanT.y, centroLab.pMeanT.x) << "(" <<  ofMap(angulo1,0,2*PI,0,1) << ")"<<
+             "  potencia: " << centroLab.energyMeanT<< "("<< ofMap(energia,0,500,0,1) <<")"<< endl ;
+        }
+        //centroLab.pMean.angle() (ofVec2f)
+        //centroLab.pMeanT.angle() (ofVec2f)
+        //centroLab.energyMeanT
+        
+        //hay explosion entre energyMeanT 300
+        //    VAlor de explosion: energyMeanT maximo 500
 	}
 	
 	

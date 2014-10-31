@@ -27,7 +27,7 @@ public:
         cam=_cam;
        // setupParticles();
         blob.allocate(640,480,OF_IMAGE_GRAYSCALE);
-        setColours();
+        //setColours();
         palette.loadImage("palette1.png");
         paletteRed.loadImage("palette_red.png");
         paletteGreen.loadImage("palette_green.png");

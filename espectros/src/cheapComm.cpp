@@ -8,18 +8,29 @@
 
 #include "cheapComm.h"
 
-cheapComm::cheapComm(){
+cheapComm* cheapComm::m_pInstance = NULL;
 
+cheapComm::cheapComm(){
+    
 }
 void cheapComm::setup(){
     int serverRecvPort = 9000;
     string dst="localhost";
 	myosc.setup(dst, serverRecvPort);
 	int maxServerMessages = 38;
-    
-
 }
 
+void cheapComm::showVideoFront(){
+    ofxOscMessage m;
+    m.setAddress("/video/front");
+    myosc.sendMessage(m);
+}
+
+void cheapComm::showVideoCeil(){
+    ofxOscMessage m;
+    m.setAddress("/video/ceil");
+    myosc.sendMessage(m);
+}
 
 /**
 void cheapComm::sendBlobs( vector<ofxBlob> blobList){

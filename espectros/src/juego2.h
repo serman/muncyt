@@ -26,6 +26,7 @@
 #include "particleSourceHandler.h"
 
 #include "consts.h"
+#include "cheapComm.h"
 
 class juego2 : public ofxScene{
     
@@ -62,6 +63,7 @@ public:
     void exit_Escena();
     void keyPressed(int key);
     void keyReleased(int key);
+
     void showDebug()    ;
     
 private:
@@ -79,7 +81,7 @@ private:
 
     void contactStart(ofxBox2dContactArgs &e);
     void drawEnemies();
-
+    bool bshowDebug;
     //ofPoint convertPoint(float, float);
     /** escalado video ajuste pantala
     float VIDEO_scale=SCREEN_W/640;

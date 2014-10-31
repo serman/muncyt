@@ -23,11 +23,11 @@ void cheapComm::oscRcvUpdate(){
 		ofxOscMessage m;
 		myosc.getNextMessage(&m);
 		// check for mouse moved message
-		if(m.getAddress() == "/blob"){
-			// both the arguments are int32's
-			int blob_x = m.getArgAsInt32(0);
-			int blob_y = m.getArgAsInt32(1);
-            int blob_w = m.getArgAsInt32(2);
+		if(m.getAddress() == "/video/front"){
+            ((testApp*)ofGetAppPtr())->setFrontCamera();
+		}
+        if(m.getAddress() == "/video/ceil"){
+            ((testApp*)ofGetAppPtr())->setCeilCamera();
 		}
     }
 }
