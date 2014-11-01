@@ -64,6 +64,8 @@ public:
 	void	updateMeshSuperf();
 	
 	float nivelNoise;
+	bool	noiseAuto;
+	
 	
 	bool	swWeb;
 	float gg;	// interact SOL
@@ -104,16 +106,6 @@ public:
 	
 	// SOL
 	Sol sol;
-//	ofSpherePrimitive sole;
-//	float		rSol;
-//	ofVec2f		posSol;
-//	float		masaSol;
-//	float		densSol;
-//	void	initSol(float m);
-//	void	addMasaSol(float m);
-//	void	setRfromM();
-//	void	setMfromR();
-//	void	drawSol();
 	
 	// TUIOS
 	float masaTUIO;

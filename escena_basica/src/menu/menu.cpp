@@ -174,12 +174,16 @@ void menu::initParticles() {
 	removeParticles();	// primero borrar las que pudiera haber, porsiaca.
 	for (int i=0; i<150; i++) {
 		// circulos
-//		addCircle(ofPoint(ofGetWidth()/2+ofRandom(100), ofGetHeight()/2+ofRandom(100)));
-		addCircle(ofPoint(ofGetWidth()/2+ofRandom(200)-100, W_HEIGHT/2+ofRandom(200)-100));
+		float distR = ofRandom(W_HEIGHT/2)*0.8;
+		float angTmp = ofRandom(TWO_PI);
+//		addCircle(ofPoint(ofGetWidth()/2+ofRandom(200)-100, W_HEIGHT/2+ofRandom(200)-100));
+		addCircle(ofPoint(ofGetWidth()/2+distR*cos(angTmp), W_HEIGHT/2+distR*sin(angTmp)));
 		
+		distR = ofRandom(W_HEIGHT/2)*0.8;
+		angTmp = ofRandom(TWO_PI);
 		// rectangulos
-//		addBox(ofPoint(ofGetWidth()/2+ofRandom(100), ofGetHeight()/2+ofRandom(100)));
-		addBox(ofPoint(ofGetWidth()/2+ofRandom(200)-100, W_HEIGHT/2+ofRandom(200)-100));
+//		addBox(ofPoint(ofGetWidth()/2+ofRandom(200)-100, W_HEIGHT/2+ofRandom(200)-100));
+		addBox(ofPoint(ofGetWidth()/2+distR*cos(angTmp), W_HEIGHT/2+distR*sin(angTmp)));
 	}
 	ptoMed_circles = ptoMedio(circles);
 	ptoMed_boxes = ptoMedio(boxes);
@@ -242,6 +246,9 @@ void menu::addCircle(ofPoint _pos) {
 	circle.get()->setPhysics(3.0, 0.53, 0.9);
 	circle.get()->setup(box2d.getWorld(), _pos.x, _pos.y, r);
 	circle.get()->setFriction(0.9);
+	
+	circle.get()->setVelocity(ofRandom(4.0)-2.0, ofRandom(4.0)-2.0);
+	
 	circles.push_back(circle);
 }
 

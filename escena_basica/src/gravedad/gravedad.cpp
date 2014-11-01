@@ -103,8 +103,6 @@ void gravedad::setup(){
 	masaTUIO = 10000;
     
 	
-	nivelNoise = 7;// 60.0;
-	
 	zCam = 446.81;
     //cam.setAutoDistance(false);
     
@@ -131,7 +129,9 @@ void gravedad::init_Escena() {
 	ofSetVerticalSync(false);
 	
 	ofSetCircleResolution(60);
-    
+
+	nivelNoise = 7;// 60.0;
+	noiseAuto = true;
 	
 	// Meshes
 	// superficie
@@ -384,6 +384,8 @@ void gravedad::initExplosion(){
 }
 
 void gravedad::updateMeshSuperf(){
+	
+	if(noiseAuto) nivelNoise = ofMap(sol.masa, INIT_MASA_SOL, MAX_MASA_SOL, 0,100);
 	
 	float time = ofGetElapsedTimef();	//Get time
 	
@@ -747,12 +749,13 @@ void gravedad::setupGUI() {
     
     //    gui1->addSpacer();
 	gui1->addLabel("Noisy waves");
+	gui1->addToggle("Noise Auto", &noiseAuto);
 	gui1->addSlider("nivel_Noise", 0, 100.0, &nivelNoise);
 	
 	gui1->addSpacer();
 	gui1->addLabel("Sol");
 	gui1->addSlider("radio_Sol", 10, 250.0, &sol.radio);
-	gui1->addSlider("masa_Sol", 1000, 80000, &sol.masa);
+	gui1->addSlider("masa_Sol", 1000, MAX_MASA_SOL*1.5, &sol.masa);
     
 	gui1->addSpacer();
 	gui1->addSlider("fuerza_Sol", 0, 20000.0, &gg);

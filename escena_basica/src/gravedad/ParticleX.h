@@ -174,7 +174,7 @@ class ParticleX
 		
 		ofPushMatrix();
 		ofTranslate(position.x, position.y, 0);
-//		ofDrawSphere(0,0, 10);
+		ofDrawSphere(0,0, 10);
 //		esfera.draw();
 		ofPopMatrix();
 		
