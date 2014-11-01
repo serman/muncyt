@@ -9,7 +9,11 @@ void testApp::setup() {
   //  cout << "ruta directorio:" << getenv("HOME");
     //particleCloud(oniCamGrabber,depthGenerator);
 	ofSetLogLevel(OF_LOG_VERBOSE);
-	
+    
+    if(ofToString(getenv("USER"))=="instalaciones" || ofToString(getenv("USER"))=="muncyt0" ){
+        ofLogToFile( ofToString (getenv("HOME") ) + "/flab_espejo_log.txt", true);
+    }
+
     ofSetFullscreen(true);
     loadScreenId();
     oniSettings.width = IRCAMERAWIDTH;
@@ -85,7 +89,7 @@ void testApp::setup() {
     
 	particleCloud.cloudState=particleClouds::ESPEJO;
 	alphaNoise=255;
-	debug = true;
+
 	
     low=0.25;
     zMin = 200;
@@ -104,7 +108,7 @@ void testApp::setup() {
     
 	setupStatus();
 	setupGUI();
-	setupShader();
+	//setupShader();
     
     mcontour.setup(&oniCamGrabber);
     myOSCrcv=new cheapCommRcv();
@@ -119,6 +123,9 @@ void testApp::setup() {
     mvideoMask.setup();
     //gui1->loadSettings("./config/gui/gui_kinect.xml");
     guiTabBar->loadSettings("./config/gui/","espejo_");
+    
+    guiTabBar->disable();
+    	debug = false;
     cameraMoves::getInstance()->setup(&camera);
     loadCameraPose();
 
@@ -144,17 +151,19 @@ void testApp::setup() {
     post.createPass<highBloomPass>()->setEnabled(false);
     post.createPass<VerticalTiltShifPass>()->setEnabled(false);
     post.createPass<ConvolutionPass>()->setEnabled(false);
-    post.createPass<ContrastPass>()->setEnabled(false);
+
+    //estos no los uso, no los cargo
+/*    post.createPass<ContrastPass>()->setEnabled(false);
     post.createPass<BleachBypassPass>()->setEnabled(false);
     post.createPass<GodRaysPass>()->setEnabled(false);
-    post.createPass<LimbDarkeningPass>()->setEnabled(false);
+    post.createPass<LimbDarkeningPass>()->setEnabled(false);*/
 
     post.setFlip(false);
     mtunnel.setup();
     mmenu.setup();
     
   //  pfbo.allocate(ofGetWidth(),ofGetHeight(),GL_RGBA);
-    ofFbo::Settings s;
+   /* ofFbo::Settings s;
     s.width = ofNextPow2(ofGetWidth());
     s.height = ofNextPow2(ofGetHeight());
     s.textureTarget = GL_TEXTURE_2D;
@@ -164,7 +173,7 @@ void testApp::setup() {
     pfbo.allocate(s);
     pfbo.begin();
     ofBackground( 0, 0, 0 );
-    pfbo.end();
+    pfbo.end();*/
     
 }
 
@@ -193,6 +202,23 @@ void testApp::update() {
             case GRAVEDAD:
                 //la gravedad usa en principio el grid
                 mgrid.update();
+                
+                if(mgrid.status==mgrid.BLACKHOLE){
+                    mvideoMask.update();
+                    mcontour.update();
+                    //env’o la imagen local a donde toque.
+                    if( mcontour.getMainSilhouette()!=NULL )
+                        sender.send( *mcontour.getMainSilhouette());
+                    //Si no est‡ puesto activo el thread para leer el contorno remoto
+                    if(rcvCont.isThreadRunning()==false){
+                        rcvCont.start();
+                    }
+                }else{ //Si no estamos en modo "black hole" paramos el thread de leer contorno remoto
+                    if(rcvCont.isThreadRunning()==true){
+                        rcvCont.stop();
+                    }
+                }
+                
                 break;
                 
             case NUCLEAR_DEBIL:
@@ -200,13 +226,14 @@ void testApp::update() {
                         mcontour.update(); //procesa la silueta
                         if( mcontour.getMainSilhouette()!=NULL )
                             mrayoSil.setSilueta( *mcontour.getMainSilhouette() ); //Detecta colisiones y genera los rayos
-                
                         mrayoSil.update(mcontour);
                 break;
                 
             case NUCLEAR_FUERTE:
-                //la nuclear fuerte usa un delaunay en 3D muy colorido
-                //mdela.update();
+
+                break;
+            case MENU:
+                mmenu.update();
                 break;
                 
         }
@@ -218,23 +245,7 @@ void testApp::update() {
                 break;
                 
                 case GRAVEDAD:
-                    if(mgrid.status==mgrid.BLACKHOLE){
-                        mvideoMask.update();
-                        mcontour.update();
-                //env’o la imagen local a donde toque.
-                        if( mcontour.getMainSilhouette()!=NULL )
-                            sender.send( *mcontour.getMainSilhouette());
-                        //Si no est‡ puesto activo el thread para leer el contorno remoto
-                        if(rcvCont.isThreadRunning()==false){
-                            cout << "receiver start" <<endl;
-                            rcvCont.start();
-                        }
-                    }else{ //Si no estamos en modo "black hole" paramos el thread de leer contorno remoto
-                        if(rcvCont.isThreadRunning()==true){
-                            rcvCont.stop();
-                            cout << "receiver stop" <<endl;
-                        }
-                    }
+
                 break;
                       
                 case NUCLEAR_DEBIL:
@@ -244,6 +255,8 @@ void testApp::update() {
                 case NUCLEAR_FUERTE:
                     
                 break;
+                    
+
                     
             }
         }
@@ -308,16 +321,17 @@ void testApp::draw() {
     ofEnableAlphaBlending();
     //Estas lineas que vienen son una copia de lo que hace ofxpostprocessing
 //    para dibujar en un fbo manteniendo la perspectiva de c‡mara. La idea de dibujar en el fbo es que podamos usar la t‡ctica de no borrar el fondo para conseguir ciertas animaciones aunque no se est‡ aplicando
-    startFBO();
+   // startFBO();
     //Things to be drawn in 3D
+     post.begin(camera);
 	ofPushMatrix();
     ofScale(-1, 1, -1);		// the projected points are 'upside down' and 'backwards'
-  //  post.begin();
+   
    // light.draw();
         switch(appStatuses["escena"]){
             case EM:
                 //particleCloud.drawWithRectangles();
-                setShaders(0);
+                setShaders(VERTICAL_ON);
                     particleCloud.drawParticles();
 
             break;
@@ -348,9 +362,9 @@ void testApp::draw() {
 	ofPopMatrix();
 
 	//camera.end();
-//    post.end();
+    post.end();
     //pfbo.end();
-    glPopAttrib();
+  /*  glPopAttrib();
     ofPopStyle();
     glViewport(0, 0, ofGetWidth(), ofGetHeight());
     glMatrixMode(GL_PROJECTION);
@@ -358,17 +372,17 @@ void testApp::draw() {
     glMatrixMode(GL_MODELVIEW);
     glPopMatrix();
     pfbo.end(); //FIN DEL FBO
-    /*
+    
     ofPushStyle();
     glPushAttrib(GL_ENABLE_BIT);
     glDisable(GL_LIGHTING);
     ofSetColor(255, 255, 255);
     post.process(pfbo,true);
     */
-    post.begin();
+    /*post.begin();
     ofSetColor(255, 255, 255);
     pfbo.draw(0,0,ofGetWidth(),ofGetHeight());
-    post.end();
+    post.end();*/
 
 
     
@@ -396,29 +410,10 @@ void testApp::draw() {
           //EN EL CASO DE LA FUERZA GRAVITATORIA DIBUJO EN 2D LA LINEA DE "ESCANER" AL COMIENZO  Y TAMBIƒN LA LA SILETA REMOTA SI ESTAMOS EN MODO AGUJERO NEGRO
             case GRAVEDAD:
                 if(mgrid.status==mgrid.BLACKHOLE){
-                    /*if(post2D[1]->getEnabled()==false) post2D[1]->setEnabled(true);
-                    if(post2D[0]->getEnabled()==true) post2D[0]->setEnabled(false);
-                    post2D.begin();
-                    glPushMatrix();
-                    glViewport(0, 0, post2D.getRawRef().getWidth()*3,  post2D.getRawRef().getHeight()*3);
-                    
-                    
-                     pfbo.draw(0,0,ofGetWidth()/3,ofGetHeight()/3);
-                    ofPolyline v=rcvCont.getRemoteContour();
-                    if( v.size()>0){
-                        //QuŽ se dibuja.
-                        //Aqui hay una niapa. Para que se vea el tunel lo vuelvo a dibujar detr‡s
-                        //mcontour.drawSimple(&(v));
-                    }
-                    glPopMatrix();
-                    post2D.end(false);
-                    ofSetColor(255);
-                    post2D.draw(0, 0, ofGetWidth(), ofGetHeight());*/
                     ofPolyline v=rcvCont.getRemoteContour();
                     if( v.size()>0){
                         ofPushMatrix();
                         ofScale(2, 2);
-//                        mcontour.drawSimple(&(v));
                         mvideoMask.draw(v);
                         ofPopMatrix();
                     }
@@ -499,7 +494,7 @@ void testApp::exit() {
 }
 
 void testApp::setShaders(unsigned int shaderFlags){
-    for( unsigned int i=0; i<7; i++){
+    for( unsigned int i=0; i<4; i++){
         unsigned int test=(int)pow(2.0,(double)i);
         if((test&shaderFlags)!=0){
             post[i]->setEnabled(true);

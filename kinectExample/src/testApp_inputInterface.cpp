@@ -81,7 +81,9 @@ void testApp::keyPressed (int key) {
 	switch (key) {
         case 'g':
             debug=!debug;
-			gui1->toggleVisible();
+            if(guiTabBar->isEnabled())
+                guiTabBar->disable();
+            else guiTabBar->enable();
 			break;
 
         case 'o':

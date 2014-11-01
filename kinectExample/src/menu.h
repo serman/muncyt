@@ -17,6 +17,7 @@ public:
     vector<Particle> particles;
     ofMesh mesh;
     ofImage *currentImg;
+    //Vectores de puntos donde hay letra en la imagen
     vector<ofPoint> emImgWP,weakImgWP,strongImgWP,gravityImgWP,flabImgWP;
     vector<ofPoint> *currentvector;
     ofImage texture1;
@@ -94,13 +95,9 @@ public:
         
     }
     
+
     
-    void draw(){
-        ofPushStyle();
-        ofDisableAlphaBlending();
-        
-        ofSetColor(255/*,min( (int)(ofGetElapsedTimeMillis()-initTime)/2,255) */) ;
-        
+    void update(){        
         switch(state){
             case EM:
                 //emImg.draw(0,0,ofGetWidth(),ofGetHeight());
@@ -134,39 +131,32 @@ public:
         }
         //ofDisableAlphaBlending();
         ofPopStyle();
-        
-        drawImgParticles();
-        
-    }
-    
-    void drawImgParticles(){
         mesh.clear();
         for ( int i = 0 ; i < particles.size();  i+=1 ){
             int index=i%currentvector->size();
-            if( (i/currentvector->size() )>1) return;
+            if( ((float)(  i/currentvector->size()) )>1) continue;
             ofVec3f p=ofVec3f( (*currentvector)[index] );
-            particles[i].steer(p,true,6,4);
+            particles[i].steer(p,true,7,4);
             particles[i].update();
             mesh.addVertex(particles[i].position);
-            
-            //mesh.addTexCoord(ofVec2f(4, 4));
             mesh.addColor(ofColor(76,165,255));
-            //currentImg->getColor(particles[i]._x,particles[i]._y)
-            //              );
-          //  mesh.addColor( ofColor(180 + 30*sin(  0.5*PI * (float) ofGetElapsedTimeMillis()/1000 ) ) ) ;
-             // mesh.addColor( ofColor(140 + 70* ofNoise( (float) ofGetElapsedTimeMillis()/1000 )) ) ;
-//            mesh.addColor(ofColor(255, 255, 255));
         }
+    }
+    
+    void draw(){
+        ofPushStyle();
+        ofDisableAlphaBlending();
+        
+        ofSetColor(255/*,min( (int)(ofGetElapsedTimeMillis()-initTime)/2,255) */) ;
+
         mesh.setMode(OF_PRIMITIVE_POINTS);
         glEnable(GL_POINT_SMOOTH);
-        glPointSize(4);
+        glPointSize(3);
         //texture1.bind();
-        ofEnableDepthTest();
+        //ofEnableDepthTest();
         mesh.draw();
-        ofDisableDepthTest();
+        //ofDisableDepthTest();
         //texture1.unbind();
-
-        
         
     }
 

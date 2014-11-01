@@ -97,7 +97,7 @@ void testApp::parseMenuOsc(string s,   ofxOscMessage &m){
     matchResult1 = osc_match(pattern.c_str(), addr, &pattrOffset, &addrOffset);
     if(matchResult1==OSC_MATCH_ADDRESS_AND_PATTERN_COMPLETE){
              mmenu.start((int)m.getArgAsFloat(0));
-        
+            cout <<"escena" << (int)m.getArgAsFloat(0) << endl;
         return;
     }
     
