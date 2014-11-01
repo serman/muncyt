@@ -180,7 +180,7 @@ void gravedad::init_Escena() {
 
 void gravedad::exit_Escena() {
     cheapComm::getInstance()->sendAudio0("/audio/gravity/end_event");
-	
+    hands.reset();
 	// borrar objetos
 	particulas.clear();
 	
@@ -699,7 +699,7 @@ void gravedad::mousePressed( int x, int y, int button ){}
 //scene notifications
 void gravedad::sceneWillAppear( ofxScene * fromScreen ){  // reset our scene when we appear
     //gui1->enable();
-    cheapComm::getInstance()->sendAudio0("/sync/gravity/start_event");
+    cheapComm::getInstance()->sendAudio0("/audio/gravity/start_event");
     cheapComm::getInstance()->sendSync0("/sync/gravity/start_event");
     init_Escena();
 };
@@ -709,7 +709,7 @@ void gravedad::sceneWillAppear( ofxScene * fromScreen ){  // reset our scene whe
 void gravedad::sceneWillDisappear( ofxScene * toScreen ){
 	// gui1->disable();
 
-    cheapComm::getInstance()->sendAudio0("/sync/gravity/end_event");
+    cheapComm::getInstance()->sendAudio0("/audio/gravity/end_event");
     cheapComm::getInstance()->sendSync0("/sync/gravity/end_event");
 	exit_Escena();
 };

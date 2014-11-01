@@ -550,7 +550,7 @@ void nuclear_fuerte::init_Scena() {
         gui1->enable();
 	gui1->loadSettings("gui_nuclear_fuerte.xml");
 	ofBackgroundGradient(ofColor(40), ofColor::black, OF_GRADIENT_CIRCULAR);
-    
+    emitters.clear();
 	// Emisores
 	// Activar el emitter del mouse
 	emitter.bActivo = false;
@@ -567,7 +567,7 @@ void nuclear_fuerte::init_Scena() {
 
 void nuclear_fuerte::sceneWillAppear( ofxScene * fromScreen ){  // reset our scene when we appear
     init_Scena();    
-    
+        emitters.clear();
     cheapComm::getInstance()->sendAudio0("/audio/strong_nuclear/start_event");
     cheapComm::getInstance()->sendSync0("/sync/strong_nuclear/start_event");
 };
