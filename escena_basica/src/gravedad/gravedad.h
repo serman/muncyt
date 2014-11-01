@@ -49,13 +49,13 @@ public:
 	void exit_Escena();
 	void sceneWillAppear( ofxScene * fromScreen );
     void sceneWillDisappear( ofxScene * toScreen );
-//	tangiblesHandler hands;			// hands
-//	tangiblesHandler touchElements;	// Habrá 4 touchElements
 	
     
     ofTrueTypeFont font;
 	
     ofVec2f		zentro;
+	float		radioEscena;
+	ofPath		borde;	
 	
 	ofMesh	superf, superfOrig;
 	int		superfW, superfH;
@@ -104,16 +104,16 @@ public:
 	
 	// SOL
 	Sol sol;
-	ofSpherePrimitive sole;
-	float		rSol;
-	ofVec2f		posSol;
-	float		masaSol;
-	float		densSol;
-	void	initSol(float m);
-	void	addMasaSol(float m);
-	void	setRfromM();
-	void	setMfromR();
-	void	drawSol();
+//	ofSpherePrimitive sole;
+//	float		rSol;
+//	ofVec2f		posSol;
+//	float		masaSol;
+//	float		densSol;
+//	void	initSol(float m);
+//	void	addMasaSol(float m);
+//	void	setRfromM();
+//	void	setMfromR();
+//	void	drawSol();
 	
 	// TUIOS
 	float masaTUIO;
@@ -137,6 +137,7 @@ public:
 	void	updateParticlesX();
 	void	drawParticlesX();
 	int		ratePartic;
+	
 
     void	tuioAdded(ofxTuioCursor & tuioCursor);
 	void	tuioRemoved(ofxTuioCursor & tuioCursor);

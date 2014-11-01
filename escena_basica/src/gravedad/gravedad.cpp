@@ -12,32 +12,50 @@ void gravedad::setup(){
     cout << "setupGravedad" <<endl;
     
 	ofEnableAlphaBlending();
-	imgTex.loadImage("imagen.jpg");
 	
+
+	zentro = ofVec2f(ofGetWidth()/2.0, W_HEIGHT/2.0);
+	//
+	// Borde
+	//
+	radioEscena = W_HEIGHT/2;
+	// Borde Negro circular
+	borde.clear();
+	ofColor ctmp = ofColor::black;//red;//black;
+	borde.setFillColor(ctmp);
+	//http://www.openframeworks.cc/documentation/graphics/ofPath.html#show_setPolyWindingMode
+	borde.setPolyWindingMode(OF_POLY_WINDING_ODD);
+	// rectangulo 
+	borde.rectangle(0,0,ofGetWidth(),ofGetHeight());
+	borde.setCircleResolution(60);
+	borde.circle(zentro.x, zentro.y, radioEscena);	
+	
+	
+	imgTex.loadImage("imagen.jpg");
 	
 	//we load a font and tell OF to make outlines so we can draw it as GL shapes rather than textures
 	font.loadFont("type/verdana.ttf", 100, true, false, true, 0.4, 72);
+
+	ofLogNotice() << 1;
 	
 	// Meshes
 	// superficie
 	setupMeshSuperf();
 
-    //	ofFloatColor ambient_color(0.0,0.0,0.0,1.0);
-    //	ofFloatColor diffuse_color(1.0,0.0,0.0, 0.2);
-    //	ofFloatColor specular_color(1.0,1.0,1.0, 0.1);
-    //	light.setAmbientColor(ambient_color);
-    //	light.setDiffuseColor(diffuse_color);
-    //	light.setSpecularColor(specular_color);
+	// Luces
 	swLight = true;
 	light.enable();
 	
+	// Camara
 	swOrtho = false;
 	
+	// Textura
 	swWeb = false;
 	
-	float wFBOs = W_HEIGHT;
+	ofLogNotice() << 2;
 	
-	// FBO
+	// FBO's
+	float wFBOs = W_HEIGHT;	
 	imgMix.allocate(wFBOs,wFBOs, GL_RGBA);
 	imgMix.begin();
 	ofClear(0,0,0, 0);
@@ -48,6 +66,8 @@ void gravedad::setup(){
 	imgDyn.begin();
     ofClear(0,0,0, 0);
 	imgDyn.end();
+	
+	ofLogNotice() << 3;
 	
 	
 	imgWeb.allocate(wFBOs,wFBOs, GL_RGBA);
@@ -62,7 +82,7 @@ void gravedad::setup(){
     ofEnableSmoothing();
     ofSetLineWidth(1.5);
     
-    for(int i=0; i<50; i++) {
+    for(int i=0; i<350; i++) {
         float yAct = (float)i*imgDyn.getHeight()/50.0;
         float xAct = (float)i*imgDyn.getWidth()/50.0;
         ofLine(xAct,0, xAct, imgDyn.getHeight());
@@ -93,7 +113,9 @@ void gravedad::setup(){
     setupGUI();	
     gui1->disable();
 	
+//	ofLogNotice() << "YA Shader";
     blackHoleShader.load("", "shaders/blackHole.frag");
+//	ofLogNotice() << "YA Fin Shader";
   
 }
 
@@ -109,8 +131,23 @@ void gravedad::init_Escena() {
 	ofSetVerticalSync(false);
 	
 	ofSetCircleResolution(60);
-	zentro = ofVec2f(ofGetWidth()/2.0, W_HEIGHT/2.0);
     
+	
+	// Meshes
+	// superficie
+	setupMeshSuperf();
+
+	// Camara
+	swOrtho = false;
+	
+	// Textura
+	swWeb = false;
+	
+	
+	// Luces
+	swLight = true;
+	light.enable();
+		
     bUseTexture = true;
 	swWireFrame = false;
 	
@@ -119,60 +156,43 @@ void gravedad::init_Escena() {
 	light.setPosition(0,0,50);
 	light.setOrientation( ofVec3f(180,0, 0) );
     
-    
-	ofLogNotice() << "gravedad::init_Escena: " << 1;
+//	ofLogNotice() << "gravedad::init_Escena: " << 1;
 	
 //    gui1->enable();
-    initSol(INIT_MASA_SOL);
-	sol.init(
-	ofLogNotice() << "gravedad::init_Escena: " << 2;
+//    initSol(INIT_MASA_SOL);
+	sol.init(INIT_MASA_SOL, ofVec3f(0,0,0), ofVec2f(W_WIDTH/2.0, W_HEIGHT/2.0) );
+	ofLogNotice() << "gravedad::init_Escena: " << 2;	
 	
 	cam.setDistance(zCam);
     state=GROWING;
     status_sent_EOS_Sent=false;
-    // Crear las particulas
+    
+	// Limpiar las particulas
+	particulas.clear();
 	
-	ofLogNotice() << "gravedad::init_Escena: " << 3;
+	gui1->enable();
+//	ofLogNotice() << "gravedad::init_Escena: " << 3;
 	
 	// addListeners
-	// Aqui no hacemos nada (por ahora) con las colisiones y otros eventos
-	//    box2d.enableEvents();
-	//	ofAddListener(box2d.contactStartEvents, this, &gravedad::contactStart);
-	//	ofAddListener(box2d.contactEndEvents, this, &gravedad::contactEnd);
-	
-	// Listeners para detectar que se esta tocando en una zona u otra
-//    ofAddListener(button1.buttonEvent ,this, &gravedad::onButtonPressed);
-//    ofAddListener(button2.buttonEvent ,this, &gravedad::onButtonPressed);
-//    ofAddListener(button3.buttonEvent ,this, &gravedad::onButtonPressed);
-//    ofAddListener(button4.buttonEvent ,this, &gravedad::onButtonPressed);
 	
 	ofSetBackgroundAuto(true);
 }
 
 void gravedad::exit_Escena() {
     cheapComm::getInstance()->sendAudio0("/audio/gravity/end_event");
+	
 	// borrar objetos
+	particulas.clear();
 	
-	// quitar listeners
-	//    box2d.disableEvents();
-	//	ofRemoveListener(box2d.contactStartEvents, this, &gravedad::contactStart);
-	//	ofRemoveListener(box2d.contactEndEvents, this, &gravedad::contactEnd);
-	
-//    ofRemoveListener(button1.buttonEvent ,this, &gravedad::onButtonPressed);
-//    ofRemoveListener(button2.buttonEvent ,this, &gravedad::onButtonPressed);
-//    ofRemoveListener(button3.buttonEvent ,this, &gravedad::onButtonPressed);
-//    ofRemoveListener(button4.buttonEvent ,this, &gravedad::onButtonPressed);
-	//ofRemoveListener(gui1->newGUIEvent,this,&gravedad::guiEvent);
-    
-	gui1->saveSettings("guiSettings_gravedad.xml");
+//	gui1->saveSettings("guiSettings_gravedad.xml");
     gui1->disable();
 	//delete gui1;
-
 }
 
 void gravedad::setupMeshSuperf() {
+//	ofLogNotice() << "setupMeshSuperf " << 1;
     
-	int skip = 10/2;	// this controls the resolution of the mesh
+	int skip = 10;// /2;	// this controls the resolution of the mesh
 	
 	superfW = W_WIDTH;
 	superfH = W_HEIGHT;
@@ -191,7 +211,6 @@ void gravedad::setupMeshSuperf() {
 			float xn = (float)x*skip/superfW;
 			float yn = (float)y*skip/superfH;
 			superf.addTexCoord(ofVec2f(xn, yn));
-			
 		}
 	}
 	
@@ -219,13 +238,16 @@ void gravedad::setupMeshSuperf() {
 	
     mat1Color.setBrightness(250.f);
     mat1Color.setSaturation(200);
+	mat1.setAmbientColor(mat1Color);
+	
 }
 
 
 
 void gravedad::update(float d1){
-	// aplicar noise y deformaciones por sol y hands
-    if(masaSol>MAX_MASA_SOL && state==GROWING){
+//	ofLogNotice() << "gravedad::update: " << 0;
+	// Explosion
+    if(sol.masa>MAX_MASA_SOL && state==GROWING){
         initExplosion();
     }
     if(( (initExplosionTime+DURACION_BLACK_HOLE)  < ofGetElapsedTimeMillis()) && state==EXPLOSION){
@@ -237,11 +259,19 @@ void gravedad::update(float d1){
         }
         
     }
-    
+	
+	// aplicar noise y deformaciones por sol y hands
 	updateMeshSuperf();
     
+//	ofLogNotice() << "gravedad::update: " << 2;
+	
 	// particulas
 	updateParticlesX();
+	
+//	ofLogNotice() << "gravedad::update: " << 3;
+	
+	// Sol
+	sol.update();	
 	
 	// dibujar particulas en textura
 	// preparar mezcla de imagenes
@@ -257,16 +287,9 @@ void gravedad::update(float d1){
 		}
 		else {
             // fondo blanco
-            ofSetColor(255);
+            ofSetColor(150);
             ofRect(0,0, imgMix.getWidth(), imgMix.getHeight());
 		}
-		
-		// test draw
-		ofPushStyle();
-		ofSetColor(0,0,255);
-		ofLine(0,0, imgMix.getWidth(), imgMix.getHeight());
-		ofPopStyle();
-		
 		
 		ofEnableDepthTest();
 		
@@ -274,19 +297,21 @@ void gravedad::update(float d1){
 		updateFBO();
 		
 		drawParticlesX();
-		ofDisableDepthTest();
-		//		ofDisableBlendMode();
+		
 	}
 	imgMix.end();
     
  /***************/
 	// eliminar las particulas que ya han chocado contra el sol o que se han ido muy lejos
+	
+	
+	// Envia datos de la posicion de las particulas respecto al sol
 	if(ofGetFrameNum() % 10==0){        
-        cheapComm::getInstance()->sendAudio1("/audio/gravity/collapse_proximity",ofMap(masaSol, INIT_MASA_SOL, MAX_MASA_SOL, 0, 1));
-        cheapComm::getInstance()->sendSync1("/sync/gravity/collapse_proximity",ofMap(masaSol, INIT_MASA_SOL, MAX_MASA_SOL, 0, 1));
+        cheapComm::getInstance()->sendAudio1("/audio/gravity/collapse_proximity",ofMap(sol.masa, INIT_MASA_SOL, MAX_MASA_SOL, 0, 1));
+        cheapComm::getInstance()->sendSync1("/sync/gravity/collapse_proximity",ofMap(sol.masa, INIT_MASA_SOL, MAX_MASA_SOL, 0, 1));
         
 #ifdef DEBUGOSC
-        ofLogNotice() << "/audio/gravity/collapse_proximity" << "masa sol: " << ofMap(masaSol, INIT_MASA_SOL, MAX_MASA_SOL, 0, 1) << "real"<<  masaSol;
+        ofLogNotice() << "/audio/gravity/collapse_proximity" << "masa sol: " << ofMap(sol.masa, INIT_MASA_SOL, MAX_MASA_SOL, 0, 1) << "real"<<  sol.masa;
 #endif
         sendSunParticlesOsc();
         
@@ -295,6 +320,7 @@ void gravedad::update(float d1){
 
 void gravedad::sendSunParticlesOsc(){
     /*************/
+	// DISTANCIAS A HANDS
     //ofVec3f pTUIO = ofVec3f(ofGetMouseX()-ofGetWidth()/2, -(ofGetMouseY()-ofGetHeight()/2), 0);
     for (int j=0; j<hands.objectsCol.size(); j++){
         ofVec3f pTUIO(hands.objectsCol[j]->x,hands.objectsCol[j]->y);
@@ -376,31 +402,29 @@ void gravedad::updateMeshSuperf(){
 			p.z -= value * nivelNoise;
 			//p.z = -value; //37.0;
 			
-			
 			//
-			// - - - - ATRACCION SOL - - - -
+			// - - - - ATRACCION SOL - - - - 
 			//
-            //			p.z = value * 100;
+			//			p.z = value * 100; 
 			float rho2 = p.x*p.x+p.y*p.y;
-            //			float var = 20+10*sin(time*0.5);
-			float var = 20;
-            //			p.z += 100.0*exp(-rho2/(2*var*var));
-			
+			float var = 20+5*sin(time*0.5);
+			//			float var = 20;
+			//			p.z += 100.0*exp(-rho2/(2*var*var));
 			
 			// asignar altura
 			// y color segun la altura
 			ofFloatColor cc;
 			float rho = sqrt(rho2);
 			if(rho>=10) {
-                //				p.z -= 10000/rho;
+				//				p.z -= 10000/rho;
 				p.z -= gg/rho;
 				float ccv = ofMap(p.z,0,-500, 1.0, 0.0);
-                //				cc = ofFloatColor(ccv,1-ccv,ccv, 1.0);
-				cc = ofFloatColor(ccv,ccv,ccv, 1.0);
+				//				cc = ofFloatColor(ccv,1-ccv,ccv, 1.0);
+				cc = ofFloatColor(abs(1-ccv),abs(1-ccv),ccv, 1.0);
 				
-                //				float angDir = atan2(p.y, p.x);	// radianes
-                //				p.x -= 100*kk / rho * cos(angDir);
-                //				p.y -= 100*kk / rho * sin(angDir);
+				//				float angDir = atan2(p.y, p.x);	// radianes
+				//				p.x -= 100*kk / rho * cos(angDir);
+				//				p.y -= 100*kk / rho * sin(angDir);				
 			}
 			else {
 				p.z -= gg/10;
@@ -421,6 +445,8 @@ void gravedad::updateMeshSuperf(){
                 float dx = p.x-ptInteract.x;
                 float dy = p.y+ptInteract.y;
                 
+				var = 80;
+				
                 float rhoZ2 = dx*dx+dy*dy;
                 p.z -= 150.0*exp(-rhoZ2/(2*var*var));
                 
@@ -455,11 +481,16 @@ void gravedad::updateFBO() {
 		// lineas alrededor de la bola central.
 		// Varian segun el radio que tenga el circulo == radio^2 / dist
 		
-		ofSetColor(255,0,0);
+		ofColor cLin = ofColor(39,81,227);
+		//		ofLogNotice() << cLin.getBrightness();
+		//		ofLogNotice() << cLin.getSaturation();
+		cLin.setBrightness(255);
+		cLin.setSaturation(100);
+		ofSetColor(cLin);	// 0x2751E3 (AZUL GUAY)
 		ofSetLineWidth(1.0);
 		ofNoFill();
 		
-		float baseSol = rSol/10000.0;
+		float baseSol = sol.radio/10000.0;
 		ofPushMatrix();
 		
 		ofTranslate(imgDyn.getWidth()/2.0, imgDyn.getHeight()/2.0, 0 );
@@ -472,6 +503,15 @@ void gravedad::updateFBO() {
 			ofCircle(0,0, rPot);
 			ofDisableSmoothing();
 		}
+		
+		// Líneas Radiales
+		for(int i=0; i<16; i++) {
+			float ang = (float) TWO_PI/32.0*i;
+			float cang = cos(ang)*imgDyn.getWidth();
+			float sang = sin(ang)*imgDyn.getWidth();
+			ofLine(-cang, -sang, cang, sang);
+		}
+		
 		ofPopMatrix();
 		
 		
@@ -491,35 +531,73 @@ void gravedad::updateFBO() {
 
 void gravedad::draw(){
     
-	//ofBackground(0);
-    //		ofLogNotice("***"+ofToString(superf.getMode()));
-    
-    //		imgWeb.draw(ofGetWidth()-200,0,200,200);
-    //		imgDyn.draw(ofGetWidth()-200,300,200,200);
-    //		imgMix.draw(ofGetWidth()-200,ofGetHeight()-200,200,200);
+//	ofLogNotice() << 1;
 	
-	cam.begin();
-    //			if(!swOrtho) cam.setDistance(zCam);
-	//	cam.enableOrtho();
+	// De ejemplo de OF MeshFromCamera
+	//	float rotateAmount = ofMap(ofGetMouseY(),0,ofGetHeight(), -90,90);
+	//	ofVec3f rotateDir = ofVec3f(1,0,0);
+	float rotateAmount = 0;
+	ofVec3f rotateDir = ofVec3f(1,0,0);
+	if(ofGetMousePressed(0)) {
+		
+		rotateAmount = 10; //ofMap(ofGetMouseY(),0,ofGetHeight(), -90,90);
+		ofVec3f posTouch = ofVec3f(ofGetMouseX()-zentro.x, ofGetMouseY()-zentro.y, 0.0);
+		posTouch.normalize();
+		rotateDir = ofVec3f(0,0,1).cross(posTouch);
+	}
+	
+	float extrusionAmount = 300.0;
+	
+	// Situar la camara
+	ofVec3f camDirection(0,0,1);
+	ofVec3f centre = sol.pos3D;
+	//	ofVec3f camDirectionRotated = camDirection.rotated(rotateAmount, ofVec3f(1,0,0));
+	ofVec3f camDirectionRotated = camDirection.rotated(rotateAmount, rotateDir);
+	ofVec3f camPosition = centre + camDirectionRotated * extrusionAmount;
+	
+	camera.setPosition(camPosition);
+	camera.lookAt(centre);
+	
+	//	if(swOrtho) {
+	//		ofEnableDepthTest();
+	//	}
+	
+
+	
+	//	cam.begin();
+	camera.begin();
+	
+	
+	//	if(!swOrtho) cam.setDistance(zCam);
+	//	else	cam.enableOrtho();
+	if(swOrtho) camera.enableOrtho();
+	else camera.disableOrtho();
+	
+	
     ofEnableAlphaBlending();
-    if(swLight) ofEnableLighting();
     ofEnableDepthTest();
-    
+    if(swLight) ofEnableLighting();
+	
+	ofPushMatrix();
+	if(swOrtho) {
+		ofTranslate(zentro.x, zentro.y,0);
+	}
+	else {
+		ofTranslate(0,0, -260);		
+	}
+	    
     mat1.begin();
     
-    if(swOrtho) ofTranslate(zentro.x, zentro.y,0);
+//    if(swOrtho) ofTranslate(zentro.x, zentro.y,0);
     
     //img.bind();
 	if(bUseTexture) {
 		ofEnableNormalizedTexCoords();
-        //			imgWeb.getTextureReference().bind();
-        //			imgDyn.getTextureReference().bind();
 		imgMix.getTextureReference().bind();
 	}
     
 	if(swLight) {
 		light.enable();
-		light.draw();
 	}
 	if(swWireFrame) {
 		superf.drawWireframe();
@@ -529,29 +607,39 @@ void gravedad::draw(){
 	}
 	//img.unbind();
 	if(bUseTexture) {
-        //				imgWeb.getTextureReference().unbind();
-        //				imgDyn.getTextureReference().unbind();
 		imgMix.getTextureReference().unbind();
 		ofDisableNormalizedTexCoords();
 	}
 	
 	
-    //		superfOrig.drawWireframe();
+	// Dibujar bolas de las partículas:
+	ofPushMatrix();
+	ofTranslate(-(W_WIDTH)/2.0, -ofGetHeight()/2.0, -60);
+	//	ofTranslate(-ofGetMouseX(), -ofGetHeight()/2.0, -60);
+	for(int i=0; i<particulas.size(); i++) {
+		particulas[i].draw3D();		
+	}
+	ofPopMatrix();
 	
 	// Dibujar esfera central
-    //			ofSphere(0,0, radioEsfera);	// deprecated
-	drawSol();
+//	drawSol();
+	ofDisableAlphaBlending();
+	sol.draw();
+	ofEnableAlphaBlending();
 	
 	
 	if(swLight) 	light.disable();
 	
 	mat1.end();
 	
+	ofPopMatrix();
+	
 	ofDisableAlphaBlending();
 	if(swLight) ofDisableLighting();
 	
-	cam.end();
-    
+//	cam.end();
+	camera.end();
+
     //	imgWeb.draw(ofGetWidth()-200,0,200,200);
     //	imgDyn.draw(ofGetWidth()-200,300,200,200);
     //	imgMix.draw(ofGetWidth()-200,ofGetHeight()-200,200,200);
@@ -588,14 +676,19 @@ void gravedad::draw(){
         }
         
     }
+	
+	ofDisableDepthTest();
+	
+	borde.draw();
+	
     
 	ofPushStyle();
 	ofSetColor(255,0,0);
 	ofDrawBitmapString("fr: " + ofToString(ofGetFrameRate()), 10, ofGetHeight()-90);
-	ofDrawBitmapString("masa Sol: " + ofToString(masaSol), 10, ofGetHeight()-70);
+	ofDrawBitmapString("masa Sol: " + ofToString(sol.masa), 10, ofGetHeight()-70);
 	ofDrawBitmapString("num Partics: " + ofToString(particulas.size()), 10, ofGetHeight()-50);
 	ofPopStyle();
-    ofDisableDepthTest();
+//    ofDisableDepthTest();
 }
 
 void gravedad::mousePressed( int x, int y, int button ){}
@@ -658,7 +751,8 @@ void gravedad::setupGUI() {
 	
 	gui1->addSpacer();
 	gui1->addLabel("Sol");
-	gui1->addSlider("radio_Sol", 10, 250.0, &rSol);
+	gui1->addSlider("radio_Sol", 10, 250.0, &sol.radio);
+	gui1->addSlider("masa_Sol", 1000, 80000, &sol.masa);
     
 	gui1->addSpacer();
 	gui1->addSlider("fuerza_Sol", 0, 20000.0, &gg);
@@ -706,9 +800,10 @@ void gravedad::guiEvent(ofxUIEventArgs &e) {
 	if(name == "radio_Sol")
 	{
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
-		rSol = slider->getScaledValue();
-		sole.setRadius(rSol);
-		setMfromR();
+		sol.setRadio(slider->getScaledValue());		
+//		rSol = slider->getScaledValue();
+//		sole.setRadius(rSol);
+//		setMfromR();
 	}
 	else if(name == "cam_z")
 	{
@@ -720,8 +815,14 @@ void gravedad::guiEvent(ofxUIEventArgs &e) {
 	{	// swOrtho
 		ofxUIToggle *toggle = (ofxUIToggle *) e.getToggle();
 		swOrtho = toggle->getValue();
-		if(swOrtho) cam.enableOrtho();
-		else cam.disableOrtho();
+		if(swOrtho) {
+			cam.enableOrtho();
+			camera.enableOrtho();			
+		}
+		else {
+			cam.disableOrtho();
+			camera.disableOrtho();
+		}
 	}
 	
 }
