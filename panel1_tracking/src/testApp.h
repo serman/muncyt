@@ -76,7 +76,8 @@ class testApp : public ofBaseApp{
     	int smooth[NCAMARAS];
                         
 	    bool adaptativeBackground=false;
-	    float fLearnRate= 0.005f;
+	    float fLearnRate= 5;
+        float fLearnRateDividido;
         bool bCaptureBackground=true;	//a boolean to indicate whether to instruct the addon to capture the background again, defaults to true
     	cheapComm *myComm;
 	    //vector <ofPoint> positgui_settingsCamera0.xml"guiions;

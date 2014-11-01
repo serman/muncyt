@@ -26,10 +26,10 @@ void testApp::setup(){
         camFront.initGrabber(VIDEOWITH,VIDEOHEIGHT);
         currentCam=&camCeil;
     }else{
-        vidPlayerCeil.loadMovie("muncyt-test-intermedio.mov");
+        vidPlayerCeil.loadMovie("muncyt2-menoszoom.mov");
         vidPlayerCeil.play();
     
-        vidPlayerFront.loadMovie("muncyt2-menoszoom.mov");
+        vidPlayerFront.loadMovie("muncyt-test-intermedio.mov");
         vidPlayerFront.play();
         currentVid=&vidPlayerCeil;
     }
@@ -86,54 +86,39 @@ void testApp::update(){
 #ifndef TESTMODE
     if (isNewFrame){
         appStatuses["isCameraReady"]=true;
+        unsigned char * pixels ;
         if( USE_LIVE_VIDEO){
-                unsigned char * pixels = currentCam->getPixels();
-                for (int i = 0; i < VIDEOHEIGHT; i++) {
-                    for (int j = 0; j < VIDEOWITH*3; j+=3) {
-                        // pixel number
-                        int pix1 = (i*VIDEOWITH*3) + j;
-                        int pix2 = (i*VIDEOWITH*3) + (j+1);
-                        int pix3 = (i*VIDEOWITH*3) + (j+2);
-                        // mirror pixel number
-                        int mir1 = (i*VIDEOWITH*3)+1 * (VIDEOWITH*3 - j-3);
-                        int mir2 = (i*VIDEOWITH*3)+1 * (VIDEOWITH*3 - j-2);
-                        int mir3 = (i*VIDEOWITH*3)+1 * (VIDEOWITH*3 - j-1);
-                        // swap pixels
-                        videoMirror[pix1] = pixels[mir1];
-                        videoMirror[pix2] = pixels[mir2];
-                        videoMirror[pix3] = pixels[mir3];	
-                    }
-                }
-                sourceColorImg.setFromPixels(pixels, VIDEOWITH,VIDEOHEIGHT);
+               pixels = currentCam->getPixels();
             //invertir imagen
          }else{
                // sourceColorImg.setFromPixels(currentVid->getPixels(), VIDEOWITH,VIDEOHEIGHT);
-             unsigned char * pixels = currentVid->getPixels();
-             for (int i = 0; i < VIDEOHEIGHT; i++) {
-                 for (int j = 0; j < VIDEOWITH*3; j+=3) {
-                     // pixel number
-                     int pix1 = (i*VIDEOWITH*3) + j;
-                     int pix2 = (i*VIDEOWITH*3) + (j+1);
-                     int pix3 = (i*VIDEOWITH*3) + (j+2);
-                     // mirror pixel number
-                     int mir1 = (i*VIDEOWITH*3)+1 * (VIDEOWITH*3 - j-3);
-                     int mir2 = (i*VIDEOWITH*3)+1 * (VIDEOWITH*3 - j-2);
-                     int mir3 = (i*VIDEOWITH*3)+1 * (VIDEOWITH*3 - j-1);
-                     // swap pixels
-                     videoMirror[pix1] = pixels[mir1];
-                     videoMirror[pix2] = pixels[mir2];
-                     videoMirror[pix3] = pixels[mir3];
-                 }
-             }
-             sourceColorImg.setFromPixels(pixels, VIDEOWITH,VIDEOHEIGHT);
-            //invertir imagen
-        }
+              pixels = currentVid->getPixels();
+        } //invertir imagen
+   /*     for (int i = 0; i < VIDEOHEIGHT; i++) {
+            for (int j = 0; j < VIDEOWITH*3; j+=3) {
+                // pixel number
+                int pix1 = (i*VIDEOWITH*3) + j;
+                int pix2 = (i*VIDEOWITH*3) + (j+1);
+                int pix3 = (i*VIDEOWITH*3) + (j+2);
+                // mirror pixel number
+                int mir1 = (i*VIDEOWITH*3)+1 * (VIDEOWITH*3 - j-3);
+                int mir2 = (i*VIDEOWITH*3)+1 * (VIDEOWITH*3 - j-2);
+                int mir3 = (i*VIDEOWITH*3)+1 * (VIDEOWITH*3 - j-1);
+                // swap pixels
+                videoMirror[pix1] = pixels[mir1];
+                videoMirror[pix2] = pixels[mir2];
+                videoMirror[pix3] = pixels[mir3];
+            }*/
+        
+        sourceColorImg.setFromPixels(pixels, VIDEOWITH,VIDEOHEIGHT);
         sourceColorImg.updateTexture();
+        sourceColorImg.mirror(false, true);
         sourceGrayImage = sourceColorImg;
-
+        
 //MEJORA FONDO HACIENDOLO ADAPTATIVO
         if(appStatuses["adaptativeBackground"]==true){
-            floatBgImg->addWeighted( sourceGrayImage, fLearnRate); //we add a new bg image to the current bg image but we add it with the weight of the learn rate
+            fLearnRateDividido=fLearnRate/1000;
+            floatBgImg->addWeighted( sourceGrayImage, fLearnRateDividido); //we add a new bg image to the current bg image but we add it with the weight of the learn rate
             grayBg= *floatBgImg; //convertimos a la imagen a grises
             grayBg.flagImageChanged();
             blobTracker.setBg(grayBg);
@@ -267,9 +252,11 @@ void testApp::showDebug(){
     ofPushStyle();
     ofFill();
     ofSetColor(0);
-    ofRect(20,0,300,60);
+    ofRect(20,0,400,80);
+    ofSetColor(200, 100, 0);
     ofDrawBitmapString("Framerate " + ofToString(ofGetFrameRate()) + "/"+ofToString(ofGetTargetFrameRate()), 20, 20);
         ofDrawBitmapString("NonZero " + ofToString(nonZero), 20, 40);
+    ofDrawBitmapString("learnrate"+ ofToString(fLearnRateDividido),200,20 );
 
     if(configIndex==FRONT_INDEX)
        ofDrawBitmapString("FRONT CAMERA", 20, 60);

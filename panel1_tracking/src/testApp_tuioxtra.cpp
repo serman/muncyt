@@ -129,7 +129,7 @@ void testApp::setupGui(){
     
     gui1->addSpacer();
     gui1->addToggle("Adaptative", false);
-    gui1->addSlider("learnRate", 0	, 0.001f, &fLearnRate) ;
+    gui1->addSlider("learnRate", 0	, 10.0, &fLearnRate) ;
     ofAddListener(gui1->newGUIEvent,this,&testApp::gui2Event);
    // gui1->loadSettings("gui_settingsCamera1.xml");
     guiTabBar->addCanvas(gui1);
@@ -193,7 +193,6 @@ void testApp::dragEvent(ofDragInfo dragInfo){
 
 void testApp::gui2Event(ofxUIEventArgs &e)
 {
-    cout << "event";
 	string name = e.widget->getName();
 	int kind = e.widget->getKind();
     
