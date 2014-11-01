@@ -24,10 +24,10 @@ void cheapComm::oscRcvUpdate(){
 		myosc.getNextMessage(&m);
 		// check for mouse moved message
 		if(m.getAddress() == "/video/front"){
-            ((testApp*)ofGetAppPtr())->setCeilCamera(); //TODO aqui hayuq eponer setFrontCamera cuando esté la segunda camara
+            ((testApp*)ofGetAppPtr())->setFrontCamera(); //TODO aqui hayuq eponer setFrontCamera cuando esté la segunda camara
 		}
         if(m.getAddress() == "/video/ceil"){
-            ((testApp*)ofGetAppPtr())->setCeilCamera();
+            ((testApp*)ofGetAppPtr())->setFrontCamera();
 		}
     }
 }

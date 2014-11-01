@@ -11,7 +11,7 @@
 <Widget>
     <Kind>42</Kind>
     <Name>max blob size0</Name>
-    <Value>22188</Value>
+    <Value>22200</Value>
 </Widget>
 <Widget>
     <Kind>42</Kind>
@@ -23,3 +23,5 @@
     <Name>smooth0</Name>
     <Value>5</Value>
 </Widget>
+
+

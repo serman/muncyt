@@ -117,7 +117,7 @@ void testApp::update(){
         
 //MEJORA FONDO HACIENDOLO ADAPTATIVO
         if(appStatuses["adaptativeBackground"]==true){
-            fLearnRateDividido=fLearnRate/1000;
+            fLearnRateDividido=fLearnRate/10000;
             floatBgImg->addWeighted( sourceGrayImage, fLearnRateDividido); //we add a new bg image to the current bg image but we add it with the weight of the learn rate
             grayBg= *floatBgImg; //convertimos a la imagen a grises
             grayBg.flagImageChanged();
@@ -269,7 +269,7 @@ void testApp::setupStatus(){
     //cout << "staupstatus" <<endl;
     appStatuses["syphonEnabled"]=true;
     appStatuses["debug"]=false;
-    appStatuses["adaptativeBackground"]=false;
+    appStatuses["adaptativeBackground"]=true;
     appStatuses["blobInSquare"]=false;
     appStatuses["sendTUIO"]=true;
     appStatuses["isCameraReady"]=false;
