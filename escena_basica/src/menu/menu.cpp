@@ -778,7 +778,7 @@ void menu::sceneWillAppear( ofxScene * fromScreen ){  // reset our scene when we
 	 */
 	ofLogNotice("menu - sceneWillAppear - ");
 	
-    cheapComm::getInstance()->sendAudio0("/sync/menu/start_event");
+    cheapComm::getInstance()->sendAudio0("/audio/menu/start_event");
     cheapComm::getInstance()->sendSync0("/sync/menu/start_event");
     
     init_Escena();
@@ -792,7 +792,7 @@ void menu::sceneWillDisappear( ofxScene * toScreen ){
 	 ofRemoveListener(tuioClient.cursorRemoved,this,&menu::tuioRemoved);
 	 ofRemoveListener(tuioClient.cursorUpdated,this,&menu::tuioUpdated);
 	 */
-    cheapComm::getInstance()->sendAudio0("/sync/menu/end_event");
+    cheapComm::getInstance()->sendAudio0("/audio/menu/end_event");
     cheapComm::getInstance()->sendSync0("/sync/menu/end_event");
 	exit_Escena();
     hands.objectsCol.clear();
