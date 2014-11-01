@@ -8,7 +8,6 @@
 
 #include "gravedad.h"
 
-
 void gravedad::setup(){
     cout << "setupGravedad" <<endl;
     
@@ -18,8 +17,6 @@ void gravedad::setup(){
 	
 	//we load a font and tell OF to make outlines so we can draw it as GL shapes rather than textures
 	font.loadFont("type/verdana.ttf", 100, true, false, true, 0.4, 72);
-	
-	ofLogNotice() << 1;
 	
 	// Meshes
 	// superficie
@@ -93,17 +90,11 @@ void gravedad::setup(){
     
 	ratePartic = 30;
 
-	ofLogNotice() << "gravedad:::setup " << 2;
-    
-    setupGUI();
-	ofLogNotice() << "gravedad:::setup " << 3;
-	
+    setupGUI();	
     gui1->disable();
-	ofLogNotice() << "gravedad:::setup " << 4;
+	
     blackHoleShader.load("", "shaders/blackHole.frag");
   
-	ofLogNotice() << "gravedad:::setup " << 5;
-    
 }
 
 void gravedad::init_Escena() {
@@ -111,14 +102,14 @@ void gravedad::init_Escena() {
     
     cheapComm::getInstance()->sendAudio0("/audio/gravity/start_event");
     
-        ofSetBackgroundAuto(true);
-	    cout << "initScena gravedad" <<endl;
+	ofSetBackgroundAuto(true);
+	cout << "initScena gravedad" <<endl;
+	
     ofBackground(34, 34, 34);
 	ofSetVerticalSync(false);
 	
 	ofSetCircleResolution(60);
 	zentro = ofVec2f(ofGetWidth()/2.0, W_HEIGHT/2.0);
-    
     
     bUseTexture = true;
 	swWireFrame = false;
@@ -133,6 +124,7 @@ void gravedad::init_Escena() {
 	
 //    gui1->enable();
     initSol(INIT_MASA_SOL);
+	sol.init(
 	ofLogNotice() << "gravedad::init_Escena: " << 2;
 	
 	cam.setDistance(zCam);
@@ -160,7 +152,6 @@ void gravedad::init_Escena() {
 void gravedad::exit_Escena() {
     cheapComm::getInstance()->sendAudio0("/audio/gravity/end_event");
 	// borrar objetos
-	
 	
 	// quitar listeners
 	//    box2d.disableEvents();
