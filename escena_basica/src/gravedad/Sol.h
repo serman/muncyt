@@ -27,7 +27,7 @@ public:
 	
 	Sol() {
 		easing = 0.1;
-		densidad = 5.0;//10.5;
+		densidad = 1.0;//10.5;
 	}
 
 	void	init(float m, ofVec3f _pos3D, ofVec2f _posScreen) {
@@ -76,9 +76,11 @@ public:
 		ofSetColor(255,255,0,  100+120*ofNoise(ofGetElapsedTimef() / 10.0) );
 		esfera.setPosition(pos3D.x,pos3D.y,pos3D.z);
 		ofPushMatrix();
+//		ofTranslate(pos3D.x,pos3D.y,pos3D.z);
 		ofRotateX(90);
 		ofTranslate(0,-100,0);
 		esfera.draw();
+//		ofDrawSphere(0,0, radio);
 		ofPopMatrix();
 		ofPopStyle();
 	}

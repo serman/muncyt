@@ -162,7 +162,6 @@
 		F774CF0D19DD61B000A4D1C0 /* ParticleEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F774CF0819DD61B000A4D1C0 /* ParticleEmitter.cpp */; };
 		F774CF0E19DD61B000A4D1C0 /* particleSourceHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F774CF0A19DD61B000A4D1C0 /* particleSourceHandler.cpp */; };
 		F79A3D6E19D784F9009151E9 /* gravedad_particulasMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F79A3D6B19D784F9009151E9 /* gravedad_particulasMgr.cpp */; };
-		F79A3D6F19D784F9009151E9 /* gravedad_SolMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F79A3D6C19D784F9009151E9 /* gravedad_SolMgr.cpp */; };
 		F79A3D7019D784F9009151E9 /* auxGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F79A3D6D19D784F9009151E9 /* auxGL.cpp */; };
 		F7BD30AE19F34DC700EDFE82 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7BD30AD19F34DC700EDFE82 /* CoreVideo.framework */; };
 		F7BD30D819F34F7A00EDFE82 /* ofxShivaVGRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7BD30B219F34F7A00EDFE82 /* ofxShivaVGRenderer.cpp */; };
@@ -577,7 +576,6 @@
 		F774CF0B19DD61B000A4D1C0 /* particleSourceHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = particleSourceHandler.h; path = src/util/particleSourceHandler.h; sourceTree = "<group>"; };
 		F79A3D6A19D784F9009151E9 /* ParticleX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParticleX.h; sourceTree = "<group>"; };
 		F79A3D6B19D784F9009151E9 /* gravedad_particulasMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gravedad_particulasMgr.cpp; sourceTree = "<group>"; };
-		F79A3D6C19D784F9009151E9 /* gravedad_SolMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gravedad_SolMgr.cpp; sourceTree = "<group>"; };
 		F79A3D6D19D784F9009151E9 /* auxGL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = auxGL.cpp; sourceTree = "<group>"; };
 		F7BD30AD19F34DC700EDFE82 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CoreVideo.framework; sourceTree = "<group>"; };
 		F7BD30B219F34F7A00EDFE82 /* ofxShivaVGRenderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxShivaVGRenderer.cpp; sourceTree = "<group>"; };
@@ -1270,7 +1268,6 @@
 				7FC37F321A031E1A0070DC21 /* Sol.h */,
 				F79A3D6A19D784F9009151E9 /* ParticleX.h */,
 				F79A3D6B19D784F9009151E9 /* gravedad_particulasMgr.cpp */,
-				F79A3D6C19D784F9009151E9 /* gravedad_SolMgr.cpp */,
 				F79A3D6D19D784F9009151E9 /* auxGL.cpp */,
 				F74B8A0B196F6F6C005F3893 /* gravedad.cpp */,
 				F74B8A0C196F6F6C005F3893 /* gravedad.h */,
@@ -1894,7 +1891,6 @@
 				F7EBD19C19334D11009805D5 /* OscPrintReceivedElements.cpp in Sources */,
 				7FFD07BC1913A0450022FA53 /* b2CircleContact.cpp in Sources */,
 				F7DFCE4619D4EC58002D7BBF /* PostProcessing.cpp in Sources */,
-				F79A3D6F19D784F9009151E9 /* gravedad_SolMgr.cpp in Sources */,
 				7FFD07BD1913A0450022FA53 /* b2Contact.cpp in Sources */,
 				7FFD07BE1913A0450022FA53 /* b2ContactSolver.cpp in Sources */,
 				F74B8A72196F7AA7005F3893 /* ofxUIBaseDraws.cpp in Sources */,
