@@ -1,8 +1,8 @@
 import pygame
-#import os
+import os
 import OSC
 #http://www.pygame.org/docs/ref/joystick.html
-#os.environ['SDL_VIDEODRIVER'] = 'dummy'
+os.environ['SDL_VIDEODRIVER'] = 'dummy'
 # Define some colors
 BLACK    = (   0,   0,   0)
 WHITE    = ( 255, 255, 255)
@@ -45,6 +45,7 @@ client.send(msg)
 # Set the width and height of the screen [width,height]
 size = [500, 700]
 screen = pygame.display.set_mode(size)
+pygame.display.set_mode((1,1))
 
 pygame.display.set_caption("miniPongRemoteControll")
 

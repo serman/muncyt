@@ -26,12 +26,15 @@
 #define VIDEOSIZE_X 100
 #define VIDEOSIZE_Y 140
 
-static ofEvent<int> finishedRecordingEvent;
+
 //static ofEvent<int> recordingAborted;
 
 class mosaicRecorder {
 public:
-
+    ofEvent<int> finishedRecordingEvent;
+    static const int NORECORDING=0;
+    static const int RECORDING=1;
+    static const int WAITING_QUEUE_STOP=2;
     int current_video=0; //identificador del video que se está grabando
     vector<ofPoint> points;
     ofxImageSequenceRecorder videoSaver;
@@ -43,7 +46,7 @@ public:
                dir.create(true);
             }
         }
-        isRecording=false;
+        status=NORECORDING;
     }
 
     int x0,y0,w,h;
@@ -59,9 +62,8 @@ public:
         FPS=_FPS;
         time=_time;
         currentImage=&srcImage;
-        isRecording=true;
         x0=_x0; y0=_y0;w=_w;h=_h;
-        
+         status=RECORDING;
         //borramos el contenido del directorio si ya existía.
         ofDirectory dir(ofToDataPath("recordings/video_"+ ofToString(current_video) + "_tmp"));
         if(dir.exists() ){
@@ -93,10 +95,9 @@ public:
         	x1=x0;
             y1=y0;
         }
-        if(isRecording==true){
-            if(1000*(++frameCount)/FPS>time){ //FIN. ha terminado de grabar una secuencia   si la grabación ha terminado correcta se graba en otra carpeta
-                finishVRecording();
-                return true;
+        if(status==RECORDING){
+            if( 1000*(++frameCount)/FPS  >time){ //FIN. ha terminado de grabar una secuencia   si la grabación ha terminado correcta se graba en otra carpeta
+                status=WAITING_QUEUE_STOP;
             }
             else{
                 points.push_back(ofPoint(x1,y1));
@@ -104,11 +105,13 @@ public:
                 videoSaver.addFrame(croppedImg);
                 //cout << "added Frame";
             }
-        }else{
+        }
+        if(status==WAITING_QUEUE_STOP){
             if(videoSaver.q.size()==0){
-              //  ofLog() << "La cola es 0. Cerrando thread \n";
                 if(videoSaver.isThreadRunning() ){
+                    ofLog() << "La cola es 0. y el thread estaba funcionando Cerrando thread \n";
                     videoSaver.stopThread();
+                    finishVRecording();
                 }
             }
         }
@@ -117,12 +120,11 @@ public:
     
     
     void finishVRecording(){
-        if(videoSaver.q.size()>0) return;
     //CHANGE CLASS STATUES
         ofLog() << "Recording finished. Success. stopRecorder\n";
         frameCount=0;
         videoSaver.counter=0;
-        isRecording=false;
+        status=NORECORDING;
 
      //MOVE VIDEO TO ITS FINAL LOCATION
         
@@ -148,8 +150,9 @@ public:
             positions.addValue("Y", points[i].y);
             positions.popTag();//pop position
         }
-                points.empty();
+        points.empty();
         positions.saveFile(ofToDataPath("recordings/positions"+ofToString(current_video)+".xml"));
+        cout << "notifico evento" <<endl;
         ofNotifyEvent(finishedRecordingEvent, current_video);
         if(++current_video>=MAX_VIDEOS) current_video=0;
         
@@ -160,10 +163,9 @@ public:
     void abort(){//cancela la grabación
         frameCount=0;
         videoSaver.counter=0;
-        isRecording=false;
-        
+         status=NORECORDING;        
     }
-    bool isRecording=false;
+       int status;
 private:
     ofPixels croppedImg;
 	ofPixels *currentImage;
@@ -176,6 +178,7 @@ private:
     int FPS=25;
     int time=3000;
     int frameCount=0;
+ 
 
     
 };

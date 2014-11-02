@@ -1,7 +1,7 @@
 
 #include "fantasmas.h"
 
-
+/* Recorre array de imagenes en busca de la proxima en busca del proximo video a reproducir */
 void fantasmas::selectNextPhantom(){
   //  ofLog()<< "fantasmas::selectNextPhantom " <<endl;
 // 1º recorremos todos los blobs actuales y buscamos el video grabado que no colisiona y que está mas lejos
@@ -18,7 +18,7 @@ void fantasmas::selectNextPhantom(){
             break; // Si la secuencia de puntos no esta completa por algun error saltamos
         }
         
-        for (int j=0; j< thisPoints.size(); j++){
+        for (int j=0; j< maxFrame; j++){
         // si no están a menos de MIN_DISTANCE pixels me quedo con el video actual y lo reproduzco
             list<ofxTuioCursor*>::iterator tobj;
             list<ofxTuioCursor*> objectList = tuioclient->getTuioCursors();
@@ -45,7 +45,7 @@ void fantasmas::selectNextPhantom(){
     return;
 }
 
-/*returns true when collision detected
+/*returns true when collision detected in current video or when there is no video loaded. In both cases we need to load another video
  False otherwise
  */
 bool fantasmas::checkPosibleCollision(){
@@ -54,6 +54,11 @@ bool fantasmas::checkPosibleCollision(){
     int MIN_DISTANCE=150;
   
     int index= secuence_to_play;
+    if(secuence_to_play==-1){
+        ofLogVerbose()<< "fantasmas::checkPotentialCollision No se está reproduciendo secuencia" <<endl;
+        return true;
+    }
+
     bool validVideo=true;
     
     //recorro todos los puntos y los comparo con la posición de  los blobs.
@@ -63,7 +68,7 @@ bool fantasmas::checkPosibleCollision(){
         return false;
     }
     
-    for (int j=0; j< thisPoints.size(); j++){
+    for (int j=0; j< maxFrame; j++){
         // si alguno están a menos de MIN_DISTANCE pixels de un blob actual cierro
         list<ofxTuioCursor*>::iterator tobj;
         list<ofxTuioCursor*> objectList = tuioclient->getTuioCursors();
@@ -96,11 +101,9 @@ ofxTuioCursor* fantasmas::getNextBlob(list<ofxTuioCursor*>::iterator &tobj, list
 
 void fantasmas::gui2Event(ofxUIEventArgs &e)
 {
-    cout << "event";
+
 	string name = e.widget->getName();
 	int kind = e.widget->getKind();
-    cout << "name" << name << "\n";
-    cout << "kind" << kind << "\n";
     if(kind==2){
         if(name == "2")
         {
@@ -139,11 +142,12 @@ void fantasmas::sceneWillDisappear( ofxScene * toScreen ){
 
 void fantasmas::init_Escena(){
     //gui2->enable();
+    ofLog() << "entrando en escena fantasmas";
     cheapComm::getInstance()->showVideoFront();
     
     selectedBlobId=-1;
     ofAddListener(gui2->newGUIEvent,this,&fantasmas::gui2Event);
-    ofAddListener(finishedRecordingEvent,this, &fantasmas::onRecordingFinished);
+    ofAddListener(mRecorder.finishedRecordingEvent,this, &fantasmas::onRecordingFinished);
     ofSetFrameRate(30);
     recordThisBlob=false;
     showSuccessRecordUntil=0;
@@ -156,7 +160,7 @@ void fantasmas::init_Escena(){
 }
 
 void fantasmas::exit_Escena(){
-    ofRemoveListener(finishedRecordingEvent,this, &fantasmas::onRecordingFinished);
+    ofRemoveListener(mRecorder.finishedRecordingEvent,this, &fantasmas::onRecordingFinished);
     ofRemoveListener(gui2->newGUIEvent,this,&fantasmas::gui2Event);
     gui2->disable();
     

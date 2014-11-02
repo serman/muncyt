@@ -57,7 +57,6 @@ void generativo2::update(float f){
 
 void generativo2::draw(){
     ofSetColor(255);
-    
     fbo.begin();
     ofClear(0, 0, 0, 0);
         //  IMPORTANTE ESTOY DIBUJANDO SOBRE UN FBO DE TAMAÑO DEFINIDO CON LO QUE AL PINTAR FUERA NO SE VE
@@ -69,10 +68,14 @@ void generativo2::draw(){
     backgroundImg.draw(0,0,1280,720);
     ofTranslate(100,100); //PINTO EN LA ZONA D ELA PANTALLA QUE QUIERO
     //ofRect(-2,-2,SCREEN_W+5,SCREEN_H+5);
+    ofFill();
+    ofSetColor(0,0,0);
+    ofRect(0,0,SCREEN_W,SCREEN_H);
     ofSetColor(255);
-    filter->begin() ;
+    
+    /*filter->begin() ;
     fbo.draw(0, 0);
-    filter->end() ;
+    filter->end() ;*/
     
     //fin procesado imagen video que llega
     
@@ -91,7 +94,7 @@ void generativo2::draw(){
         }
         
         ofNoFill();
-        ofSetColor(255);
+        ofSetColor(192);
         ofSetLineWidth(2);
         for(int j = 0; j< lineW; j++){
             p.addVertex(j, lineP-abs(lines[i][j])*filterr[j]*lineS-0.5);
@@ -121,12 +124,12 @@ void generativo2::draw(){
     /****** calculos ******/
     
     //Difunde lineas
-    if(ofGetFrameNum()%3==0){
+    if(ofGetFrameNum()%1==0){
         //Spread
         for (int i = 0; i < NLINES-1; i++){
             for(int j = 0; j < lineW; j++){
-                if(lines[i][j]>0)    lines[i][j] = lines[i][j]-0.08;
-                else if(lines[i][j]<0.1)  lines[i][j]=ofRandom(-0.08,0.08);
+                if(lines[i][j]>0)    lines[i][j] = lines[i][j]-0.03;
+                else if(lines[i][j]<0.1)  lines[i][j]=ofRandom(-0.03,0.03);
             }
         }
     }//framecount
@@ -143,11 +146,13 @@ void generativo2::draw(){
             if(i>(px-20) && i<(px+20)){
                 if(i<20 || i>lineW-20) continue;
                 else
-                    lines[line1][i]=cos(ofDegToRad(px-i)*5)/1.5+ofRandom(-0.05,0.05); // A los puntos que están 20 pixels alrededor del blog se los reemplaza por este valor
+                    lines[line1][i]=cos(ofDegToRad(px-i)*5)/1.2+ofRandom(-0.05,0.05); // A los puntos que están 20 pixels alrededor del blog se los reemplaza por este valor
             }
         }
-        //ofSetColor(255, 100, 0);
-      //  ofRect(px1,py1,7,7);
+
+        ofSetColor(255,78,80);
+        ofFill();
+        ofEllipse(px-3,py-3,6,6);
     }
     ofPopMatrix();
     
