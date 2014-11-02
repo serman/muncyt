@@ -76,6 +76,7 @@ public:
     }
     
     void draw(){
+        return;
         ofPushMatrix();
         ofPushStyle();
         ofEnableAlphaBlending();

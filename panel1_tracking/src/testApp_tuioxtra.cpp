@@ -106,13 +106,13 @@ void testApp::keyPressed(int key){
     }
 }
 void testApp::setupGui(){
-  //CEIL CAMARA
+  //Front CAMARA
     guiTabBar = new ofxUITabBar(50,100, 295,285);
     gui0 = new ofxUICanvas(50,100, 295,285);
-    gui0->setName("Camera0");
+    gui0->setName("FRONT_CAMERA");
     gui0->addIntSlider("blob_threshold0", 0, 255, &blobThreshold[0]);
 	gui0->addIntSlider("min blob size0", 0, 1000, &minBlobSize[0]);
-	gui0->addIntSlider("max blob size0", 0, 20000, &maxBlobSize[0]);
+	gui0->addIntSlider("max blob size0", 0, 30000, &maxBlobSize[0]);
 	gui0->addIntSlider("amplify0", 0, 100, &amplify[0]);
     gui0->addIntSlider("smooth0", 0, 10, &smooth[0]);
 
@@ -120,19 +120,24 @@ void testApp::setupGui(){
     
  //FRONT CAMARA
     gui1 = new ofxUICanvas(50,100, 295,285);
-    gui1->setName("Camera1" );
+    gui1->setName("CEIL_CAMERA" );
     gui1->addIntSlider("blob_threshold", 0, 255, &blobThreshold[1]);
 	gui1->addIntSlider("min blob size", 0, 1000, &minBlobSize[1]);
-	gui1->addIntSlider("max blob size", 0, 20000, &maxBlobSize[1]);
+	gui1->addIntSlider("max blob size", 0, 30000, &maxBlobSize[1]);
 	gui1->addIntSlider("amplify", 0, 100, &amplify[1]);
     gui1->addIntSlider("smooth", 0, 10, &smooth[1]);
-    
-    gui1->addSpacer();
-    gui1->addToggle("Adaptative", false);
-    gui1->addSlider("learnRate", 0	, 0.001f, &fLearnRate) ;
-    ofAddListener(gui1->newGUIEvent,this,&testApp::gui2Event);
-   // gui1->loadSettings("gui_settingsCamera1.xml");
     guiTabBar->addCanvas(gui1);
+    
+    guiGeneral = new ofxUICanvas(50,100, 295,285);
+    guiGeneral->setName("General settings" );
+    guiGeneral->addSpacer();
+    
+    guiGeneral->addToggle("Adaptative", false);
+    guiGeneral->addSlider("learnRate", 0	, 10.0, &fLearnRate) ;
+    ofAddListener(guiGeneral->newGUIEvent,this,&testApp::gui2Event);
+   // gui1->loadSettings("gui_settingsCamera1.xml");
+    guiTabBar->addCanvas(guiGeneral);
+    
     guiTabBar->loadSettings("./","camera_settings");
     guiTabBar->disable();
 }
@@ -193,14 +198,15 @@ void testApp::dragEvent(ofDragInfo dragInfo){
 
 void testApp::gui2Event(ofxUIEventArgs &e)
 {
-    cout << "event";
 	string name = e.widget->getName();
 	int kind = e.widget->getKind();
     
     if(name == "Adaptative")
     {
-        if(appStatuses["adaptativeBackground"]) appStatuses["adaptativeBackground"]=false;
-        else appStatuses["adaptativeBackground"]=true;
+            ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
+        if(toggle->getValue())
+            appStatuses["adaptativeBackground"]=true;
+        else appStatuses["adaptativeBackground"]=false;
     }
 }
 

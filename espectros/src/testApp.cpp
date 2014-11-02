@@ -83,6 +83,10 @@ void testApp::setup(){
 
     courierFont.loadFont("CourierNew.ttf", 11);
     
+    if(ofToString(getenv("USER"))=="instalaciones" || ofToString(getenv("USER"))=="panel" ){
+        ofLogToFile( ofToString (getenv("HOME") ) + "/machine_v_espejo_log.txt", true);
+    }
+    
 }
 
 void testApp::update(){

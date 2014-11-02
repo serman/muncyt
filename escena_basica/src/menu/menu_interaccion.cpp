@@ -128,8 +128,10 @@ void menu::keyPressed(int key) {
 	else if(key=='f') bDrawFbos=!bDrawFbos;
 	else if(key=='d') swFuerzaDensidad=!swFuerzaDensidad;
 	else if(key=='m') isMousePressed=!isMousePressed;
-	
+	else if(key=='g')      bshowdebug=! bshowdebug;
+    
 	isKeyPressed = true;
+    
 }
 
 //--------------------------------------------------------------

@@ -231,7 +231,7 @@ public:
        // ofSetColor(27,117,187,200+50*sin(ofGetElapsedTimef()/2.0*TWO_PI));
         for(int i=0; i<ofMap(abs(wAng),0,wAngMax,0,360); i+=3){
             ofRotateZ(3);
-            if( (i>=0 && i<10) || (i>73 && i<100) || (i>166 && i<190) || (i>342 && i<360)){
+            if( (i>=0 && i<10) || (i>73 && i<96) || (i>166 && i<184) || (i>350 && i<360)){
                 
             }else
                 ofRect(-r,0,ancho-14,10);

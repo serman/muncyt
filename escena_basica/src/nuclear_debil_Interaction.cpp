@@ -76,6 +76,9 @@ void nuclear_debil::keyPressed(int key) {
         
         addSprite(ofRandom(50,500),ofRandom(50,500));
     }
+    else if(key=='g'){
+        bshowdebug=!bshowdebug;
+    }
 }
 
 void nuclear_debil::setModoParticulas(int _modo) {

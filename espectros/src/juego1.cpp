@@ -398,7 +398,7 @@ void juego1::drawControls(){
     //ofRect(0,0, 100, 10);
 
     ofEnableAlphaBlending();
-    ofSetColor(255,220+35*sin(ofGetElapsedTimef()/6.0*TWO_PI));
+    ofSetColor(255,200+55*sin(ofGetElapsedTimef()/6.0*TWO_PI));
     flecha.draw(0, -flecha.height/2);
 
     for (int i=0; i<helpLinesCount; i++){
@@ -427,7 +427,7 @@ void juego1::drawControls(){
     //ball.draw();
     ofPushMatrix();
     ofPushStyle();
-    ofSetRectMode(OF_RECTMODE_CENTER);
+    ofSetRectMode(OF_RECTMODE_CORNER);
         ofSetColor(255,230+25*sin(ofGetElapsedTimef()/3.0*TWO_PI));
         ofTranslate(ball.getPosition());
         ofRotateZ(ball.getRotation());

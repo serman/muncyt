@@ -21,8 +21,8 @@
 #define CAMERA_EXPOSURE_TIME  2200.0f
 
 #define NCAMARAS 2
-#define CEIL_INDEX 0
-#define FRONT_INDEX 1
+#define CEIL_INDEX 1
+#define FRONT_INDEX 0
 
 //#define TESTMODE
 class cheapComm;
@@ -45,6 +45,7 @@ class testApp : public ofBaseApp{
     
         ofxUICanvas *gui0;
         ofxUICanvas *gui1;
+    ofxUICanvas *guiGeneral;
         ofxUITabBar *guiTabBar;
     
         ofTrueTypeFont consoleFont;
@@ -75,8 +76,9 @@ class testApp : public ofBaseApp{
 	    int amplify[NCAMARAS];
     	int smooth[NCAMARAS];
                         
-	    bool adaptativeBackground=false;
-	    float fLearnRate= 0.005f;
+	    bool adaptativeBackground;
+	    float fLearnRate= 5;
+        float fLearnRateDividido;
         bool bCaptureBackground=true;	//a boolean to indicate whether to instruct the addon to capture the background again, defaults to true
     	cheapComm *myComm;
 	    //vector <ofPoint> positgui_settingsCamera0.xml"guiions;

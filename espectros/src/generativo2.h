@@ -68,7 +68,7 @@ private:
 
 #define lineW  768 //ancho de la linea
 #define  lineS  60
-#define  NLINES 52
+#define  NLINES 44
     
     float  lines[NLINES][lineW+1];
      float  filterr[lineW];

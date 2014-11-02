@@ -23,13 +23,3 @@
     <Name>smooth</Name>
     <Value>5</Value>
 </Widget>
-<Widget>
-    <Kind>2</Kind>
-    <Name>Adaptative</Name>
-    <Value>1</Value>
-</Widget>
-<Widget>
-    <Kind>4</Kind>
-    <Name>learnRate</Name>
-    <Value>0.001000000</Value>
-</Widget>

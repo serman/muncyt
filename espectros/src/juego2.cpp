@@ -100,7 +100,9 @@ void juego2::draw(){
     ofPushMatrix();
         backgroundImg.draw(0,0,1280,720);
         ofTranslate(100,100); //PINTO EN LA ZONA DE LA PANTALLA QUE QUIERO
-       // mask1.draw(0,0);   
+       // mask1.draw(0,0);
+    ofSetColor(11,11,16);
+    ofRect(0,0,SCREEN_W,SCREEN_H);
         ofSetColor(255,255,255);
         ofFill();
         imgRecortada.draw(0,0);

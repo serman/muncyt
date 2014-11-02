@@ -93,7 +93,7 @@ void menu::setup() {
 
 void menu::init_Escena() {
 	ofLogNotice("- - - - - - - init escena() - - - - - - - ");
-	
+	bshowdebug=false;
 	ofPoint centro = ofPoint(W_WIDTH/2.0, W_HEIGHT/2.0);
 
 	isKeyPressed = false;
@@ -440,7 +440,8 @@ void menu::draw() {
     info += "Button Dest" + ofToString(mdisplay.scene);
 //	ofSetHexColor(0x444342);
 	ofSetHexColor(0xAAAAAA);
-	ofDrawBitmapString(info, 30, 30);
+    if(     bshowdebug)
+        ofDrawBitmapString(info, 30, 30);
 	ofPopStyle();
     
     mdisplay.draw();
@@ -785,7 +786,7 @@ void menu::sceneWillAppear( ofxScene * fromScreen ){  // reset our scene when we
 	 */
 	ofLogNotice("menu - sceneWillAppear - ");
 	
-    cheapComm::getInstance()->sendAudio0("/sync/menu/start_event");
+    cheapComm::getInstance()->sendAudio0("/audio/menu/start_event");
     cheapComm::getInstance()->sendSync0("/sync/menu/start_event");
     
     init_Escena();
@@ -799,7 +800,7 @@ void menu::sceneWillDisappear( ofxScene * toScreen ){
 	 ofRemoveListener(tuioClient.cursorRemoved,this,&menu::tuioRemoved);
 	 ofRemoveListener(tuioClient.cursorUpdated,this,&menu::tuioUpdated);
 	 */
-    cheapComm::getInstance()->sendAudio0("/sync/menu/end_event");
+    cheapComm::getInstance()->sendAudio0("/audio/menu/end_event");
     cheapComm::getInstance()->sendSync0("/sync/menu/end_event");
 	exit_Escena();
     hands.objectsCol.clear();

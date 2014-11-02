@@ -1,0 +1,179 @@
+
+
+--------------------------------------- 2014-11-01-01-40-01-545
+[verbose] SCREEN ID:1
+
+[verbose] initialize PASS
+[verbose] onDeviceConnected
+[verbose] Open file PASS: /Users/sergiogalan/MultimediaProgramming/of_v0.8.4_osx_release/apps/muncyt/kinectExample/bin/data/test_museo.oni
+[verbose] Device open PASS
+[verbose] Find DepthSource stream PASS
+[verbose] Start DepthSource stream PASS
+[verbose] deviceMaxDepth: 10000
+[verbose] DepthSource videoStream addNewFrameListener PASS
+[verbose] Find RGBSource videoStream PASS
+[verbose] RGBSource videoStream start PASS
+[verbose] RGBSource videoStream addNewFrameListener PASS
+[warning] ofThread: - name: Thread 1 - Calling startThread with verbose is deprecated.
+[verbose] ofThread: - name: Thread 1 - Started Thread.
+[verbose] Recorder creation PASS, file will be /Users/sergiogalan/MultimediaProgramming/of_v0.8.4_osx_release/apps/muncyt/kinectExample/bin/data/2014-11-01-01-40-02-301_depth_color_640w_480h_30fps.oni
+[verbose] Find DepthSource stream PASS
+[verbose] Start DepthSource stream PASS
+[verbose] deviceMaxDepth: 10000
+[verbose] DepthSource videoStream addNewFrameListener PASS
+[verbose] Find RGBSource videoStream PASS
+[verbose] RGBSource videoStream start PASS
+[verbose] RGBSource videoStream addNewFrameListener PASS
+[verbose] testApp started
+[verbose] ofTrueTypeFont: loadFontFace(): "Helvetica Neue" not a file in data loading system font from "/System/Library/Fonts/HelveticaNeue.dfont"
+[verbose] ofTrueTypeFont: loadFontFace(): "Helvetica Neue" not a file in data loading system font from "/System/Library/Fonts/HelveticaNeue.dfont"
+[verbose] ofTrueTypeFont: loadFontFace(): "Helvetica Neue" not a file in data loading system font from "/System/Library/Fonts/HelveticaNeue.dfont"
+[verbose] ofTrueTypeFont: loadFontFace(): "Helvetica Neue" not a file in data loading system font from "/System/Library/Fonts/HelveticaNeue.dfont"
+[verbose] ofTrueTypeFont: loadFontFace(): "Helvetica Neue" not a file in data loading system font from "/System/Library/Fonts/HelveticaNeue.dfont"
+[verbose] ofTrueTypeFont: loadFontFace(): "Helvetica Neue" not a file in data loading system font from "/System/Library/Fonts/HelveticaNeue.dfont"
+[verbose] ofTrueTypeFont: loadFontFace(): "Helvetica Neue" not a file in data loading system font from "/System/Library/Fonts/HelveticaNeue.dfont"
+[verbose] ofTrueTypeFont: loadFontFace(): "Helvetica Neue" not a file in data loading system font from "/System/Library/Fonts/HelveticaNeue.dfont"
+[verbose] ofTrueTypeFont: loadFontFace(): "Helvetica Neue" not a file in data loading system font from "/System/Library/Fonts/HelveticaNeue.dfont"
+[verbose] ofTrueTypeFont: loadFontFace(): "Helvetica Neue" not a file in data loading system font from "/System/Library/Fonts/HelveticaNeue.dfont"
+[verbose] ofTrueTypeFont: loadFontFace(): "Helvetica Neue" not a file in data loading system font from "/System/Library/Fonts/HelveticaNeue.dfont"
+[verbose] ofTrueTypeFont: loadFontFace(): "Helvetica Neue" not a file in data loading system font from "/System/Library/Fonts/HelveticaNeue.dfont"
+[verbose] ofTrueTypeFont: loadFontFace(): "Helvetica Neue" not a file in data loading system font from "/System/Library/Fonts/HelveticaNeue.dfont"
+[verbose] ofTrueTypeFont: loadFontFace(): "Helvetica Neue" not a file in data loading system font from "/System/Library/Fonts/HelveticaNeue.dfont"
+[verbose] ofTrueTypeFont: loadFontFace(): "Helvetica Neue" not a file in data loading system font from "/System/Library/Fonts/HelveticaNeue.dfont"
+[verbose] ofTrueTypeFont: loadFontFace(): "Helvetica Neue" not a file in data loading system font from "/System/Library/Fonts/HelveticaNeue.dfont"
+[verbose] ofTrueTypeFont: loadFontFace(): "Helvetica Neue" not a file in data loading system font from "/System/Library/Fonts/HelveticaNeue.dfont"
+[verbose] ofTrueTypeFont: loadFontFace(): "Helvetica Neue" not a file in data loading system font from "/System/Library/Fonts/HelveticaNeue.dfont"
+[verbose] ofTrueTypeFont: loadFontFace(): "Helvetica Neue" not a file in data loading system font from "/System/Library/Fonts/HelveticaNeue.dfont"
+[verbose] ofTrueTypeFont: loadFontFace(): "Helvetica Neue" not a file in data loading system font from "/System/Library/Fonts/HelveticaNeue.dfont"
+[verbose] ofTrueTypeFont: loadFontFace(): "Helvetica Neue" not a file in data loading system font from "/System/Library/Fonts/HelveticaNeue.dfont"
+[verbose] ofShader: checkAndCreateProgram(): creating GLSL program
+[verbose] ofShader: setupShaderFromSource(): GL_FRAGMENT_SHADER shader compiled
+[verbose] linkProgram(): attaching GL_FRAGMENT_SHADER shader to program 1
+[verbose] ofShader: checkProgramLinkStatus(): program 1linked
+[verbose] ofShader: checkAndCreateProgram(): creating GLSL program
+[verbose] ofShader: setupShaderFromSource(): GL_VERTEX_SHADER shader compiled
+[verbose] ofShader: setupShaderFromSource(): GL_FRAGMENT_SHADER shader compiled
+[verbose] linkProgram(): attaching GL_FRAGMENT_SHADER shader to program 3
+[verbose] linkProgram(): attaching GL_VERTEX_SHADER shader to program 3
+[verbose] ofShader: checkProgramLinkStatus(): program 3linked
+[verbose] ofFbo: GL frame buffer object supported
+[verbose] ofFbo: checkGLSupport(): maxColorAttachments: 8, maxDrawBuffers: 8, maxSamples: 8
+[verbose] ofFbo: FRAMEBUFFER_COMPLETE - OK
+[verbose] ofFbo: GL frame buffer object supported
+[verbose] ofFbo: checkGLSupport(): maxColorAttachments: 8, maxDrawBuffers: 8, maxSamples: 8
+[verbose] ofFbo: FRAMEBUFFER_COMPLETE - OK
+[verbose] ofShader: checkAndCreateProgram(): creating GLSL program
+[verbose] ofShader: setupShaderFromSource(): GL_VERTEX_SHADER shader compiled
+[verbose] ofShader: setupShaderFromSource(): GL_FRAGMENT_SHADER shader compiled
+[verbose] linkProgram(): attaching GL_FRAGMENT_SHADER shader to program 6
+[verbose] linkProgram(): attaching GL_VERTEX_SHADER shader to program 6
+[verbose] ofShader: checkProgramLinkStatus(): program 6linked
+[verbose] ofFbo: GL frame buffer object supported
+[verbose] ofFbo: checkGLSupport(): maxColorAttachments: 8, maxDrawBuffers: 8, maxSamples: 8
+[verbose] ofFbo: FRAMEBUFFER_COMPLETE - OK
+[verbose] particulas34240
+[verbose] particulas34240
+[verbose] ofFbo: GL frame buffer object supported
+[verbose] ofFbo: checkGLSupport(): maxColorAttachments: 8, maxDrawBuffers: 8, maxSamples: 8
+[verbose] ofFbo: FRAMEBUFFER_COMPLETE - OK
+[verbose] ofShader: checkAndCreateProgram(): creating GLSL program
+[verbose] ofShader: setupShaderFromSource(): GL_FRAGMENT_SHADER shader compiled
+[verbose] linkProgram(): attaching GL_FRAGMENT_SHADER shader to program 9
+[verbose] ofShader: checkProgramLinkStatus(): program 9linked
+[verbose] ofFbo: GL frame buffer object supported
+[verbose] ofFbo: checkGLSupport(): maxColorAttachments: 8, maxDrawBuffers: 8, maxSamples: 8
+[verbose] ofFbo: FRAMEBUFFER_COMPLETE - OK
+[verbose] ofFbo: GL frame buffer object supported
+[verbose] ofFbo: checkGLSupport(): maxColorAttachments: 8, maxDrawBuffers: 8, maxSamples: 8
+[verbose] ofFbo: FRAMEBUFFER_COMPLETE - OK
+[verbose] ofFbo: GL frame buffer object supported
+[verbose] ofFbo: checkGLSupport(): maxColorAttachments: 8, maxDrawBuffers: 8, maxSamples: 8
+[verbose] ofFbo: FRAMEBUFFER_COMPLETE - OK
+[verbose] ofShader: checkAndCreateProgram(): creating GLSL program
+[verbose] ofShader: setupShaderFromSource(): GL_FRAGMENT_SHADER shader compiled
+[verbose] linkProgram(): attaching GL_FRAGMENT_SHADER shader to program 11
+[verbose] ofShader: checkProgramLinkStatus(): program 11linked
+[verbose] ofShader: checkAndCreateProgram(): creating GLSL program
+[verbose] ofShader: setupShaderFromSource(): GL_VERTEX_SHADER shader compiled
+[verbose] ofShader: setupShaderFromSource(): GL_FRAGMENT_SHADER shader compiled
+[verbose] linkProgram(): attaching GL_FRAGMENT_SHADER shader to program 13
+[verbose] linkProgram(): attaching GL_VERTEX_SHADER shader to program 13
+[verbose] ofShader: checkProgramLinkStatus(): program 13linked
+[verbose] ofShader: checkAndCreateProgram(): creating GLSL program
+[verbose] ofShader: setupShaderFromSource(): GL_VERTEX_SHADER shader compiled
+[verbose] ofShader: setupShaderFromSource(): GL_FRAGMENT_SHADER shader compiled
+[verbose] linkProgram(): attaching GL_FRAGMENT_SHADER shader to program 16
+[verbose] linkProgram(): attaching GL_VERTEX_SHADER shader to program 16
+[verbose] ofShader: checkProgramLinkStatus(): program 16linked
+[verbose] ofFbo: GL frame buffer object supported
+[verbose] ofFbo: checkGLSupport(): maxColorAttachments: 8, maxDrawBuffers: 8, maxSamples: 8
+[verbose] ofFbo: FRAMEBUFFER_COMPLETE - OK
+[verbose] ofFbo: GL frame buffer object supported
+[verbose] ofFbo: checkGLSupport(): maxColorAttachments: 8, maxDrawBuffers: 8, maxSamples: 8
+[verbose] ofFbo: FRAMEBUFFER_COMPLETE - OK
+[verbose] ofFbo: GL frame buffer object supported
+[verbose] ofFbo: checkGLSupport(): maxColorAttachments: 8, maxDrawBuffers: 8, maxSamples: 8
+[verbose] ofFbo: FRAMEBUFFER_COMPLETE - OK
+[verbose] ofFbo: GL frame buffer object supported
+[verbose] ofFbo: checkGLSupport(): maxColorAttachments: 8, maxDrawBuffers: 8, maxSamples: 8
+[verbose] ofFbo: FRAMEBUFFER_COMPLETE - OK
+[verbose] ofFbo: GL frame buffer object supported
+[verbose] ofFbo: checkGLSupport(): maxColorAttachments: 8, maxDrawBuffers: 8, maxSamples: 8
+[verbose] ofFbo: FRAMEBUFFER_COMPLETE - OK
+[verbose] ofShader: checkAndCreateProgram(): creating GLSL program
+[verbose] ofShader: setupShaderFromSource(): GL_FRAGMENT_SHADER shader compiled
+[verbose] linkProgram(): attaching GL_FRAGMENT_SHADER shader to program 19
+[verbose] ofShader: checkProgramLinkStatus(): program 19linked
+[verbose] ofShader: checkAndCreateProgram(): creating GLSL program
+[verbose] ofShader: setupShaderFromSource(): GL_VERTEX_SHADER shader compiled
+[verbose] ofShader: setupShaderFromSource(): GL_FRAGMENT_SHADER shader compiled
+[verbose] linkProgram(): attaching GL_FRAGMENT_SHADER shader to program 21
+[verbose] linkProgram(): attaching GL_VERTEX_SHADER shader to program 21
+[verbose] ofShader: checkProgramLinkStatus(): program 21linked
+[verbose] ofShader: checkAndCreateProgram(): creating GLSL program
+[verbose] ofShader: setupShaderFromSource(): GL_VERTEX_SHADER shader compiled
+[verbose] ofShader: setupShaderFromSource(): GL_FRAGMENT_SHADER shader compiled
+[verbose] linkProgram(): attaching GL_FRAGMENT_SHADER shader to program 24
+[verbose] linkProgram(): attaching GL_VERTEX_SHADER shader to program 24
+[verbose] ofShader: checkProgramLinkStatus(): program 24linked
+[verbose] ofFbo: GL frame buffer object supported
+[verbose] ofFbo: checkGLSupport(): maxColorAttachments: 8, maxDrawBuffers: 8, maxSamples: 8
+[verbose] ofFbo: FRAMEBUFFER_COMPLETE - OK
+[verbose] ofFbo: GL frame buffer object supported
+[verbose] ofFbo: checkGLSupport(): maxColorAttachments: 8, maxDrawBuffers: 8, maxSamples: 8
+[verbose] ofFbo: FRAMEBUFFER_COMPLETE - OK
+[verbose] ofShader: checkAndCreateProgram(): creating GLSL program
+[verbose] ofShader: setupShaderFromSource(): GL_FRAGMENT_SHADER shader compiled
+[verbose] linkProgram(): attaching GL_FRAGMENT_SHADER shader to program 27
+[verbose] ofShader: checkProgramLinkStatus(): program 27linked
+[verbose] ofShader: checkAndCreateProgram(): creating GLSL program
+[verbose] ofShader: setupShaderFromSource(): GL_VERTEX_SHADER shader compiled
+[verbose] ofShader: setupShaderFromSource(): GL_FRAGMENT_SHADER shader compiled
+[verbose] linkProgram(): attaching GL_FRAGMENT_SHADER shader to program 29
+[verbose] linkProgram(): attaching GL_VERTEX_SHADER shader to program 29
+[verbose] ofShader: checkProgramLinkStatus(): program 29linked
+[verbose] ofShader: checkAndCreateProgram(): creating GLSL program
+[verbose] ofShader: setupShaderFromSource(): GL_FRAGMENT_SHADER shader compiled
+[verbose] linkProgram(): attaching GL_FRAGMENT_SHADER shader to program 32
+[verbose] ofShader: checkProgramLinkStatus(): program 32linked
+[verbose] ofShader: checkAndCreateProgram(): creating GLSL program
+[verbose] ofShader: setupShaderFromSource(): GL_FRAGMENT_SHADER shader compiled
+[verbose] linkProgram(): attaching GL_FRAGMENT_SHADER shader to program 34
+[verbose] ofShader: checkProgramLinkStatus(): program 34linked
+[verbose] ofShader: checkAndCreateProgram(): creating GLSL program
+[verbose] ofShader: setupShaderFromSource(): GL_VERTEX_SHADER shader compiled
+[verbose] ofShader: setupShaderFromSource(): GL_FRAGMENT_SHADER shader compiled
+[verbose] linkProgram(): attaching GL_FRAGMENT_SHADER shader to program 36
+[verbose] linkProgram(): attaching GL_VERTEX_SHADER shader to program 36
+[verbose] ofShader: checkProgramLinkStatus(): program 36linked
+[verbose] ofShader: checkAndCreateProgram(): creating GLSL program
+[verbose] ofShader: setupShaderFromSource(): GL_FRAGMENT_SHADER shader compiled
+[verbose] linkProgram(): attaching GL_FRAGMENT_SHADER shader to program 39
+[verbose] ofShader: checkProgramLinkStatus(): program 39linked
+[verbose] ofFbo: GL frame buffer object supported
+[verbose] ofFbo: checkGLSupport(): maxColorAttachments: 8, maxDrawBuffers: 8, maxSamples: 8
+[verbose] ofFbo: FRAMEBUFFER_COMPLETE - OK
+[verbose] ofxOpenNI2Grabber::close
+[verbose] ofThread: - name: Thread 1 - Signaled to stop.
+[verbose] ofThread: - name: Thread 1 - waiting to stop
+[verbose] ofThread: - name: Thread 1 - Thread Finished.

@@ -103,7 +103,7 @@ public:
 	void	updateFBO(vector<ofVec2f> ptsInter);
 	void	updateFBO();
 	
-	
+	bool bshowdebug;
 	// SOL
 	Sol sol;
 	

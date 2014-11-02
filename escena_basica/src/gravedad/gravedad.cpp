@@ -170,17 +170,17 @@ void gravedad::init_Escena() {
 	// Limpiar las particulas
 	particulas.clear();
 	
-	gui1->enable();
+	gui1->disable();
 //	ofLogNotice() << "gravedad::init_Escena: " << 3;
 	
 	// addListeners
-	
+	bshowdebug=false;
 	ofSetBackgroundAuto(true);
 }
 
 void gravedad::exit_Escena() {
     cheapComm::getInstance()->sendAudio0("/audio/gravity/end_event");
-	
+    hands.reset();
 	// borrar objetos
 	particulas.clear();
 	
@@ -686,9 +686,11 @@ void gravedad::draw(){
     
 	ofPushStyle();
 	ofSetColor(255,0,0);
-	ofDrawBitmapString("fr: " + ofToString(ofGetFrameRate()), 10, ofGetHeight()-90);
-	ofDrawBitmapString("masa Sol: " + ofToString(sol.masa), 10, ofGetHeight()-70);
-	ofDrawBitmapString("num Partics: " + ofToString(particulas.size()), 10, ofGetHeight()-50);
+    if(bshowdebug){
+        ofDrawBitmapString("fr: " + ofToString(ofGetFrameRate()), 10, ofGetHeight()-90);
+        ofDrawBitmapString("masa Sol: " + ofToString(sol.masa), 10, ofGetHeight()-70);
+        ofDrawBitmapString("num Partics: " + ofToString(particulas.size()), 10, ofGetHeight()-50);
+    }
 	ofPopStyle();
 //    ofDisableDepthTest();
 }
@@ -699,7 +701,7 @@ void gravedad::mousePressed( int x, int y, int button ){}
 //scene notifications
 void gravedad::sceneWillAppear( ofxScene * fromScreen ){  // reset our scene when we appear
     //gui1->enable();
-    cheapComm::getInstance()->sendAudio0("/sync/gravity/start_event");
+    cheapComm::getInstance()->sendAudio0("/audio/gravity/start_event");
     cheapComm::getInstance()->sendSync0("/sync/gravity/start_event");
     init_Escena();
 };
@@ -709,7 +711,7 @@ void gravedad::sceneWillAppear( ofxScene * fromScreen ){  // reset our scene whe
 void gravedad::sceneWillDisappear( ofxScene * toScreen ){
 	// gui1->disable();
 
-    cheapComm::getInstance()->sendAudio0("/sync/gravity/end_event");
+    cheapComm::getInstance()->sendAudio0("/audio/gravity/end_event");
     cheapComm::getInstance()->sendSync0("/sync/gravity/end_event");
 	exit_Escena();
 };
@@ -793,6 +795,12 @@ void gravedad::keyPressed(int key){
         cheapComm::getInstance()->sendAudio0("/audio/gravity/collapse_end_event");
         cheapComm::getInstance()->sendSync0("/sync/gravity/collapse_start_event");
         state=GROWING;
+    }
+    if(key=='g'){
+        if(gui1->isEnabled())
+            gui1->disable();
+        else
+            gui1->disable();
     }
     
 }

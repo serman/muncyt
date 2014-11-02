@@ -30,6 +30,16 @@ void nuclear_fuerte::keyPressed(int key){
 	}
 	else if(key=='t') bTiltCamino=!bTiltCamino;
     //else if(key==)
+    
+    if(key=='g'){
+        if(gui1->isEnabled()){
+            gui1->disable();
+            bshowdebug=false;}
+        else{
+            gui1->disable();
+            bshowdebug=true;
+        }
+    }
 }
 
 

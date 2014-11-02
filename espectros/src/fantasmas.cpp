@@ -161,19 +161,18 @@ void fantasmas::update(float d){
    //si el usuario ha seleccionado que hay que grabar:
         if(recordThisBlob==true && selectedBlobId!=-1){
             selectedBlob=recordSelectedBlob(tuioclient->getTuioCursors(),selectedBlobId);
-            if(selectedBlob!=NULL && mRecorder.isRecording==false){
+            if(selectedBlob!=NULL && mRecorder.status==mosaicRecorder::NORECORDING){
                // mRecorder.current_video=moveandrecord.currentRect;
                 mRecorder.current_video=videoCounter;
                 cout<< "width" << selectedBlob->width<< "height"<< selectedBlob->height;
                 ofPoint p1 = convertPoint(selectedBlob->getX(), selectedBlob->getY());
                 
-                mRecorder.start(2000, 25, remoteBlobImgPxl,
+                mRecorder.start(2000, 30, remoteBlobImgPxl,
                                 selectedBlob->width*VIDEO_W*VIDEO_scale,selectedBlob->height*VIDEO_H*VIDEO_scale,
                                 p1.x, p1.y
                                 );
                 RecordingBlobId=selectedBlob->getSessionId();
-
-                
+                recordThisBlob=false;
             }else{ //error raro, no se ha encontrado blob
                 
                 
@@ -182,7 +181,7 @@ void fantasmas::update(float d){
         }
 
         
-        if( mRecorder.isRecording ){
+        if( mRecorder.status==mosaicRecorder::RECORDING ){
             bool blobStillExists=false;
             list<ofxTuioCursor*>::iterator tobj;
             list<ofxTuioCursor*> objectList = tuioclient->getTuioCursors();
@@ -316,7 +315,7 @@ void fantasmas::drawDisplays(){
     if(ofGetElapsedTimeMillis()< showAbortRecordUntil){
         courierFont.drawString("El ordenador ha perdido la pista \n al paseante o se ha mezclado \n con otro. Prueba de nuevo"  , 0, 0);
     }
-    if(mRecorder.isRecording==true){
+    if(mRecorder.status==mosaicRecorder::RECORDING){
         courierFont.drawString("Grabando!"  , 0, 0);
     }
     
@@ -345,7 +344,10 @@ void fantasmas::showDebug(){
     else     ofDrawBitmapString("mode: DEBUG" , 20, 40);
     // ofDrawBitmapString("NonZero " + ofToString(nonZero), 20, 40);
     ofDrawBitmapString("selected id" + ofToString(selectedBlobId) , 300, 20);
-    courierFont.drawString("Cola"+ ofToString( mRecorder.videoSaver.q.size() ), 380, 20);
+    courierFont.drawString("Cola"+ ofToString( mRecorder.videoSaver.q.size() ), 480, 20);
+    ofDrawBitmapString("Reproduciendo" + ofToString(secuence_to_play) , 300, 40);
+    ofDrawBitmapString("Grabar en el slot" + ofToString(videoCounter) , 420, 40);
+    
     ofPopMatrix();
 }
 /*
@@ -369,6 +371,7 @@ void fantasmas::keyPressed(int key){
 
 }
 void fantasmas::onRecordingFinished(int &num){
+    cout << "onRecordingFinished:: grabacion finalizada "<< endl;
     selectedBlobId=-1;
     recordThisBlob==false;
     setupSequence(num);
@@ -377,7 +380,7 @@ void fantasmas::onRecordingFinished(int &num){
         videoCounter=0;
     }
     showSuccessRecordUntil=ofGetElapsedTimeMillis()+4000;
-    
+   
 }
 
 

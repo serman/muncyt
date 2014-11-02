@@ -490,6 +490,7 @@ void nuclear_fuerte::draw(){
 	//
 	// INFO
 	//
+    if(bshowdebug){
 	ofPushStyle();
 	ofSetColor(200);
 	int hLin = ofGetHeight()-25; int dLin = -15;
@@ -500,6 +501,7 @@ void nuclear_fuerte::draw(){
 	ofDrawBitmapString("Partics dentro: " + ofToString(centroLab.contadorPartics), 10,hLin); hLin+=dLin;
 	ofDrawBitmapString("FR: " + ofToString(ofGetFrameRate()), 10,hLin); hLin+=dLin;
 	ofPopStyle();
+    }
 }
 
 
@@ -550,7 +552,7 @@ void nuclear_fuerte::init_Scena() {
         gui1->enable();
 	gui1->loadSettings("gui_nuclear_fuerte.xml");
 	ofBackgroundGradient(ofColor(40), ofColor::black, OF_GRADIENT_CIRCULAR);
-    
+    emitters.clear();
 	// Emisores
 	// Activar el emitter del mouse
 	emitter.bActivo = false;
@@ -562,12 +564,13 @@ void nuclear_fuerte::init_Scena() {
     colorp1=ROJOS; //red
     colorp2=VERDES; //green
     colorp3=AZULES;//blue
-    
+    gui1->disable();
+    bshowdebug=false;
 }
 
 void nuclear_fuerte::sceneWillAppear( ofxScene * fromScreen ){  // reset our scene when we appear
     init_Scena();    
-    
+        emitters.clear();
     cheapComm::getInstance()->sendAudio0("/audio/strong_nuclear/start_event");
     cheapComm::getInstance()->sendSync0("/sync/strong_nuclear/start_event");
 };
