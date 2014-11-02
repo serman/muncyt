@@ -11,9 +11,9 @@
 
 enum  {EM, NUCLEAR_DEBIL, NUCLEAR_FUERTE, GRAVEDAD, MENU,TESTING};
 extern int SCREEN_ID;
-const float angTV1=ofDegToRad(30);
-const float angTV2=ofDegToRad(180);
-const float angTV3=ofDegToRad(260);
+const float angTV1=1.2;
+const float angTV2=5.6;
+const float angTV3=3.7;
 
 
 /*

@@ -6,6 +6,7 @@ int  SCREEN_ID=0;
 
 //--------------------------------------------------------------
 void testApp::setup() {
+
   //  cout << "ruta directorio:" << getenv("HOME");
     //particleCloud(oniCamGrabber,depthGenerator);
 	ofSetLogLevel(OF_LOG_VERBOSE);
@@ -178,7 +179,7 @@ void testApp::setup() {
 }
 
 void testApp::setupStatus(){
-     appStatuses["escena"]=EM;
+     appStatuses["escena"]=MENU;
      appStatuses["em_ruido"]=true;
      appStatuses["alpha_ruido"]=255;
 }
@@ -290,6 +291,7 @@ void testApp::startFBO(){
 }
 
 void testApp::draw() {
+        ofHideCursor();
     if(appStatuses["escena"]==TESTING){
         ofDisableAlphaBlending();
         ofBackground(0,40,100);

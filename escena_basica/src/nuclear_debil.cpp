@@ -534,7 +534,7 @@ void nuclear_debil::draw(){
     
     
 	// Info
-	drawInfo();
+	if(bshowdebug)drawInfo();
 
 
 }

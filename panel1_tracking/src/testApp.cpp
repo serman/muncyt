@@ -33,6 +33,7 @@ void testApp::setup(){
         vidPlayerFront.play();
         currentVid=&vidPlayerCeil;
     }
+    
     consoleFont.loadFont("Menlo.ttc",17);
     sourceColorImg.allocate(VIDEOWITH,VIDEOHEIGHT);
     sourceGrayImage.allocate(VIDEOWITH,VIDEOHEIGHT);
@@ -43,7 +44,7 @@ void testApp::setup(){
     grayBg.allocate(VIDEOWITH,VIDEOHEIGHT);
    // grayBgCameraFront.allocate(VIDEOWITH,VIDEOHEIGHT);
    // grayBg=&grayBgCameraCeil;
-    setCeilCamera();
+    setFrontCamera();
     exposureStartTime = ofGetElapsedTimeMillis();
     bCaptureBackground=true;
     firstTimeFrontCamera=true;

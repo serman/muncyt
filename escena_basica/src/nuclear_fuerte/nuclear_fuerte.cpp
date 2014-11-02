@@ -484,7 +484,7 @@ void nuclear_fuerte::draw(){
 	ofPopStyle();
 
 	
-	centroLab.drawStats(ofRectangle(ofGetWidth()-200,0,200,200));
+	centroLab.drawStats(ofRectangle(ofGetWidth()-50,0,50,50));
 	
 	
 	//

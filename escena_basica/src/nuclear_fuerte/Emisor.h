@@ -155,7 +155,7 @@ public:
 		float ddMin = 50.0;	// radio de la zona central
 		float dd = pos.length();
 		pos.normalize();	
-		pos*=-ofMap(dd,ddMin,ddMax, 10,18);
+		pos*=-ofMap(dd,ddMin,ddMax, 14,20);
 		pData.velocity = pos;
 
 		int nRadio = floor(ofMap(dd, ddMin, ddMax, 0,3));

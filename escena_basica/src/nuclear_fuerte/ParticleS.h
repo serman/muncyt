@@ -265,7 +265,7 @@ class ParticleS
 		ct.a = 100.0;
 		ofSetColor(ct);
 		ofNoFill();
-		ofSetLineWidth(4);//1.5);
+		ofSetLineWidth(2);//1.5);
 		
 		if(bDrawLife) {
 			lifePath.draw();			

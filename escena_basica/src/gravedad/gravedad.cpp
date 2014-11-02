@@ -800,7 +800,7 @@ void gravedad::keyPressed(int key){
         if(gui1->isEnabled())
             gui1->disable();
         else
-            gui1->disable();
+            gui1->enable();
     }
     
 }
