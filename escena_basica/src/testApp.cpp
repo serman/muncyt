@@ -48,7 +48,7 @@ void testApp::setup(){
     
     gravedad *grave=new gravedad();
  //   grave->setComm(&myComm);
-    sceneManager->addScene( grave, SCENE_GRAVEDAD);
+    sceneManager->addScene( grave, SCENE_MENU);
 	sceneManager->setDrawDebug(false);
 	sceneManager->setCurtainDropTime(1);
 	sceneManager->setCurtainStayTime(0.6);

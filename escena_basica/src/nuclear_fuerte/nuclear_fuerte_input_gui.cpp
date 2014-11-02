@@ -107,30 +107,31 @@ void nuclear_fuerte::tuioAdded(ofxTuioCursor &tuioCursor){
         Emisor * e=addEmisor(posTmp,tuioCursor.getSessionId());
         cheapComm::getInstance()->sendAudio0("/audio/strong_nuclear/hand_on_event");
     }
+    if(posTmp,tuioCursor.getSessionId()%10==0){ //ahora mismo envia orden de intercambio de color cada 10 toque sen la mesa cambiar
     
-    
-    int tipo=floor(ofRandom(1,4));
-    exchangeColors(tipo);
-    cout << " sending tipo: " << tipo;
-    /*Tipo 1: Cambio pantalla 1 a 2
-     Tipo 2 cambi pantalla 2 a 3
-     Tipo 3 cambio pantalla 3 a 1*/
-    if(tipo==1){
-        cheapComm::getInstance()->sendSync4("/sync/strong_nuclear/hand_on_event",1.0,(float)tipo,(float)colorp1,(float)colorp2);
-        cheapComm::getInstance()->sendSync2("/sync/strong_nuclear/setColor",1.0,colorp1);
-        cheapComm::getInstance()->sendSync2("/sync/strong_nuclear/setColor",2.0,colorp2);
+        int tipo=floor(ofRandom(1,4));
+        exchangeColors(tipo);
+        cout << " sending tipo: " << tipo;
+        /*Tipo 1: Cambio pantalla 1 a 2
+         Tipo 2 cambi pantalla 2 a 3
+         Tipo 3 cambio pantalla 3 a 1*/
+        if(tipo==1){
+            cheapComm::getInstance()->sendSync4("/sync/strong_nuclear/hand_on_event",1.0,(float)tipo,(float)colorp1,(float)colorp2);
+            cheapComm::getInstance()->sendSync2("/sync/strong_nuclear/setColor",1.0,colorp1);
+            cheapComm::getInstance()->sendSync2("/sync/strong_nuclear/setColor",2.0,colorp2);
+        }
+        else if(tipo==2){
+            cheapComm::getInstance()->sendSync4("/sync/strong_nuclear/hand_on_event",1.0,(float)tipo,(float)colorp2,(float)colorp3);
+            cheapComm::getInstance()->sendSync2("/sync/strong_nuclear/setColor",2.0,colorp2);
+            cheapComm::getInstance()->sendSync2("/sync/strong_nuclear/setColor",3.0,colorp3);
+        }
+        else if(tipo==3){
+            cheapComm::getInstance()->sendSync4("/sync/strong_nuclear/hand_on_event",1.0,(float)tipo,(float)colorp3,(float)colorp1);
+            cheapComm::getInstance()->sendSync2("/sync/strong_nuclear/setColor",3.0,colorp3);
+            cheapComm::getInstance()->sendSync2("/sync/strong_nuclear/setColor",1.0,colorp1);
+        }
     }
-    else if(tipo==2){
-        cheapComm::getInstance()->sendSync4("/sync/strong_nuclear/hand_on_event",1.0,(float)tipo,(float)colorp2,(float)colorp3);
-        cheapComm::getInstance()->sendSync2("/sync/strong_nuclear/setColor",2.0,colorp2);
-        cheapComm::getInstance()->sendSync2("/sync/strong_nuclear/setColor",3.0,colorp3);
-    }
-    else if(tipo==3){
-        cheapComm::getInstance()->sendSync4("/sync/strong_nuclear/hand_on_event",1.0,(float)tipo,(float)colorp3,(float)colorp1);
-        cheapComm::getInstance()->sendSync2("/sync/strong_nuclear/setColor",3.0,colorp3);
-        cheapComm::getInstance()->sendSync2("/sync/strong_nuclear/setColor",1.0,colorp1);
-    }
-    cout << "colore " << ofToString(colorp1) << " ___ "<< ofToString(colorp2) << " ___ "<< ofToString(colorp3) << " ___ "<<endl;
+   // cout << "colore " << ofToString(colorp1) << " ___ "<< ofToString(colorp2) << " ___ "<< ofToString(colorp3) << " ___ "<<endl;
 }
 void nuclear_fuerte::tuioRemoved(ofxTuioCursor &tuioCursor){
     //hands.removeObjectByTuioID(tuioCursor.getSessionId() );
