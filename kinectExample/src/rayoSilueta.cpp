@@ -144,7 +144,7 @@ void rayoSilueta::addParticleLateral() {
 		//		ParticleX( ofVec3f _position , ofColor _color, float mass = 1.0, float charge = 0.0 )
 		//		ParticleX( ofVec3f _position , ofVec3f _vel , ofColor _color, float mass = 1.0, float charge = 0.0 )
         for(int ii=0; ii<10; ii++){
-            ParticleX p = ParticleX(ofVec3f(ofRandom(ofGetWidth()/3),0), ofVec3f(0,vel,0), ofColor(255,255,255) );
+            ParticleX p = ParticleX(ofVec3f(ofRandom(ofGetWidth()/3),ofGetHeight()), ofVec3f(0,-vel,0), ofColor(255,255,255) );
             particulas.push_back(p);
         }	
 		// pos, vel, color, mass, charge
@@ -158,6 +158,7 @@ void rayoSilueta::addParticlesFor(int msecs){
 }
 
 void rayoSilueta::triggerParticles(float ang){
+   // cout << "anguloRecibido" << ofToString(ang)<< endl;
     if(SCREEN_ID==1){
         if(ang>angTV1 && ang<angTV1+0.3) addParticlesFor(500);
     }
