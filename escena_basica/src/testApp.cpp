@@ -48,14 +48,14 @@ void testApp::setup(){
     
     gravedad *grave=new gravedad();
  //   grave->setComm(&myComm);
-    sceneManager->addScene( grave, SCENE_MENU);
+    sceneManager->addScene( grave, SCENE_GRAVEDAD);
 	sceneManager->setDrawDebug(false);
 	sceneManager->setCurtainDropTime(1);
 	sceneManager->setCurtainStayTime(0.6);
 	sceneManager->setCurtainRiseTime(1);
 	sceneManager->setOverlapUpdate(true);
     
-    sceneManager->goToScene(SCENE_NUC_D);
+    sceneManager->goToScene(SCENE_MENU);
     timeToEndScene=-1;
 	// OSC
 	//ofAddListener(eventoOSC, this, &testApp::eventoOSC_Recibido  );
