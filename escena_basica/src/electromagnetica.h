@@ -91,6 +91,7 @@ public:
     //void setComm(cheapComm *m){ myComm=m;}
     ofPath borde;
     ofxPostProcessing post;
+    bool bdrawDebug;
 };
 
 #endif /* defined(__escena_basica__electromagnetica__) */

@@ -17,7 +17,8 @@ class anilloButton : public tangibleObject{
     
 public:
     ofImage imgPlus;
-    ofImage imgExp;
+    ofImage imgPlusON;
+    ofImage imgExp, imgExpON, imgExpDis;
     bool status_handIsOn;
     bool status_active;
     BUTTON_TYPE btype;
@@ -28,54 +29,62 @@ public:
         status_handIsOn=false;
         status_active=true;
         btype = TYPE_ACC;
-        imgPlus.loadImage("boton_anillo_mas.fw.png");
-        imgExp.loadImage("boton_anillo_exp.fw.png");
+        imgPlus.loadImage("botono_anillo_mas_nuevo.png");
+        imgPlusON.loadImage("botono_anillo_mas_nuevo_on.png");
+        imgExp.loadImage("botono_explosion_nuevo.png");
+        imgExpON.loadImage("botono_explosion_nuevo_on.png");
+        imgExpDis.loadImage("botono_explosion_nuevo_disabled.png");
         
     }
-
     
     
     void setup(){
         if(x<100 && y>100){//izquierda
             imgPlus.rotate90(2);
+            imgPlusON.rotate90(2);
         }
         else if (y<100 && x<500){ //arriba
             imgExp.rotate90(3);
+            imgExpON.rotate90(3);
+            imgExpDis.rotate90(3);
         }
         
     }
     
     void draw(){
         ofPushStyle();
-        if(status_active ==false ){
-            ofSetColor(ofColor::gray);
-            //ofRect(x,y,width,height);
-        }
-        
-        else{ //non active Status
+
             if(status_handIsOn ==true){
-                ofSetColor(ofColor::green);
+                ofSetColor(ofColor::white);
                 //ofFill();
                 //ofRect(x,y,width,height);
                 
             }else{ //active bug hand is not on
-                ofSetColor(ofColor(252,108,85));
+                ofSetColor(255,190+65*sin(ofGetElapsedTimef()/3.0*TWO_PI));
                 
                 //ofFill();
                // ofRect(x,y,width,height);
             }
             
-        }
+        
 
-        //ñapa para tres botones CAMBIAR!!
-        if(x<100 && y>100){//izquierda
-            imgPlus.draw(5, 314);
-        }else if (y<100 && x<500){ //arriba
-            imgExp.draw(309,5);
-        }
-        else{ //derecha
-			imgPlus.draw(702,314);
-        }
+            //ñapa para tres botones CAMBIAR!!
+            if(x<100 && y>100){//izquierda
+                if(status_handIsOn ==true)
+                    imgPlusON.draw(-5, 305);
+                else
+                    imgPlus.draw(5, 314);
+            }else if (y<100 && x<500){ //arriba
+                
+                if(status_handIsOn ==true) imgExpON.draw(302,-3);
+                else imgExp.draw(309,5);
+            }
+            else{ //derecha
+                if(status_handIsOn ==true)
+                    imgPlusON.draw(693,305);
+                else
+                    imgPlus.draw(702,314);
+            }
         ofPopStyle();
         //
         

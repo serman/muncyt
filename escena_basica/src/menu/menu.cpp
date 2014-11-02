@@ -93,7 +93,7 @@ void menu::setup() {
 
 void menu::init_Escena() {
 	ofLogNotice("- - - - - - - init escena() - - - - - - - ");
-	
+	bshowdebug=false;
 	ofPoint centro = ofPoint(W_WIDTH/2.0, W_HEIGHT/2.0);
 
 	isKeyPressed = false;
@@ -440,7 +440,8 @@ void menu::draw() {
     info += "Button Dest" + ofToString(mdisplay.scene);
 //	ofSetHexColor(0x444342);
 	ofSetHexColor(0xAAAAAA);
-	ofDrawBitmapString(info, 30, 30);
+    if(     bshowdebug)
+        ofDrawBitmapString(info, 30, 30);
 	ofPopStyle();
     
     mdisplay.draw();

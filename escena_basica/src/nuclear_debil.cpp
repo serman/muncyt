@@ -119,17 +119,17 @@ void nuclear_debil::setup() {
 	float dRad = radioExt-radioInt;
 	float rMed = radioInt+dRad/2;
 	//buttonSpeed1.set(centro.x-rMed-(dRad*0.9/2),centro.y-(dRad*0.9/2), dRad*0.9,dRad*0.9);
-    buttonSpeed1.set(5, 314,57,143);
+    buttonSpeed1.set(0, 290,100,143);
     buttonSpeed1.setup();
 //	buttonSpeed2.set(centro.x+rMed-(dRad*0.9/2),centro.y-(dRad*0.9/2), dRad*0.9,dRad*0.9);
     buttonSpeed1.btype=TYPE_ACC;
 
-    buttonSpeed2.set(703,314,57,143);
+    buttonSpeed2.set(668,290,100,143);
     buttonSpeed2.setup();
     buttonSpeed2.btype=TYPE_ACC;
     
     //buttonCollide.set(centro.x-(dRad*0.9/2),centro.y-rMed-(dRad*0.9/2), dRad*0.9,dRad*0.9);
-    buttonCollide.set(309,5,143,57);
+    buttonCollide.set(309,0,143,100);
     buttonCollide.btype=TYPE_CRASH;
     buttonCollide.setup();
 
@@ -202,6 +202,7 @@ void nuclear_debil::init_Escena() {
     ofAddListener(buttonCollide.buttonEvent ,this, &nuclear_debil::onButtonPressed);
     sent_changeScene_message=false;
 	ofEnableAlphaBlending();
+    bshowdebug=false;
 
 }
 
@@ -216,7 +217,8 @@ void nuclear_debil::exit_Escena() {
 	
 	// Eliminar los destellos que queden
 	destellos.clear();
-	
+	//quito manos
+    hands.reset();
 	
 	// quitar listeners
     box2d.disableEvents();

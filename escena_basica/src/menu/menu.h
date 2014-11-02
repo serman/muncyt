@@ -129,6 +129,7 @@ public:
 	// rangos angulares
 	float rangosAngDeg [4];
     display mdisplay;
+    bool bshowdebug;
 	
 };
 

@@ -51,7 +51,7 @@ void electromagnetica::setup(){
     //	distConf = ofGetHeight()/2.0*0.9;
 	borde.circle(ofGetWidth()/2, W_HEIGHT/2,W_HEIGHT/2);
     
-    post.init(ofGetWidth(), ofGetHeight());
+    /*post.init(ofGetWidth(), ofGetHeight());
 
     post.createPass<FxaaPass>()->setEnabled(false);
     post.createPass<BloomPass>()->setEnabled(false);
@@ -62,7 +62,8 @@ void electromagnetica::setup(){
     post.createPass<EdgePass>()->setEnabled(false);
     post.createPass<VerticalTiltShifPass>()->setEnabled(false);
     post.createPass<ContrastPass>()->setEnabled(false);
-    post.setFlip(false);
+    post.setFlip(false);*/
+    drawlines=true;
 }
 
 void electromagnetica::update(float d1){
@@ -201,7 +202,7 @@ void electromagnetica::draw(){
     ofEnableAlphaBlending();
     ofEnableBlendMode(OF_BLENDMODE_SCREEN);
     ofPushMatrix(); //colocamos el canvas en su posicion centrada
-    post.begin();
+    //post.begin();
         ofTranslate((ofGetWidth()-W_WIDTH)/2, 0);
        // drawNoise();
     
@@ -231,14 +232,14 @@ void electromagnetica::draw(){
             //ofTranslate(200,200);
        // drawEM();
         ofPopMatrix();
-    post.end();
+    //post.end();
     ofPopMatrix();
   
-    showDebug();
-                ofDisableBlendMode();
+
+    ofDisableBlendMode();
     ofDisableAlphaBlending();
     borde.draw();
-    showDebug();
+    if(bdrawDebug)    showDebug();
     
   /*  //wavesm.debugInfo();
     ofPushStyle();
@@ -269,6 +270,7 @@ void electromagnetica::setupGUI() {
     gui1->addSlider("amplitude", 1, 150,&wave_amp);
         gui1->addSlider("n_ciclos", 0.5, 4,&n_ciclos);
  //   gui1->addSlider("freq", 0.0, 100.0,&(mwave.freq2));
+    
 }
 void electromagnetica::showDebug(){
     ofPushStyle();
@@ -295,11 +297,16 @@ void electromagnetica::keyPressed(int key){
         case 'v':
 			gui1->saveSettings("/config/gui/gui_EM.xml");
 			break;
-        case ' ':
-            if(gui1->isEnabled() )
+        case 'g':
+            if(gui1->isEnabled() ){
 	            gui1->disable();
-            else
+                bdrawDebug=false;
+            }
+            else{
 				gui1->enable();
+                bdrawDebug=true;
+            }
+            
         case 'l':
             drawlines=!drawlines;
             
@@ -418,7 +425,7 @@ void electromagnetica::reset(){
 }
 //scene notifications
 void electromagnetica::sceneWillAppear( ofxScene * fromScreen ){  // reset our scene when we appear
-    gui1->enable();
+    gui1->disable();
     reset();
     cheapComm::getInstance()->sendAudio0("/audio/electromagnetism/start_event");
     cheapComm::getInstance()->sendSync0("/sync/electromagnetism/start_event");

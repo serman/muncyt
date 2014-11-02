@@ -490,6 +490,7 @@ void nuclear_fuerte::draw(){
 	//
 	// INFO
 	//
+    if(bshowdebug){
 	ofPushStyle();
 	ofSetColor(200);
 	int hLin = ofGetHeight()-25; int dLin = -15;
@@ -500,6 +501,7 @@ void nuclear_fuerte::draw(){
 	ofDrawBitmapString("Partics dentro: " + ofToString(centroLab.contadorPartics), 10,hLin); hLin+=dLin;
 	ofDrawBitmapString("FR: " + ofToString(ofGetFrameRate()), 10,hLin); hLin+=dLin;
 	ofPopStyle();
+    }
 }
 
 
@@ -562,7 +564,8 @@ void nuclear_fuerte::init_Scena() {
     colorp1=ROJOS; //red
     colorp2=VERDES; //green
     colorp3=AZULES;//blue
-    
+    gui1->disable();
+    bshowdebug=false;
 }
 
 void nuclear_fuerte::sceneWillAppear( ofxScene * fromScreen ){  // reset our scene when we appear

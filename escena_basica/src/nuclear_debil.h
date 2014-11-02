@@ -231,6 +231,6 @@ public:
     
     long timeLastColision;
     
-    
+    bool bshowdebug;
 };
 

@@ -130,7 +130,7 @@ public:
     void sceneWillAppear( ofxScene * fromScreen );
     void sceneWillDisappear( ofxScene * fromScreen );
     ofPoint transf_PosTUIO(ofxTuioCursor & tuioCursor);
-    
+    bool bshowdebug;
 };
 
 #endif /* defined(__escena_basica__electromagnetica__) */
