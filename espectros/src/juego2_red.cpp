@@ -106,10 +106,13 @@ void juego2::tuioRemoved(ofxTuioCursor &tuioCursor){
     }
 //TODO CONSEGUIR UN PUNTO INTERIOR DEL POLYLINE
 ofPoint juego2::findRegionToPaint(){
+    //Se recorren las areas del contour finder que serán 3.
+    //1º el area negra, el area blanca y el área que se acaba de crear
     for (int i=0; i<contourFinder.size(); i++){
-        
         ofPolyline l= contourFinder.getPolyline(i);
         if (l.size()<4 ) continue;
+        //necesitamos encontrar un punto dentro del polyline que se ha creado
+        
         ofRectangle r= l.getBoundingBox();
         ofPoint p1= r.getCenter();
         if( !l.inside(p1) ){
@@ -126,8 +129,12 @@ ofPoint juego2::findRegionToPaint(){
             cout << "el punto está en el rectangulo";
         }
         ofColor c=mask1.getColor( p1.x,  p1.y) ;
-        //una vez que tenemos un punto de dentro del poligono comprobamos si es del tipo que queremos colorear
-        if( mask1.getColor( p1.x,  p1.y) == ofColor::black && l.inside(600,100)==false){
+        // al dividir un plano con una línea, quedan dos polígonos siempre
+        //Cual de los dos se marca como "conquistado y cual no?"
+        //condiciones: 1ª que el poligono no sea ya el "conquistado"
+        // que el enemigo no esté dentro del poligono
+        //una vez que tenemos un punto de dentro del poligono comprobamos si este poligono del polyline era
+        if( mask1.getColor( p1.x,  p1.y) == ofColor::black && l.inside(bigEnemy.getPosition())==false){
             return p1;
         }
         
@@ -162,6 +169,28 @@ void juego2::drawExplode(){
         start+=1;
         if(start>=l.size()-2) drawExplodeb=false;
     }    
+}
+
+void juego2::drawPlayer(int _x, int _y){
+    int _size=10;
+    ofPushMatrix();
+
+    
+    ofPushStyle();
+    ofSetColor(0,200,0);;
+    ofTranslate(_x, _y);
+    if(    appStatuses["isOnContour"]==true){
+        ofCircle(0, 0, _size);
+         glowcircle.draw(-glowcircle.width/2,-glowcircle.height/2);
+    }
+    ofSetColor(255,150+155*sin(ofGetElapsedTimef()/6.0*TWO_PI));
+   
+    //ofRotateX(45);
+    //    ofSetColor(255, 200, 0);
+    //ofRect(_size/2,_size/2,_size,_size);
+    ofPopStyle();
+    ofPopMatrix();
+    
 }
 
 

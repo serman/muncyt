@@ -81,6 +81,7 @@ private:
 
     void contactStart(ofxBox2dContactArgs &e);
     void drawEnemies();
+    void drawDisplay();
     bool bshowDebug;
     //ofPoint convertPoint(float, float);
     /** escalado video ajuste pantala
@@ -150,6 +151,10 @@ private:
     }
     void createBigEnemy();
     ofImage backgroundImg;
+    const int PERCENT_TO_WIN=70;
+    long time_status_change;
+    void drawPlayer(int _x, int _y);
+    ofImage glowcircle;
 };
 
 
