@@ -36,7 +36,7 @@ void nuclear_fuerte::keyPressed(int key){
             gui1->disable();
             bshowdebug=false;}
         else{
-            gui1->disable();
+            gui1->enable();
             bshowdebug=true;
         }
     }

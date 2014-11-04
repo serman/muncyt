@@ -147,7 +147,7 @@ public:
 		float pMin = 20.0;
 		bool bRadial = false;
 		if(ofGetFrameNum()%rate == 0 && contadorPartics>1) {
-			nPartics = floor((float)energyMeanT/100)*2;
+			nPartics += floor((float)energyMeanT/100)*2;
 			
 			// Si ademas el pTot es bajo y la energ alta (>600), generar muchas más partículas
 			// y distribuirlas radialmente
@@ -196,7 +196,7 @@ public:
 			// Dispersión, depende del valor de pTot: Si es bajo, más dispersión
 			// vel.rotate....
 			
-			vel*=18+ntipo+ofRandom(1); //-ofMap(dd,ddMax*0.25,ddMax, 10,18);
+			vel*=28+ntipo+ofRandom(1); //-ofMap(dd,ddMax*0.25,ddMax, 10,18);
 			
 			if(bRadial) {
 				// distribuye radialmente

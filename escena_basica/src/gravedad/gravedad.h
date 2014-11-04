@@ -26,7 +26,7 @@
 // -------------------------------------------------
 
 
-#define MAX_MASA_SOL 18000
+#define MAX_MASA_SOL 32000
 #define INIT_MASA_SOL 7000
 #define DURACION_BLACK_HOLE 15000
 class gravedad : public ofxScene {

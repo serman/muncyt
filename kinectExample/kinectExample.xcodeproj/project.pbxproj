@@ -37,7 +37,6 @@
 		F713076419DCD0D000A48FC1 /* particle2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F713075E19DCD0D000A48FC1 /* particle2.cpp */; };
 		F713076519DCD0D000A48FC1 /* ParticleEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F713076019DCD0D000A48FC1 /* ParticleEmitter.cpp */; };
 		F713076619DCD0D000A48FC1 /* particleSourceHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F713076219DCD0D000A48FC1 /* particleSourceHandler.cpp */; };
-		F72F1C5319E42B4900453005 /* kinectExampleDebug.app in CopyFiles */ = {isa = PBXBuildFile; fileRef = E4B69B5B0A3A1756003C02F2 /* kinectExampleDebug.app */; };
 		F72F1C5C19E437FC00453005 /* msgpack_osx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F72F1C5B19E437FC00453005 /* msgpack_osx.a */; };
 		F74CAAAD19BBC9520037FCEA /* BleachBypassPass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F74CAA7C19BBC9520037FCEA /* BleachBypassPass.cpp */; };
 		F74CAAAE19BBC9520037FCEA /* BloomPass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F74CAA7E19BBC9520037FCEA /* BloomPass.cpp */; };
@@ -189,16 +188,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		F72F1C5219E42B2500453005 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /Users/sergiogalan/Desktop/f_lab/bin;
-			dstSubfolderSpec = 0;
-			files = (
-				F72F1C5319E42B4900453005 /* kinectExampleDebug.app in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1826,7 +1815,6 @@
 				E4B69B590A3A1756003C02F2 /* Frameworks */,
 				E4B6FFFD0C3F9AB9008CF71C /* ShellScript */,
 				E4C2427710CC5ABF004149E2 /* CopyFiles */,
-				F72F1C5219E42B2500453005 /* CopyFiles */,
 			);
 			buildRules = (
 			);
