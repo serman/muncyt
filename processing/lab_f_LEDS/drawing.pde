@@ -136,6 +136,30 @@ void noiseDraw() {
   } 
   popStyle();
 }
+int explosionAngleInitValue=10;
+void drawExplosionAngle(){
+  println(explosionAngleInitValue);
+   frameRate(6);
+  background(0);
+  int psize = 2;
+  int x_count = 16; 
+  int y_count = (lengthTira/psize);
+  
+  pushStyle();
+  noStroke(); //commenting this out gives a neat effect
+
+  //draw the "pixels"
+  for (int i=0; i<=y_count; i++) {
+    for (int j=explosionAngleInitValue/psize; j<=explosionAngleInitValue/psize+x_count; j++) {
+      //pick a random grayscale value before drawing each rectangle. (thanks subpixel!)
+      float ruido=random(120);
+      if(ruido<100) fill(0);
+      else fill(ruido,random(0,80),0);
+      rect(initX+j*psize, initY+i*psize, psize, psize);
+    }
+  } 
+  popStyle();
+}
 
 void drawRandomParticles(){
   background(0);
