@@ -540,10 +540,18 @@ void gravedad::draw(){
 	//	ofVec3f rotateDir = ofVec3f(1,0,0);
 	float rotateAmount = 0;
 	ofVec3f rotateDir = ofVec3f(1,0,0);
-	if(ofGetMousePressed(0)) {
+
+	if(hands.objectsCol.size()>0 || ofGetMousePressed(0)) {
 		
 		rotateAmount = 10; //ofMap(ofGetMouseY(),0,ofGetHeight(), -90,90);
-		ofVec3f posTouch = ofVec3f(ofGetMouseX()-zentro.x, ofGetMouseY()-zentro.y, 0.0);
+		ofVec3f posTouch;
+		if(hands.objectsCol.size()>0) {
+			posTouch = ofVec3f(hands.objectsCol[0]->x, hands.objectsCol[0]->x, 0.0);
+ofLogNotice() << "updateParticlesX() · TUIO: " << ofToString(posTouch);			
+		}
+		else {
+			posTouch = ofVec3f(ofGetMouseX()-zentro.x, ofGetMouseY()-zentro.y, 0.0);
+		}
 		posTouch.normalize();
 		rotateDir = ofVec3f(0,0,1).cross(posTouch);
 	}
@@ -665,7 +673,7 @@ void gravedad::draw(){
            // int circleWidth=ofMap(ofGetElapsedTimeMillis()-(initExplosionTime+500),0,1300,ofGetWidth()+200,0);
         }
         else{
-            cout << "parte final"<<endl;
+//            cout << "parte final"<<endl;
             blackHoleShader.begin();
             blackHoleShader.setUniform3f("iResolution", ofGetWidth(), ofGetHeight(),0);
             blackHoleShader.setUniform1f("iGlobalTime", (float) ofGetElapsedTimef());
@@ -717,8 +725,14 @@ void gravedad::sceneWillDisappear( ofxScene * toScreen ){
 };
 
 
+ofPoint gravedad::transformTUIO(ofxTuioCursor &tuioCursor) {
+//	return ofPoint(tuioCursor.getX()*W_WIDTH-300,tuioCursor.getY()*W_HEIGHT-300);
+	return ofPoint((tuioCursor.getX()-0.5)*W_WIDTH,(tuioCursor.getY()-0.5)*W_HEIGHT);														   
+}
+
 void gravedad::tuioAdded(ofxTuioCursor &tuioCursor){
-	ofPoint loc = ofPoint(tuioCursor.getX()*W_WIDTH-300,tuioCursor.getY()*W_HEIGHT-300);
+//	ofPoint loc = ofPoint(tuioCursor.getX()*W_WIDTH-300,tuioCursor.getY()*W_HEIGHT-300);
+	ofPoint loc = transformTUIO(tuioCursor);
     
     handShadow *h1 = new handShadow();
     h1->setup();
@@ -729,12 +743,14 @@ void gravedad::tuioAdded(ofxTuioCursor &tuioCursor){
 }
 
 void gravedad::tuioUpdated(ofxTuioCursor &tuioCursor){
-        ofPoint loc = ofPoint(tuioCursor.getX()*W_WIDTH-300,tuioCursor.getY()*W_HEIGHT-300);
+	//	ofPoint loc = ofPoint(tuioCursor.getX()*W_WIDTH-300,tuioCursor.getY()*W_HEIGHT-300);
+	ofPoint loc = transformTUIO(tuioCursor);
         hands.notifySlide(loc.x, loc.y,tuioCursor.getSessionId(),tuioCursor.getMotionAccel());
 }
 
 void gravedad::tuioRemoved(ofxTuioCursor &tuioCursor){
-	ofPoint loc = ofPoint(tuioCursor.getX()*W_WIDTH-300,tuioCursor.getY()*W_HEIGHT-300);
+	//	ofPoint loc = ofPoint(tuioCursor.getX()*W_WIDTH-300,tuioCursor.getY()*W_HEIGHT-300);
+	ofPoint loc = transformTUIO(tuioCursor);
     hands.removeObjectByTuioID(tuioCursor.getSessionId() );
 
     cheapComm::getInstance()->sendAudio0("/audio/gravity/hand_off_event");
