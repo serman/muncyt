@@ -12,23 +12,23 @@ class randomParticle {
     colorMode(HSB);  
      mcolor=color(random(90,210), random(90,210), random(90,210));
     colorMode(RGB);
-    tasa=random(0.01,0.04);
+    tasa=random(0.004,0.01);
     speed=random(5,10);
   }
 
   void draw() {
     pushStyle();
     noStroke(); 
-     //  colorMode(HSB); 
+       colorMode(HSB); 
       fill(255);   
       tint(mcolor);
       //rect(particlePosX, particlePosY, 5, 5);
-      image(maskImage,particlePosX, particlePosY, 60, 5);
+      image(maskImage,particlePosX, particlePosY, 80, 5);
       particlePosX +=speed;//initX+lengthPared*(noise(incr)-0.5);
-      particlePosY=initY + lengthTira*(noise(incr2));
+      particlePosY=initY + lengthTira*2*(noise(incr2));
       incr+=tasa;
       incr2+=tasa;
-      if (particlePosX>endX) { 
+      if (particlePosX>endX+100) { 
         particlePosX=initX; 
         //particlePosY=initY+(int)random(0,lengthTira);
         mcolor=color(random(100,200), 200, 200);

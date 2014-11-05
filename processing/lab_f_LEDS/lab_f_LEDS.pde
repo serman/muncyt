@@ -1,6 +1,6 @@
 OPC opc;
 PImage dot;
-int NUMPARTIC = 2;
+int NUMPARTIC = 1;
 int separacion =10;
 int separacionV =3;
 int OPC_counter=0;
@@ -35,7 +35,7 @@ boolean   bdrawWaves=false;
 boolean bDrawRandomParticles=false;
 boolean bDrawMovie=false;
 boolean bDrawGridImage=false;
-boolean bDrawGridCircles, bDrawLine,bExchange, bdrawOff=false;
+boolean bDrawGridCircles, bDrawLine,bExchange, bdrawOff,bdrawExplosionAngle=false;
 boolean bDrawFading;
 randomParticle randomP[]=new randomParticle[NUMPARTIC];
 circles mcircle;
@@ -53,7 +53,7 @@ void setup()
 {
   size(400, 400, P2D);
   
-  frame.setLocation(1000,700);
+  //frame.setLocation(900,768);
   
   // Load a sample image
   dot = loadImage("color-dot.png");
@@ -134,6 +134,7 @@ void draw()
   if (bDrawLine) drawLine();
   if(bExchange)  exchangeDraw(exchangeTime, exchangeSection, exchangeC1, exchangeC2);
   if (bDrawFading) drawFading();
+  if (bdrawExplosionAngle) drawExplosionAngle();
   drawScreens();
   //drawRandomParticles();
  // nWaves=2;
@@ -144,7 +145,8 @@ void draw()
   //drawFading();
   //drawBottomTop();
   //noiseDraw();
-  text(frameRate,width-40,height-40);
+  //text(frameRate,width-40,height-40);
+  
 }
 
 
@@ -153,6 +155,7 @@ void movieEvent(Movie m) {
 }
 
 void allOff() {
+  bdrawExplosionAngle=false;
   bdrawNoise=false;
   bdrawWaves=false;
   bDrawRandomParticles=false;

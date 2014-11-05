@@ -38,6 +38,8 @@ public:
 	void	tuioUpdated(ofxTuioCursor & tuioCursor);
     
     void exchangeColors(int );
+    	void                sendExchangeColors();
+    float sendexchangeAt;
     int colorp1; //red
     int colorp2; //blue
     int colorp3;//green
@@ -96,7 +98,7 @@ public:
 	vector<ofVec2f>		ptsChoque;
 	vector<ofVec2f>		tangChoque;
 	bool				swDifraccion;
-	
+
 	Emisor	emitter;
 	vector <Emisor>		emitters;
 	int		totEmitters;
