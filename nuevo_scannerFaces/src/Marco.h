@@ -40,7 +40,7 @@ public:
 	}
 	
 	void setRect(ofRectangle _rect) {
-		rect = _rect;
+		rect = _rect;	
 		setupBorde();
 	}
 	

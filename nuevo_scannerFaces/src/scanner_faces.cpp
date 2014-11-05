@@ -32,6 +32,14 @@ void scanner_faces::setup() {
 //	modos_haar.push_back("haars/haarcascade_profileface.xml");			// 3 (no va del todo bien ¿barba?)
 	id_modo_haar_act = 0;
 	
+	
+	//	***************
+	fondo.loadImage("media/fondo_escaner.png");
+	fondo.resize(ofGetWidth(),ofGetHeight());
+	//	***************
+	
+	
+	
 	setupObjFinders();
 	
 	// FaceTracker
@@ -321,9 +329,14 @@ void scanner_faces::update_faceTracker() {
 
 
 void scanner_faces::draw() {
-	ofBackground(ofColor::black);
+//	ofBackground(ofColor::black);
 	// Dibujar capas
 	ofSetColor(255);
+	
+	// ************
+	fondo.draw(0,0, ofGetWidth(), ofGetHeight());
+	// ************
+	
 	if(scnAct==SCN_WAITING) {
 		draw_ScnWait();
 	}
@@ -386,7 +399,7 @@ void scanner_faces::draw() {
 			}
 			
 			ofSetColor(255);
-			marco.draw();
+//			marco.draw();
 			
 			// guidelines
 //			drawGuideLines();
