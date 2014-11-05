@@ -338,6 +338,8 @@ void gravedad::sendSunParticlesOsc(){
         }
         if(particulas.size()>0){
 			float angZentro = particulas[minimun_dist_index].getAngleRad(zentro);
+            angZentro-=PI/4;
+            angZentro=ofWrapRadians(angZentro,0,2*PI);
             cheapComm::getInstance()->sendAudio3("/audio/gravity/hand_particle",
                                                  j,
                                                  ofMap(angZentro,0,2*PI,0,1),
@@ -360,6 +362,8 @@ void gravedad::sendSunParticlesOsc(){
         float sqdistance =  diff.lengthSquared();
 		if(sqdistance<W_HEIGHT*W_HEIGHT/4) {
 			float angZentro = particulas[i].getAngleRad(zentro);
+            angZentro-=PI/4;
+            angZentro=ofWrapRadians(angZentro,0,2*PI);
 			cheapComm::getInstance()->sendAudio3("/audio/gravity/sun_particle",
                                              i,
                                              ofMap(angZentro,0,2*PI,0,1),

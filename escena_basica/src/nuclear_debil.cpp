@@ -316,16 +316,25 @@ void nuclear_debil::update(float dt) {
 	}
 	
     //Envio OSC
-	if(ofGetFrameNum()%2 ==0){
-        cheapComm::getInstance()->sendAudio2("/audio/weak_nuclear/ball", -1*(anillo.angT)/(2*PI),ofMap(anillo.wAng,0,-anillo.wAngMax,0,1));
+	if(ofGetFrameNum()%3 ==0){
+        float ang=anillo.angT;
+        ang-=PI/4;
+        
+        cheapComm::getInstance()->sendAudio2("/audio/weak_nuclear/ball", ofMap(ofWrapRadians(ang,0,2.0*PI),0,2.0*PI,0,1),
+                                             ofMap(anillo.wAng,0,-anillo.wAngMax,0,1));
         //cout << anillo.angT<< " " << -1*(anillo.angT)/(2*PI) <<endl;
+       // cout << anillo.angT<< ofMap(ofWrapRadians(ang,0,2.0*PI),0,2.0*PI,0,1);
         
         cheapComm::getInstance()->sendAudio2("/audio/weak_nuclear/number_particles", ofMap(nucleos.size(),nCircs,nCircs+50,0,1), ofMap(anillo.angT,0,2*PI,0,1));
         //cout << nucleos.size()<< " ";
 //        CUAL ES EL MAXIMO DE NUCLEOS AQUI?
-    }
-    cheapComm::getInstance()->sendSync3("/sync/weak_nuclear/ball", ofWrapRadians(anillo.angT,0,2.0*PI),ofMap(abs(anillo.wAng),0,abs(anillo.wAngMax),0,1),ofSign(anillo.wAng) );
-   
+    
+         ang=anillo.angT;
+        ang+=PI/2;
+        cheapComm::getInstance()->sendSync3("/sync/weak_nuclear/ball", ofWrapRadians(ang,0,2.0*PI),
+                                            ofMap(abs(anillo.wAng),0,abs(anillo.wAngMax),0,1),
+                                            ofSign(anillo.wAng) );
+   }
     if ( ofGetElapsedTimeMillis() < (timeLastColision+2000)){
         cheapComm::getInstance()->sendSync0("/sync/weak_nuclear/colisiones");
 
@@ -567,9 +576,10 @@ void 	nuclear_debil::drawInfo(){
 	info += "nuevasPartics: " + ofToString(nuevasPartics.size()) + "\n";
 	info += "Num Nucleos: " + ofToString(nucleos.size()) + "\n";
 	info += "Num Nucleos Activos: " + ofToString(numNucleosActivos) + "\n";
-	
+	info += "radianes enviados" + ofToString(ofWrapRadians(anillo.angT+PI/2,0,2.0*PI))+ "\n";
+    info += "radianes enviados audio" + ofToString(ofMap(ofWrapRadians(anillo.angT-PI/4,0,2.0*PI),0,2.0*PI,0,1));
 	//	ofSetHexColor(0x444342);
-	ofSetHexColor(0xCCCCCC);
+	ofSetColor(255,255);
 	ofDrawBitmapString(info, 30, 30);
 }
 
