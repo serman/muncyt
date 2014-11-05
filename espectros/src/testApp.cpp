@@ -72,7 +72,7 @@ void testApp::setup(){
     sceneManager->addScene( mgenerativo2, JOY_WAVES);
 
     
-    sceneManager->goToScene(CARAS3D);
+    sceneManager->goToScene(COMEPANTALLA);
     timeToEndScene=ofGetElapsedTimeMillis()+ABS_MAX_TIME_SCENE;
     
 	sceneManager->setDrawDebug(false);

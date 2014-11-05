@@ -11,7 +11,8 @@ void juego1::setup(){
 	ofSetLogLevel(OF_LOG_NOTICE);
 	ofDisableArbTex();
     box2d.init();
-
+    setupUI();
+    
 	box2d.setGravity(0, gravityY);
 	box2d.createBounds(0,0,SCREEN_W,SCREEN_H);
     //box2d.createGround(0,SCREEN_H,SCREEN_W,SCREEN_H);
@@ -47,7 +48,7 @@ void juego1::setup(){
     filter=new SobelEdgeDetectionFilter(VIDEO_W, VIDEO_H);
     addObstacle(ofPoint(ofGetMouseX(), ofGetMouseY()), -100,0.05,0.05);;
     
-    setupUI();
+
     flecha.loadImage("flecha.png");
     ballImg.loadImage("ball.png");
     goalImg.loadImage("stick.png");
@@ -136,7 +137,7 @@ void juego1::draw(){
 }
 void juego1::setupUI(){
     gui2 = new ofxUICanvas(0,500, 295,285);
-    
+
     gui2->addSlider("ball Density", 0.0f, 1.0f, &ballDensity);
     gui2->addSlider("ballBounce", 0.0f, 3.0f, &ballBounce);
     gui2->addSlider("ballFriction", 0.0f, 1.0f, &ballFriction);
@@ -145,7 +146,7 @@ void juego1::setupUI(){
     gui2->addSlider("enemyBounce", 0.0f, 3.0f, &enemyBounce);
     gui2->addSlider("enemyFriction", 0.0f, 1.0f, &enemyFriction);
     gui2->addSlider("gravityY", 0.0f, 10.0f, &gravityY);
-    
+        gui2->loadSettings("settings_lanza_bola.xml");
 }
 
 
@@ -491,8 +492,12 @@ void juego1::keyPressed(int key){
         if(gui2->isEnabled())
             gui2->disable();
         else
-            gui2->disable();
+            gui2->enable();
     }
+    else if(key=='h'){
+        gui2->saveSettings("settings_lanza_bola.xml");
+    }
+    
 }
 
 void juego1::keyReleased(int key){

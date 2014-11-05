@@ -78,7 +78,7 @@ private:
     float px2,px1,py2,py1;
     
 
-    int lineDistance=8;
+    int lineDistance=9;
     ofPolyline p;
     float tx1;
     float ty1,tx2,ty2 ;
