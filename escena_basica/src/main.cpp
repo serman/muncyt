@@ -8,7 +8,7 @@ int main() {
     ofPtr<ofAppGLFWWindow> win = ofPtr<ofAppGLFWWindow>(new ofAppGLFWWindow());
     win->setStencilBits(8);
 //	ofSetupOpenGL(&window, 700, 700, OF_WINDOW);
-	ofSetupOpenGL(win, 1024,768, OF_FULLSCREEN);
+	ofSetupOpenGL(win, 1024,768, OF_WINDOW); //OF_FULLSCREEN);
   //   ofSetWindowPosition(1440,0);
 	ofRunApp(new testApp());
 	

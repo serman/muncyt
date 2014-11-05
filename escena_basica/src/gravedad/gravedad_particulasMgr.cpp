@@ -61,9 +61,12 @@ void gravedad::updateParticlesX() {
 	// fuerzas TUIO
     for (int j=0; j<hands.objectsCol.size(); j++){
         ofVec3f pTUIO(hands.objectsCol[j]->x,hands.objectsCol[j]->y);
+		
+//		ofLogNotice() << "updateParticlesX() · TUIO: " << ofToString(pTUIO) << "   vs Sol: " << ofToString(sol.posScreen);
+		pTUIO+=ofVec3f(W_WIDTH/2.0, W_HEIGHT/2.0 ,0);
+		
         for(int i=0; i<particulas.size(); i++) {
             //ofVec3f pTUIO = ofVec3f(ofGetMouseX()-ofGetWidth()/2, -(ofGetMouseY()-ofGetHeight()/2), 0);
-            pTUIO+=ofVec3f(W_WIDTH/2.0, W_HEIGHT/2.0 ,0);
             particulas[i].gravityTowards(pTUIO, 10.0f,  masaTUIO);
         }
     }
