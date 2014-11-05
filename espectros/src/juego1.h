@@ -118,15 +118,15 @@ private:
         int helpLinesCount;
     
     //Parametros tocables float density, float bounce, float friction)
-    float ballDensity=0.89;
-    float ballBounce=0.65;
-    float ballFriction=0.8;
+    float ballDensity;//=0.89;
+    float ballBounce;//=0.65;
+    float ballFriction;//=0.8;
     
-    float enemyDensity=0.0; //static object
-    float enemyBounce=1.5;
-    float enemyFriction=0.7;
+    float enemyDensity;//=0.0; //static object
+    float enemyBounce;//=0.97;
+    float enemyFriction;//=0.7;
     
-    float gravityY=10.0;
+    float gravityY;//=10.0;
     
     float goalHeight=80;
     bool goalDown=false;
