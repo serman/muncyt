@@ -97,7 +97,8 @@ void nuclear_debil::setup() {
 
 	
 	cargaSounds();
-	
+	mas_particulas_img.loadImage("mas_particulas.png");
+    mas_acel_img.loadImage("mas_aceleracion.png");
 	
 	//GUI Fuerza
 	float ladoMarco = 90;
@@ -203,6 +204,9 @@ void nuclear_debil::init_Escena() {
     sent_changeScene_message=false;
 	ofEnableAlphaBlending();
     bshowdebug=false;
+    display_rotation_angle=0;
+    show_info_img_until=0;
+    
 
 }
 
@@ -526,7 +530,7 @@ void nuclear_debil::draw(){
 
     drawCenterDisplay();
     
-    spriteExp->draw();
+    //spriteExp->draw();
 //    if(sprites.size()>0) // if we have sprites
 //MODO EXPLOSION FIN DE LA ESCENA
     if(status==EXPLOSION ){
@@ -537,6 +541,11 @@ void nuclear_debil::draw(){
                 sent_changeScene_message=true;
             }
         }
+    }else{
+        if(show_info_img_until>ofGetElapsedTimeMillis() && (show_info_img_until-5500)< ofGetElapsedTimeMillis()  ){
+            drawMessage();
+        }
+        
     }
         
     ofPopMatrix();  // FIn translate para centrar contenidos
@@ -653,6 +662,30 @@ void nuclear_debil::drawFuerza(ofPoint p, ofPoint gravity, float esc) {
 	ofPopStyle();
 }
 
+void nuclear_debil::drawMessage(){
+    ofImage * img;
+    if(display_to_show==MAS_PART){
+        img=&mas_particulas_img;
+    }else if(display_to_show==MAS_ACE){
+        img=&mas_acel_img;
+    }
+    else return;
+    
+    int RADIO = 130;
+    ofPushMatrix();
+        ofPushStyle();
+       // ofCircle(W_WIDTH/2, W_HEIGHT/2, RADIO);
+        ofSetColor(255);
+        ofPushMatrix();
+            ofTranslate(W_WIDTH/2, W_HEIGHT/2);
+            ofRotateZ(display_rotation_angle);
+            img->draw(-img->width/2,-img->height/2);
+        ofPopMatrix();
+        ofPopStyle(),
+    ofPopMatrix();
+    display_rotation_angle+=0.6;
+    
+}
 
 
 //--------------------------------------------------------------
