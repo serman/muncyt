@@ -105,7 +105,7 @@ void fantasmas::setupSequences(){
         }
         ii++;
     }
-    backgroundImg.loadImage("fondos/espectros.png");
+    backgroundImg.loadImage("fondos/fantasmas.png");
     
 }
 

@@ -52,7 +52,7 @@ void juego1::setup(){
     flecha.loadImage("flecha.png");
     ballImg.loadImage("ball.png");
     goalImg.loadImage("stick.png");
-    backgroundImg.loadImage("fondos/juego1.png");
+    backgroundImg.loadImage("fondos/JuegoPelota.png");
     //eff.setup();
 }
 /*

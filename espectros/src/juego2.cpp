@@ -59,7 +59,7 @@ void juego2::setup(){
     contourFinder.setThreshold(threshold);
     contourFinder.findContours(mask1);
     createBigEnemy();
-    backgroundImg.loadImage("fondos/juego1.png");
+    backgroundImg.loadImage("fondos/JuegoComePantalla.png");
     glowcircle.loadImage("glowCircle.png");
     
 }

@@ -23,7 +23,7 @@ void generativo2::setup(){
         filterr[i]= pow( 1 - (abs(i-lineW/2) / 190.00) , 4)*2;
     }
     filter=new SobelEdgeDetectionFilter(VIDEO_W, VIDEO_H);
-    backgroundImg.loadImage("fondos/juego1.png");
+    backgroundImg.loadImage("fondos/joyDivision.png");
 }
 
 void generativo2::keyPressed(int k){
