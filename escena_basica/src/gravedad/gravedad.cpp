@@ -307,8 +307,12 @@ void gravedad::update(float d1){
             ofSetColor(150);
             ofRect(0,0, imgMix.getWidth(), imgMix.getHeight());
 		}
-		
-		ofEnableDepthTest();
+
+//
+//		Esta linea afecta al SceneManager! La quito (12/11/2014)
+//
+//		ofEnableDepthTest();
+//
 		
 		// dibujar particulas y cosas
 		updateFBO();
