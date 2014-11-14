@@ -158,6 +158,23 @@ void gravedad::init_Escena() {
     
 //	ofLogNotice() << "gravedad::init_Escena: " << 1;
 	
+    
+	// FBO's
+	float wFBOs = W_HEIGHT;
+	imgMix.allocate(wFBOs,wFBOs, GL_RGBA);
+	imgMix.begin();
+	ofClear(0,0,0, 0);
+	imgMix.end();
+	
+	ofPushStyle();
+	imgDyn.allocate(wFBOs,wFBOs, GL_RGBA);
+	imgDyn.begin();
+    ofClear(0,0,0, 0);
+	imgDyn.end();
+    ofPopStyle();
+    
+    
+    
 //    gui1->enable();
 //    initSol(INIT_MASA_SOL);
 	sol.init(INIT_MASA_SOL, ofVec3f(0,0,0), ofVec2f(W_WIDTH/2.0, W_HEIGHT/2.0) );
@@ -290,8 +307,12 @@ void gravedad::update(float d1){
             ofSetColor(150);
             ofRect(0,0, imgMix.getWidth(), imgMix.getHeight());
 		}
-		
-		ofEnableDepthTest();
+
+//
+//		Esta linea afecta al SceneManager! La quito (12/11/2014)
+//
+//		ofEnableDepthTest();
+//
 		
 		// dibujar particulas y cosas
 		updateFBO();
@@ -547,11 +568,11 @@ void gravedad::draw(){
 
 	if(hands.objectsCol.size()>0 || ofGetMousePressed(0)) {
 		
-		rotateAmount = 10; //ofMap(ofGetMouseY(),0,ofGetHeight(), -90,90);
+		rotateAmount = 0; //ofMap(ofGetMouseY(),0,ofGetHeight(), -90,90);
 		ofVec3f posTouch;
 		if(hands.objectsCol.size()>0) {
-			posTouch = ofVec3f(hands.objectsCol[0]->x, hands.objectsCol[0]->x, 0.0);
-ofLogNotice() << "updateParticlesX() · TUIO: " << ofToString(posTouch);			
+			posTouch = ofVec3f(hands.objectsCol[0]->x, hands.objectsCol[0]->y, 0.0);
+//ofLogNotice() << "updateParticlesX() · TUIO: " << ofToString(posTouch);
 		}
 		else {
 			posTouch = ofVec3f(ofGetMouseX()-zentro.x, ofGetMouseY()-zentro.y, 0.0);

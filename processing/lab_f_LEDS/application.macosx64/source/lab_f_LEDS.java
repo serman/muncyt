@@ -24,7 +24,7 @@ public class lab_f_LEDS extends PApplet {
 
 OPC opc;
 PImage dot;
-int NUMPARTIC = 2;
+int NUMPARTIC = 1;
 int separacion =10;
 int separacionV =3;
 int OPC_counter=0;
@@ -59,7 +59,7 @@ boolean   bdrawWaves=false;
 boolean bDrawRandomParticles=false;
 boolean bDrawMovie=false;
 boolean bDrawGridImage=false;
-boolean bDrawGridCircles, bDrawLine,bExchange, bdrawOff=false;
+boolean bDrawGridCircles, bDrawLine,bExchange, bdrawOff,bdrawExplosionAngle=false;
 boolean bDrawFading;
 randomParticle randomP[]=new randomParticle[NUMPARTIC];
 circles mcircle;
@@ -76,6 +76,9 @@ int exchangeC1, exchangeC2;
 public void setup()
 {
   size(400, 400, P2D);
+  
+  //frame.setLocation(900,768);
+  
   // Load a sample image
   dot = loadImage("color-dot.png");
   maskImage=loadImage("mask.png");
@@ -155,6 +158,7 @@ public void draw()
   if (bDrawLine) drawLine();
   if(bExchange)  exchangeDraw(exchangeTime, exchangeSection, exchangeC1, exchangeC2);
   if (bDrawFading) drawFading();
+  if (bdrawExplosionAngle) drawExplosionAngle();
   drawScreens();
   //drawRandomParticles();
  // nWaves=2;
@@ -165,7 +169,8 @@ public void draw()
   //drawFading();
   //drawBottomTop();
   //noiseDraw();
-  text(frameRate,width-40,height-40);
+  //text(frameRate,width-40,height-40);
+  
 }
 
 
@@ -174,6 +179,7 @@ public void movieEvent(Movie m) {
 }
 
 public void allOff() {
+  bdrawExplosionAngle=false;
   bdrawNoise=false;
   bdrawWaves=false;
   bDrawRandomParticles=false;
@@ -632,8 +638,9 @@ public void drawTest() {
 
 int rotatePos=initX;
 public void rotateDraw(float T) {
+  frameRate(25);
   background(0);
-
+  
   //freq= rotaciones/seg;
   //T = periodo en segundos
   float pix_second=lengthPared/T;  
@@ -654,6 +661,7 @@ public void rotateDraw(float T) {
 int ex1Pos;
 int ex2Pos;
 public void exchangeDraw(float T,int section,int colour1 , int colour2) {
+  frameRate(25);
   background(0);
 
   float pix_second=(lengthPared/3)/T; 
@@ -719,6 +727,7 @@ public void setupExchange(int section){
 
 public void drawLine() {
   background(0);
+  frameRate(25);
   pushStyle();
     fill(255);
     
@@ -752,8 +761,33 @@ public void noiseDraw() {
   } 
   popStyle();
 }
+int explosionAngleInitValue=10;
+public void drawExplosionAngle(){
+  println(explosionAngleInitValue);
+   frameRate(6);
+  background(0);
+  int psize = 2;
+  int x_count = 16; 
+  int y_count = (lengthTira/psize);
+  
+  pushStyle();
+  noStroke(); //commenting this out gives a neat effect
+
+  //draw the "pixels"
+  for (int i=0; i<=y_count; i++) {
+    for (int j=explosionAngleInitValue/psize; j<=explosionAngleInitValue/psize+x_count; j++) {
+      //pick a random grayscale value before drawing each rectangle. (thanks subpixel!)
+      float ruido=random(120);
+      if(ruido<100) fill(0);
+      else fill(ruido,random(0,80),0);
+      rect(initX+j*psize, initY+i*psize, psize, psize);
+    }
+  } 
+  popStyle();
+}
 
 public void drawRandomParticles(){
+  frameRate(25);
   background(0);
  for (int i=0; i<NUMPARTIC; i++){
    randomP[i].draw();
@@ -838,6 +872,7 @@ public void breath() {
 
 float angle=0;
 public void drawGridImage(){
+  frameRate(25);
   pushMatrix();
   translate(initX+lengthPared/2,initY+lengthTira/2);
   rotate(angle);
@@ -862,6 +897,7 @@ float initFadingY=0;
 float HueFading=100;
 float fadingSpeed=1;
 public void drawFading(){
+  frameRate(25);
   background(0);
   imageMode(CORNERS);
   colorMode(HSB,255);
@@ -950,23 +986,23 @@ class randomParticle {
     colorMode(HSB);  
      mcolor=color(random(90,210), random(90,210), random(90,210));
     colorMode(RGB);
-    tasa=random(0.01f,0.04f);
+    tasa=random(0.004f,0.01f);
     speed=random(5,10);
   }
 
   public void draw() {
     pushStyle();
     noStroke(); 
-     //  colorMode(HSB); 
+       colorMode(HSB); 
       fill(255);   
       tint(mcolor);
       //rect(particlePosX, particlePosY, 5, 5);
-      image(maskImage,particlePosX, particlePosY, 60, 5);
+      image(maskImage,particlePosX, particlePosY, 80, 5);
       particlePosX +=speed;//initX+lengthPared*(noise(incr)-0.5);
-      particlePosY=initY + lengthTira*(noise(incr2));
+      particlePosY=initY + lengthTira*2*(noise(incr2));
       incr+=tasa;
       incr2+=tasa;
-      if (particlePosX>endX) { 
+      if (particlePosX>endX+100) { 
         particlePosX=initX; 
         //particlePosY=initY+(int)random(0,lengthTira);
         mcolor=color(random(100,200), 200, 200);
@@ -1045,7 +1081,8 @@ oscP5.plug(this,"drawMenu","/sync/menu/start_event");
 // Nuclear Fuerte
 oscP5.plug(this,"start_nuclear_f","/sync/strong_nuclear/start_event");
   oscP5.plug(this,"exchangeColors","/sync/strong_nuclear/hand_on_event");
-
+  oscP5.plug(this,"strong_nuclear_beam","/sync/strong_nuclear/beam");
+  oscP5.plug(this,"strong_nuclear_explosion","/sync/strong_nuclear/explosion");
 //Nuclear Debil
   oscP5.plug(this,"Explosion","/sync/weak_nuclear/chain_reaction_event"); //
   oscP5.plug(this,"drawRotating","/sync/weak_nuclear/ball"); 
@@ -1191,6 +1228,16 @@ public void scene1(){
 
 public void scene2(){
 
+}
+
+public void strong_nuclear_beam(float angle){
+  println(angle);
+  allOff();
+  explosionAngleInitValue= (int)map(angle,0,2*PI,0,lengthPared) ;
+  bdrawExplosionAngle=true;
+}
+
+public void strong_nuclear_explosion(){
 }
 
 

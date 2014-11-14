@@ -38,7 +38,7 @@ void nuclear_fuerte::setup(){
 	circExt.arc(zentro, radioEscena, radioEscena, 0, 360, true, 60);
 	
 	float rext = radioEscena;
-	float rint = rext*0.97;
+	float rint = rext*0.94;
 	float dAngDeg = 60.0;
 	anilloExterior.setCircleResolution(60);
 	anilloExterior.setFillColor(ofColor::red);
