@@ -42,24 +42,19 @@
     <Value>1</Value>
 </Widget>
 <Widget>
-    <Kind>2</Kind>
-    <Name>Erode </Name>
-    <Value>1</Value>
-</Widget>
-<Widget>
     <Kind>4</Kind>
     <Name>blob_min_radio</Name>
-    <Value>6.896551609</Value>
+    <Value>3.940886736</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>blob_max_radio_%W</Name>
-    <Value>8.374383926</Value>
+    <Value>13.300492287</Value>
 </Widget>
 <Widget>
     <Kind>42</Kind>
     <Name>max_blobs</Name>
-    <Value>16</Value>
+    <Value>20</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>

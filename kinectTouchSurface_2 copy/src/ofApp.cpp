@@ -56,8 +56,21 @@ void testApp::setup() {
 	// backgroundImage
 	backgroundImage.allocate(wk, hk);
 
-    numFramesMax_newBckgrnd = 1800;
+    numFramesMax_newBckgrnd = 1000;
+
     
+	// ************ ************* *************
+	// background ofxCv
+	background.setLearningTime(900);
+	thres = 25;
+	background.setThresholdValue(thres);
+	lr = 0.0001;
+	background.setLearningRate(lr);
+	
+	// ************ ************* *************
+	//	
+	
+	
 	// distances
     swDistMax = false;
 	distMax = 173;
@@ -70,8 +83,6 @@ void testApp::setup() {
 	threshold = 100;
 	bLearnBakground = true;
 	blurcv = 1;
-    
-    swErode = true;
 	
 	// ContourFinder
 	max_blobs = 20;
@@ -167,13 +178,35 @@ void testApp::updateModo1() {
 	colorImg.setFromPixels(kinect.getPixelsRef()); //.getDepthPixels());
 	tempGrayImage.setFromPixels(kinect.getDepthPixelsRef()); //.getDepthPixels());		// GrayScale
 	//		tempGrayImage.setFromPixels(kinect.getRawDepthPixelsRef()); //.getDepthPixels());  // Short
-	//		monoPixels.setFromPixels(tempGrayImage.getPixels(), 320,240, 1);
     
 	if(ofGetFrameNum()<numFramesMax_newBckgrnd && ofGetFrameNum()%60==0) bLearnBakground=true;
     
 	if (bLearnBakground == true){
+        ofLogNotice() << "update background_learn true";
 		//			backgroundImage.setFromPixels(tempGrayImage.getPixels(), 320,240);
 		backgroundImage = tempGrayImage;
+
+		
+		// ************ ************* *************
+		//
+		// update backgroundAuto
+        ofLogNotice() << "update background_learn true 1";
+		background.reset();
+        ofLogNotice() << "update background_learn true 2";
+		background.update(tempGrayImage, thresholded);
+        ofLogNotice() << "update background_learn true 3";
+		thresholded.update();
+		
+		// Pasar thresholded a tempGrayImage
+		
+		
+		
+		
+		// Procesos a partir de la imagen de background:
+		//
+		// ************ ************* *************
+		// 
+		
 		
 		// Calcular mascara a partir del background
 		if(swDistMax) {
@@ -187,6 +220,18 @@ void testApp::updateModo1() {
 		
 		bLearnBakground = false;
 	}
+	// ************ ************* *************
+	//	
+	else {
+        ofLogNotice() << "update background_learn false";
+//		background.update(tempGrayImage, thresholded);
+//		thresholded.update();
+		
+		// Pasar thresholded a tempGrayImage
+		
+	}
+	// ************* ************* *************
+	//
 	
 	
 	
@@ -230,7 +275,7 @@ void testApp::updateModo1() {
 	
 	// substraci—n openCV.
 	//
-	tempGrayImage-=backgroundImage;
+	tempGrayImage-=backgroundImage; 	// imagenes ofxCvGrayScaleImage
 //	
 	grayThreshNear = tempGrayImage;
 	grayThreshFar  = tempGrayImage;
@@ -241,11 +286,6 @@ void testApp::updateModo1() {
 	// update the cv images
 	tempGrayImage.flagImageChanged();
 	
-    if(swErode) {
-        tempGrayImage.erode_3x3();
-        tempGrayImage.dilate_3x3();
-    }
-    
 	// WARP
 	//	if(bWarp) 	{
 	//		//grayImage.warpIntoMe(tempGrayImage, entrada, destino_camera_warp);  
@@ -648,7 +688,6 @@ void testApp::setupGUI() {
 	gui1->addRangeSlider("rango resta images L/H", 0.0, 20.0, &thresholdLow, &thresholdHigh);
 	gui1->addSlider("contraste", 0.0, 255.0, &threshold);
 	gui1->addIntSlider("blur", 0, 11, &blurcv);
-    gui1->addToggle("Erode ", &swErode);
 	
 	gui1->addLabel("Contour Finder");
 	gui1->addSlider("blob_min_radio", 0.0, 200, &min_blob_size);

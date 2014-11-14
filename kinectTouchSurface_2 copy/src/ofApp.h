@@ -94,8 +94,6 @@ public:
 	int					blurcv;
 	bool bt;	// activar o no el threshold antes de cfX
 	
-    bool swErode;
-    
 	bool	bWarp;
 	
 	//
