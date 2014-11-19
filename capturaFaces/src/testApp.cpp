@@ -10,6 +10,49 @@ void testApp::setup(){
 	cargarFiles();
 	
 	setupFinders();
+
+	setupBandas();
+
+	draw_bandas2 = false;
+	
+}
+
+void testApp::setupBandas() {
+	// setup bandas mezcla OFXCV
+	ofRectangle r0 = ofRectangle(0,0,				LADO_CARA, LADO_CARA*0.25);
+	ofRectangle r1 = ofRectangle(0,r0.y+r0.height,  LADO_CARA, LADO_CARA*0.20);
+	ofRectangle r2 = ofRectangle(0,r1.y+r1.height,  LADO_CARA, LADO_CARA*0.25);
+	ofRectangle r3 = ofRectangle(0,r2.y+r2.height,  LADO_CARA, LADO_CARA*0.30);
+	bandas1.push_back(r0);
+	bandas1.push_back(r1);
+	bandas1.push_back(r2);
+	bandas1.push_back(r3);
+
+	ofRectangle r01 = ofRectangle(0,0,				LADO_CARA/2.0, LADO_CARA*0.25);
+	ofRectangle r02 = ofRectangle(LADO_CARA/2.0,0,	LADO_CARA/2.0, LADO_CARA*0.25);
+	ofRectangle r11 = ofRectangle(0,r0.y+r0.height,				LADO_CARA/2.0, LADO_CARA*0.20);
+	ofRectangle r12 = ofRectangle(LADO_CARA/2.0,r0.y+r0.height, LADO_CARA/2.0, LADO_CARA*0.20);
+	ofRectangle r21 = ofRectangle(0,r1.y+r1.height,				LADO_CARA/2.0, LADO_CARA*0.25);
+	ofRectangle r22 = ofRectangle(LADO_CARA/2.0,r1.y+r1.height, LADO_CARA/2.0, LADO_CARA*0.25);
+	ofRectangle r31 = ofRectangle(0,r2.y+r2.height,				LADO_CARA/2.0, LADO_CARA*0.30);
+	ofRectangle r32 = ofRectangle(LADO_CARA/2.0,r2.y+r2.height, LADO_CARA/2.0, LADO_CARA*0.30);
+	bandas2.push_back(r01);
+	bandas2.push_back(r02);
+	bandas2.push_back(r11);
+	bandas2.push_back(r12);
+	bandas2.push_back(r21);
+	bandas2.push_back(r22);
+	bandas2.push_back(r31);
+	bandas2.push_back(r32);
+	
+	iFaceAct = 0;	// idx de la imagen capturada que se representa.
+	for(int i=0; i<4; i++) {
+		ids_1.push_back(0);
+	}
+	for(int i=0; i<8; i++) {
+		ids_2.push_back(0);
+	}
+	
 }
 
 void testApp::cargarFiles() {
@@ -36,9 +79,6 @@ void testApp::cargarFiles() {
 	
 	iImgAct = 0;
 	isAnalisisDone = false;
-	iFaceAct = 0;	// idx de la imagen capturada que se representa.
-	if1 = 0;
-	if2 = 0;
 	lastTime = ofGetElapsedTimeMillis();
 }
 
@@ -51,7 +91,6 @@ void testApp::setupFinders() {
 	finder_ofxcv.setMultiScaleFactor(1.09);
 	
 	modoDetect = MODO_OFXCV;
-	
 	
 	// Face Tracker
 	tracker.setup();
@@ -71,25 +110,27 @@ void testApp::update(){
 			
 			if(finder_ofxcv.size()>0) {	// si se han encontrado caras
 				
-				ofLogError("num blobs por OFXCV: " + ofToString(finder_ofxcv.size()));
+				ofLogNotice("num blobs por OFXCV: " + ofToString(finder_ofxcv.size()));
 				// bucle entre los blobs
 				for(unsigned int i = 0; i < finder_ofxcv.size(); i++) {
 					faceData fd;
 					fd.rect = finder_ofxcv.getObject(i);
 					
-					// resize el rectangulo de la cara segœn parametros de control de W,H
+					// TODO: resize el rectangulo de la cara segœn parametros de control de W,H
 					
 					// guardar los resultados en vector de structs faceData
 					rectsFacesAct.push_back(fd);					
 					
-					
 					// guardar la imagen en un vector de images capturadas
-					ofImage imgTmp;
+					ofImage imgTmp;	
 					imgTmp.cropFrom(images[iImgAct], 
 									fd.rect.x, fd.rect.y,
 									fd.rect.width, fd.rect.height);
-					imgTmp.resize(320, 320);
+					imgTmp.resize(LADO_CARA, LADO_CARA);
 					images_faces.push_back(imgTmp);
+					
+					
+					
 				}
 				
 				isAnalisisDone = true;			
@@ -101,7 +142,7 @@ void testApp::update(){
 		
 			if(finder.blobs.size()>0) {	// si se han encontrado caras
 
-				ofLogError("num blobs por OFXOPENCV: " + ofToString(finder.blobs.size()));
+				ofLogNotice("num blobs por OFXOPENCV: " + ofToString(finder.blobs.size()));
 				// bucle entre los blobs
 				for(unsigned int i = 0; i < finder.blobs.size(); i++) {
 					faceData fd;
@@ -110,7 +151,6 @@ void testApp::update(){
 					// resize el rectangulo de la cara segœn parametros de control de W,H
 					
 					// guardar los resultados en vector de structs faceData
-					rectsFacesAct.push_back(fd);
 					
 					// guardar la imagen en un vector de images capturadas
 					
@@ -120,23 +160,40 @@ void testApp::update(){
 			}
 		}
 		
-//		else if(mode==MODO_FCTRACKer) {
-//			tracker.update(toCv((ofImage)images[iImgAct]));
-////			if(tracker.update(toCv((ofImage)images[iImgAct]))) {
-////				classifier.classify(tracker);
-////			}			
-//		}
+		else if(modoDetect==MODO_FCTRACKer) {
+
+			// ANALIZAR TODA LA IMAGEN
+			tracker.update(ofxCv::toCv(images[iImgAct]));
+//			if(tracker.update(toCv((ofImage)images[iImgAct]))) {
+//				classifier.classify(tracker);
+//			}			
+			
+			if(tracker.getFound()) {
+				
+				// Guardar imagen recortada y escalada
+				rectCara = tracker.getHaarRectangle();
+				
+				// Guardar imagen recortada y escalada pro con m‡s ‡rea de rostro
+				float escAreaUp  = 0.2/10.0;
+				float escAreaDwn = 2.2/10.0;
+				float escArea = (escAreaUp + escAreaDwn);
+				rectCara_X = tracker.getHaarRectangle();
+				
+				rectCara_X.x += -rectCara_X.width*escArea/2.0;
+				rectCara_X.y += -rectCara_X.height*escAreaUp;
+				rectCara_X.width = rectCara_X.width*(1+escArea);
+				rectCara_X.height = rectCara_X.height*(1+escArea);
+								
+				
+				
+				
+			}
+			
+		}
 		
 		
 	}
 	
-	if(modoDetect==MODO_FCTRACKer) {
-		tracker.update(toCv(images[iImgAct]));
-		//			if(tracker.update(toCv((ofImage)images[iImgAct]))) {
-		//				classifier.classify(tracker);
-		//			}			
-	}
-
 	
 }
 
@@ -174,35 +231,40 @@ void testApp::draw(){
 		if(images_faces.size()>0) {
 			ofPushMatrix();
 			ofTranslate(ofGetWidth()-images_faces[iFaceAct].width, 0);
-			images_faces[iFaceAct].draw(0,0);
-			
 			// mezcla de imagenes
-			images_faces[if1].drawSubsection(0,0, 
-											images_faces[iFaceAct].width, 
-											images_faces[iFaceAct].height * 0.25, 
-											0,0);
-
-			images_faces[if2].drawSubsection(0,
-											 images_faces[iFaceAct].height * 0.45,
-											 
-											 images_faces[iFaceAct].width, 
-											 images_faces[iFaceAct].height * 0.25, 
-											 
-											 0,
-											 images_faces[iFaceAct].height * 0.45);
-			
+			ofSetColor(255,255,255);			
+			if(!draw_bandas2) {
+				for(int i=0; i<bandas1.size(); i++) {
+					drawBanda(ids_1[i], i, bandas1);
+				}
+			}
+			else {
+				for(int i=0; i<bandas2.size(); i++) {
+					drawBanda(ids_2[i], i, bandas2);
+				}
+			}
+			ofSetColor(255);
 			
 			// Paso de tiempo
 			if(ofGetElapsedTimeMillis()>(lastTime+500)) {
-				iFaceAct++;
-				iFaceAct%=images_faces.size();
+				if(0.9>ofRandom(1.0)) {
+					iFaceAct++;
+					iFaceAct%=images_faces.size();
+				}
 				
-				ofLogError(ofToString(ofRandom(1.0)));
-				if(0.05>ofRandom(1.0)) if1 = floor(ofRandom(images_faces.size()));
-				if(ofRandom(1.0)<0.05) if2 = floor(ofRandom(images_faces.size()));
+				if(0.08>ofRandom(1.0)) ids_1[0] = floor(ofRandom(images_faces.size()));
+				if(0.55>ofRandom(1.0)) ids_1[1] = floor(ofRandom(images_faces.size()));
+				if(0.22>ofRandom(1.0)) ids_1[2] = floor(ofRandom(images_faces.size()));
+				if(0.15>ofRandom(1.0)) ids_1[3] = floor(ofRandom(images_faces.size()));
+				
+				
+				for(int i=0; i<ids_2.size(); i++) {
+					if(0.10>ofRandom(1.0)) ids_2[i] = floor(ofRandom(images_faces.size()));
+				}
 				
 				lastTime = ofGetElapsedTimeMillis();				
 			}
+			
 		}
 		//
 		
@@ -214,21 +276,75 @@ void testApp::draw(){
 	}
 	
 	if(modoDetect==MODO_FCTRACKer) {
+		ofPushStyle();
 		tracker.draw();
+
+		
 		ofPushMatrix();
-//		ofTranslate(ofGetWidth()-300,100,0);
-			//ofScale(5,5,5);
-			//tracker.getObjectMesh().drawWireframe();
-			tracker.getImageMesh().drawWireframe();
+//		ofTranslate(ofGetWidth()-rectCara_X.width, 0);
+		ofTranslate(ofGetWidth()-LADO_CARA, 0);
+		ofScale(LADO_CARA/rectCara_X.width, LADO_CARA/rectCara_X.height, 1.0);
+		images[iImgAct].drawSubsection(0,0, 
+									  rectCara_X.width, rectCara_X.height,
+									  rectCara_X.x, rectCara_X.y);
 		ofPopMatrix();
+
+		
+//		ofTranslate(ofGetWidth()-300,100,0);
+		//ofScale(5,5,5);
+		//tracker.getObjectMesh().drawWireframe();
+
+		// DE SERIE
+		ofSetColor(200,0,0, 180);
+		tracker.draw();
+		
+		
+		ofSetColor(200,200,0, 30);
+		ofRect(rectCara);
+		ofSetColor(200,60,180, 60);
+		ofRect(rectCara_X);
+		
+		// IMAGE
+		ofSetColor(200,0,200,150);
+		tracker.getImageMesh().drawWireframe();
+		
+		ofPopStyle();		
+		
+		// 3D
+		ofPushStyle();
+		ofPushMatrix();
+		ofTranslate(tracker.getPosition().x, tracker.getPosition().y,0);
+		ofScale(tracker.getScale(), tracker.getScale(), 1);//tracker.getScale());
+		ofSetColor(0,0,200);
+		tracker.getObjectMesh().drawWireframe();
+		
+		ofPopMatrix();
+		
+		ofNoFill();
+		ofSetColor(0,200,0);
+		ofRect(tracker.getHaarRectangle());
+		ofPopStyle();
 	}
 
+	ofDrawBitmapString("(b) Draw en 4 u 8 zonas", ofPoint(10,ofGetHeight()-130));
 	ofDrawBitmapString("Seleccion Images (n/m): " + ofToString(iImgAct)+"/"+ofToString(images.size()), ofPoint(10,ofGetHeight()-110));
 	ofDrawBitmapString("ModoAct (z): " + ofToString(modoDetect), ofPoint(10,ofGetHeight()-90));
 	ofDrawBitmapString("analisis hecho: " + ofToString(isAnalisisDone), ofPoint(10,ofGetHeight()-70));
 	ofDrawBitmapString("num faces guardadas: " + ofToString(images_faces.size()), ofPoint(10,ofGetHeight()-50));
 	ofDrawBitmapString("fr: " + ofToString(ofGetFrameRate()), ofPoint(10,ofGetHeight()-30));
 }
+
+
+void testApp::drawBanda(int idFace, int idBanda, vector<ofRectangle> _bandas) {
+	images_faces[idFace].drawSubsection(_bandas[idBanda].x,
+									 _bandas[idBanda].y,
+									 _bandas[idBanda].width, 
+									 _bandas[idBanda].height, 
+									 _bandas[idBanda].x,
+									 _bandas[idBanda].y);
+	
+}
+
 
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
@@ -266,13 +382,42 @@ void testApp::keyPressed(int key){
 	else if(key=='s') {
 		if(modoDetect==MODO_FCTRACKer) {
 			string nombre = "capturas/imagen_"+ofToString(iImgAct);
-			images[iImgAct].saveImage(nombre+".jpg");
+			
+			images[iImgAct].saveImage(nombre+".jpg");			
 			tracker.getImageMesh().save(nombre+"_ImageMesh.ply");
 			tracker.getObjectMesh().save(nombre+"_ObjectMesh.ply");
 			tracker.getMeanObjectMesh().save(nombre+"_MeanObjectMesh.ply");
+			
+			// Guardar imagen recortada y escalada
+			ofImage imgCara;
+			string nombreCara = "capturas/imagen_Cara_"+ofToString(iImgAct);
+//			ofRectangle rectCara = tracker.getHaarRectangle();
+			imgCara.cropFrom(images[iImgAct], rectCara.x, rectCara.y, rectCara.width, rectCara.height); 
+			imgCara.resize(LADO_CARA, LADO_CARA);
+			imgCara.saveImage(nombreCara+".jpg");
+
+			
+			// Guardar imagen recortada y escalada pro con m‡s ‡rea de rostro
+ 
+//			ofLogNotice() << "rectCara_X: " << rectCara_X.x <<","<< rectCara_X.y <<","<< rectCara_X.width <<","<< rectCara_X.height;
+						
+			nombreCara = "capturas/imagen_Cara_X_"+ofToString(iImgAct);
+			if(rectCara_X.x>=0 && (rectCara_X.x+rectCara_X.width)<=images[iImgAct].width &&
+			   rectCara_X.y>=0 && (rectCara_X.y+rectCara_X.height)<=images[iImgAct].height ) 
+			{
+				imgCara.cropFrom(images[iImgAct], rectCara_X.x, rectCara_X.y, rectCara_X.width, rectCara_X.height); 
+				imgCara.resize(LADO_CARA, LADO_CARA);
+				imgCara.saveImage(nombreCara+".jpg");
+			}
+			
+			// Analizar y guardar. Ya deber’a llegar analizada
+			// 
+			
+			
 		}
 		
 	}
+	else if(key=='b') draw_bandas2=!draw_bandas2;
 	
 	
 }

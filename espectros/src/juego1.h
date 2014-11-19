@@ -134,7 +134,7 @@ private:
         ofImage ballImg;
     ofImage goalImg;
     ofImage backgroundImg;
-    
+    ofTrueTypeFont myfont;
 
     
 };

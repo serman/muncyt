@@ -16,8 +16,9 @@ void drawTest() {
 
 int rotatePos=initX;
 void rotateDraw(float T) {
+  frameRate(25);
   background(0);
-
+  
   //freq= rotaciones/seg;
   //T = periodo en segundos
   float pix_second=lengthPared/T;  
@@ -38,6 +39,7 @@ void rotateDraw(float T) {
 int ex1Pos;
 int ex2Pos;
 void exchangeDraw(float T,int section,color colour1 , color colour2) {
+  frameRate(25);
   background(0);
 
   float pix_second=(lengthPared/3)/T; 
@@ -103,6 +105,7 @@ void setupExchange(int section){
 
 void drawLine() {
   background(0);
+  frameRate(25);
   pushStyle();
     fill(255);
     
@@ -136,8 +139,33 @@ void noiseDraw() {
   } 
   popStyle();
 }
+int explosionAngleInitValue=10;
+void drawExplosionAngle(){
+  println(explosionAngleInitValue);
+   frameRate(6);
+  background(0);
+  int psize = 2;
+  int x_count = 16; 
+  int y_count = (lengthTira/psize);
+  
+  pushStyle();
+  noStroke(); //commenting this out gives a neat effect
+
+  //draw the "pixels"
+  for (int i=0; i<=y_count; i++) {
+    for (int j=explosionAngleInitValue/psize; j<=explosionAngleInitValue/psize+x_count; j++) {
+      //pick a random grayscale value before drawing each rectangle. (thanks subpixel!)
+      float ruido=random(120);
+      if(ruido<100) fill(0);
+      else fill(ruido,random(0,80),0);
+      rect(initX+j*psize, initY+i*psize, psize, psize);
+    }
+  } 
+  popStyle();
+}
 
 void drawRandomParticles(){
+  frameRate(25);
   background(0);
  for (int i=0; i<NUMPARTIC; i++){
    randomP[i].draw();
@@ -222,6 +250,7 @@ void breath() {
 
 float angle=0;
 void drawGridImage(){
+  frameRate(25);
   pushMatrix();
   translate(initX+lengthPared/2,initY+lengthTira/2);
   rotate(angle);
@@ -246,6 +275,7 @@ float initFadingY=0;
 float HueFading=100;
 float fadingSpeed=1;
 void drawFading(){
+  frameRate(25);
   background(0);
   imageMode(CORNERS);
   colorMode(HSB,255);

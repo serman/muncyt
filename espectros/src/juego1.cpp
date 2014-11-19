@@ -39,7 +39,8 @@ void juego1::setup(){
     throwForce=4;
     amountForce=50;
     isGoal=false;
-    
+    myfont.loadFont("visitor1.ttf", 16, false,false,false);
+
     fbo.allocate(SCREEN_W, SCREEN_H, GL_RGBA);
     
     reset();
@@ -52,7 +53,7 @@ void juego1::setup(){
     flecha.loadImage("flecha.png");
     ballImg.loadImage("ball.png");
     goalImg.loadImage("stick.png");
-    backgroundImg.loadImage("fondos/juego1.png");
+    backgroundImg.loadImage("fondos/JuegoPelota.png");
     //eff.setup();
 }
 /*
@@ -103,8 +104,9 @@ void juego1::draw(){
     
     else if(appStatuses["game_status"]==WIN){
         //ofSetColor(0,0,0);
-        ofDrawBitmapString("GOAL",100,100);
-        ofDrawBitmapString("LEVEL:" + ofToString(appStatuses["level"]),100,150);
+
+        myfont.drawString("GOAL",100,100);
+        myfont.drawString("LEVEL:" + ofToString(appStatuses["level"]),100,150);
          eff.draw();
         if(ofGetElapsedTimeMillis()-appStatuses["win_timer"]>2000){
             appStatuses["game_status"]=PLAYING;
@@ -114,7 +116,7 @@ void juego1::draw(){
     
     else if(appStatuses["game_status"]==LOSE){
         //ofSetColor(0,0,0);
-        ofDrawBitmapString("LOSER, TRY AGAIN!",100,100);
+        myfont.drawString("¡PIERDES! PRUEBA OTRA VEZ",100,100);
         eff.draw();
         if(ofGetElapsedTimeMillis()-appStatuses["win_timer"]>2000){
             reset();
@@ -122,7 +124,7 @@ void juego1::draw(){
     }
     else if(appStatuses["game_status"]==WINWIN){
         //ofSetColor(0,0,0);
-        ofDrawBitmapString("WELL DONE! HAS GANADO",200,100);
+        myfont.drawString("BIEN HECHO! HAS GANADO",200,100);
         eff.draw();
         if(ofGetElapsedTimeMillis()-appStatuses["win_timer"]>2000){
             reset();
@@ -167,8 +169,8 @@ void juego1::update(float f){
         appStatuses["lastTimeRead"]= ofGetElapsedTimeMillis();
         
         
-        //chequeo si el tiempo que tenia la pelota para lanzar ya ha terminado
-        if( (ofGetElapsedTimeMillis()-appStatuses["counterThisLife"] >4000 ) &&  appStatuses["game_sub_status"]==BOUNCING)
+        //chequeo si el tiempo que tenia la pelota para llegar a gol ya ha terminado
+        if( (ofGetElapsedTimeMillis()-appStatuses["counterThisLife"] >5000 ) &&  appStatuses["game_sub_status"]==BOUNCING)
         {
             //NUEVO INTENTO: HAS TIRADO MAL Y PIERDES UNA VIDA
             appStatuses["vidas"]-=1;
@@ -394,7 +396,7 @@ void juego1::drawControls(){
     ofSetColor(124, 124, 124);
 
     //float ang= atan(throwDirection.x/throwDirection.y);
-    ofTranslate(0,SCREEN_H);
+    ofTranslate(5,SCREEN_H-18);
     ofRotateZ(-throwDirection.angle(ofVec2f(1,0)));
     //ofRect(0,0, 100, 10);
 
@@ -415,14 +417,15 @@ void juego1::drawControls(){
     ofPopStyle();
     ofPopMatrix();
 
-
+//marcador
        // ofDrawBitmapString("Fuerza:",20,20);
     ofRect(20,20,200,20);
     ofFill();
     ofSetColor(33,148,18);
+    myfont.drawString("fuerza" ,50,35);
     ofRect(20,20,amountForce,20);
-
-    
+    myfont.drawString("LEVEL: " +ofToString(appStatuses["level"]),230,35);
+    myfont.drawString("VIDAS: " +ofToString(appStatuses["vidas"]) ,640,35);
     
     ofNoFill();
     //ball.draw();

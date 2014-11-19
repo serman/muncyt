@@ -97,7 +97,8 @@ void nuclear_debil::setup() {
 
 	
 	cargaSounds();
-	
+	mas_particulas_img.loadImage("mas_particulas.png");
+    mas_acel_img.loadImage("mas_aceleracion.png");
 	
 	//GUI Fuerza
 	float ladoMarco = 90;
@@ -203,6 +204,9 @@ void nuclear_debil::init_Escena() {
     sent_changeScene_message=false;
 	ofEnableAlphaBlending();
     bshowdebug=false;
+    display_rotation_angle=0;
+    show_info_img_until=0;
+    
 
 }
 
@@ -316,16 +320,25 @@ void nuclear_debil::update(float dt) {
 	}
 	
     //Envio OSC
-	if(ofGetFrameNum()%2 ==0){
-        cheapComm::getInstance()->sendAudio2("/audio/weak_nuclear/ball", -1*(anillo.angT)/(2*PI),ofMap(anillo.wAng,0,-anillo.wAngMax,0,1));
+	if(ofGetFrameNum()%3 ==0){
+        float ang=anillo.angT;
+        ang-=PI/4;
+        
+        cheapComm::getInstance()->sendAudio2("/audio/weak_nuclear/ball", ofMap(ofWrapRadians(ang,0,2.0*PI),0,2.0*PI,0,1),
+                                             ofMap(anillo.wAng,0,-anillo.wAngMax,0,1));
         //cout << anillo.angT<< " " << -1*(anillo.angT)/(2*PI) <<endl;
+       // cout << anillo.angT<< ofMap(ofWrapRadians(ang,0,2.0*PI),0,2.0*PI,0,1);
         
         cheapComm::getInstance()->sendAudio2("/audio/weak_nuclear/number_particles", ofMap(nucleos.size(),nCircs,nCircs+50,0,1), ofMap(anillo.angT,0,2*PI,0,1));
         //cout << nucleos.size()<< " ";
 //        CUAL ES EL MAXIMO DE NUCLEOS AQUI?
-    }
-    cheapComm::getInstance()->sendSync3("/sync/weak_nuclear/ball", ofWrapRadians(anillo.angT,0,2.0*PI),ofMap(abs(anillo.wAng),0,abs(anillo.wAngMax),0,1),ofSign(anillo.wAng) );
-   
+    
+         ang=anillo.angT;
+        ang+=PI/2;
+        cheapComm::getInstance()->sendSync3("/sync/weak_nuclear/ball", ofWrapRadians(ang,0,2.0*PI),
+                                            ofMap(abs(anillo.wAng),0,abs(anillo.wAngMax),0,1),
+                                            ofSign(anillo.wAng) );
+   }
     if ( ofGetElapsedTimeMillis() < (timeLastColision+2000)){
         cheapComm::getInstance()->sendSync0("/sync/weak_nuclear/colisiones");
 
@@ -517,7 +530,7 @@ void nuclear_debil::draw(){
 
     drawCenterDisplay();
     
-    spriteExp->draw();
+    //spriteExp->draw();
 //    if(sprites.size()>0) // if we have sprites
 //MODO EXPLOSION FIN DE LA ESCENA
     if(status==EXPLOSION ){
@@ -528,6 +541,11 @@ void nuclear_debil::draw(){
                 sent_changeScene_message=true;
             }
         }
+    }else{
+        if(show_info_img_until>ofGetElapsedTimeMillis() && (show_info_img_until-5500)< ofGetElapsedTimeMillis()  ){
+            drawMessage();
+        }
+        
     }
         
     ofPopMatrix();  // FIn translate para centrar contenidos
@@ -567,9 +585,10 @@ void 	nuclear_debil::drawInfo(){
 	info += "nuevasPartics: " + ofToString(nuevasPartics.size()) + "\n";
 	info += "Num Nucleos: " + ofToString(nucleos.size()) + "\n";
 	info += "Num Nucleos Activos: " + ofToString(numNucleosActivos) + "\n";
-	
+	info += "radianes enviados" + ofToString(ofWrapRadians(anillo.angT+PI/2,0,2.0*PI))+ "\n";
+    info += "radianes enviados audio" + ofToString(ofMap(ofWrapRadians(anillo.angT-PI/4,0,2.0*PI),0,2.0*PI,0,1));
 	//	ofSetHexColor(0x444342);
-	ofSetHexColor(0xCCCCCC);
+	ofSetColor(255,255);
 	ofDrawBitmapString(info, 30, 30);
 }
 
@@ -643,6 +662,30 @@ void nuclear_debil::drawFuerza(ofPoint p, ofPoint gravity, float esc) {
 	ofPopStyle();
 }
 
+void nuclear_debil::drawMessage(){
+    ofImage * img;
+    if(display_to_show==MAS_PART){
+        img=&mas_particulas_img;
+    }else if(display_to_show==MAS_ACE){
+        img=&mas_acel_img;
+    }
+    else return;
+    
+    int RADIO = 130;
+    ofPushMatrix();
+        ofPushStyle();
+       // ofCircle(W_WIDTH/2, W_HEIGHT/2, RADIO);
+        ofSetColor(255);
+        ofPushMatrix();
+            ofTranslate(W_WIDTH/2, W_HEIGHT/2);
+            ofRotateZ(display_rotation_angle);
+            img->draw(-img->width/2,-img->height/2);
+        ofPopMatrix();
+        ofPopStyle(),
+    ofPopMatrix();
+    display_rotation_angle+=0.6;
+    
+}
 
 
 //--------------------------------------------------------------

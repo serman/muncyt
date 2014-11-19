@@ -59,7 +59,7 @@ void fantasmas::setup(){
     gui2->addLabel("VERTICAL RADIO", OFX_UI_FONT_MEDIUM);
     ofxUIRadio *radio = gui2->addRadio("VR", vnames, OFX_UI_ORIENTATION_HORIZONTAL);
     radio->activateToggle("0");
-
+    maxFrame=16;
     gui2->addIntSlider("maxFrame", 0, 49, &maxFrame);
     gui2->addLabel("GRABACION", OFX_UI_FONT_MEDIUM);
     gui2->addToggle("grabacion", false);
@@ -105,7 +105,7 @@ void fantasmas::setupSequences(){
         }
         ii++;
     }
-    backgroundImg.loadImage("fondos/espectros.png");
+    backgroundImg.loadImage("fondos/fantasmas.png");
     
 }
 
@@ -245,6 +245,20 @@ void fantasmas::draw(){
             if(blob->getSessionId() == selectedBlobId){
                 ofSetColor(255,0,0);
                 ofNoFill();
+                ofSetLineWidth(2);
+                ofRect(p1.x , p1.y, blob->width*VIDEO_scale*VIDEO_W, blob->height*VIDEO_scale*VIDEO_H);
+                ofFill();
+                //dibuja cirulo o circulo parpadeate en funcion del estado
+                if(mRecorder.status==mosaicRecorder::RECORDING){
+                    if(ofGetElapsedTimeMillis()%1000 <500)
+                        ofEllipse(p1.x-7 , p1.y-7,6,6);
+                }else{
+                    ofEllipse(p1.x-6 , p1.y-6,4,4);
+                }
+            }
+            else{
+                ofSetColor(0,100,0);
+                ofNoFill();
                 ofRect(p1.x , p1.y, blob->width*VIDEO_scale*VIDEO_W, blob->height*VIDEO_scale*VIDEO_H);
             }
         }
@@ -269,9 +283,6 @@ void fantasmas::draw(){
         fbo.readToPixels(remoteBlobImgPxl);
         //feedImg.setFromPixels(remoteBlobImgPxl);
         //feedImg.update();
-        
-
-    
 
 
     }else  if(appStatuses["mode"]==REPLAYING){ //este metodo al final casi que n ose usa mas que para test
@@ -408,7 +419,7 @@ void fantasmas::keyReleased(int key){
         }
     }
     
-    else if(key=='w'){
+    else if(key=='d' || key=='a'){
         list<ofxTuioCursor*>::iterator tobj;
         list<ofxTuioCursor*> objectList = tuioclient->getTuioCursors();
         
@@ -433,10 +444,7 @@ void fantasmas::keyReleased(int key){
             }
         }
     }
-    
-    else if(key=='s'){
-        recordThisBlob=true;
-    }
+
     
 }
 

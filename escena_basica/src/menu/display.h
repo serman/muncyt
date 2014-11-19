@@ -73,7 +73,7 @@ public:
         
         int tim=ofGetElapsedTimeMillis()-init_time;
         int timeleft=LOADINGTIME*1000-tim;
-        if(timeleft<0) {
+        if(timeleft<600) {
             init_time=ofGetElapsedTimeMillis(); a=0; ofSendMessage("changeScene" +ofToString(scene)); status==OFF;
             return;
         }

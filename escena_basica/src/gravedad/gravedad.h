@@ -131,6 +131,7 @@ public:
 	int		ratePartic;
 	
 
+	inline ofPoint transformTUIO(ofxTuioCursor &tuioCursor);
     void	tuioAdded(ofxTuioCursor & tuioCursor);
 	void	tuioRemoved(ofxTuioCursor & tuioCursor);
 	void	tuioUpdated(ofxTuioCursor & tuioCursor);

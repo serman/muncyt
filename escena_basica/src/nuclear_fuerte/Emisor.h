@@ -151,7 +151,7 @@ public:
 		// velocidad
 		// se da mas velocidad cuanto más lejos este del centro 
 		// (resize de pos bastaría)
-		float ddMax = W_HEIGHT/2.0*0.97;
+		float ddMax = W_HEIGHT/2.0*0.94;
 		float ddMin = 50.0;	// radio de la zona central
 		float dd = pos.length();
 		pos.normalize();	

@@ -82,7 +82,7 @@ public:
 //    static enum states_nuclear_w{NORMAL, EXPLOSION};
     int NORMAL;
 	int EXPLOSION;
-	
+	enum displays{NINGUNO, MAS_ACE, MAS_PART};
 	void setup();
 	void update(float dt);
 	void draw();
@@ -232,5 +232,12 @@ public:
     long timeLastColision;
     
     bool bshowdebug;
+    float display_rotation_angle;
+    void drawMessage();
+    ofImage mas_particulas_img;
+    ofImage mas_acel_img;
+    long show_info_img_until;
+    int display_to_show;
+    
 };
 
