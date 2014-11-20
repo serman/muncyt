@@ -50,6 +50,7 @@
 		ADE367465D2A8EBAD4C7A8D9 /* IpEndpointName.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ADD194746185E2DA11468377 /* IpEndpointName.cpp */; };
 		ADE7C2AFC51E3F7E5E389026 /* ofxUISortableList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5613D5D24B00D8AD909F7E6A /* ofxUISortableList.cpp */; };
 		AE281BEBF3A00F1FC37F3DA0 /* ofxUIWaveform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9345327AA463407B3DADBADE /* ofxUIWaveform.cpp */; };
+		B09EC96E1A1DFE6500FF2B9D /* mosaicoCaras.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B09EC96C1A1DFE6500FF2B9D /* mosaicoCaras.cpp */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
 		BFEFCE32DAFE10A8EB519F6C /* ofxUISpacer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30CBAAEC78A0E9EBBB10A05A /* ofxUISpacer.cpp */; };
 		C30B3A2A37F8F32EE7318718 /* ofxUILabelToggle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 76AF3B44E0E2FA8BFBD5F592 /* ofxUILabelToggle.cpp */; };
@@ -433,6 +434,9 @@
 		AE433383D6CA170C418C8A9E /* highgui_c.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = highgui_c.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/highgui/highgui_c.h; sourceTree = SOURCE_ROOT; };
 		AEFCF7E549ACA862C022AD40 /* ofxUIDefines.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUIDefines.h; path = ../../../addons/ofxUI/src/ofxUIDefines.h; sourceTree = SOURCE_ROOT; };
 		AF9A155219FEDFA6E95454EA /* gpu.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = gpu.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/gpu/gpu.hpp; sourceTree = SOURCE_ROOT; };
+		B09EC96B1A1DFE6500FF2B9D /* Mosaico.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mosaico.h; sourceTree = "<group>"; };
+		B09EC96C1A1DFE6500FF2B9D /* mosaicoCaras.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mosaicoCaras.cpp; sourceTree = "<group>"; };
+		B09EC96D1A1DFE6500FF2B9D /* mosaicoCaras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mosaicoCaras.h; sourceTree = "<group>"; };
 		B31C608870ECEB2490A93736 /* ofxOscParameterSync.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxOscParameterSync.h; path = ../../../addons/ofxOsc/src/ofxOscParameterSync.h; sourceTree = SOURCE_ROOT; };
 		B3CA0202B1A3B6D8920C2B15 /* ofxUIButton.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUIButton.h; path = ../../../addons/ofxUI/src/ofxUIButton.h; sourceTree = SOURCE_ROOT; };
 		B683B7ADA51410A7F0B13E6A /* matrix_operations.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = matrix_operations.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/gpu/matrix_operations.hpp; sourceTree = SOURCE_ROOT; };
@@ -1170,6 +1174,16 @@
 			name = opencv;
 			sourceTree = "<group>";
 		};
+		B09EC96A1A1DFE6500FF2B9D /* mosaicoCaras */ = {
+			isa = PBXGroup;
+			children = (
+				B09EC96B1A1DFE6500FF2B9D /* Mosaico.h */,
+				B09EC96C1A1DFE6500FF2B9D /* mosaicoCaras.cpp */,
+				B09EC96D1A1DFE6500FF2B9D /* mosaicoCaras.h */,
+			);
+			path = mosaicoCaras;
+			sourceTree = "<group>";
+		};
 		BA6760AC87647DD61A92BD41 /* win32 */ = {
 			isa = PBXGroup;
 			children = (
@@ -1443,6 +1457,7 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				B09EC96A1A1DFE6500FF2B9D /* mosaicoCaras */,
 				F772E5A319F5E04B008062DE /* joyDivision */,
 				F7A657C019A56535004E0E78 /* comePantalla */,
 				F77253C71986AED800ADD13E /* lanzaBola */,
@@ -2505,6 +2520,7 @@
 				7F2CD93F681F3C1547B3BF2C /* ofxUIImageButton.cpp in Sources */,
 				FBD0CD0AFE3849C14E829CAF /* ofxUIImageSampler.cpp in Sources */,
 				F7775AFF199B8D99008C334D /* b2CircleShape.cpp in Sources */,
+				B09EC96E1A1DFE6500FF2B9D /* mosaicoCaras.cpp in Sources */,
 				F7775AF3199B8D99008C334D /* ofxBox2dJoint.cpp in Sources */,
 				F7A657C919A60F65004E0E78 /* pyl.cpp in Sources */,
 				F7B1329319BE0D430078B97C /* CGAColorspaceFilter.cpp in Sources */,
