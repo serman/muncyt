@@ -414,6 +414,7 @@ void juego2::init_Escena(){
     //mSyphonClient->unbind();
     //mSyphonClient2->unbind();
     reset();
+
 }
 
 void juego2::exit_Escena(){
@@ -473,6 +474,7 @@ void juego2::reset(){
     explode(d);
     player.setPosition(d);
     poli.clear();
+    circles.clear();
     prevPos=player.getPosition();
     fillthis=false;
     appStatuses["isOnContour"]=true;

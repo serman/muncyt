@@ -274,6 +274,8 @@ void testApp::setupStatus(){
     appStatuses["blobInSquare"]=false;
     appStatuses["sendTUIO"]=true;
     appStatuses["isCameraReady"]=false;
+    appStatuses["forceCamera"]=false;
+    appStatuses["selectedForcedCamera"]=FRONT_INDEX;
     
 }
 
