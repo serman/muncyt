@@ -47,6 +47,10 @@ void testApp::setup(){
     mfaces->setTuioClient(&tuioClient);
     mfaces->setSyphonClients(&mSyphonClient, &mSyphonClient2);
  
+	MosaicoCaras *mMosaicoCaras = new MosaicoCaras();
+    mMosaicoCaras->setTuioClient(&tuioClient);
+    mMosaicoCaras->setSyphonClients(&mSyphonClient, &mSyphonClient2);
+    
     juego1 *mjuego=new juego1();
     mjuego->setTuioClient(&tuioClient);
     mjuego->setSyphonClients(&mSyphonClient, &mSyphonClient2);
@@ -66,6 +70,7 @@ void testApp::setup(){
     sceneManager->addScene( mjuego, BOLA);
     sceneManager->addScene( mjuego2, COMEPANTALLA);
 	sceneManager->addScene( mfaces, CARAS3D);
+	sceneManager->addScene( mMosaicoCaras, MOSAICOCARAS);
 	//sceneManager->addScene( mglitch, SCENE_1);
     sceneManager->addScene( mfantasmas, FANTASMAS);
 //	sceneManager->addScene( mgenerativo1, SCENE_4);
@@ -128,6 +133,8 @@ void testApp::keyPressed(int key){
     if (key == '3'){ sceneManager->goToScene(JOY_WAVES,false);timeToEndScene=ofGetElapsedTimeMillis()+ABS_MAX_TIME_SCENE;
     }
     if (key == '4'){ sceneManager->goToScene(CARAS3D,false);timeToEndScene=ofGetElapsedTimeMillis()+ABS_MAX_TIME_SCENE;
+    }
+    if (key == '5'){ sceneManager->goToScene(MOSAICOCARAS,false);timeToEndScene=ofGetElapsedTimeMillis()+ABS_MAX_TIME_SCENE;
     }
     
     sceneManager->getCurrentScene()->keyPressed(key);
