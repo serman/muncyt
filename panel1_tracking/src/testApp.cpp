@@ -51,6 +51,7 @@ void testApp::setup(){
     firstTimeCeilCamera=true;
     
     setupGui();
+    appStatuses["forceCamera"]=false; //NO IMPORTA QUE HAYAS GRABADO EL SETTING DE FORZAR CAMARA. POR DEFECTO CARGA LA CAMARA AUTOMATICA QUE DEMANDA CADA ESCENA PARA EVITAR FALLOS EN PRODUCCION
     individualTextureSyphonServer.setName("CameraOutput");
     onlyBlobsImageSyphonServer.setName("onlyBlobs");
     tex.allocate(VIDEOWITH,VIDEOHEIGHT, GL_RGB);
