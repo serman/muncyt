@@ -27,7 +27,7 @@ void cheapComm::oscRcvUpdate(){
             ((testApp*)ofGetAppPtr())->setFrontCamera(); //TODO aqui hayuq eponer setFrontCamera cuando esté la segunda camara
 		}
         if(m.getAddress() == "/video/ceil"){
-            ((testApp*)ofGetAppPtr())->setFrontCamera();
+            ((testApp*)ofGetAppPtr())->setCeilCamera();
 		}
     }
 }

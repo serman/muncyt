@@ -44,7 +44,7 @@ void testApp::setup(){
     grayBg.allocate(VIDEOWITH,VIDEOHEIGHT);
    // grayBgCameraFront.allocate(VIDEOWITH,VIDEOHEIGHT);
    // grayBg=&grayBgCameraCeil;
-    setFrontCamera();
+    setCeilCamera();
     exposureStartTime = ofGetElapsedTimeMillis();
     bCaptureBackground=true;
     firstTimeFrontCamera=true;
