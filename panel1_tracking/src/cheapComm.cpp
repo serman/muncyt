@@ -19,6 +19,9 @@ void cheapComm::setup(){
 
 void cheapComm::oscRcvUpdate(){
 	while(myosc.hasWaitingMessages()){
+        if( ((testApp*)ofGetAppPtr())->appStatuses["forceCamera"]==true) {
+         return;            
+        }
 		// get the next message
 		ofxOscMessage m;
 		myosc.getNextMessage(&m);

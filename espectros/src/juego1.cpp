@@ -348,12 +348,14 @@ void juego1::sceneWillDisappear( ofxScene * toScreen ){
 void juego1::init_Escena(){
  //   ofAddListener(box2d.contactStartEvents, this, &nuclear_debil::contactStart);
 //	ofAddListener(box2d.contactEndEvents, this, &nuclear_debil::contactEnd);
-	ofSetFrameRate(60);
+	ofSetFrameRate(50);
         box2d.enableEvents();   // <-- turn on the event listener
     ofAddListener(box2d.contactStartEvents, this, &juego1::contactStart);
     ofAddListener(gui2->newGUIEvent,this,&juego1::gui2Event);
     gui2->disable();
     cheapComm::getInstance()->showVideoCeil();
+    reset();
+    circles.clear();
 }
 
 void juego1::exit_Escena(){
