@@ -19,6 +19,9 @@ void cheapComm::setup(){
 
 void cheapComm::oscRcvUpdate(){
 	while(myosc.hasWaitingMessages()){
+        if( ((testApp*)ofGetAppPtr())->appStatuses["forceCamera"]==true) {
+         return;            
+        }
 		// get the next message
 		ofxOscMessage m;
 		myosc.getNextMessage(&m);
@@ -27,7 +30,7 @@ void cheapComm::oscRcvUpdate(){
             ((testApp*)ofGetAppPtr())->setFrontCamera(); //TODO aqui hayuq eponer setFrontCamera cuando esté la segunda camara
 		}
         if(m.getAddress() == "/video/ceil"){
-            ((testApp*)ofGetAppPtr())->setFrontCamera();
+            ((testApp*)ofGetAppPtr())->setCeilCamera();
 		}
     }
 }
