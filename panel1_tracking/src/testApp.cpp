@@ -114,7 +114,11 @@ void testApp::update(){
         
         sourceColorImg.setFromPixels(pixels, VIDEOWITH,VIDEOHEIGHT);
         sourceColorImg.updateTexture();
-        sourceColorImg.mirror(false, true);
+		
+		// Hacer mirror(V,H) horizontal a la camara y video de Ceil.
+//        sourceColorImg.mirror(false, true);
+        sourceColorImg.mirror(false, bFlipHCameraAct);
+		
         sourceGrayImage = sourceColorImg;
         
 //MEJORA FONDO HACIENDOLO ADAPTATIVO
@@ -163,6 +167,8 @@ void testApp::setFrontCamera(){
         firstTimeFrontCamera=false;
     }
     configIndex=FRONT_INDEX;
+	
+	bFlipHCameraAct = true;
 
 }
 
@@ -180,6 +186,9 @@ void testApp::setCeilCamera(){
         firstTimeCeilCamera=false;
     }
     configIndex=CEIL_INDEX;
+	
+	bFlipHCameraAct = false;
+	
     
 }
 /* esta funcion toma el resultado del blob tracking y lo usa como m‡scara sobre la imagen original. De esta fomra queda la imagen original, pero solo la zona donde hay blob */

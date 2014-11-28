@@ -1061,10 +1061,10 @@
 				E8AEC772E961A4500E6FF09C /* ofxBlobTracker */,
 				F736258E192247A000964804 /* mosaicRecorder.h */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
+				E4B69E1F0A3A1BDC003C02F2 /* testApp.h */,
 				E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */,
 				F7A657CC19AB6C7D004E0E78 /* testApp_tuioxtra.cpp */,
 				F7AFF65E192D7CAA00EA59D5 /* descartes.h */,
-				E4B69E1F0A3A1BDC003C02F2 /* testApp.h */,
 				F7F0BE8E191A6F680095B0B9 /* cheapComm.cpp */,
 				F7F0BE8F191A6F680095B0B9 /* cheapComm.h */,
 			);

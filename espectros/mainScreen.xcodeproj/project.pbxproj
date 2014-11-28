@@ -1846,9 +1846,9 @@
 		F77253C71986AED800ADD13E /* lanzaBola */ = {
 			isa = PBXGroup;
 			children = (
+				F77253CC1986AF3400ADD13E /* juego1.h */,
 				F77253CB1986AF3400ADD13E /* juego1.cpp */,
 				F79B33DF19C231E000837E99 /* effects.h */,
-				F77253CC1986AF3400ADD13E /* juego1.h */,
 				F7775B2A199D09FD008C334D /* juego1_red.cpp */,
 				F7A657D319AEBADC004E0E78 /* gameAdmin.h */,
 			);

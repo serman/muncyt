@@ -74,6 +74,7 @@ public:
 	
 	// - - - - - MosaicoCaras - - - - - - 
 	//
+    ofImage backgroundImg;
 	
 	// Ubicacion de los mosaicos
 	ofRectangle	rectPantalla;
@@ -119,6 +120,8 @@ public:
 	
 	void	setupBandas();
 	bool	swDrawLineasBandas;
+	
+	bool	swDrawPartido;
 	
 	// Para redimensionar las bandas a escala mayor
 	// Solo en caso de que haya que analizar y preprocesar

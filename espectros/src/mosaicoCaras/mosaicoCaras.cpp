@@ -28,6 +28,9 @@ void MosaicoCaras::setup(){
 	setupBandas();
 	
 	swDrawLineasBandas = false;
+	swDrawPartido = false;
+
+    backgroundImg.loadImage("fondos/Mosaico.png");
     
 }
 
@@ -151,7 +154,8 @@ void MosaicoCaras::update(float f){
 
 void MosaicoCaras::draw(){
 	ofBackground(ofColor::black);
-	
+    backgroundImg.draw(0,0,1280,720);
+    
 	ofPushStyle();
 	ofNoFill();
 	ofSetColor(0,0,255);
@@ -215,6 +219,17 @@ void MosaicoCaras::keyPressed(int key){
     if(key=='l') {
 		swDrawLineasBandas=!swDrawLineasBandas;
 	}
+	else if(key=='p') {
+		swDrawPartido=!swDrawPartido;
+		if(swDrawPartido) {
+			mosaicoL.tipo=CASILLAS_4X2;
+			mosaicoR.tipo=CASILLAS_4X2;
+		}
+		else {
+			mosaicoL.tipo=CASILLAS_4;
+			mosaicoR.tipo=CASILLAS_4;
+		}
+	}
 }	
 
 //scene notifications
@@ -229,6 +244,7 @@ void MosaicoCaras::sceneWillDisappear( ofxScene * toScreen ){
 };
 
 void MosaicoCaras::init_Escena(){
+    
    }
 
 void MosaicoCaras::exit_Escena(){

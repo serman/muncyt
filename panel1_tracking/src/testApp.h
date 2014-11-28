@@ -84,6 +84,9 @@ class testApp : public ofBaseApp{
 	    //vector <ofPoint> positgui_settingsCamera0.xml"guiions;
     	int rectCounter=0;
     int alphaCounter=0;
+	
+	bool	bFlipHCameraAct = false;
+	
 	public:
 		void setup();
 	    void setupStatus();
