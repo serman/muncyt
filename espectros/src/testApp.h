@@ -25,7 +25,7 @@
 #include "generativo2.h"
 #include "juego1.h"
 #include "juego2.h"
-#include "joy2key.h"
+#include "joy2KeyLocal.h"
 class testApp : public ofBaseApp{
     
 	enum Scenes{ FANTASMAS=0, BOLA, COMEPANTALLA, JOY_WAVES ,CARAS3D, MOSAICOCARAS };

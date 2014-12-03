@@ -398,7 +398,7 @@ void fantasmas::onRecordingFinished(int &num){
 
 //--------------------------------------------------------------
 void fantasmas::keyReleased(int key){
-    if(key=='r'){
+    if(key=='e'){
         recordThisBlob=true;
     }
     
