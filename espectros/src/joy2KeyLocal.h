@@ -16,6 +16,7 @@ public:
     int previousval1;
     
     int previousValueButton;
+    bool joystickPresent=false;
     
     void setup(){
        // int serverRecvPort = 12000;
@@ -23,9 +24,15 @@ public:
         previousval0=0;
         previousval1=0;
         previousValueButton=0;
+        if(glfwJoystickPresent(0)==false){
+            joystickPresent=false;
+        }
+        else joystickPresent=true;
+            
     }
     
     int update(){
+        if(joystickPresent==false) return;
         int c;
         const  float* ejes=glfwGetJoystickAxes(0, &c);
         //cout <<ejes[0]<<endl;

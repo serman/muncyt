@@ -381,6 +381,7 @@ void fantasmas::tuioRemoved(ofxTuioCursor &tuioCursor){
 void fantasmas::keyPressed(int key){
 
 }
+
 void fantasmas::onRecordingFinished(int &num){
     cout << "onRecordingFinished:: grabacion finalizada "<< endl;
     selectedBlobId=-1;
@@ -420,32 +421,38 @@ void fantasmas::keyReleased(int key){
     }
     
     else if(key=='d' || key=='a'){
+        // si se esta grabando no se hace nada
+        if(recordThisBlob==true) return;
+        //se pilla el primer blob disponible
         list<ofxTuioCursor*>::iterator tobj;
         list<ofxTuioCursor*> objectList = tuioclient->getTuioCursors();
         
-        if(selectedBlobId==-1){
-            cout << "selected blog = -1"<<endl;
+        if(selectedBlobId==-1){ //Si no hay blob seleccionado seleccioamos el primero
+         //   cout << "selected blog = -1"<<endl;
             if(objectList.size()>0) {
                 selectedBlobId=(*objectList.begin())->getSessionId();
             }
-            return;
+            return; //si no hay ningœn blob selectedblob seguir‡ siendo -1 y al volver lo seleccionara
         }
-        else{
+        else{ //recorremos todos los blobs
             for (tobj=objectList.begin(); tobj != objectList.end(); tobj++) {
                 ofxTuioCursor *blob = (*tobj);
                 if(blob->getSessionId() == selectedBlobId){
-                    cout << "get next blob" << endl;
+            //  Cuanco encontramos el blob actual seleccionamos el siguiente
                     ofxTuioCursor* nextb=getNextBlob(tobj,objectList);
-                    if(nextb!=NULL)
+                    if(nextb!=NULL){
                         selectedBlobId=nextb->getSessionId();
-                    else
+                    }
+                    else{
+                        selectedBlobId =-1;
                         ofLogError()<<"next blog was null" <<endl;
+                    }
+                    return;
                 }
             }
+            selectedBlobId=-1; // si se llega a este punto algo ha ido raro asi que lo ponemos a -1
         }
-    }
-
-    
+    }    
 }
 
 
