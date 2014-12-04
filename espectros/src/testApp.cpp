@@ -182,7 +182,7 @@ void testApp::gotMessage(ofMessage m){
 int testApp::chooseScene(){
     int id=sceneManager->getCurrentSceneID();
     id++;
-    if(id>=NUM_SCENES) // si se han acabado las escenas volver
+    if(id>NUM_SCENES) // si se han acabado las escenas volver
         return 0;
     else return id;
 }
