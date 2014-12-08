@@ -26,17 +26,20 @@ public:
         previousValueButton=0;
         if(glfwJoystickPresent(0)==false){
             joystickPresent=false;
+            cout << "NOT PRESENT";
         }
-        else joystickPresent=true;
-            
+        else{ joystickPresent=true;
+            cout << "PRESENT";
+        }
+        
     }
     
     int update(){
-        if(joystickPresent==false) return;
+      //  if(joystickPresent==false) return;
         int c;
         const  float* ejes=glfwGetJoystickAxes(0, &c);
         //cout <<ejes[0]<<endl;
-        cout <<ejes[1]<<endl;
+        //cout <<ejes[1]<<endl;
         const unsigned char* botones=glfwGetJoystickButtons(0, &c);
         
         int positionReponse=0;
