@@ -65,10 +65,9 @@ void testApp::parseEmOsc(string s,   ofxOscMessage &m){
 void testApp::parseGravityOsc(string s,   ofxOscMessage &m){
     //cout << "parse gravity: " << s << endl;
     if(s=="/collapse_proximity"){
-      
         float collapseProximity=m.getArgAsFloat(0);
         mgrid.elongation( ofMap(collapseProximity, 0, 1, 1, 0.6 ) );
-        cout << "collapse proximity " << collapseProximity <<endl;
+       // cout << "collapse proximity " << collapseProximity <<endl;
     }
     else if(s=="/sun_collision_event"){
         mgrid.setVibration();
@@ -81,9 +80,6 @@ void testApp::parseGravityOsc(string s,   ofxOscMessage &m){
     else if(s=="/collapse_end_event"){
         mgrid.endBlackHole();
     }
-
-    
-
 }
 
 void testApp::parseMenuOsc(string s,   ofxOscMessage &m){

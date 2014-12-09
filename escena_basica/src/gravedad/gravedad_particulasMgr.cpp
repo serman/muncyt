@@ -54,17 +54,18 @@ void gravedad::updateParticlesX() {
 //		gravityTowards(ofVec3f& a_target,float a_minDist, float masaAttrac)
 //		ofVec3f pSol = ofVec3f(W_WIDTH/2.0, W_HEIGHT/2.0,0);
 //		particulas[i].gravityTowards(pSol, 10.0f,  masaSol);
-		ofVec3f ppp = ofVec3f(sol.posScreen.x,sol.posScreen.y,0);
+		ofVec3f ppp = ofVec3f(sol.posScreen.x,sol.posScreen.y);
 		particulas[i].gravityTowards(ppp , 10.0f,  sol.masa);	
     }
 
 	// fuerzas TUIO
     for (int j=0; j<hands.objectsCol.size(); j++){
-        ofVec3f pTUIO(hands.objectsCol[j]->x,hands.objectsCol[j]->y);
+        ofVec3f pTUIO(hands.objectsCol[j]->x,-hands.objectsCol[j]->y, 0);
 		
-//		ofLogNotice() << "updateParticlesX() · TUIO: " << ofToString(pTUIO) << "   vs Sol: " << ofToString(sol.posScreen);
 		pTUIO+=ofVec3f(W_WIDTH/2.0, W_HEIGHT/2.0 ,0);
-		
+        // OK
+//        ofLogNotice() << "TUIO:" << pTUIO.x << ", "<< pTUIO.y;
+//        ofLogNotice() << "Sol:" << sol.posScreen.x << ", "<< sol.posScreen.y;
         for(int i=0; i<particulas.size(); i++) {
             //ofVec3f pTUIO = ofVec3f(ofGetMouseX()-ofGetWidth()/2, -(ofGetMouseY()-ofGetHeight()/2), 0);
             particulas[i].gravityTowards(pTUIO, 10.0f,  masaTUIO);
@@ -90,7 +91,7 @@ void gravedad::updateParticlesX() {
 			// CHOQUE!!!
 			// sumar masa a Sol
 //			addMasaSol(600);
-			sol.addMasa(600);
+			sol.addMasa(700);
 			
 			// eliminar particula
 			particulas.erase(particulas.begin()+i);
@@ -103,12 +104,35 @@ void gravedad::updateParticlesX() {
 			particulas.erase(particulas.begin()+i);			
 		}
 
+		//
+		// NOV 26
+		//
+		// Ajustar posiciones Z:
+		float time = ofGetElapsedTimef();	//Get time
+		for(int i=0; i<particulas.size(); i++) {		
+			
+			//		particulas[i].gravityTowards(pTUIO, 10.0f,  masaTUIO);
+			ofPoint p = particulas[i].position;
+			
+			ofPoint pNew = calculaPosicionMesh(p, time);
+			
+			// asignar color segun la altura
+			ofFloatColor cc;
+			float ccv = ofMap(pNew.z,0,-500, 1.0, 0.0);
+			cc = ofFloatColor(abs(1-ccv),abs(1-ccv),ccv, 1.0);
+			
+			//
+			// SET VERTEX
+			particulas[i].position =  pNew ;
+			particulas[i].zMalla = pNew.z;//+ ofMap(ofGetMouseY(), 0, ofGetHeight(), -1000,1000);
+			//		superf.setColor(i, cc);
+			
+		}
 	}
 	
 //	ofLogNotice() << "gravedad::updateParticlesX " << 5;
 	
 }
-
 
 void gravedad::drawParticlesX() {
 	// draw

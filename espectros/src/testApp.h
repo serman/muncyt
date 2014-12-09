@@ -20,14 +20,15 @@
 #include "fantasmas.h"
 #include "glitch.h"
 #include "faces.h"
+#include "MosaicoCaras.h"
 #include "generativo1.h"
 #include "generativo2.h"
 #include "juego1.h"
 #include "juego2.h"
-#include "joy2key.h"
+#include "joy2KeyLocal.h"
 class testApp : public ofBaseApp{
     
-	enum Scenes{ FANTASMAS=0, BOLA, COMEPANTALLA, JOY_WAVES ,CARAS3D };
+	enum Scenes{ FANTASMAS=0, BOLA, COMEPANTALLA, JOY_WAVES ,CARAS3D, MOSAICOCARAS };
 #define NUM_SCENES 5
 public:
     void setup();

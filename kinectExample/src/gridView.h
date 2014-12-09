@@ -306,7 +306,7 @@ public:
     }
     
     void endBlackHole(){
-        
+        status = GRID;
     }
     
     

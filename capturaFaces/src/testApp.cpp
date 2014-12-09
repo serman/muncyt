@@ -53,6 +53,59 @@ void testApp::setupBandas() {
 		ids_2.push_back(0);
 	}
 	
+
+	//
+	// FCTRACKER
+	//
+	escAreaUp  = 0.0;//0.2/10.0;
+	escAreaDwn = 2.2/10.0;
+	escArea = (escAreaUp + escAreaDwn);
+	float props[4] = {0.18, 0.27, 0.12, 0.43};	// medidas para escArea=2.2
+	
+	
+	// Estos valores son para escAreaDwn=2.2
+	//
+	ofRectangle r0FT = ofRectangle(0,0,					  LADO_CARA, LADO_CARA*props[0]);
+	ofRectangle r1FT = ofRectangle(0,r0FT.y+r0FT.height,  LADO_CARA, LADO_CARA*props[1]);
+	ofRectangle r2FT = ofRectangle(0,r1FT.y+r1FT.height,  LADO_CARA, LADO_CARA*props[2]);
+	ofRectangle r3FT = ofRectangle(0,r2FT.y+r2FT.height,  LADO_CARA, LADO_CARA*props[3]);
+	bandas1_FT.push_back(r0FT);
+	bandas1_FT.push_back(r1FT);
+	bandas1_FT.push_back(r2FT);
+	bandas1_FT.push_back(r3FT);
+
+	ofRectangle r01FT = ofRectangle(r0FT.x,r0FT.y,					LADO_CARA/2.0, r0FT.height);
+	ofRectangle r02FT = ofRectangle(r0FT.x+LADO_CARA/2.0,r0FT.y,	LADO_CARA/2.0, r0FT.height);
+	ofRectangle r11FT = ofRectangle(r1FT.x,r1FT.y,					LADO_CARA/2.0, r1FT.height);
+	ofRectangle r12FT = ofRectangle(r1FT.x+LADO_CARA/2.0,r1FT.y,	LADO_CARA/2.0, r1FT.height);
+	ofRectangle r21FT = ofRectangle(r2FT.x,r2FT.y,					LADO_CARA/2.0, r2FT.height);
+	ofRectangle r22FT = ofRectangle(r2FT.x+LADO_CARA/2.0,r2FT.y,	LADO_CARA/2.0, r2FT.height);
+	ofRectangle r31FT = ofRectangle(r3FT.x,r3FT.y,					LADO_CARA/2.0, r3FT.height);
+	ofRectangle r32FT = ofRectangle(r3FT.x+LADO_CARA/2.0,r3FT.y,	LADO_CARA/2.0, r3FT.height);
+	bandas2_FT.push_back(r01FT);
+	bandas2_FT.push_back(r02FT);
+	bandas2_FT.push_back(r11FT);
+	bandas2_FT.push_back(r12FT);
+	bandas2_FT.push_back(r21FT);
+	bandas2_FT.push_back(r22FT);
+	bandas2_FT.push_back(r31FT);
+	bandas2_FT.push_back(r32FT);
+	
+	for(int i=0; i<bandas1_FT.size(); i++) {
+		ofRectangle rX = bandas1_FT[i];
+		rX.x = bandas1_FT[i].x*(1+escArea);
+//		rX.y *= (1+escArea);
+//		rX.y += escAreaUp*LADO_CARA;
+//		rX.width = LADO_CARA;
+//		rX.height *= (1+escArea);
+//		rX.height /= (1+escArea);
+		
+		bandas1_X.push_back(rX);	
+		ofLogNotice() << "bandas1: " << i << " - " << ofToString(bandas1_FT[i]);
+		ofLogNotice() << "bandas1_X: " << i << " - " << ofToString(bandas1_X[i]);
+		ids_1_X.push_back(0);
+	}
+	
 }
 
 void testApp::cargarFiles() {
@@ -90,11 +143,13 @@ void testApp::setupFinders() {
 	finder_ofxcv.setPreset(ofxCv::ObjectFinder::Accurate); // Accurate Sensitive
 	finder_ofxcv.setMultiScaleFactor(1.09);
 	
-	modoDetect = MODO_OFXCV;
+	modoDetect = MODO_FCTRACKer;// MODO_OFXCV;
 	
 	// Face Tracker
 	tracker.setup();
 	tracker.setRescale(.5);
+	
+	
 	
 }
 
@@ -102,7 +157,7 @@ void testApp::setupFinders() {
 void testApp::update(){
 	if(!isAnalisisDone) {
 		rectsFacesAct.clear();
-//		ofLogError("analisis no hecho");
+		
 		// haz el analisis de la imagen que toque
 		
 		if(modoDetect==MODO_OFXCV) {
@@ -151,6 +206,7 @@ void testApp::update(){
 					// resize el rectangulo de la cara segœn parametros de control de W,H
 					
 					// guardar los resultados en vector de structs faceData
+					rectsFacesAct.push_back(fd);					
 					
 					// guardar la imagen en un vector de images capturadas
 					
@@ -174,17 +230,29 @@ void testApp::update(){
 				rectCara = tracker.getHaarRectangle();
 				
 				// Guardar imagen recortada y escalada pro con m‡s ‡rea de rostro
-				float escAreaUp  = 0.2/10.0;
-				float escAreaDwn = 2.2/10.0;
-				float escArea = (escAreaUp + escAreaDwn);
 				rectCara_X = tracker.getHaarRectangle();
+				ofLogNotice() << "Update rectCara_X: " << rectCara_X;
+				float esc2 = escArea/2.0;
+				ofLogNotice() << "x: " << rectCara_X.x;
+				ofLogNotice() << "escaArea: " << escArea << "    esc2: " << esc2 ;
 				
 				rectCara_X.x += -rectCara_X.width*escArea/2.0;
 				rectCara_X.y += -rectCara_X.height*escAreaUp;
 				rectCara_X.width = rectCara_X.width*(1+escArea);
 				rectCara_X.height = rectCara_X.height*(1+escArea);
 								
+				ofLogNotice() << "Update rectCara_X: " << rectCara_X;
 				
+				
+				// guardar la imagen en un vector de images capturadas
+				ofImage imgTmp;	
+				imgTmp.cropFrom(images[iImgAct], 
+								rectCara_X.x, rectCara_X.y,
+								rectCara_X.width, rectCara_X.height);
+				imgTmp.resize(LADO_CARA, LADO_CARA);
+				images_faces.push_back(imgTmp);
+				
+				isAnalisisDone = true;			
 				
 				
 			}
@@ -227,15 +295,24 @@ void testApp::draw(){
 			ofDrawBitmapString("w/h: " + ofToString(cur.width/cur.height), ofPoint(xSubsect,ofGetHeight()-cur.height-30));
 		}		
 
-		// DIBUJAR IMAGENES
+		
+		// DIBUJAR MEZCLA DE IMAGENES
 		if(images_faces.size()>0) {
 			ofPushMatrix();
 			ofTranslate(ofGetWidth()-images_faces[iFaceAct].width, 0);
 			// mezcla de imagenes
 			ofSetColor(255,255,255);			
 			if(!draw_bandas2) {
-				for(int i=0; i<bandas1.size(); i++) {
-					drawBanda(ids_1[i], i, bandas1);
+				if(modoDetect!=MODO_FCTRACKer) {
+					for(int i=0; i<bandas1.size(); i++) {
+						drawBanda(ids_1[i], i, bandas1);
+					}
+				}
+				else {
+					// Modo FACETRACKER
+					for(int i=0; i<bandas1_X.size(); i++) {
+						drawBanda(ids_1_X[i], i, bandas1_X);
+					}
 				}
 			}
 			else {
@@ -261,6 +338,9 @@ void testApp::draw(){
 				for(int i=0; i<ids_2.size(); i++) {
 					if(0.10>ofRandom(1.0)) ids_2[i] = floor(ofRandom(images_faces.size()));
 				}
+				for(int i=0; i<ids_1_X.size(); i++) {
+					if(0.40>ofRandom(1.0)) ids_1_X[i] = floor(ofRandom(images_faces.size()));
+				}
 				
 				lastTime = ofGetElapsedTimeMillis();				
 			}
@@ -277,9 +357,10 @@ void testApp::draw(){
 	
 	if(modoDetect==MODO_FCTRACKer) {
 		ofPushStyle();
-		tracker.draw();
+		tracker.draw(true);
 
 		
+		// IMAGEN LATERAL
 		ofPushMatrix();
 //		ofTranslate(ofGetWidth()-rectCara_X.width, 0);
 		ofTranslate(ofGetWidth()-LADO_CARA, 0);
@@ -296,7 +377,7 @@ void testApp::draw(){
 
 		// DE SERIE
 		ofSetColor(200,0,0, 180);
-		tracker.draw();
+		tracker.draw(true);
 		
 		
 		ofSetColor(200,200,0, 30);
@@ -326,6 +407,10 @@ void testApp::draw(){
 		ofPopStyle();
 	}
 
+	float py = (float)ofGetMouseY()/LADO_CARA;
+	ofDrawBitmapString(ofToString(ofGetMouseY())+"-"+ofToString(py), ofPoint(ofGetMouseX(),ofGetMouseY()));
+	
+	
 	ofDrawBitmapString("(b) Draw en 4 u 8 zonas", ofPoint(10,ofGetHeight()-130));
 	ofDrawBitmapString("Seleccion Images (n/m): " + ofToString(iImgAct)+"/"+ofToString(images.size()), ofPoint(10,ofGetHeight()-110));
 	ofDrawBitmapString("ModoAct (z): " + ofToString(modoDetect), ofPoint(10,ofGetHeight()-90));
@@ -342,6 +427,12 @@ void testApp::drawBanda(int idFace, int idBanda, vector<ofRectangle> _bandas) {
 									 _bandas[idBanda].height, 
 									 _bandas[idBanda].x,
 									 _bandas[idBanda].y);
+
+	ofPushStyle();
+	ofNoFill();
+	ofSetColor(255);
+	ofRect(_bandas[idBanda]);
+	ofPopStyle();
 	
 }
 

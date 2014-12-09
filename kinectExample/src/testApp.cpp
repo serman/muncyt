@@ -182,6 +182,8 @@ void testApp::setupStatus(){
      appStatuses["escena"]=MENU;
      appStatuses["em_ruido"]=true;
      appStatuses["alpha_ruido"]=255;
+     appStatuses["showCursor"]=0;
+     appStatuses["demoSending"]=0;    
 }
 
 
@@ -291,7 +293,12 @@ void testApp::startFBO(){
 }
 
 void testApp::draw() {
+    if(appStatuses["showCursor"]==0){
         ofHideCursor();
+    }else {
+        ofShowCursor();
+    }
+    
     if(appStatuses["escena"]==TESTING){
         ofDisableAlphaBlending();
         ofBackground(0,40,100);
@@ -484,6 +491,16 @@ void testApp::showDebug(){
         oss << i << ": " << post[i]->getName() << (post[i]->getEnabled()?" (on)":" (off)");
         ofDrawBitmapString(oss.str(), 10, 20 * (i + 2));
     }
+   // if(appStatuses["demoSending"]==1){
+        ofDrawBitmapString("Screen id: " + ofToString(SCREEN_ID),20,ofGetHeight()-200 );
+        
+        if(rcvCont.isThreadRunning()){
+            ofDrawBitmapString("receiver thread running" + ofToString(SCREEN_ID),20,ofGetHeight()-150 );
+        }else{
+            ofDrawBitmapString("receiver thread NOT running" + ofToString(SCREEN_ID),20,ofGetHeight()-100 );
+        }
+        
+   // }
     ofPopMatrix();
 }
 

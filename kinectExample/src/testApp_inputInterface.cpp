@@ -85,13 +85,15 @@ void testApp::keyPressed (int key) {
                 guiTabBar->disable();
             else guiTabBar->enable();
 			break;
-
+        case '.':
+            debug=!debug;
         case 'o':
             if(oniCamrecorder.isRecording==true)
                 oniCamrecorder.stopRecording();
             else
                 oniCamrecorder.startRecording();
             break;
+            
         case 'm':
             mgrid.setVibration();
         break;
@@ -116,12 +118,34 @@ void testApp::keyPressed (int key) {
         case 'k':
             camera.toggleMouseActions();
             break;
+
+        case 'c':
+            if(appStatuses["showCursor"]==1)
+                appStatuses["showCursor"]=0;
+            else if(appStatuses["showCursor"]==0)
+                appStatuses["showCursor"]=1;
+            break;
+            
         case ' ':
             if(guiTabBar->isEnabled() )
 	            guiTabBar->disable();
             else
 				guiTabBar->enable();
             break;
+
+        case 'p':
+            if(appStatuses["demoSending"]==1){
+                appStatuses["demoSending"]=0;
+                mgrid.endBlackHole();
+               // debug=false;
+            }
+            else if(appStatuses["demoSending"]==0){
+                appStatuses["demoSending"]=1;
+                toScene(GRAVEDAD);
+                mgrid.initBlackHole();
+                debug=true;
+            }
+        break;
 
 
 	}

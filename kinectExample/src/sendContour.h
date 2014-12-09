@@ -57,7 +57,6 @@ public:
 //            SCREEN1 SENDS TO SCREEN 2 2->3 3->1
         
         if(SCREEN_ID==1){
-
             udpConnection.Connect(ip_espejo_2.c_str() ,11999);
         }
         
@@ -70,7 +69,7 @@ public:
         if(SCREEN_ID==4){ //just for testing
             udpConnection.Connect("127.0.0.1",11999);
         }
-            udpConnection.SetNonBlocking(true);
+        udpConnection.SetNonBlocking(true);
     }
     
     

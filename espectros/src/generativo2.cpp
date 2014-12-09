@@ -173,7 +173,7 @@ void generativo2::sceneWillDisappear( ofxScene * toScreen ){
 };
 
 void generativo2::init_Escena(){
-    cheapComm::getInstance()->showVideoFront();
+    cheapComm::getInstance()->showVideoCeil();
     time_since_init_scene=ofGetElapsedTimeMillis();
     ofSetFrameRate(50);
     end_of_scene_sent=false;

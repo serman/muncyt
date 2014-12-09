@@ -61,7 +61,7 @@ void juego2::setup(){
     createBigEnemy();
     backgroundImg.loadImage("fondos/JuegoComePantalla.png");
     glowcircle.loadImage("glowCircle.png");
-    
+    myfont.loadFont("visitor1.ttf", 15, false,false,false);
 }
 
 
@@ -142,7 +142,7 @@ void juego2::draw(){
             ofSetColor(100, 100, 130);
             ofRect(-2,-2,SCREEN_W+5,SCREEN_H+5);
             ofSetColor(0,0,0);
-            ofDrawBitmapString("VICTORIA!",300,300);
+            myfont.drawString("VICTORIA!",300,300);
         }
         if(drawExplodeb){
             drawExplode();
@@ -258,12 +258,12 @@ void juego2::drawEnemies(){
             }
         }
         ofSetColor(255, 0, 0);
-        circles[i]->draw();
+        //circles[i]->draw();
 	}
     ofDisableBlendMode();
     enemy *menemy=(enemy *)bigEnemy.getData();
     //bigEnemy.draw();
-    menemy->draw(bigEnemy.getPosition().x, bigEnemy.getPosition().y);
+    menemy->drawBIGENEMY(bigEnemy.getPosition().x, bigEnemy.getPosition().y);
 }
 
 void juego2::showDebug(){
@@ -284,11 +284,11 @@ void juego2::showDebug(){
 void juego2::drawDisplay(){
     ofFill();
     ofSetColor(200, 50, 0);
-    ofRect(11,11,ofMap(calcMarcador(), 0, PERCENT_TO_WIN, 0, 80),20);
-    
+    ofRect(11,11,ofMap(min(calcMarcador(),PERCENT_TO_WIN), 0, PERCENT_TO_WIN, 0, 80),20);
     ofSetColor(200);
     ofNoFill();
     ofRect(10,10,80,20);
+    myfont.drawString(ofToString(calcMarcador()) + "% de " + ofToString(PERCENT_TO_WIN ) + "%", 96, 25);
 }
 
 
@@ -367,7 +367,7 @@ void juego2::removeObstacle(int m_id){
 
 
 
-
+//colisiones
 
 //--------------------------------------------------------------
 void juego2::contactStart(ofxBox2dContactArgs &e) {
@@ -385,7 +385,8 @@ void juego2::contactStart(ofxBox2dContactArgs &e) {
             )
             {
                 cout << "choque" <<endl;
-                prepareReset=true;
+                if(appStatuses["isOnContour"]==false)
+                    prepareReset=true;
             }
 		}
 }
@@ -413,6 +414,7 @@ void juego2::init_Escena(){
     //mSyphonClient->unbind();
     //mSyphonClient2->unbind();
     reset();
+
 }
 
 void juego2::exit_Escena(){
@@ -472,6 +474,7 @@ void juego2::reset(){
     explode(d);
     player.setPosition(d);
     poli.clear();
+    circles.clear();
     prevPos=player.getPosition();
     fillthis=false;
     appStatuses["isOnContour"]=true;

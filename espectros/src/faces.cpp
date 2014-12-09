@@ -175,8 +175,9 @@ void faces::update(float f){
         case ALL_FACES_LOADED:
             if(ofGetElapsedTimeMillis()-timeStatusChanged>ALL_FACES_LOADED_TIME){
                 if(end_of_scene_sent==false){
-                    ofSendMessage("endOfScene");
+                    //ofSendMessage("endOfScene");
                     end_of_scene_sent=true;
+                    init_Escena();
                 }
             }
             break;
