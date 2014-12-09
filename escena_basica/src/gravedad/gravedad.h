@@ -62,6 +62,8 @@ public:
 	int		nH, nW;
 	void	setupMeshSuperf();
 	void	updateMeshSuperf();
+
+	ofPoint calculaPosicionMesh(ofPoint pOrig, float t);
 	
 	float nivelNoise;
 	bool	noiseAuto;
@@ -84,7 +86,7 @@ public:
 	ofEasyCam	cam;
 	ofCamera	camera;
 	
-    ofLight		light;
+    ofLight		light;// light1;
 	ofMaterial	mat1;
 	ofColor		mat1Color;
 	

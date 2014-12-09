@@ -10,6 +10,8 @@
 #include "utilsGeom.cpp"
 
 void nuclear_fuerte::setup(){
+	ofLogNotice("nuclear_fuerte::setup()");
+	
     ofSetVerticalSync(true);
 	
 	// Lista de colores
@@ -84,8 +86,7 @@ void nuclear_fuerte::setup(){
 	init_Scena();
     gui1->disable();
 
-
-	
+	ofLogNotice("nuclear_fuerte::setup() - FIN");
     
 }
 
@@ -322,23 +323,23 @@ void nuclear_fuerte::update(float d1){
 
 }
 
-void nuclear_fuerte::addParticleLateral() {
-	//	float rnd = ofRandom(1.0);
-	//	if(rnd<0.15) {
-	if(ofGetFrameNum()%ratePartic==0) {
-		float v = ofMap(ofGetMouseX(),0,ofGetMouseY(), 4, 10);
-		float mass = 1+ofRandom(5);
-		float carga = floor(ofRandom(10))-5;	// de -5 a 5
-		
-		int nColor = floor(ofRandom(6)); // 0,1,2 colores y 3,4,5 anticolores
-		ofColor cTmp = coloresAll[nColor];
-		
-        
-		ParticleS p = ParticleS(ofVec3f(0,ofRandom(ofGetHeight()),0), ofVec3f(v,0,0), cTmp, mass, carga );
-		p.idEmitter = -1;
-		particulas.push_back(p);
-	}
-}
+//void nuclear_fuerte::addParticleLateral() {
+//	//	float rnd = ofRandom(1.0);
+//	//	if(rnd<0.15) {
+//	if(ofGetFrameNum()%ratePartic==0) {
+//		float v = ofMap(ofGetMouseX(),0,ofGetMouseY(), 4, 10);
+//		float mass = 1+ofRandom(5);
+//		float carga = floor(ofRandom(10))-5;	// de -5 a 5
+//		
+//		int nColor = floor(ofRandom(6)); // 0,1,2 colores y 3,4,5 anticolores
+//		ofColor cTmp = coloresAll[nColor];
+//		
+//        
+//		ParticleS p = ParticleS(ofVec3f(0,ofRandom(ofGetHeight()),0), ofVec3f(v,0,0), cTmp, mass, carga );
+//		p.idEmitter = -1;
+//		particulas.push_back(p);
+//	}
+//}
 
 void nuclear_fuerte::addParticleFromEmiter(Emisor &em) {
     //	ofLogNotice("addParticleFromEmiter INI");
