@@ -6,11 +6,12 @@ int  SCREEN_ID=0;
 
 //--------------------------------------------------------------
 void testApp::setup() {
+
   //  cout << "ruta directorio:" << getenv("HOME");
     //particleCloud(oniCamGrabber,depthGenerator);
 	ofSetLogLevel(OF_LOG_VERBOSE);
     
-    if(ofToString(getenv("USER"))=="instalaciones" || ofToString(getenv("USER"))=="muncyt0" ){
+    if(ofToString(getenv("USER"))=="instalaciones" || ofToString(getenv("USER"))=="muncyt0" || ofToString(getenv("USER"))=="sergiogalan" ){
         ofLogToFile( ofToString (getenv("HOME") ) + "/flab_espejo_log.txt", true);
     }
 
@@ -178,7 +179,7 @@ void testApp::setup() {
 }
 
 void testApp::setupStatus(){
-     appStatuses["escena"]=EM;
+     appStatuses["escena"]=MENU;
      appStatuses["em_ruido"]=true;
      appStatuses["alpha_ruido"]=255;
 }
@@ -290,6 +291,7 @@ void testApp::startFBO(){
 }
 
 void testApp::draw() {
+        ofHideCursor();
     if(appStatuses["escena"]==TESTING){
         ofDisableAlphaBlending();
         ofBackground(0,40,100);
@@ -487,6 +489,7 @@ void testApp::showDebug(){
 
 //--------------------------------------------------------------
 void testApp::exit() {
+    ofLogToConsole();  
 //	kinect.setCameraTiltAngle(0); // zero the tilt on exit
     oniCamGrabber.close();
 	//gui1->saveSettings("gui_kinect.xml");

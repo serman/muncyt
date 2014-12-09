@@ -4,6 +4,9 @@
 #include "ofxOpenCv.h"
 #include "ofxCv.h"
 #include "ofxFaceTracker.h"
+//#include "ofxFaceTrackerThreaded.h"
+
+#define LADO_CARA 400
 
 struct faceData {
 	ofRectangle rect;
@@ -43,8 +46,12 @@ class testApp : public ofBaseApp{
 		void cargarFiles();
 		
 		vector<ofImage>		images_faces;
-		int					iFaceAct, if1, if2;
+		int					iFaceAct;
 		int					lastTime;
+
+	void drawBanda(int idFace, int idBanda, vector<ofRectangle> _bandas);
+	
+	vector<ofImage>		images_soloCara;
 
 	
 		bool			isAnalisisDone;
@@ -63,8 +70,8 @@ class testApp : public ofBaseApp{
 		ofxCv::ObjectFinder	finder_ofxcv;
 
 		// MODO FACETRACKER
-//		ofxFaceTrackerThreaded tracker;
-		ofxFaceTracker tracker;
+//		ofxFaceTrackerThreaded tracker, trackerFT;
+		ofxFaceTracker tracker, trackerFT;
 	
 		void			update_faceTracker();	
 		ofMesh			LEyeRect, REyeRect, mouthRect;
@@ -73,6 +80,13 @@ class testApp : public ofBaseApp{
 		ofMatrix4x4		rotationMatrix;
 		void			drawFaceTracker();
 	
+	ofRectangle	rectCara, rectCara_X;	
 	
+	void				setupBandas();
+	vector<ofRectangle> bandas1;
+	vector<ofRectangle> bandas2;
+	vector<int> ids_1;
+	vector<int> ids_2;
+	bool	draw_bandas2;
 	
 };

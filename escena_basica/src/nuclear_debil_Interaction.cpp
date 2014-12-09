@@ -199,6 +199,16 @@ void nuclear_debil::ball_inside_event(){
         status=nuclear_debil::EXPLOSION;
         init_explosion_time=ofGetElapsedTimeMillis();
         ofLogNotice() << "MODO explosion" <<endl;
+    }else{
+        if(abs(anillo.wAng)<anillo.wAngMax*0.95){
+            show_info_img_until=ofGetElapsedTimeMillis()+7000;
+            display_to_show=MAS_ACE;
+        }
+        else if(numNucleosActivos<=(NUCLEOS_TO_EXPLOSION-10)){
+            show_info_img_until=ofGetElapsedTimeMillis()+7000;
+            display_to_show=MAS_PART;
+        }
+        
     }
     
     addNeutron(W_WIDTH/2.0,W_HEIGHT/2.0-radioInt*0.9,vvVal,vvAng);

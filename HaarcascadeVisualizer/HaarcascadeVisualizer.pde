@@ -16,17 +16,12 @@ int margin = 0;
 // Color of the image background
 color imgBgColor = color(200);
 
-
-
 ControlP5 cp5;
 // Interface elements
 
 PFont font1, font2;
 PFont courier;
 // Logic
-
-// GUI
-
 int marginL = 40;
 int marginT = 60;
 
@@ -41,7 +36,7 @@ int imgSize;
 ArrayList stages;
 float stageScale;
 String[] xmlFiles;
-String[] fotoFiles={"test640.jpg","test640_2.jpg","test640_3.jpg"};
+ArrayList<String> fotoFiles;//{"test640.jpg","test640_2.jpg","test640_3.jpg"}; //se reescribe con las nuevas fotos
 int currentPhoto=0;
 String path; // sketch path
 
@@ -59,8 +54,8 @@ boolean showInterface;
 String statusMsg = "";
 int idCur;
 
-
-
+String photoFolderPath=System.getProperty("user.home")+"/fotoshaarviz";
+File photoFolder;
 
 int windowsize=100; //haar window size
 int xposition=0; 
@@ -80,10 +75,22 @@ miniImages minimages;
 PImage imagebg;
 boolean amIOveraFace=false;
 void setup() { 
+  /******* inicializar arrays **************/
+  fakeDetectedfaces=new ArrayList<Rectangle>();
+  fotoFiles=new ArrayList<String>();  
+  minimages= new miniImages();
+  minimages.setup();
+ /************************ inicio ***************/ 
   size(1280, 1024,P2D);
   cp5 = new ControlP5(this);
   /*** OPENCV STUFF ***/
-  loadNewPhoto("test640.jpg");
+  
+  photoFolder = new File(System.getProperty("user.home")+"/fotoshaarviz");  
+  listFilesForFolder(photoFolder);
+  //println(System.getProperty("user.home")+"/fotoshaarviz"); 
+  
+  currentPhoto=0;  
+  if(loadNewPhoto(fotoFiles.get(currentPhoto))==false) refresh();  
   setInitPositions();
   mrect.x=xposition;
   mrect.y=yposition;
@@ -100,19 +107,17 @@ void setup() {
             ;
   }
   cp5.hide();
-  path = sketchPath; // an environment variable
+  path = sketchPath; // an environment variable 
   
-  fakeDetectedfaces=new ArrayList<Rectangle>();
   smooth();
 
   font1 = createFont("Helvetica-Light", 21);
   font2 = createFont("Helvetica", 11);
   courier= createFont("courier",15);
   mgraphics= createGraphics(100,100,P2D);
-  minimages= new miniImages();
-  minimages.setup();
+
   setupCurrentIteration();
-  frameRate(60);
+  frameRate(30);
   
   if (isDebug==false) doProcess=true;
   else{
@@ -126,7 +131,6 @@ void setup() {
 
 
 void draw() {
-
  // println(xposition);
   //actualizacion del rectangulo
     if(stagesCounter>stopStage){ //fin de una etapa toca mover cuadradito
@@ -144,7 +148,6 @@ void draw() {
       mrect.x=xposition;
       mrect.y=yposition;
       setupCurrentIteration();
-
     }
 
   // Draw
@@ -228,42 +231,78 @@ if(showInterface){
   popMatrix();
   fill(80);
   if (isDebug==true && showInterface)  debugInfo();
-
  
 }
 void debugInfo(){
   textFont(font2);
   pushMatrix();
-  translate(100,20);
+  fill(255);
+  translate(100,200);
    text("framerater+ " + frameRate, 0, 00);
   text("area interseccion" + areaInterseccion,0,20);
   text("faceRectangle size" + windowsize + " face on screen width:" + faces[0].width ,0,40);  
   popMatrix();
 }
 
-void loadNewPhoto(String name){
-  opencv = new OpenCV(this, name);  
-  opencv.loadCascade(cascadeFile); 
-  faces = opencv.detect(1.4,3,0,100,250);
+boolean loadNewPhoto(String name){
+  img = loadImage(photoFolderPath+"/"+name);
+  opencv = new OpenCV(this, img);  
+  opencv.loadCascade(cascadeFile);
+ // println("despues de opencv" ); 
+  faces = opencv.detect(1.4, 3, 0,100,250);  //(scale, min_neighbors, flags, min_width, min_height);
+  if( faces.length<1 ) return false;
+ // println("despues de opencv 2" );  
+  
   faceRectangle=faces[0];
+ // println("despues de opencv 3" ); 
   faces = opencv.detect(1.4,0,0,100,250);
+ // println("despues de opencv 4" ); 
   mrect=new Rectangle(0,0,100,100);
-  img = loadImage(name);
+ // println("despues de opencv 5" );
+  return true;
+  
 
 }
 
+public void listFilesForFolder(final File folder) {
+  fotoFiles.clear();
+    for (final File fileEntry : folder.listFiles()) {
+        if (fileEntry.isDirectory()) {
+            listFilesForFolder(fileEntry);
+        } else {
+         
+        String extension = "";    
+        String filename  = fileEntry.getName();    
+          int i = filename.lastIndexOf('.');
+          if (i > 0) {
+              extension = filename.substring(i+1);
+            //  System.out.println("exten "+ extension);
+          }
+          if(extension.equals("png") || extension.equals("jpg") ){
+            fotoFiles.add(fileEntry.getName());
+            System.out.println(fileEntry.getName());
+          }
+        }
+    }
+}
+
 //loads new image and define how fast the rectangles will move
-void refresh(){
-  currentPhoto++; 
-  if(currentPhoto>=fotoFiles.length){
-  currentPhoto=0;
+void refresh(){  
+  currentPhoto++;
+  println("refrech" +  currentPhoto); 
+  if(currentPhoto>=fotoFiles.size()){    
+    listFilesForFolder(photoFolder);
+    currentPhoto=0;
   }
-  loadNewPhoto(fotoFiles[currentPhoto]); //TODO TAKE NEW PHOTO FROM LISTS OR WHATEVER
-  fakeDetectedfaces.clear();
-  xposition=0;
-  yposition=0;
-  //setupCurrentIteration();
-  minimages.reset();
+  if(loadNewPhoto(fotoFiles.get(currentPhoto)) == true ){  //TODO TAKE NEW PHOTO FROM LISTS OR WHATEVER
+    fakeDetectedfaces.clear();
+    xposition=0;
+    yposition=0;
+    //setupCurrentIteration();
+    minimages.reset();
+  }else{
+    refresh();
+  }
   
 }
 
@@ -285,8 +324,7 @@ void setupCurrentIteration(){
   windowsize=faceRectangle.width;
   if(mgraphics.width!=windowsize)  mgraphics = createGraphics(windowsize,windowsize,P2D);
   mrect.width=windowsize;
-  mrect.height=windowsize;
-  
+  mrect.height=windowsize;  
   
   if(mrect.intersects(faceRectangle)){
     Rectangle interseccion=mrect.intersection(faceRectangle);
@@ -381,7 +419,7 @@ void slowMotion(boolean start){
   }
 } 
 
-
+//carga archivo haar
 void loadFile() {
   String name = cascadeFile;
   String path = sketchPath +"/";
@@ -395,7 +433,7 @@ void loadFile() {
 
 void keyPressed( ){
     
-  if(key== ' '  ){
+  if(key== 'g'  ){
     println("key pressed");
     showInterface =! showInterface;
     if(showInterface) cp5.setAutoDraw(true);

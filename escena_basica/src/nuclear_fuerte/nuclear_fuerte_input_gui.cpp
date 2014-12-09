@@ -36,7 +36,7 @@ void nuclear_fuerte::keyPressed(int key){
             gui1->disable();
             bshowdebug=false;}
         else{
-            gui1->disable();
+            gui1->enable();
             bshowdebug=true;
         }
     }
@@ -107,8 +107,35 @@ void nuclear_fuerte::tuioAdded(ofxTuioCursor &tuioCursor){
         Emisor * e=addEmisor(posTmp,tuioCursor.getSessionId());
         cheapComm::getInstance()->sendAudio0("/audio/strong_nuclear/hand_on_event");
     }
+    if(posTmp,tuioCursor.getSessionId()%10==0){ //ahora mismo envia orden de intercambio de color cada 10 toque sen la mesa cambiar
     
+
+    }
+   // cout << "colore " << ofToString(colorp1) << " ___ "<< ofToString(colorp2) << " ___ "<< ofToString(colorp3) << " ___ "<<endl;
+}
+void nuclear_fuerte::tuioRemoved(ofxTuioCursor &tuioCursor){
+    //hands.removeObjectByTuioID(tuioCursor.getSessionId() );
+    for(int i=0; i<emitters.size(); i++){
+        if(emitters[i].tuio_id==tuioCursor.getSessionId()) {
+            //elimino emisor
+            emitters.erase(emitters.begin() + i);
+            cheapComm::getInstance()->sendAudio0("/audio/strong_nuclear/hand_off_event");
+        }
+    }
+}
+
+void nuclear_fuerte::tuioUpdated(ofxTuioCursor &tuioCursor){
+    ofPoint loc = transf_PosTUIO(tuioCursor);
+    for(int i=0; i<emitters.size(); i++){
+        if(emitters[i].tuio_id==tuioCursor.getSessionId()) {
+            //actualizao posicion
+            emitters[i].setPos_XY(loc.x-zentro.x, loc.y-zentro.y);
+        }
+    }
     
+}
+
+void nuclear_fuerte::sendExchangeColors(){
     int tipo=floor(ofRandom(1,4));
     exchangeColors(tipo);
     cout << " sending tipo: " << tipo;
@@ -129,27 +156,6 @@ void nuclear_fuerte::tuioAdded(ofxTuioCursor &tuioCursor){
         cheapComm::getInstance()->sendSync4("/sync/strong_nuclear/hand_on_event",1.0,(float)tipo,(float)colorp3,(float)colorp1);
         cheapComm::getInstance()->sendSync2("/sync/strong_nuclear/setColor",3.0,colorp3);
         cheapComm::getInstance()->sendSync2("/sync/strong_nuclear/setColor",1.0,colorp1);
-    }
-    cout << "colore " << ofToString(colorp1) << " ___ "<< ofToString(colorp2) << " ___ "<< ofToString(colorp3) << " ___ "<<endl;
-}
-void nuclear_fuerte::tuioRemoved(ofxTuioCursor &tuioCursor){
-    //hands.removeObjectByTuioID(tuioCursor.getSessionId() );
-    for(int i=0; i<emitters.size(); i++){
-        if(emitters[i].tuio_id==tuioCursor.getSessionId()) {
-            //elimino emisor
-            emitters.erase(emitters.begin() + i);
-            cheapComm::getInstance()->sendAudio0("/audio/strong_nuclear/hand_off_event");
-        }
-    }
-}
-
-void nuclear_fuerte::tuioUpdated(ofxTuioCursor &tuioCursor){
-    ofPoint loc = transf_PosTUIO(tuioCursor);
-    for(int i=0; i<emitters.size(); i++){
-        if(emitters[i].tuio_id==tuioCursor.getSessionId()) {
-            //actualizao posicion
-            emitters[i].setPos_XY(loc.x-zentro.x, loc.y-zentro.y);
-        }
     }
     
 }

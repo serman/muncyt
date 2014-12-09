@@ -13,12 +13,12 @@
 <Widget>
     <Kind>2</Kind>
     <Name>Variar Auto MagnetF ON/OFF</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>Magnetic Force</Name>
-    <Value>0.142857194</Value>
+    <Value>-0.178881168</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -63,5 +63,5 @@
 <Widget>
     <Kind>42</Kind>
     <Name>(q/a)_Rate_partics</Name>
-    <Value>27</Value>
+    <Value>8</Value>
 </Widget>

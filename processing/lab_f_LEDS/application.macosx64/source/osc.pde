@@ -26,7 +26,8 @@ oscP5.plug(this,"drawMenu","/sync/menu/start_event");
 // Nuclear Fuerte
 oscP5.plug(this,"start_nuclear_f","/sync/strong_nuclear/start_event");
   oscP5.plug(this,"exchangeColors","/sync/strong_nuclear/hand_on_event");
-
+  oscP5.plug(this,"strong_nuclear_beam","/sync/strong_nuclear/beam");
+  oscP5.plug(this,"strong_nuclear_explosion","/sync/strong_nuclear/explosion");
 //Nuclear Debil
   oscP5.plug(this,"Explosion","/sync/weak_nuclear/chain_reaction_event"); //
   oscP5.plug(this,"drawRotating","/sync/weak_nuclear/ball"); 
@@ -172,6 +173,16 @@ void scene1(){
 
 void scene2(){
 
+}
+
+void strong_nuclear_beam(float angle){
+  println(angle);
+  allOff();
+  explosionAngleInitValue= (int)map(angle,0,2*PI,0,lengthPared) ;
+  bdrawExplosionAngle=true;
+}
+
+void strong_nuclear_explosion(){
 }
 
 

@@ -130,7 +130,7 @@ public:
             break;
         }
         //ofDisableAlphaBlending();
-        ofPopStyle();
+        //ofPopStyle();
         mesh.clear();
         for ( int i = 0 ; i < particles.size();  i+=1 ){
             int index=i%currentvector->size();

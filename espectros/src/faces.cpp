@@ -12,7 +12,7 @@ void faces::setup(){
 	swWireframe = false;	
 	// cargar caras
 	cargaCaras();
-    backgroundImg.loadImage("fondos/juego1.png");
+    backgroundImg.loadImage("fondos/Caras.png");
 }
 
 void faces::cargaCaras() {

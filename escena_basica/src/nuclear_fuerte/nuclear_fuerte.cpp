@@ -38,7 +38,7 @@ void nuclear_fuerte::setup(){
 	circExt.arc(zentro, radioEscena, radioEscena, 0, 360, true, 60);
 	
 	float rext = radioEscena;
-	float rint = rext*0.97;
+	float rint = rext*0.94;
 	float dAngDeg = 60.0;
 	anilloExterior.setCircleResolution(60);
 	anilloExterior.setFillColor(ofColor::red);
@@ -223,10 +223,11 @@ void nuclear_fuerte::update(float d1){
 		
 		
 	}
-	
+
+    
 	// limitar a 100 las particulas
 	if(particulas_old.size()>100) particulas_old.erase(particulas_old.begin()+(particulas_old.size()-100) );
-    
+
 	// update centro
 	if(centroLab.updateEnd( ratePartic )) {
 		// emitir particulas del centro
@@ -248,25 +249,40 @@ void nuclear_fuerte::update(float d1){
             //envio mensaje explosion
             int energia =centroLab.energyMeanT;
             energia=ofClamp(energia, 300, 800);
+            sendexchangeAt=ofGetElapsedTimeMillis()+2000;
             cheapComm::getInstance()->sendAudio1("/audio/strong_nuclear/explosion",
                                                  ofMap(energia,300,500,0,1)    );
+            
+            cheapComm::getInstance()->sendSync0("/sync/strong_nuclear/explosion");
             ofLogNotice()  << "explosion: " <<    "  potencia: " << centroLab.energyMeanT<< "("<< ofMap(energia,300,800,0,1) <<")"<< endl ;
         }
         else{
 //            float angulo1= centroLab.pMean.angleRad(zentro);
   
             float angulo1= atan2(centroLab.pMeanT.y, centroLab.pMeanT.x);
-            if(angulo1<0) angulo1+=PI;
+            angulo1-=PI/4;
+            angulo1=ofWrapRadians(angulo1,0,2.0*PI);
+            
+            //if(angulo1<0) angulo1+=PI;
             
             int energia =centroLab.energyMeanT;
             energia=ofClamp(energia, 0, 500);
+            sendexchangeAt=ofGetElapsedTimeMillis()+2000;
             cheapComm::getInstance()->sendAudio2("/audio/strong_nuclear/beam",
                                                  ofMap(angulo1,0,2*PI,0,1) ,
                                                  ofMap(energia,0,500,0,1)
                                                  );
-            ofLogNotice()  << "beam: " << " angulo" << atan2(centroLab.pMeanT.y, centroLab.pMeanT.x) << "(" <<  ofMap(angulo1,0,2*PI,0,1) << ")"<<
-             "  potencia: " << centroLab.energyMeanT<< "("<< ofMap(energia,0,500,0,1) <<")"<< endl ;
+           // ofLogNotice()  << "beam: " << " angulo" << atan2(centroLab.pMeanT.y, centroLab.pMeanT.x) << "(" <<  ofMap(angulo1,0,2*PI,0,1) << ")"<<
+           //  "  potencia: " << centroLab.energyMeanT<< "("<< ofMap(energia,0,500,0,1) <<")"<< endl ;
+            angulo1= atan2(centroLab.pMeanT.y, centroLab.pMeanT.x);
+            angulo1+=PI/2;
+            angulo1=ofWrapRadians(angulo1,0,2.0*PI);
+            
+            cheapComm::getInstance()->sendSync1("/sync/strong_nuclear/beam",
+                                                 angulo1
+                                                 );
         }
+
         //centroLab.pMean.angle() (ofVec2f)
         //centroLab.pMeanT.angle() (ofVec2f)
         //centroLab.energyMeanT
@@ -274,6 +290,9 @@ void nuclear_fuerte::update(float d1){
         //hay explosion entre energyMeanT 300
         //    VAlor de explosion: energyMeanT maximo 500
 	}
+    if(sendexchangeAt<ofGetElapsedTimeMillis() && ofGetFrameNum()%80==0){
+        sendExchangeColors();
+    }
 	
 	
 	// Update emitter
@@ -285,7 +304,9 @@ void nuclear_fuerte::update(float d1){
         
         for(int i=0; i<emitters.size(); i++){
             float angZentro = emitters[i].ang;
-            if(angZentro<0) angZentro+=PI;
+            angZentro-=PI/4;
+            angZentro=ofWrapRadians(angZentro,0,2.0*PI);
+ //           if(angZentro<0) angZentro+=PI;
             cheapComm::getInstance()->sendAudio3("/audio/strong_nuclear/hand_position",
                                                  emitters[i].idEmisor,
                                                  ofMap(angZentro,0,2*PI,0,1),
@@ -338,7 +359,9 @@ void nuclear_fuerte::addParticleFromEmiter(Emisor &em) {
 			em.setColor(pd.color);
 			
             float angZentro = em.ang;
-            if(angZentro<0) angZentro+=PI;
+            //if(angZentro<0) angZentro+=PI;
+            angZentro-=PI/4;
+            angZentro=ofWrapRadians(angZentro,0,2.0*PI);
             cheapComm::getInstance()->sendAudio3("/audio/strong_nuclear/new_particle_event", p.tipoPart,
                                                  ofMap(angZentro,0,2*PI,0,1),
                                                  ofMap(em.rho,0,W_WIDTH/2,0,1));
@@ -484,7 +507,7 @@ void nuclear_fuerte::draw(){
 	ofPopStyle();
 
 	
-	centroLab.drawStats(ofRectangle(ofGetWidth()-200,0,200,200));
+	centroLab.drawStats(ofRectangle(ofGetWidth()-50,0,50,50));
 	
 	
 	//
@@ -559,7 +582,7 @@ void nuclear_fuerte::init_Scena() {
 	totEmitters = 0;	// Para asignar identificadores a los emisores
 	emitter.setId(totEmitters);
 	totEmitters++;
-	
+	sendexchangeAt=ofGetElapsedTimeMillis()+1000;
 	emitter.ratePartic = ratePartic;
     colorp1=ROJOS; //red
     colorp2=VERDES; //green

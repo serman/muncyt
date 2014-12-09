@@ -9,17 +9,14 @@
 void juego2::setup(){
     
 	ofSetLogLevel(OF_LOG_NOTICE);
-	
-
     
     box2d.init();
     ofSetFrameRate(40);
 	box2d.setGravity(0, 5);
-	box2d.createBounds(0,0,SCREEN_W,SCREEN_H);
+	box2d.createBounds(0,0,SCREEN_W, SCREEN_H);
     //box2d.createGround(0,SCREEN_H,SCREEN_W,SCREEN_H);
   	box2d.setFPS(30.0);
 	box2d.registerGrabbing();
-    
 
     datoObjeto *jugador= new datoObjeto;
     jugador->tipo=BALL;
@@ -62,7 +59,8 @@ void juego2::setup(){
     contourFinder.setThreshold(threshold);
     contourFinder.findContours(mask1);
     createBigEnemy();
-    backgroundImg.loadImage("fondos/juego1.png");
+    backgroundImg.loadImage("fondos/JuegoComePantalla.png");
+    glowcircle.loadImage("glowCircle.png");
     
 }
 
@@ -81,9 +79,25 @@ void juego2::update(float f){
         //if(startProcessing);
             //contourFinder.findContours(mask1); // no hace falta pasar el contour finder todo el rato solo cuando se cierra
         mparticles.update();
+        
+        if(calcMarcador()>PERCENT_TO_WIN){
+            appStatuses["game_status"]=WIN;
+            time_status_change=ofGetElapsedTimeMillis()+3000;
+        }
     }
+    /********FIN GAME_STATUS==PLAYING **/
+    
     ofPoint p1=newPosition();
     bigEnemy.setPosition(p1);
+    
+//CAMBIOS DE ESTADO
+    if(appStatuses["game_status"]==WIN){
+        if(time_status_change!=-1 &&
+           ofGetElapsedTimeMillis()>time_status_change){
+            reset();
+        }
+    }
+    
     
     
 }
@@ -100,7 +114,8 @@ void juego2::draw(){
     ofPushMatrix();
         backgroundImg.draw(0,0,1280,720);
         ofTranslate(100,100); //PINTO EN LA ZONA DE LA PANTALLA QUE QUIERO
-       // mask1.draw(0,0);
+//        mask1.draw(0,400);
+
     ofSetColor(11,11,16);
     ofRect(0,0,SCREEN_W,SCREEN_H);
         ofSetColor(255,255,255);
@@ -110,6 +125,7 @@ void juego2::draw(){
         poli.draw();
         ofNoFill();
         player.draw();
+        drawPlayer(player.getPosition().x, player.getPosition().y);
         ofPushMatrix();
             ofTranslate(player.getPosition().x, player.getPosition().y);
             ofRotate(45);
@@ -123,17 +139,19 @@ void juego2::draw(){
         drawEnemies();
 
         if(appStatuses["game_status"]==WIN){
+            ofSetColor(100, 100, 130);
             ofRect(-2,-2,SCREEN_W+5,SCREEN_H+5);
             ofSetColor(0,0,0);
-            ofDrawBitmapString("GOAL",600,600);
-            if(ofGetElapsedTimeMillis()-appStatuses["win_timer"]>2000){
-                appStatuses["game_status"]=PLAYING;
-            }
+            ofDrawBitmapString("VICTORIA!",300,300);
         }
         if(drawExplodeb){
             drawExplode();
             mparticles.draw();
         }
+    drawDisplay();
+    ofTranslate(400,0);
+//    contourFinder.draw();
+
     ofPopMatrix();
 
 
@@ -239,9 +257,12 @@ void juego2::drawEnemies(){
                 menemy->draw(circles[i].get()->getPosition().x,circles[i].get()->getPosition().y);
             }
         }
+        ofSetColor(255, 0, 0);
+        circles[i]->draw();
 	}
     ofDisableBlendMode();
     enemy *menemy=(enemy *)bigEnemy.getData();
+    //bigEnemy.draw();
     menemy->draw(bigEnemy.getPosition().x, bigEnemy.getPosition().y);
 }
 
@@ -254,6 +275,20 @@ void juego2::showDebug(){
     
     
     ofDrawBitmapString("Area contorno: " + ofToString( calcMarcador() )+" %" , 800,190);
+    
+    if(appStatuses["game_status"]==WIN){
+      ofDrawBitmapString("status win. Time to change" + ofToString( time_status_change ), 1000,210);
+    }
+}
+
+void juego2::drawDisplay(){
+    ofFill();
+    ofSetColor(200, 50, 0);
+    ofRect(11,11,ofMap(calcMarcador(), 0, PERCENT_TO_WIN, 0, 80),20);
+    
+    ofSetColor(200);
+    ofNoFill();
+    ofRect(10,10,80,20);
 }
 
 
@@ -271,7 +306,7 @@ void juego2::addObstacle(){
 }
 
 void juego2::addObstacle(ofPoint p1, int m_id){
-    float r = ofRandom(5, 6);		// a random radius 4px - 20px
+    float r = ofRandom(9,11);		// a random radius 4px - 20px
     circles.push_back(ofPtr<ofxBox2dCircle>(new ofxBox2dCircle) );
     circles.back().get()->setPhysics(0.001, 0.53, 0.7);
     circles.back().get()->setup(box2d.getWorld(), p1.x+15, p1.y+15, 20);
@@ -305,7 +340,7 @@ void juego2::hideObstacle( int m_id){
 void juego2::createBigEnemy(){
     
     bigEnemy.setPhysics(0.1, 1, 0.7);
-    bigEnemy.setup(box2d.getWorld(), ofRandom(SCREEN_W), ofRandom(SCREEN_H), 10);
+    bigEnemy.setup(box2d.getWorld(), ofRandom(SCREEN_W), ofRandom(SCREEN_H), 25);
     enemy *obstacle;
     obstacle= new enemy();
     obstacle->tipo=OBSTACLE;
@@ -377,6 +412,7 @@ void juego2::init_Escena(){
     ofAddListener(box2d.contactStartEvents, this, &juego2::contactStart);
     //mSyphonClient->unbind();
     //mSyphonClient2->unbind();
+    reset();
 }
 
 void juego2::exit_Escena(){
@@ -439,7 +475,10 @@ void juego2::reset(){
     prevPos=player.getPosition();
     fillthis=false;
     appStatuses["isOnContour"]=true;
-    
+    appStatuses["game_status"]=PLAYING;
+    prepareReset=false;
+    time_status_change=-1;
+
     mask1.clear();
     maskFbo.begin();
         ofClear(0, 0, 0);
@@ -451,6 +490,7 @@ void juego2::reset(){
     maskFbo.end();
     maskFbo.readToPixels(mask1.getPixelsRef());
     mask1.update();
+    contourFinder.findContours(mask1);
     ofLog()<< "reset" << endl;
 
     

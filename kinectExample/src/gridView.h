@@ -101,7 +101,7 @@ public:
                     
                 }
             }
-            ofColor c =  ofColor( 35 , 255 , 24 , alphaLines) ;
+            ofColor c =  ofColor( 0,140,158 , alphaLines) ;
             line.setColor( c ) ;
             line.setFilled( false ) ;
             line.setStrokeColor( c ) ;
@@ -154,7 +154,7 @@ public:
                     }
                 }
             }
-            ofColor c =  ofColor( 35 , 255 , 24 , alphaLines) ;
+            ofColor c =  ofColor( 0,140,158, alphaLines) ;
             line.setColor( c ) ;
             line.setFilled( false ) ;
             line.setStrokeColor( c ) ;

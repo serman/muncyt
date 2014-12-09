@@ -59,7 +59,7 @@ public:
 		ofLogVerbose("radioPart: " + ofToString(radioPart));
 		fase=0;
 		angT = 0.0;
-		wAng = -0.1*TWO_PI/(60.0);
+		wAng = -0.01*TWO_PI/(60.0);
 		accAng = 0.0;
 		
 		wAngMax = 0.16;
@@ -97,7 +97,7 @@ public:
 	}
 	
 	void reset_wAng() {
-		wAng = -0.1*TWO_PI/(60.0);
+		wAng = -0.01*TWO_PI/(60.0);
 	}
 	
 	void setUI(ofRectangle ctrl_decc, ofRectangle ctrl_acc) {
@@ -213,7 +213,7 @@ public:
     void reset(){
         fase=0;
 		angT = 0.0;
-		wAng = -0.1*TWO_PI/(60.0);
+		wAng = -0.01*TWO_PI/(60.0);
 		accAng = 0.0;
 		wAngMax = 0.16;
 		dAcc = 0.03;//0.03;
