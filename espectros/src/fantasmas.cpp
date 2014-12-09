@@ -59,7 +59,7 @@ void fantasmas::setup(){
     gui2->addLabel("VERTICAL RADIO", OFX_UI_FONT_MEDIUM);
     ofxUIRadio *radio = gui2->addRadio("VR", vnames, OFX_UI_ORIENTATION_HORIZONTAL);
     radio->activateToggle("0");
-
+    maxFrame=16;
     gui2->addIntSlider("maxFrame", 0, 49, &maxFrame);
     gui2->addLabel("GRABACION", OFX_UI_FONT_MEDIUM);
     gui2->addToggle("grabacion", false);
@@ -165,7 +165,7 @@ void fantasmas::update(float d){
                // mRecorder.current_video=moveandrecord.currentRect;
                 mRecorder.current_video=videoCounter;
                 cout<< "width" << selectedBlob->width<< "height"<< selectedBlob->height;
-                ofPoint p1 = convertPoint(selectedBlob->getX(), selectedBlob->getY());
+                ofPoint p1 = convertPoint2(selectedBlob->getX(), selectedBlob->getY());
                 
                 mRecorder.start(2000, 30, remoteBlobImgPxl,
                                 selectedBlob->width*VIDEO_W*VIDEO_scale,selectedBlob->height*VIDEO_H*VIDEO_scale,
@@ -190,7 +190,7 @@ void fantasmas::update(float d){
             for (tobj=objectList.begin(); tobj != objectList.end(); tobj++) {
                 ofxTuioCursor *blob = (*tobj);
                 if(blob->getSessionId() == RecordingBlobId){
-                    ofPoint p2 = convertPoint(blob->getX(), blob->getY());
+                    ofPoint p2 = convertPoint2(blob->getX(), blob->getY());
                     //mandamos el nuevo frame a grabar
                     if(mRecorder.update(p2.x-10 , p2.y-10,
                                         blob->width*VIDEO_scale*VIDEO_W+20,
@@ -232,18 +232,32 @@ void fantasmas::draw(){
         ofPushMatrix();
         ofTranslate(100,100);
 //dibujo la imagen normal que se ve en pantalla
-        syphonFullImage->drawSubsection(0,0,SCREEN_W,SCREEN_H,0,VIDEO_offset,VIDEO_W,SCREEN_H);
+        syphonFullImage->drawSubsection(0,0,SCREEN_W,SCREEN_H,0,130,VIDEO_W,SCREEN_H);
         //DIBUJO LOS
         list<ofxTuioCursor*>::iterator tobj;
         list<ofxTuioCursor*> objectList = tuioclient->getTuioCursors();
         for (tobj=objectList.begin(); tobj != objectList.end(); tobj++) {
             ofxTuioCursor *blob = (*tobj);
             ofSetColor(255,0,0);
-            ofPoint p1 = convertPoint(blob->getX(), blob->getY());
+            ofPoint p1 = convertPoint2(blob->getX(), blob->getY());
            // ofEllipse( p1.x, p1.y,9,9);
             //cout << "blob size" << blobTracker.trackedBlobs.size() << "\n";
             if(blob->getSessionId() == selectedBlobId){
                 ofSetColor(255,0,0);
+                ofNoFill();
+                ofSetLineWidth(2);
+                ofRect(p1.x , p1.y, blob->width*VIDEO_scale*VIDEO_W, blob->height*VIDEO_scale*VIDEO_H);
+                ofFill();
+                //dibuja cirulo o circulo parpadeate en funcion del estado
+                if(mRecorder.status==mosaicRecorder::RECORDING){
+                    if(ofGetElapsedTimeMillis()%1000 <500)
+                        ofEllipse(p1.x-7 , p1.y-7,6,6);
+                }else{
+                    ofEllipse(p1.x-6 , p1.y-6,4,4);
+                }
+            }
+            else{
+                ofSetColor(0,100,0);
                 ofNoFill();
                 ofRect(p1.x , p1.y, blob->width*VIDEO_scale*VIDEO_W, blob->height*VIDEO_scale*VIDEO_H);
             }
@@ -264,14 +278,11 @@ void fantasmas::draw(){
         fbo.begin();
         ofClear(0, 0, 0, 0);
 //      mSyphonClient2->draw(0,0,640,480);
-        syphonOnlyBlobs->drawSubsection(0,0,SCREEN_W,SCREEN_H,0,VIDEO_offset,VIDEO_W,SCREEN_H);
+        syphonOnlyBlobs->drawSubsection(0,0,SCREEN_W,SCREEN_H,0,130,VIDEO_W,SCREEN_H);
         fbo.end();
         fbo.readToPixels(remoteBlobImgPxl);
         //feedImg.setFromPixels(remoteBlobImgPxl);
         //feedImg.update();
-        
-
-    
 
 
     }else  if(appStatuses["mode"]==REPLAYING){ //este metodo al final casi que n ose usa mas que para test
@@ -279,7 +290,7 @@ void fantasmas::draw(){
 		ofPushMatrix();
         ofTranslate(100,100);
 //        mSyphonClient->draw(0,0,640,480);
-        syphonFullImage->drawSubsection(0,0,SCREEN_W,SCREEN_H,0,VIDEO_offset,VIDEO_W,SCREEN_H);
+        syphonFullImage->drawSubsection(0,0,SCREEN_W,SCREEN_H,0,0,VIDEO_W,SCREEN_H);
         ofSetColor(255,255,255);
 
         float tt = ofGetElapsedTimef();
@@ -370,6 +381,7 @@ void fantasmas::tuioRemoved(ofxTuioCursor &tuioCursor){
 void fantasmas::keyPressed(int key){
 
 }
+
 void fantasmas::onRecordingFinished(int &num){
     cout << "onRecordingFinished:: grabacion finalizada "<< endl;
     selectedBlobId=-1;
@@ -387,7 +399,7 @@ void fantasmas::onRecordingFinished(int &num){
 
 //--------------------------------------------------------------
 void fantasmas::keyReleased(int key){
-    if(key=='r'){
+    if(key=='e'){
         recordThisBlob=true;
     }
     
@@ -408,36 +420,39 @@ void fantasmas::keyReleased(int key){
         }
     }
     
-    else if(key=='w'){
+    else if(key=='d' || key=='a'){
+        // si se esta grabando no se hace nada
+        if(recordThisBlob==true) return;
+        //se pilla el primer blob disponible
         list<ofxTuioCursor*>::iterator tobj;
         list<ofxTuioCursor*> objectList = tuioclient->getTuioCursors();
         
-        if(selectedBlobId==-1){
-            cout << "selected blog = -1"<<endl;
+        if(selectedBlobId==-1){ //Si no hay blob seleccionado seleccioamos el primero
+         //   cout << "selected blog = -1"<<endl;
             if(objectList.size()>0) {
                 selectedBlobId=(*objectList.begin())->getSessionId();
             }
-            return;
+            return; //si no hay ningœn blob selectedblob seguir‡ siendo -1 y al volver lo seleccionara
         }
-        else{
+        else{ //recorremos todos los blobs
             for (tobj=objectList.begin(); tobj != objectList.end(); tobj++) {
                 ofxTuioCursor *blob = (*tobj);
                 if(blob->getSessionId() == selectedBlobId){
-                    cout << "get next blob" << endl;
+            //  Cuanco encontramos el blob actual seleccionamos el siguiente
                     ofxTuioCursor* nextb=getNextBlob(tobj,objectList);
-                    if(nextb!=NULL)
+                    if(nextb!=NULL){
                         selectedBlobId=nextb->getSessionId();
-                    else
+                    }
+                    else{
+                        selectedBlobId =-1;
                         ofLogError()<<"next blog was null" <<endl;
+                    }
+                    return;
                 }
             }
+            selectedBlobId=-1; // si se llega a este punto algo ha ido raro asi que lo ponemos a -1
         }
-    }
-    
-    else if(key=='s'){
-        recordThisBlob=true;
-    }
-    
+    }    
 }
 
 

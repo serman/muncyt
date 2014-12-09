@@ -24,7 +24,7 @@ void fantasmas::selectNextPhantom(){
             list<ofxTuioCursor*> objectList = tuioclient->getTuioCursors();
             for (tobj=objectList.begin(); tobj != objectList.end(); tobj++) {
                 ofxTuioCursor *blob = (*tobj);
-                 ofPoint p2 = convertPoint(blob->getX(), blob->getY());
+                 ofPoint p2 = convertPoint2(blob->getX(), blob->getY());
                 if(thisPoints[j].distance(p2)<MIN_DISTANCE){
                     validVideo=false;
                     break;
@@ -74,7 +74,7 @@ bool fantasmas::checkPosibleCollision(){
         list<ofxTuioCursor*> objectList = tuioclient->getTuioCursors();
         for (tobj=objectList.begin(); tobj != objectList.end(); tobj++) {
             ofxTuioCursor *blob = (*tobj);
-            ofPoint p2 = convertPoint(blob->getX(), blob->getY());
+            ofPoint p2 = convertPoint2(blob->getX(), blob->getY());
             if(thisPoints[j].distance(p2)<MIN_DISTANCE){
                 validVideo=false;
                 break;
@@ -107,15 +107,18 @@ void fantasmas::gui2Event(ofxUIEventArgs &e)
     if(kind==2){
         if(name == "2")
         {
+            secuence_to_play=0;
             currentImg=2;
         }
         if(name == "1")
         {
             currentImg=1;
+            secuence_to_play=2;
         }
         if(name == "0")
         {
             currentImg=0;
+            secuence_to_play=1;
         }
     }
     if(kind==OFX_UI_WIDGET_TOGGLE && name=="grabacion"){

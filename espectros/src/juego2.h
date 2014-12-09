@@ -155,6 +155,8 @@ private:
     long time_status_change;
     void drawPlayer(int _x, int _y);
     ofImage glowcircle;
+    ofTrueTypeFont myfont;
+
 };
 
 

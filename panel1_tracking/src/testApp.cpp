@@ -5,10 +5,10 @@ void testApp::setup(){
     setupStatus();
     loadCameraOrVideo();
     if(ofToString(getenv("USER"))=="instalaciones"){
-        ofSetFrameRate(40);
+        ofSetFrameRate(25);
     }
     else{
-        ofSetFrameRate(19);
+        ofSetFrameRate(25);
     }
     
     adminMode=false;
@@ -26,10 +26,10 @@ void testApp::setup(){
         camFront.initGrabber(VIDEOWITH,VIDEOHEIGHT);
         currentCam=&camCeil;
     }else{
-        vidPlayerCeil.loadMovie("muncyt2-menoszoom.mov");
+        vidPlayerCeil.loadMovie("masgentearriba.mov");
         vidPlayerCeil.play();
     
-        vidPlayerFront.loadMovie("muncyt-test-intermedio.mov");
+        vidPlayerFront.loadMovie("archive/maniana_frontal.mov");
         vidPlayerFront.play();
         currentVid=&vidPlayerCeil;
     }
@@ -37,20 +37,19 @@ void testApp::setup(){
     consoleFont.loadFont("Menlo.ttc",17);
     sourceColorImg.allocate(VIDEOWITH,VIDEOHEIGHT);
     sourceGrayImage.allocate(VIDEOWITH,VIDEOHEIGHT);
-    floatBgImgCameraCeil.allocate(VIDEOWITH,VIDEOHEIGHT);	//ofxShortImage used for simple dynamic background subtraction
-    floatBgImgCameraFront.allocate(VIDEOWITH,VIDEOHEIGHT);
-    floatBgImg=&floatBgImgCameraCeil;
+    sourceColorImgMirror.allocate(VIDEOWITH,VIDEOHEIGHT);
     
     grayBg.allocate(VIDEOWITH,VIDEOHEIGHT);
    // grayBgCameraFront.allocate(VIDEOWITH,VIDEOHEIGHT);
    // grayBg=&grayBgCameraCeil;
-    setFrontCamera();
+    setCeilCamera();
     exposureStartTime = ofGetElapsedTimeMillis();
     bCaptureBackground=true;
     firstTimeFrontCamera=true;
     firstTimeCeilCamera=true;
     
     setupGui();
+    appStatuses["forceCamera"]=false; //NO IMPORTA QUE HAYAS GRABADO EL SETTING DE FORZAR CAMARA. POR DEFECTO CARGA LA CAMARA AUTOMATICA QUE DEMANDA CADA ESCENA PARA EVITAR FALLOS EN PRODUCCION
     individualTextureSyphonServer.setName("CameraOutput");
     onlyBlobsImageSyphonServer.setName("onlyBlobs");
     tex.allocate(VIDEOWITH,VIDEOHEIGHT, GL_RGB);
@@ -68,6 +67,8 @@ void testApp::setup(){
     maskMaker.setup("shaders/composite_rgb",ofRectangle(0, 0, VIDEOWITH,VIDEOHEIGHT));
     fbo1.allocate(VIDEOWITH,VIDEOHEIGHT,GL_RGBA);
     videoMirror = new unsigned char[VIDEOWITH*VIDEOHEIGHT*3];
+    blobTrackerFront.setup(ofxBlobTracker::OFXCV);
+    blobTrackerCeil.setup(ofxBlobTracker::OPENCV);
 }
 
 
@@ -77,72 +78,94 @@ void testApp::update(){
         myComm->oscRcvUpdate();
     
     if( USE_LIVE_VIDEO){
-        currentCam->update();
+        //currentCam->update();
+        camCeil.update();
+        camFront.update();
         isNewFrame=currentCam->isFrameNew();
     }else{
-        currentVid->update();
+        //currentVid->update();
+        vidPlayerCeil.update();
+        vidPlayerFront.update();
+        
         isNewFrame = currentVid->isFrameNew();
     }
+    
     
 #ifndef TESTMODE
     if (isNewFrame){
         appStatuses["isCameraReady"]=true;
         unsigned char * pixels ;
+        
+        
+//camara del techo que no se invierte
         if( USE_LIVE_VIDEO){
-               pixels = currentCam->getPixels();
+               pixels = camCeil.getPixels();
             //invertir imagen
          }else{
                // sourceColorImg.setFromPixels(currentVid->getPixels(), VIDEOWITH,VIDEOHEIGHT);
-              pixels = currentVid->getPixels();
-        } //invertir imagen
-   /*     for (int i = 0; i < VIDEOHEIGHT; i++) {
-            for (int j = 0; j < VIDEOWITH*3; j+=3) {
-                // pixel number
-                int pix1 = (i*VIDEOWITH*3) + j;
-                int pix2 = (i*VIDEOWITH*3) + (j+1);
-                int pix3 = (i*VIDEOWITH*3) + (j+2);
-                // mirror pixel number
-                int mir1 = (i*VIDEOWITH*3)+1 * (VIDEOWITH*3 - j-3);
-                int mir2 = (i*VIDEOWITH*3)+1 * (VIDEOWITH*3 - j-2);
-                int mir3 = (i*VIDEOWITH*3)+1 * (VIDEOWITH*3 - j-1);
-                // swap pixels
-                videoMirror[pix1] = pixels[mir1];
-                videoMirror[pix2] = pixels[mir2];
-                videoMirror[pix3] = pixels[mir3];
-            }*/
-        
+              pixels = vidPlayerCeil.getPixels();
+        }
         sourceColorImg.setFromPixels(pixels, VIDEOWITH,VIDEOHEIGHT);
         sourceColorImg.updateTexture();
-        sourceColorImg.mirror(false, true);
-        sourceGrayImage = sourceColorImg;
         
-//MEJORA FONDO HACIENDOLO ADAPTATIVO
-        if(appStatuses["adaptativeBackground"]==true){
-            fLearnRateDividido=fLearnRate/10000;
-            floatBgImg->addWeighted( sourceGrayImage, fLearnRateDividido); //we add a new bg image to the current bg image but we add it with the weight of the learn rate
-            grayBg= *floatBgImg; //convertimos a la imagen a grises
-            grayBg.flagImageChanged();
-            blobTracker.setBg(grayBg);
-        }
-        //recapature the background until image/camera is fully exposed
-        if((ofGetElapsedTimeMillis() - exposureStartTime) < CAMERA_EXPOSURE_TIME) bCaptureBackground = true;
+     //camara frontal que  se invierte
+        if( USE_LIVE_VIDEO){
+            pixels = camFront.getPixels();
+            //invertir imagen
+        }else{
+            // sourceColorImg.setFromPixels(currentVid->getPixels(), VIDEOWITH,VIDEOHEIGHT);
+            pixels = vidPlayerFront.getPixels();
+        } //invertir imagen
+        
 
+        sourceColorImgMirror.setFromPixels(pixels, VIDEOWITH,VIDEOHEIGHT);
+        sourceColorImgMirror.mirror(false, true);
+        
+        //recapature the background until image/camera is fully exposed
+        if((ofGetElapsedTimeMillis() - exposureStartTime) < CAMERA_EXPOSURE_TIME) {
+            blobTrackerCeil.resetBG();
+            blobTrackerFront.resetBG();
+        }
+        
         //Capura fondo si se ha indicado
         if (bCaptureBackground == true){
-            *floatBgImg = sourceColorImg;
-            blobTracker.setBg(sourceGrayImage);
             bCaptureBackground = false;
-            
+            currentBlobTracker->resetBG();
         }
-        /* Esta funcion devuelve sourceGrayImage modificada. Dentro se le aplica el Bg substraction */
-        blobTracker.update(sourceGrayImage, blobThreshold[configIndex],minBlobSize[configIndex],maxBlobSize[configIndex]);
         
+/********actualiacion de la camara frontal *********/
+
+//        sourceColorImg.mirror(false, true);
+        
+        grabberMat = ofxCv::toCv(sourceColorImg.getPixelsRef());
+        grabberMatInvert = ofxCv::toCv(sourceColorImgMirror.getPixelsRef());
+        
+        
+        if(blobTrackerCeil.kindOfBG==blobTrackerCeil.CUSTOM){
+            sourceGrayImage = sourceColorImg;
+            blobTrackerCeil.updateBG(sourceGrayImage);
+        }
+        
+        if(blobTrackerFront.kindOfBG==blobTrackerFront.CUSTOM){
+            sourceGrayImage = sourceColorImgMirror;
+            blobTrackerFront.updateBG(sourceGrayImage);
+        }
+     
+        blobTrackerFront.update1(grabberMatInvert, blobThreshold[FRONT_INDEX]);
+        blobTrackerCeil.update1(grabberMat, blobThreshold[CEIL_INDEX]);
+        
+        /*** TRACKING solo en la camara seleccionada ****/
+        
+        currentBlobTracker->update2( blobThreshold[configIndex],minBlobSize[configIndex],maxBlobSize[configIndex]);
+
+        
+        currentBlobTracker->setFiltersParam(learnRate[configIndex], smooth[configIndex]);
 
         setMaskedImageBlobs();
-        //myComm.sendBlobs( blobTracker.trackedBlobs);
-        blobTracker.setFiltersParam(amplify[configIndex], smooth[configIndex]);
 
-
+        if(appStatuses["sendTUIO"]==true){
+            sendTUIO(&(currentBlobTracker->trackedBlobs));
+        };
 	}    
 #endif
 //CUENTA CANTIDAD DE MOVIMIENTO
@@ -162,7 +185,9 @@ void testApp::setFrontCamera(){
         firstTimeFrontCamera=false;
     }
     configIndex=FRONT_INDEX;
-
+	
+	bFlipHCameraAct = true;
+    currentBlobTracker=&blobTrackerFront;
 }
 
 //camara0
@@ -179,15 +204,23 @@ void testApp::setCeilCamera(){
         firstTimeCeilCamera=false;
     }
     configIndex=CEIL_INDEX;
+	
+	bFlipHCameraAct = false;
+	currentBlobTracker=&blobTrackerCeil;
     
 }
 /* esta funcion toma el resultado del blob tracking y lo usa como m‡scara sobre la imagen original. De esta fomra queda la imagen original, pero solo la zona donde hay blob */
 void testApp::setMaskedImageBlobs(){
     //Paso las imagenes originales a openCV
     cv::Mat fullimageCV;
-    fullimageCV=ofxCv::toCv(sourceColorImg);
+    //elegimos la mmatrix invertida o la normal segun toque. La camara frontal esta invertida
+    if(configIndex==FRONT_INDEX)
+        fullimageCV=grabberMatInvert;
+    else
+        fullimageCV=grabberMat;
+    
     cv::Mat grayimageCV;
-    grayimageCV=ofxCv::toCv(sourceGrayImage); //imagen en escala de grises con los blobs
+    grayimageCV=currentBlobTracker->fore; //imagen en escala de grises con los blobs
     
     //creo la matriz donde se va a guardar la imagen de la mascara en blanco y negro. Negro donde no hay blob blanco donde lo hay
     cv::Mat contourMaskCV;//(640,480,CV_8U);
@@ -209,44 +242,51 @@ void testApp::setMaskedImageBlobs(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
-    //ofScale(0.8, 0.8);
+   // ofScale(0.8, 0.8);
     if(ofGetFrameNum()==19 || ofGetFrameNum()%150==0)
         bg.draw(-1,-1,1281,1025);
     ofPushMatrix();
     cleanBackgrounds();
-    
-#ifndef TESTMODE
-    sourceColorImg.draw(59,169,480,360); //img original
- #endif
+   
+
 // fbo1 contiene  las imagenes con la mascara ya aplicada.
     fbo1.begin();
 	ofClear(0, 0, 0, 0);    //ofSetColor(255,255,255,255);
-	maskMaker.drawMask(sourceColorImg.getTextureReference(), contourMaskOF.getTextureReference(), 0,0,255,VIDEOWITH,VIDEOHEIGHT);
+    if(configIndex==FRONT_INDEX)
+        maskMaker.drawMask(sourceColorImgMirror.getTextureReference(), contourMaskOF.getTextureReference(), 0,0,255,VIDEOWITH,VIDEOHEIGHT);
+    else
+        maskMaker.drawMask(sourceColorImg.getTextureReference(), contourMaskOF.getTextureReference(), 0,0,255,VIDEOWITH,VIDEOHEIGHT);
     fbo1.end();
     //maskMaker.drawScrollingMask(sourceColorImg.getTextureReference(), contourMaskOF.getTextureReference(), 0, 255);
- #ifndef TESTMODE
-    ofSetColor(0, 255, 123, 100);
-    ofSetColor(255,255,255,255);
-    contourMaskOF.draw(766,275,480,360); //masked image = sourceGrayImage en este momento, aunque en otro formato de pixels (8 bits)
-#endif
 
+    //imagen original
+    ofSetColor(255);
+    if(configIndex==FRONT_INDEX)
+        sourceColorImgMirror.draw(59,169,480,360); //img original
+    else
+        sourceColorImg.draw(59,169,480,360); //img original
 
-        ofSetColor(255,255,255,255);
-    	blobTracker.draw(57,602,480,360);//img + blobs}
+    currentBlobTracker->openCVInputImage.draw(766,275,480,360);
+    ofSetColor(255,255);
+    currentBlobTracker->draw(57,602,480,360);//img + blobs}
    // 	maskedImageOF.draw(1391,139,320,240);
 
+
+    if( adminMode) showDebug();
+    
+
+    
+    ofPopMatrix();
+ //   currentBlobTracker->drawDebug();
+  //  maskedImageOF.draw(0,0,320,240);
+    
     if(appStatuses["syphonEnabled"]==true && appStatuses["isCameraReady"]){
-        individualTextureSyphonServer.publishTexture(&sourceColorImg.getTextureReference());
+        if(configIndex==FRONT_INDEX)
+            individualTextureSyphonServer.publishTexture(&sourceColorImgMirror.getTextureReference());
+        else
+            individualTextureSyphonServer.publishTexture(&sourceColorImg.getTextureReference());
         onlyBlobsImageSyphonServer.publishTexture(&fbo1.getTextureReference());
     }
-    if( adminMode) showDebug();
-    if(appStatuses["sendTUIO"]==true){
-        sendTUIO(&(blobTracker.trackedBlobs));
-    };
-
-   // sourceGrayImage.draw(0,0);
-    ofPopMatrix();
-  //  maskedImageOF.draw(0,0,320,240);
 }
 
 void testApp::showDebug(){
@@ -274,6 +314,8 @@ void testApp::setupStatus(){
     appStatuses["blobInSquare"]=false;
     appStatuses["sendTUIO"]=true;
     appStatuses["isCameraReady"]=false;
+    appStatuses["forceCamera"]=false;
+    appStatuses["selectedForcedCamera"]=FRONT_INDEX;
     
 }
 

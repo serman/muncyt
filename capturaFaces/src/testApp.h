@@ -85,8 +85,18 @@ class testApp : public ofBaseApp{
 	void				setupBandas();
 	vector<ofRectangle> bandas1;
 	vector<ofRectangle> bandas2;
+	vector<ofRectangle> bandas1_FT;
+	vector<ofRectangle> bandas2_FT;
+	vector<ofRectangle> bandas1_X;
+	vector<ofRectangle> bandas2_X;
 	vector<int> ids_1;
 	vector<int> ids_2;
+	vector<int> ids_1_X;
 	bool	draw_bandas2;
+	
+	// Para redimensionar las bandas a escala mayor
+	float escAreaUp;
+	float escAreaDwn;
+	float escArea;
 	
 };

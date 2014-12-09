@@ -94,7 +94,7 @@ class moveAndRecord {
             for (tobj=objectList.begin(); tobj != objectList.end(); tobj++) {
                 ofxTuioCursor *blob = (*tobj);
                 //cout << "blob size" << blobTracker.trackedBlobs.size() << "\n";
-                ofPoint p=convertPoint( blob->getX(),blob->getY());
+                ofPoint p=convertPoint2( blob->getX(),blob->getY());
                 if ( triggerRectangle.inside( p.x, p.y) ){
                     state= blobInSquare;
                     timeLastDetection=ofGetElapsedTimeMillis();
@@ -130,7 +130,7 @@ class moveAndRecord {
             for (tobj=objectList.begin(); tobj != objectList.end(); tobj++) {
                 ofxTuioCursor *blob = (*tobj);
                 //cout << "blob size" << blobTracker.trackedBlobs.size() << "\n";
-                ofPoint p=convertPoint( blob->getX(),blob->getY());
+                ofPoint p=convertPoint2( blob->getX(),blob->getY());
                 if ( triggerRectangle.inside( p.x, p.y) ){
                     state= blobInSquare;
                     timeLastDetection=ofGetElapsedTimeMillis();

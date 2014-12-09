@@ -41,8 +41,9 @@ class testApp : public ofBaseApp{
         bool isNewFrame;
 /*** ADDONS **/
     	//ofxBackground		backgroundAddon;	//the addon that allows you to use a variety of methods for background/foreground segmentation
-		ofxBlobTracker          blobTracker;
-    
+		ofxBlobTracker          blobTrackerFront;
+        ofxBlobTracker          blobTrackerCeil;
+        ofxBlobTracker          *currentBlobTracker;
         ofxUICanvas *gui0;
         ofxUICanvas *gui1;
     ofxUICanvas *guiGeneral;
@@ -51,6 +52,7 @@ class testApp : public ofBaseApp{
         ofTrueTypeFont consoleFont;
     	/** intermediate images for tracking ***/
 	    ofxCvColorImage		sourceColorImg;			//a place to save the live video frame
+    	    ofxCvColorImage		sourceColorImgMirror;			//a place to save the live video frame
     	ofxCvGrayscaleImage sourceGrayImage;
         ofxCvShortImage		*floatBgImg;
         ofxCvShortImage		floatBgImgCameraCeil;
@@ -73,7 +75,7 @@ class testApp : public ofBaseApp{
     	int minBlobSize[NCAMARAS];
         int maxBlobSize[NCAMARAS];
     	int blobThreshold[NCAMARAS];
-	    int amplify[NCAMARAS];
+	    int learnRate[NCAMARAS];
     	int smooth[NCAMARAS];
                         
 	    bool adaptativeBackground;
@@ -84,6 +86,9 @@ class testApp : public ofBaseApp{
 	    //vector <ofPoint> positgui_settingsCamera0.xml"guiions;
     	int rectCounter=0;
     int alphaCounter=0;
+	
+	bool	bFlipHCameraAct = false;
+	
 	public:
 		void setup();
 	    void setupStatus();
@@ -126,5 +131,6 @@ class testApp : public ofBaseApp{
     int configIndex;
     void loadCameraOrVideo();
     unsigned char * videoMirror;
-    
+            cv::Mat grabberMat;
+    cv::Mat grabberMatInvert;
 };

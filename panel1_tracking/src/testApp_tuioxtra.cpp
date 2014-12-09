@@ -104,6 +104,10 @@ void testApp::keyPressed(int key){
       //  gui1->saveSettings("gui_settingsCamera1.xml");
         guiTabBar->saveSettings("./","camera_settings");
     }
+    
+
+
+
 }
 void testApp::setupGui(){
   //Front CAMARA
@@ -113,7 +117,7 @@ void testApp::setupGui(){
     gui0->addIntSlider("blob_threshold0", 0, 255, &blobThreshold[0]);
 	gui0->addIntSlider("min blob size0", 0, 1000, &minBlobSize[0]);
 	gui0->addIntSlider("max blob size0", 0, 30000, &maxBlobSize[0]);
-	gui0->addIntSlider("amplify0", 0, 100, &amplify[0]);
+	gui0->addIntSlider("learnRate0", 0, 100, &learnRate[0]);
     gui0->addIntSlider("smooth0", 0, 10, &smooth[0]);
 
     guiTabBar->addCanvas(gui0);
@@ -124,7 +128,7 @@ void testApp::setupGui(){
     gui1->addIntSlider("blob_threshold", 0, 255, &blobThreshold[1]);
 	gui1->addIntSlider("min blob size", 0, 1000, &minBlobSize[1]);
 	gui1->addIntSlider("max blob size", 0, 30000, &maxBlobSize[1]);
-	gui1->addIntSlider("amplify", 0, 100, &amplify[1]);
+	gui1->addIntSlider("learnRate1", 0, 100, &learnRate[1]);
     gui1->addIntSlider("smooth", 0, 10, &smooth[1]);
     guiTabBar->addCanvas(gui1);
     
@@ -134,6 +138,10 @@ void testApp::setupGui(){
     
     guiGeneral->addToggle("Adaptative", false);
     guiGeneral->addSlider("learnRate", 0	, 10.0, &fLearnRate) ;
+    guiGeneral->addToggle("forceCamera", false) ;
+    guiGeneral->addTextArea("selectCamera", "La siguiente opcion solo vale cuando forceCamera esta activado. Sin marcar= front camera marcado = ceil Camera") ;
+    guiGeneral->addToggle("ceilCamera", false) ;
+    
     ofAddListener(guiGeneral->newGUIEvent,this,&testApp::gui2Event);
    // gui1->loadSettings("gui_settingsCamera1.xml");
     guiTabBar->addCanvas(guiGeneral);
@@ -207,6 +215,23 @@ void testApp::gui2Event(ofxUIEventArgs &e)
         if(toggle->getValue())
             appStatuses["adaptativeBackground"]=true;
         else appStatuses["adaptativeBackground"]=false;
+    }
+    if(name == "forceCamera")
+    {
+        ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
+        if(toggle->getValue())
+            appStatuses["forceCamera"]=true;
+        else appStatuses["forceCamera"]=false;
+    }
+    if(name == "ceilCamera")
+    {
+        if(appStatuses["forceCamera"]==true){
+            ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
+            if(toggle->getValue()==FRONT_INDEX)
+                setFrontCamera();
+            else if(toggle->getValue()==CEIL_INDEX)
+                setCeilCamera();
+        }
     }
 }
 
