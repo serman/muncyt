@@ -43,6 +43,18 @@ static ofPoint convertPoint(float x1, float y1){
     else return ofPoint(-1,-1);
 }
 
+static ofPoint convertPoint2(float x1, float y1){
+    float y1px=y1*VIDEO_H*VIDEO_scale;
+    
+    if(y1px >(0) /* el punto está dentro de la franja que se muetra ( que comienza en VIDEO_offset*/
+       && y1px < (0 + SCREEN_H)
+       /* Y termina en video_offset+ screen_h*/
+       ){
+        ofPoint p1=ofPoint((float)x1*SCREEN_W, (float)y1px-0);
+        return p1;
+    }
+    else return ofPoint(-1,-1);
+}
 
 
 #endif

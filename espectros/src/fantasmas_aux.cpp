@@ -24,7 +24,7 @@ void fantasmas::selectNextPhantom(){
             list<ofxTuioCursor*> objectList = tuioclient->getTuioCursors();
             for (tobj=objectList.begin(); tobj != objectList.end(); tobj++) {
                 ofxTuioCursor *blob = (*tobj);
-                 ofPoint p2 = convertPoint(blob->getX(), blob->getY());
+                 ofPoint p2 = convertPoint2(blob->getX(), blob->getY());
                 if(thisPoints[j].distance(p2)<MIN_DISTANCE){
                     validVideo=false;
                     break;
@@ -74,7 +74,7 @@ bool fantasmas::checkPosibleCollision(){
         list<ofxTuioCursor*> objectList = tuioclient->getTuioCursors();
         for (tobj=objectList.begin(); tobj != objectList.end(); tobj++) {
             ofxTuioCursor *blob = (*tobj);
-            ofPoint p2 = convertPoint(blob->getX(), blob->getY());
+            ofPoint p2 = convertPoint2(blob->getX(), blob->getY());
             if(thisPoints[j].distance(p2)<MIN_DISTANCE){
                 validVideo=false;
                 break;

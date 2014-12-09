@@ -165,7 +165,7 @@ void fantasmas::update(float d){
                // mRecorder.current_video=moveandrecord.currentRect;
                 mRecorder.current_video=videoCounter;
                 cout<< "width" << selectedBlob->width<< "height"<< selectedBlob->height;
-                ofPoint p1 = convertPoint(selectedBlob->getX(), selectedBlob->getY());
+                ofPoint p1 = convertPoint2(selectedBlob->getX(), selectedBlob->getY());
                 
                 mRecorder.start(2000, 30, remoteBlobImgPxl,
                                 selectedBlob->width*VIDEO_W*VIDEO_scale,selectedBlob->height*VIDEO_H*VIDEO_scale,
@@ -190,7 +190,7 @@ void fantasmas::update(float d){
             for (tobj=objectList.begin(); tobj != objectList.end(); tobj++) {
                 ofxTuioCursor *blob = (*tobj);
                 if(blob->getSessionId() == RecordingBlobId){
-                    ofPoint p2 = convertPoint(blob->getX(), blob->getY());
+                    ofPoint p2 = convertPoint2(blob->getX(), blob->getY());
                     //mandamos el nuevo frame a grabar
                     if(mRecorder.update(p2.x-10 , p2.y-10,
                                         blob->width*VIDEO_scale*VIDEO_W+20,
@@ -232,14 +232,14 @@ void fantasmas::draw(){
         ofPushMatrix();
         ofTranslate(100,100);
 //dibujo la imagen normal que se ve en pantalla
-        syphonFullImage->drawSubsection(0,0,SCREEN_W,SCREEN_H,0,VIDEO_offset,VIDEO_W,SCREEN_H);
+        syphonFullImage->drawSubsection(0,0,SCREEN_W,SCREEN_H,0,SCREEN_H/2,VIDEO_W,SCREEN_H);
         //DIBUJO LOS
         list<ofxTuioCursor*>::iterator tobj;
         list<ofxTuioCursor*> objectList = tuioclient->getTuioCursors();
         for (tobj=objectList.begin(); tobj != objectList.end(); tobj++) {
             ofxTuioCursor *blob = (*tobj);
             ofSetColor(255,0,0);
-            ofPoint p1 = convertPoint(blob->getX(), blob->getY());
+            ofPoint p1 = convertPoint2(blob->getX(), blob->getY());
            // ofEllipse( p1.x, p1.y,9,9);
             //cout << "blob size" << blobTracker.trackedBlobs.size() << "\n";
             if(blob->getSessionId() == selectedBlobId){
@@ -278,7 +278,7 @@ void fantasmas::draw(){
         fbo.begin();
         ofClear(0, 0, 0, 0);
 //      mSyphonClient2->draw(0,0,640,480);
-        syphonOnlyBlobs->drawSubsection(0,0,SCREEN_W,SCREEN_H,0,VIDEO_offset,VIDEO_W,SCREEN_H);
+        syphonOnlyBlobs->drawSubsection(0,0,SCREEN_W,SCREEN_H,0,0,VIDEO_W,SCREEN_H);
         fbo.end();
         fbo.readToPixels(remoteBlobImgPxl);
         //feedImg.setFromPixels(remoteBlobImgPxl);
@@ -290,7 +290,7 @@ void fantasmas::draw(){
 		ofPushMatrix();
         ofTranslate(100,100);
 //        mSyphonClient->draw(0,0,640,480);
-        syphonFullImage->drawSubsection(0,0,SCREEN_W,SCREEN_H,0,VIDEO_offset,VIDEO_W,SCREEN_H);
+        syphonFullImage->drawSubsection(0,0,SCREEN_W,SCREEN_H,0,0,VIDEO_W,SCREEN_H);
         ofSetColor(255,255,255);
 
         float tt = ofGetElapsedTimef();

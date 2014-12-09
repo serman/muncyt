@@ -35,7 +35,7 @@ public:
     }
     
     int update(){
-      //  if(joystickPresent==false) return;
+        if(joystickPresent==false) return;
         int c;
         const  float* ejes=glfwGetJoystickAxes(0, &c);
         //cout <<ejes[0]<<endl;

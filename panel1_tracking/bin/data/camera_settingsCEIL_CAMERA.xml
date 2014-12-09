@@ -6,20 +6,20 @@
 <Widget>
     <Kind>42</Kind>
     <Name>min blob size</Name>
-    <Value>993</Value>
+    <Value>989</Value>
 </Widget>
 <Widget>
     <Kind>42</Kind>
     <Name>max blob size</Name>
-    <Value>22188</Value>
+    <Value>28536</Value>
 </Widget>
 <Widget>
     <Kind>42</Kind>
-    <Name>amplify</Name>
-    <Value>6</Value>
+    <Name>learnRate1</Name>
+    <Value>12</Value>
 </Widget>
 <Widget>
     <Kind>42</Kind>
     <Name>smooth</Name>
-    <Value>5</Value>
+    <Value>10</Value>
 </Widget>
