@@ -58,6 +58,7 @@ void testApp::setup() {
 
     numFramesMax_newBckgrnd = 1800;
     
+    
 	// distances
     swDistMax = false;
 	distMax = 173;
@@ -72,7 +73,20 @@ void testApp::setup() {
 	blurcv = 1;
     
     swErode = true;
+
 	
+    //
+    // 12-GGG
+    // Background Adaptativo
+    //
+    background.setLearningTime(900);
+    lr = 0.0001;
+    lrUI = lr/1000.0;
+    background.setLearningRate(lr);
+    background.setThresholdValue(distMax); //(thresh);
+//    background.setDifferenceMode(RunningBackground::BRIGHTER);
+    //
+    
 	// ContourFinder
 	max_blobs = 20;
 	min_blob_size = 100;
@@ -151,7 +165,7 @@ void testApp::update(){
 	
 	// there is a new frame and we are connected
 	if(kinect.isFrameNew()) {
-		updateModo1();
+		updateModo2();
 	}
 }
 
@@ -203,7 +217,6 @@ void testApp::updateModo1() {
 		maskShader.end();
 		maskFbo.end();
 
-		
 		
 		
 //		maskFbo.readToPixels(tempGrayImage.getPixelsRef());
@@ -262,6 +275,132 @@ void testApp::updateModo1() {
 	contourFinderX.findContours(grayImage);
 	
 }
+
+void testApp::updateModo2() {
+	// Leer Camara
+	// load grayscale depth image from the kinect source
+	//		grayImage.setFromPixels(kinect.getDepthPixels(), wk, hk);
+	//		colorImg.setFromPixels(kinect.getDepthPixelsRef()); //.getDepthPixels());
+	colorImg.setFromPixels(kinect.getPixelsRef()); //.getDepthPixels());
+	depthImg.setFromPixels(kinect.getDepthPixelsRef());
+	tempGrayImage.setFromPixels(kinect.getDepthPixelsRef()); //.getDepthPixels());		// GrayScale
+	//		tempGrayImage.setFromPixels(kinect.getRawDepthPixelsRef()); //.getDepthPixels());  // Short
+	//		monoPixels.setFromPixels(tempGrayImage.getPixels(), 320,240, 1);
+    
+	if(ofGetFrameNum()<numFramesMax_newBckgrnd && ofGetFrameNum()%60==0) bLearnBakground=true;
+    
+	if (bLearnBakground == true){
+        // Update Total el background Adaptativo
+        background.reset();
+        //
+        
+        // Update imagen background (no adaptativo)
+		backgroundImage = tempGrayImage;
+		
+		// Calcular mascara a partir del background
+        // No hay porque hacerlo todo el rato
+        //
+		if(swDistMax) {
+			maskImage = tempGrayImage;
+			maskImage.threshold(distMax);
+		}
+		
+		bLearnBakground = false;
+	}
+	
+    //
+	// Background Adaptativo
+    //
+    ofImage tmpG2RGB;
+    convertColor(depthImg, tmpG2RGB, CV_GRAY2BGR);
+    background.update(tmpG2RGB, thresholded);
+    thresholded.update();  // Esta la puedo utilizar para quitar zonas m‡s lejos de distMax
+    //
+    toOf(background.getBackground(), bckCvImg);
+    bckCvImg.update();
+    
+    // para poder restar el background necesitamos pasar
+    // a una ofxCvGrayScaleImage (a backgroundImage)
+    // pero habr‡ forma de hacerlo con funciones de ofxCv
+    ofImage tmpimgGray;
+    convertColor(bckCvImg, tmpimgGray, CV_BGR2GRAY);
+    backgroundImage.setFromPixels(tmpimgGray.getPixelsRef());
+    backgroundImage.updateTexture();
+    
+    
+    
+	// quitar zonas mas lejos de una dist dada
+	if(swDistMax) {
+        
+		// Aplicar mascara a tempGrayImage
+		maskFbo.begin();
+		ofClear(0,0,0,0);
+		maskShader.begin();
+        maskShader.setUniformTexture( "texture1", maskImage.getTextureReference(),  1 );
+		tempGrayImage.draw(0,0);
+		maskShader.end();
+		maskFbo.end();
+		
+        //		maskFbo.readToPixels(tempGrayImage.getPixelsRef());
+        
+		maskFbo.readToPixels(imageMasked.getPixelsRef());
+		imageMasked.update();
+		
+		maskImageColor.setFromPixels(imageMasked.getPixelsRef());
+		tempGrayImage = maskImageColor;
+    }
+	
+	
+	
+	
+	// substraci—n openCV.
+	//
+    // Restar el background de la imagen actual (masked)
+	tempGrayImage-=backgroundImage;
+    //
+	grayThreshNear = tempGrayImage;
+	grayThreshFar  = tempGrayImage;
+	grayThreshNear.threshold(thresholdHigh, true);
+	grayThreshFar.threshold(thresholdLow);
+	cvAnd(grayThreshNear.getCvImage(), grayThreshFar.getCvImage(), tempGrayImage.getCvImage(), NULL);
+
+    // Tb de esta forma con ofxCv
+    // http://forum.openframeworks.cc/t/ofxcv-and-kinect-cvand
+    // que utiliza Mat o ofImage:
+//    copy(tempGrayMat, nearThresMat);
+//    copy(tempGrayMat, farThresMat);
+//    threshold(nearThreshMat, nearThreshold);
+//    threshold(farThreshMat, farThreshold);
+//    // bitwise_and(const Mat& src1, const Scalar& src2, CV_OUT Mat& dst, const Mat& mask=Mat());
+//    bitwise_and(nearThreshMat, farThreshMat, grayImageMat);
+    //
+    
+    //
+	// update the cv images
+	tempGrayImage.flagImageChanged();
+	
+    if(swErode) {
+        tempGrayImage.erode_3x3();
+        tempGrayImage.dilate_3x3();
+    }
+    
+	// WARP
+	//	if(bWarp) 	{
+	//		//grayImage.warpIntoMe(tempGrayImage, entrada, destino_camera_warp);
+	//		// mejor warp con calib2
+	//	}
+	//	else {	grayImage = tempGrayImage; }
+	grayImage = tempGrayImage;
+    
+	// NO SE SI VA MEJOR EL THREHOLD ANTES O DESPUES DEL BLUR
+	if(bt) grayImage.threshold(threshold);
+	grayImage.blur(blurcv);  
+	
+	contourFinderX.setThreshold(threshold);
+	contourFinderX.findContours(grayImage);
+	
+}
+
 
 //--------------------------------------------------------------
 void testApp::draw(){
@@ -348,7 +487,6 @@ void testApp::draw(){
 		
 		// me pasa el punto desde Src a Dst
 		// Este va muy bien
-		// Este no va bien, pero antes s’!!!!
 		ofVec2f proy;
 		if(calib2.homographyReady) {
 			proy = calib2.transf_Punto( ofVec2f(ofGetMouseX() - c2_Src.x, ofGetMouseY() - c2_Src.y) , false);
@@ -364,6 +502,17 @@ void testApp::draw(){
 	}
 	
     
+    // Backgrounds
+//    ofSetColor(255);
+//    float www = 200;
+//    float hhh = backgroundImage.height*www/backgroundImage.width;
+//    backgroundImage.draw(ofGetWidth()/2-2*www, ofGetHeight()-hhh, www, hhh);
+//    bckCvImg.draw(ofGetWidth()/2-www, ofGetHeight()-hhh, www, hhh);
+////
+//    thresholded.draw(ofGetWidth()/2-www, ofGetHeight()-2*hhh, www, hhh);
+//    drawMat(background.getBackground(),ofGetWidth()/2, ofGetHeight()-2*hhh, www, hhh);
+//    drawMat(background.getForeground(),ofGetWidth()/2, ofGetHeight()-hhh, www, hhh);
+//    maskImage.draw(ofGetWidth()/2+www, ofGetHeight()-hhh, www, hhh);
     
     
     
@@ -641,6 +790,8 @@ void testApp::setupGUI() {
 	gui1->addLabel("MODO 1 - Backgr Substr");
 	gui1->addToggle("(b) Set Bckgrnd", &bLearnBakground);
 	gui1->addSpacer();
+    gui1->addSlider("learningRate*1000", 0.1, 100.0, &lrUI);
+    gui1->addSpacer();
 	gui1->addToggle("Aplica Quitar Fondo",&swDistMax);
 	gui1->addSlider("Quitar Zona Fondo", 0.0, 255.0, &distMax);
 	gui1->addSpacer();
@@ -688,6 +839,13 @@ void testApp::guiEvent(ofxUIEventArgs &e) {
 	
 	else if(name == "Carga Calibracion") {
 		calib2.loadMatrix(nombreCalib);		
+	}
+
+	else if(name == "learningRate*1000") {
+		ofxUISlider *slider = (ofxUISlider *) e.widget;
+		lrUI = slider->getScaledValue();
+        lr = lrUI/1000.0;
+		background.setLearningRate(lr);
 	}
 	
 	//	contourFinderX.setMinArea(min_blob_size);
