@@ -14,7 +14,7 @@
 #include "ofxBlob.h"
 #include "ofxContourFinder.h"
 #include "ofxCv.h"
-#include "ofxBGS.h"
+//#include "ofxBGS.h"
 class ofxBlobTracker{
 public:
     enum {CUSTOM,OPENCV,OFXCV};
@@ -41,7 +41,7 @@ public:
     void update2( int _threshold = -1,
                 int minArea = 20 ,int maxArea = (340*240)/3, int nConsidered = 10,
                 double hullPress = 30, bool bFindHoles = false, bool bUseApproximation = true );
-    ofxBGS bgs;
+  //  ofxBGS bgs;
         void drawDebug();
     
     void resetBG();

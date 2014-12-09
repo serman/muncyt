@@ -232,7 +232,7 @@ void fantasmas::draw(){
         ofPushMatrix();
         ofTranslate(100,100);
 //dibujo la imagen normal que se ve en pantalla
-        syphonFullImage->drawSubsection(0,0,SCREEN_W,SCREEN_H,0,SCREEN_H/2,VIDEO_W,SCREEN_H);
+        syphonFullImage->drawSubsection(0,0,SCREEN_W,SCREEN_H,0,130,VIDEO_W,SCREEN_H);
         //DIBUJO LOS
         list<ofxTuioCursor*>::iterator tobj;
         list<ofxTuioCursor*> objectList = tuioclient->getTuioCursors();
@@ -278,7 +278,7 @@ void fantasmas::draw(){
         fbo.begin();
         ofClear(0, 0, 0, 0);
 //      mSyphonClient2->draw(0,0,640,480);
-        syphonOnlyBlobs->drawSubsection(0,0,SCREEN_W,SCREEN_H,0,0,VIDEO_W,SCREEN_H);
+        syphonOnlyBlobs->drawSubsection(0,0,SCREEN_W,SCREEN_H,0,130,VIDEO_W,SCREEN_H);
         fbo.end();
         fbo.readToPixels(remoteBlobImgPxl);
         //feedImg.setFromPixels(remoteBlobImgPxl);

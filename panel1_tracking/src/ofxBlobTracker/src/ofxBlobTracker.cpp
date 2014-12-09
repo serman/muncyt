@@ -115,7 +115,7 @@ void ofxBlobTracker::update2( int _threshold, int _minArea,int _maxArea , int _n
     std::vector<std::vector<cv::Point> > contours;
     ofxCv::erode(fore,2);
     ofxCv::dilate(fore,2);
-   // ofxCv::dilate(fore,3);
+    ofxCv::dilate(fore,2);
 
     ofxCv::blur(fore,smooth*2+1);
     //cv::findContours(fore,contours,CV_RETR_EXTERNAL,CV_CHAIN_APPROX_NONE);

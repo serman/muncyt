@@ -14,7 +14,7 @@
 #define SCREEN_H 384
 #define VIDEO_W 720
 #define VIDEO_H 576
-#define ABS_MAX_TIME_SCENE 60*3*1000
+#define ABS_MAX_TIME_SCENE 60*2*1000
 //En el caso de bloqueo 5 minutos
 
 extern ofTrueTypeFont courierFont;
@@ -44,13 +44,14 @@ static ofPoint convertPoint(float x1, float y1){
 }
 
 static ofPoint convertPoint2(float x1, float y1){
+    int offset1=SCREEN_H/2-130;
     float y1px=y1*VIDEO_H*VIDEO_scale;
     
-    if(y1px >(0) /* el punto está dentro de la franja que se muetra ( que comienza en VIDEO_offset*/
-       && y1px < (0 + SCREEN_H)
+    if(y1px >(offset1) /* el punto está dentro de la franja que se muetra ( que comienza en VIDEO_offset*/
+       && y1px < (offset1 + SCREEN_H)
        /* Y termina en video_offset+ screen_h*/
        ){
-        ofPoint p1=ofPoint((float)x1*SCREEN_W, (float)y1px-0);
+        ofPoint p1=ofPoint((float)x1*SCREEN_W, (float)y1px-offset1);
         return p1;
     }
     else return ofPoint(-1,-1);

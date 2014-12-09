@@ -107,15 +107,18 @@ void fantasmas::gui2Event(ofxUIEventArgs &e)
     if(kind==2){
         if(name == "2")
         {
+            secuence_to_play=0;
             currentImg=2;
         }
         if(name == "1")
         {
             currentImg=1;
+            secuence_to_play=2;
         }
         if(name == "0")
         {
             currentImg=0;
+            secuence_to_play=1;
         }
     }
     if(kind==OFX_UI_WIDGET_TOGGLE && name=="grabacion"){
