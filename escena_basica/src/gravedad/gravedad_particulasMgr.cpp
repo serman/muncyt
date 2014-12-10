@@ -64,8 +64,8 @@ void gravedad::updateParticlesX() {
 		
 		pTUIO+=ofVec3f(W_WIDTH/2.0, W_HEIGHT/2.0 ,0);
         // OK
-//        ofLogNotice() << "TUIO:" << pTUIO.x << ", "<< pTUIO.y;
-//        ofLogNotice() << "Sol:" << sol.posScreen.x << ", "<< sol.posScreen.y;
+        ofLogNotice() << "TUIO:" << pTUIO.x << ", "<< pTUIO.y;
+        ofLogNotice() << "Sol:" << sol.posScreen.x << ", "<< sol.posScreen.y;
         for(int i=0; i<particulas.size(); i++) {
             //ofVec3f pTUIO = ofVec3f(ofGetMouseX()-ofGetWidth()/2, -(ofGetMouseY()-ofGetHeight()/2), 0);
             particulas[i].gravityTowards(pTUIO, 10.0f,  masaTUIO);

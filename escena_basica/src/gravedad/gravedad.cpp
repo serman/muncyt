@@ -213,7 +213,7 @@ void gravedad::exit_Escena() {
 void gravedad::setupMeshSuperf() {
 //	ofLogNotice() << "setupMeshSuperf " << 1;
     
-	int skip = 10;// /2;	// this controls the resolution of the mesh
+	int skip = 10;// /2;	// Resolucion del mesh
 	
 	superfW = W_WIDTH;
 	superfH = W_HEIGHT;
@@ -281,21 +281,21 @@ void gravedad::update(float d1){
         
     }
 	
-	// aplicar noise y deformaciones por sol y hands
-	updateMeshSuperf();
-    
 	// particulas
 	updateParticlesX();
-	
+
 	// Sol
 	sol.update();	
 	
+	// aplicar noise y deformaciones por sol y hands
+	updateMeshSuperf();
+    
 	// dibujar particulas en textura
 	// preparar mezcla de imagenes
 	imgMix.begin();
 	{
 		ofClear(0);
-		//		ofEnableBlendMode( OF_BLENDMODE_ADD );
+//		ofEnableBlendMode( OF_BLENDMODE_ADD );
 //		ofDisableDepthTest();
         
 		// rejilla
@@ -307,13 +307,7 @@ void gravedad::update(float d1){
             ofSetColor(150);
             ofRect(0,0, imgMix.getWidth(), imgMix.getHeight());
 		}
-
-//
-//		Esta linea afecta al SceneManager! La quito (12/11/2014)
-//
-//		ofEnableDepthTest();
-//
-		
+	
 		// dibujar particulas y cosas
 		updateFBO();
 		
@@ -483,9 +477,7 @@ ofPoint gravedad::calculaPosicionMesh(ofPoint pOrig, float t) {
 		//ofVec2f ptInteract = ofVec2f(ofGetMouseX()-zentro.x, ofGetMouseY()-zentro.y);
 		
 		float dx = p.x-ptInteract.x;
-		float dy = p.y+ptInteract.y;
-//		float dx = p.x-ptInteract.x;
-//		float dy = p.y-ptInteract.y;
+		float dy = p.y-ptInteract.y;
 		
 		// Varianza sigma
 		var = 100;
@@ -495,9 +487,7 @@ ofPoint gravedad::calculaPosicionMesh(ofPoint pOrig, float t) {
 		
 		// un poquito de fuerza de resistencia tpo muelle
 		float dxO = pOrig.x-ptInteract.x;
-		float dyO = pOrig.y+ptInteract.y;
-//		float dxO = pOrig.x-ptInteract.x;
-//		float dyO = pOrig.y-ptInteract.y;
+		float dyO = pOrig.y-ptInteract.y;
 		
 		float d2 = dxO*dxO+dyO*dyO;
 		float angDir = atan2(dyO, dxO);	// radianes
@@ -509,8 +499,10 @@ ofPoint gravedad::calculaPosicionMesh(ofPoint pOrig, float t) {
 				p.y -= kk / dd * sin(angDir);
 			}
 			else {
-				p.x = pOrig.x - kk / dd * cos(angDir);
-				p.y = pOrig.y - kk / dd * sin(angDir);
+//				p.x = pOrig.x - kk / dd * cos(angDir);
+//				p.y = pOrig.y - kk / dd * sin(angDir);
+				p.x -= kk / dd * cos(angDir);
+				p.y -= kk / dd * sin(angDir);
 			}
 		}
 	}     
@@ -684,14 +676,17 @@ void gravedad::draw(){
 	
 	// Dibujar bolas de las partículas:
 	ofPushStyle();
-	ofPushMatrix();
-	ofTranslate(-(W_WIDTH)/2.0, -ofGetHeight()/2.0, -60);
-	ofDisableDepthTest();
-	for(int i=0; i<particulas.size(); i++) {
-		particulas[i].draw3D();
-	}
-	ofEnableDepthTest();
-	ofPopMatrix();
+		ofPushMatrix();
+		//
+//		ofTranslate(-(W_WIDTH)/2.0, -ofGetHeight()/2.0, -60);
+		ofTranslate(0,0, -60);
+		//
+		ofDisableDepthTest();
+		for(int i=0; i<particulas.size(); i++) {
+			particulas[i].draw3D();
+		}
+		ofEnableDepthTest();
+		ofPopMatrix();
 	ofPopStyle();	
 
 	
@@ -783,7 +778,6 @@ void gravedad::sceneWillDisappear( ofxScene * toScreen ){
 
 
 ofPoint gravedad::transformTUIO(ofxTuioCursor &tuioCursor) {
-//	return ofPoint(tuioCursor.getX()*W_WIDTH-300,tuioCursor.getY()*W_HEIGHT-300);
 	return ofPoint((tuioCursor.getX()-0.5)*W_WIDTH,(tuioCursor.getY()-0.5)*W_HEIGHT);														   
 }
 

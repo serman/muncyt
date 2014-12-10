@@ -180,7 +180,10 @@ class ParticleX
 	void draw3D() {
 		
 		ofPushMatrix();
-		ofTranslate(position.x, ofGetHeight()-position.y, zMalla);
+//		ofTranslate(position.x, ofGetHeight()-position.y, zMalla);
+//		ofTranslate(position.x, -(W_HEIGHT/2-position.y), zMalla);
+		ofTranslate(-W_WIDTH/2, -W_HEIGHT/2,0);
+		ofTranslate(position.x, position.y, zMalla);
 		//		matX.setEmissiveColor(ofColor(255.0));
 		
 		//		matX.begin();
