@@ -44,7 +44,8 @@ void gravedad::setup(){
 
 	// Luces
 	swLight = true;
-	light.enable();
+//	light.enable();
+//	light1.enable();
 	
 	// Camara
 	swOrtho = false;
@@ -145,16 +146,19 @@ void gravedad::init_Escena() {
 	
 	
 	// Luces
+	ofEnableLighting();
+	ofSetSmoothLighting(true);
 	swLight = true;
 	light.enable();
-		
+	//	light1.enable();
+	
     bUseTexture = true;
 	swWireFrame = false;
 	
 	// Light
 	light.setDirectional();
-	light.setPosition(0,0,50);
-	light.setOrientation( ofVec3f(180,0, 0) );
+	light.setPosition(0,0,450);
+	light.setOrientation( ofVec3f(180,0,0) );
     
 //	ofLogNotice() << "gravedad::init_Escena: " << 1;
 	
@@ -209,7 +213,7 @@ void gravedad::exit_Escena() {
 void gravedad::setupMeshSuperf() {
 //	ofLogNotice() << "setupMeshSuperf " << 1;
     
-	int skip = 10;// /2;	// this controls the resolution of the mesh
+	int skip = 10;// /2;	// Resolucion del mesh
 	
 	superfW = W_WIDTH;
 	superfH = W_HEIGHT;
@@ -277,26 +281,22 @@ void gravedad::update(float d1){
         
     }
 	
-	// aplicar noise y deformaciones por sol y hands
-	updateMeshSuperf();
-    
-//	ofLogNotice() << "gravedad::update: " << 2;
-	
 	// particulas
 	updateParticlesX();
-	
-//	ofLogNotice() << "gravedad::update: " << 3;
-	
+
 	// Sol
 	sol.update();	
 	
+	// aplicar noise y deformaciones por sol y hands
+	updateMeshSuperf();
+    
 	// dibujar particulas en textura
 	// preparar mezcla de imagenes
 	imgMix.begin();
 	{
 		ofClear(0);
-		//		ofEnableBlendMode( OF_BLENDMODE_ADD );
-		ofDisableDepthTest();
+//		ofEnableBlendMode( OF_BLENDMODE_ADD );
+//		ofDisableDepthTest();
         
 		// rejilla
 		if(swWeb) {
@@ -307,13 +307,7 @@ void gravedad::update(float d1){
             ofSetColor(150);
             ofRect(0,0, imgMix.getWidth(), imgMix.getHeight());
 		}
-
-//
-//		Esta linea afecta al SceneManager! La quito (12/11/2014)
-//
-//		ofEnableDepthTest();
-//
-		
+	
 		// dibujar particulas y cosas
 		updateFBO();
 		
@@ -420,85 +414,101 @@ void gravedad::updateMeshSuperf(){
 		for (int x=0; x<nW; x++) {
 			int i = x + nW * y;	//Vertex index
 			ofPoint p = superf.getVertex( i );
-			ofPoint pO = superfOrig.getVertex( i );
+
+			ofPoint pNew = calculaPosicionMesh(p, time);			
 			
-			//Get Perlin noise value
-			float value = ofNoise( x * 0.05, y * 0.05, time * 0.5 );
-			//Change z-coordinate of vertex
-			p.z = 0;
-			p.z -= value * nivelNoise;
-			//p.z = -value; //37.0;
-			
-			//
-			// - - - - ATRACCION SOL - - - - 
-			//
-			//			p.z = value * 100; 
-			float rho2 = p.x*p.x+p.y*p.y;
-			float var = 20+5*sin(time*0.5);
-			//			float var = 20;
-			//			p.z += 100.0*exp(-rho2/(2*var*var));
-			
-			// asignar altura
-			// y color segun la altura
+			// asignar color segun la altura
 			ofFloatColor cc;
-			float rho = sqrt(rho2);
-			if(rho>=10) {
-				//				p.z -= 10000/rho;
-				p.z -= gg/rho;
-				float ccv = ofMap(p.z,0,-500, 1.0, 0.0);
-				//				cc = ofFloatColor(ccv,1-ccv,ccv, 1.0);
-				cc = ofFloatColor(abs(1-ccv),abs(1-ccv),ccv, 1.0);
-				
-				//				float angDir = atan2(p.y, p.x);	// radianes
-				//				p.x -= 100*kk / rho * cos(angDir);
-				//				p.y -= 100*kk / rho * sin(angDir);				
-			}
-			else {
-				p.z -= gg/10;
-			}
-			
+			float ccv = ofMap(pNew.z,0,-500, 1.0, 0.0);
+			cc = ofFloatColor(abs(1-ccv),abs(1-ccv),ccv, 1.0);
 			
 			//
-			// - - - - - INTERACCIONES - - - - -
-			//
-			// Evaluar el desplazamiento por los ptos de interaccion (mouse, TUIO...)
-			
-			// MOUSE
-			// Pasamos las coordenadas del pto de interaccion al marco de referencia de la malla
-            for (int j=0; j<hands.objectsCol.size(); j++){
-                ofVec2f ptInteract(hands.objectsCol[j]->x,hands.objectsCol[j]->y);
-                //ofVec2f ptInteract = ofVec2f(ofGetMouseX()-zentro.x, ofGetMouseY()-zentro.y);
-                
-                float dx = p.x-ptInteract.x;
-                float dy = p.y+ptInteract.y;
-                
-				var = 80;
-				
-                float rhoZ2 = dx*dx+dy*dy;
-                p.z -= 150.0*exp(-rhoZ2/(2*var*var));
-                
-                float dxO = pO.x-ptInteract.x;
-                float dyO = pO.y+ptInteract.y;
-                
-                float d2 = dxO*dxO+dyO*dyO;
-                float angDir = atan2(dyO, dxO);	// radianes
-                
-                float dd = sqrt(d2);
-                if(dd>10) {
-                    p.x -= kk / sqrt(d2) * cos(angDir);
-                    p.y -= kk / sqrt(d2) * sin(angDir);
-                }
-           }     
-                // SET VERTEX
-                superf.setVertex( i, p );
-                superf.setColor(i, cc);
-                //Change color of vertex
-                //			mesh.setColor( i, ofColor( value*255, value * 255, 255 ) );
+			// SET VERTEX
+			superf.setVertex( i, pNew );
+			superf.setColor(i, cc);
 			
 		}
 	}
 	
 	setNormals( superf ); // Update normals
+}
+
+ofPoint gravedad::calculaPosicionMesh(ofPoint pOrig, float t) {
+	ofVec3f p;
+	
+	p = pOrig;
+	
+	//
+	// PERLIN NOISE
+	//Get Perlin noise value
+	float value = ofNoise( p.x * 0.005, p.y * 0.005, t * 0.5 );
+	//Change z-coordinate of vertex
+	p.z = 0;
+	p.z -= value * nivelNoise;
+	//p.z = -value; //37.0;
+	
+	//
+	// - - - - ATRACCION SOL - - - - 
+	//
+	float rho2 = p.x*p.x+p.y*p.y;	//dist al cuadrado
+	float var = 20+5*sin(t*0.5);
+	//			float var = 20;
+	//			p.z += 100.0*exp(-rho2/(2*var*var));
+	
+	// asignar altura
+	float rho = sqrt(rho2);
+	if(rho>=10) {
+		p.z -= gg/rho;
+	}
+	else {
+		p.z -= gg/10;
+	}
+	
+	
+	//
+	// - - - - - INTERACCIONES - - - - -
+	//
+	// Evaluar el desplazamiento por los ptos de interaccion (mouse, TUIO...)
+	
+	// MOUSE
+	// Pasamos las coordenadas del pto de interaccion al marco de referencia de la malla
+	for (int j=0; j<hands.objectsCol.size(); j++){
+		ofVec2f ptInteract(hands.objectsCol[j]->x,-hands.objectsCol[j]->y);
+		//ofVec2f ptInteract = ofVec2f(ofGetMouseX()-zentro.x, ofGetMouseY()-zentro.y);
+		
+		float dx = p.x-ptInteract.x;
+		float dy = p.y-ptInteract.y;
+		
+		// Varianza sigma
+		var = 100;
+		
+		float rhoZ2 = dx*dx+dy*dy;
+		p.z -= 150.0*exp(-rhoZ2/(2*var*var));
+		
+		// un poquito de fuerza de resistencia tpo muelle
+		float dxO = pOrig.x-ptInteract.x;
+		float dyO = pOrig.y-ptInteract.y;
+		
+		float d2 = dxO*dxO+dyO*dyO;
+		float angDir = atan2(dyO, dxO);	// radianes
+		
+		float dd = sqrt(d2);
+		if(dd>10) {
+			if(ofGetMousePressed()) {
+				p.x -= kk / dd * cos(angDir);
+				p.y -= kk / dd * sin(angDir);
+			}
+			else {
+//				p.x = pOrig.x - kk / dd * cos(angDir);
+//				p.y = pOrig.y - kk / dd * sin(angDir);
+				p.x -= kk / dd * cos(angDir);
+				p.y -= kk / dd * sin(angDir);
+			}
+		}
+	}     
+	
+	return p;
+	
 }
 
 void gravedad::updateFBO() {
@@ -512,23 +522,22 @@ void gravedad::updateFBO() {
 		//		ofLogNotice() << cLin.getBrightness();
 		//		ofLogNotice() << cLin.getSaturation();
 		cLin.setBrightness(255);
-		cLin.setSaturation(100);
+		cLin.setSaturation(250);
 		ofSetColor(cLin);	// 0x2751E3 (AZUL GUAY)
-		ofSetLineWidth(1.0);
+		ofSetLineWidth(3.0);
 		ofNoFill();
 		
 		float baseSol = sol.radio/10000.0;
 		ofPushMatrix();
 		
 		ofTranslate(imgDyn.getWidth()/2.0, imgDyn.getHeight()/2.0, 0 );
+		ofEnableSmoothing();
 		//		int lim = ofGetHeight()/2.0*floor(
-		for(float i=0.1; i<10.0; i+=0.3) {
+		for(float i=0.1; i<10.0; i+=0.1) {
 			float vPot = i*baseSol;
 			float rPot = 1/vPot;
 			
-			ofEnableSmoothing();
 			ofCircle(0,0, rPot);
-			ofDisableSmoothing();
 		}
 		
 		// Líneas Radiales
@@ -538,6 +547,8 @@ void gravedad::updateFBO() {
 			float sang = sin(ang)*imgDyn.getWidth();
 			ofLine(-cang, -sang, cang, sang);
 		}
+		
+		ofDisableSmoothing();
 		
 		ofPopMatrix();
 		
@@ -612,13 +623,21 @@ void gravedad::draw(){
     ofEnableAlphaBlending();
     ofEnableDepthTest();
     if(swLight) ofEnableLighting();
+
+	light.setPosition(0,0,ofMap(ofGetMouseY(),0,ofGetHeight(), 0,1000));
+	float euler1 = 135.0;
+	float euler2 = 0.0;
+	float euler3 = ofGetElapsedTimef()*100.0;//ofMap(ofGetMouseX(),0,ofGetWidth(), 0,720)
+//	float euler3 = ofMap(ofGetMouseX(),0,ofGetWidth(), 0,720);
+//	ofLogNotice() << euler3;
+	light.setOrientation(ofVec3f(euler1, euler2, euler3));
 	
 	ofPushMatrix();
 	if(swOrtho) {
 		ofTranslate(zentro.x, zentro.y,0);
 	}
 	else {
-		ofTranslate(0,0, -260);		
+		ofTranslate(0,0, -260);			//¿?¿??¿?
 	}
 	    
     mat1.begin();
@@ -627,6 +646,7 @@ void gravedad::draw(){
     
     //img.bind();
 	if(bUseTexture) {
+//        ofLogNotice() << "bind";
 		ofEnableNormalizedTexCoords();
 		imgMix.getTextureReference().bind();
 	}
@@ -647,30 +667,37 @@ void gravedad::draw(){
 	}
 	
 	
-	// Dibujar bolas de las partículas:
-	ofPushMatrix();
-	ofTranslate(-(W_WIDTH)/2.0, -ofGetHeight()/2.0, -60);
-	//	ofTranslate(-ofGetMouseX(), -ofGetHeight()/2.0, -60);
-	for(int i=0; i<particulas.size(); i++) {
-		particulas[i].draw3D();		
-	}
-	ofPopMatrix();
-	
 	// Dibujar esfera central
-//	drawSol();
+	//	drawSol();
 	ofDisableAlphaBlending();
 	sol.draw();
 	ofEnableAlphaBlending();
+
 	
-	
-	if(swLight) 	light.disable();
+	// Dibujar bolas de las partículas:
+	ofPushStyle();
+		ofPushMatrix();
+		//
+//		ofTranslate(-(W_WIDTH)/2.0, -ofGetHeight()/2.0, -60);
+		ofTranslate(0,0, -60);
+		//
+		ofDisableDepthTest();
+		for(int i=0; i<particulas.size(); i++) {
+			particulas[i].draw3D();
+		}
+		ofEnableDepthTest();
+		ofPopMatrix();
+	ofPopStyle();	
+
 	
 	mat1.end();
+	if(swLight) {
+		light.disable(); 
+		ofDisableLighting();
+	}
+	ofDisableAlphaBlending();
 	
 	ofPopMatrix();
-	
-	ofDisableAlphaBlending();
-	if(swLight) ofDisableLighting();
 	
 //	cam.end();
 	camera.end();
@@ -751,7 +778,6 @@ void gravedad::sceneWillDisappear( ofxScene * toScreen ){
 
 
 ofPoint gravedad::transformTUIO(ofxTuioCursor &tuioCursor) {
-//	return ofPoint(tuioCursor.getX()*W_WIDTH-300,tuioCursor.getY()*W_HEIGHT-300);
 	return ofPoint((tuioCursor.getX()-0.5)*W_WIDTH,(tuioCursor.getY()-0.5)*W_HEIGHT);														   
 }
 

@@ -38,7 +38,9 @@ class ParticleX
     char recentlyUsed;
 	
 	float angle;
-	
+
+	float	zMalla;	// altura de la malla. Ahí hay que dibujar. Lo separo de position para que no influya en cálculos
+		
 	// para chequear colision con ofPolyline
 	bool inside;
 	
@@ -52,6 +54,7 @@ class ParticleX
 	bool	bDrawMemoPath;
 
 //	ofSpherePrimitive esfera;
+//	ofMaterial	matX;
 	
     ParticleX(){};
 	
@@ -80,6 +83,10 @@ class ParticleX
 //		esfera.setRadius(10);
 		
 //		ofLogNotice() << "NUEVA PARTIC X Fin INIT";
+		
+		//		matX.setAmbientColor(ofColor(255.0));
+		//		matX.setEmissiveColor(ofColor(255.0));
+		
     };
 	
 	
@@ -173,9 +180,20 @@ class ParticleX
 	void draw3D() {
 		
 		ofPushMatrix();
-		ofTranslate(position.x, position.y, 0);
+//		ofTranslate(position.x, ofGetHeight()-position.y, zMalla);
+//		ofTranslate(position.x, -(W_HEIGHT/2-position.y), zMalla);
+		ofTranslate(-W_WIDTH/2, -W_HEIGHT/2,0);
+		ofTranslate(position.x, position.y, zMalla);
+		//		matX.setEmissiveColor(ofColor(255.0));
+		
+		//		matX.begin();
+		ofSetColor(200);
 		ofDrawSphere(0,0, 10);
-//		esfera.draw();
+		//		esfera.draw();
+		//		matX.end();
+        
+        ofDrawBitmapString(ofToString(position.x)+", "+ofToString(position.y), 20,20);
+        
 		ofPopMatrix();
 		
 	}
@@ -183,7 +201,7 @@ class ParticleX
 	void drawMemoPath() {
 		
 		ofPushStyle();
-		ofSetLineWidth(4);
+		ofSetLineWidth(2);
 		ofSetColor(colorExcited);
 		for(int i=0; i<memoPaths.size(); i++) {
 			memoPaths[i].draw();
