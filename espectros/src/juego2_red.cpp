@@ -14,16 +14,20 @@ bool vertexExist(ofPolyline &l, ofPoint p1){
 }
 
 void juego2::tuioAdded(ofxTuioCursor &tuioCursor){
-    ofPoint p= convertPoint(tuioCursor.getX(), tuioCursor.getY());
+    //nota aunque pone Xspeed lo que estoy enviando es el centroide con smooth
+    ofPoint p= convertPoint(tuioCursor.getXSpeed(), tuioCursor.getYSpeed());
+    addObstacle(p , tuioCursor.getSessionId() );
     if(p.x == -1 && p.y == -1){
-        return;
-    }else{
-        addObstacle(p , tuioCursor.getSessionId() );
+        hideObstacle(tuioCursor.getSessionId() );
+    }else{        
+        updateObstacle( p , tuioCursor.getSessionId() );
     }
+    return;
+
 }
 
 void juego2::tuioUpdated(ofxTuioCursor &tuioCursor){
-    ofPoint p= convertPoint(tuioCursor.getX(), tuioCursor.getY());
+    ofPoint p= convertPoint(tuioCursor.getXSpeed(), tuioCursor.getYSpeed());
     if(p.x == -1 && p.y == -1){
         hideObstacle(tuioCursor.getSessionId() );
     }else{
