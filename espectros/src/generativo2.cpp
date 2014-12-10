@@ -38,7 +38,7 @@ void generativo2::update(float f){
     list<ofxTuioCursor*> objectList = tuioclient->getTuioCursors();
     for (tobj=objectList.begin(); tobj != objectList.end(); tobj++) {
         ofxTuioCursor *blob = (*tobj);
-        ofPoint p1 = convertPoint(blob->getX(), blob->getY());
+        ofPoint p1 = convertPoint(blob->getXSpeed(), blob->getYSpeed());
         if(p1.x != -1 && p1.y!=-1){
             p1.x=ofClamp(p1.x, 0, SCREEN_W);
             p1.y=ofClamp(p1.y, 0, SCREEN_H);
