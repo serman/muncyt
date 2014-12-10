@@ -39,7 +39,6 @@ public:
 	// http://forum.openframeworks.cc/t/universal-multitouch-wall-using-microsoft-sdk-openframeworks-and-ofxkinectnui/9908/37
     	
 	void updateModo1();
-	void updateModo2(); /// dic-GGG
     
 	void	drawMarco(ofRectangle rect);
 	void	drawMarco(float xx, float yy, float ww, float hh);
@@ -53,15 +52,15 @@ public:
 	
 	ofxCvGrayscaleImage		grayImage; // grayscale depth image
     
-	ofImage					colorImg, depthImg;
+	ofImage					colorImg;
 	
 	ofxCvGrayscaleImage		tempGrayImage;
 	ofxCvGrayscaleImage		backgroundImage;	// para ver el background
 	bool                    bLearnBakground;
     
     ofxCv::RunningBackground background;
-    ofImage thresholded, bckCvImg;
-    float   thres, lr, lrUI;
+    ofImage thresholded;
+    float   thres, lr;
     
     // temporizador para coger background al arrancar la aplicacion
     int numFramesMax_newBckgrnd;
@@ -77,8 +76,7 @@ public:
 	
     bool    swDistMax;
 	float	distMax;	// a partir de esta distancia se pone la imagen en negro
-	bool    swErodeMask;
-    
+	
 	ofShader				maskShader;
 	ofxCvGrayscaleImage		maskImage;
 	ofFbo					maskFbo;
@@ -96,8 +94,6 @@ public:
 	int					blurcv;
 	bool bt;	// activar o no el threshold antes de cfX
 	
-    bool swErode;
-    
 	bool	bWarp;
 	
 	//
