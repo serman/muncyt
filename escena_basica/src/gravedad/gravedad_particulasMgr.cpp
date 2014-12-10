@@ -62,13 +62,16 @@ void gravedad::updateParticlesX() {
     for (int j=0; j<hands.objectsCol.size(); j++){
         ofVec3f pTUIO(hands.objectsCol[j]->x,-hands.objectsCol[j]->y, 0);
 		
-		pTUIO+=ofVec3f(W_WIDTH/2.0, W_HEIGHT/2.0 ,0);
+		// Se pasa las coods de TUIO a x:(0,W_WIDTH), y:(0,W_HEIGHT)
+		pTUIO+=ofVec3f(W_WIDTH/2.0, W_HEIGHT/2.0 ,0);	
+//		pTUIO+=ofVec3f(zentro.x, zentro.y ,0);	
+//		pTUIO+=ofVec3f(0, 0 ,0);	
         // OK
         ofLogNotice() << "TUIO:" << pTUIO.x << ", "<< pTUIO.y;
         ofLogNotice() << "Sol:" << sol.posScreen.x << ", "<< sol.posScreen.y;
         for(int i=0; i<particulas.size(); i++) {
             //ofVec3f pTUIO = ofVec3f(ofGetMouseX()-ofGetWidth()/2, -(ofGetMouseY()-ofGetHeight()/2), 0);
-            particulas[i].gravityTowards(pTUIO, 10.0f,  masaTUIO);
+            particulas[i].gravityTowards(pTUIO, 10.0f,  masaTUIO);	// OKOKOKOK
         }
     }
 
@@ -78,7 +81,7 @@ void gravedad::updateParticlesX() {
 	}
 
 //	ofLogNotice() << "gravedad::updateParticlesX " << 4;
-	
+
 	// chequear si han chocado con el Sol
 	// o si estan muy lejos
 	for(int i=particulas.size()-1; i>=0; i--) {
@@ -114,6 +117,7 @@ void gravedad::updateParticlesX() {
 			//		particulas[i].gravityTowards(pTUIO, 10.0f,  masaTUIO);
 			ofPoint p = particulas[i].position;
 			
+//			ofPoint pNew = p;// = calculaPosicionMesh(p, time);
 			ofPoint pNew = calculaPosicionMesh(p, time);
 			
 			// asignar color segun la altura
@@ -123,7 +127,7 @@ void gravedad::updateParticlesX() {
 			
 			//
 			// SET VERTEX
-			particulas[i].position =  pNew ;
+			particulas[i].position.z =  pNew.z ;
 			particulas[i].zMalla = pNew.z;//+ ofMap(ofGetMouseY(), 0, ofGetHeight(), -1000,1000);
 			//		superf.setColor(i, cc);
 			
