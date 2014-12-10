@@ -51,8 +51,8 @@ void testApp::sendTUIO(std::vector<ofxBlob> * objectBlobs){
             set_obj.addIntArg(blob_obj->id);				// id
             set_obj.addFloatArg(blob_obj->boundingRect.getX());	// x
             set_obj.addFloatArg(blob_obj->boundingRect.getY());	// y
-            set_obj.addFloatArg(blob_obj->D.x);			// dX
-            set_obj.addFloatArg(blob_obj->D.y);			// dY
+            set_obj.addFloatArg(blob_obj->centroid.x);			// dX
+            set_obj.addFloatArg(blob_obj->centroid.y);			// dY //niapa en lugar de enviar D que es la diferencia entre posiciones, envio la del centroide
             set_obj.addFloatArg(blob_obj->maccel);		// m
             if(bHeightWidth)
             {
