@@ -74,7 +74,8 @@ void testApp::setup() {
     
     swErode = true;
 
-	
+	swErodeMask = false;
+    
     //
     // 12-GGG
     // Background Adaptativo
@@ -298,12 +299,11 @@ void testApp::updateModo2() {
 		backgroundImage = tempGrayImage;
 		
 		// Calcular mascara a partir del background
-        // No hay porque hacerlo todo el rato
         //
-		if(swDistMax) {
-			maskImage = tempGrayImage;
-			maskImage.threshold(distMax);
-		}
+//		if(swDistMax) {
+//			maskImage = tempGrayImage;
+//			maskImage.threshold(distMax);
+//		}
 		
 		bLearnBakground = false;
 	}
@@ -327,6 +327,15 @@ void testApp::updateModo2() {
     backgroundImage.setFromPixels(tmpimgGray.getPixelsRef());
     backgroundImage.updateTexture();
     
+    // Calcular mascara a partir del background
+    // La calculo siempre por que siempre se modifica el background
+    // otra opcion es calcularla cada x frames
+    if(swDistMax) {
+        maskImage = tempGrayImage;
+        maskImage.threshold(distMax);
+        
+        if(swErodeMask) maskImage.erode_3x3();
+    }
     
     
 	// quitar zonas mas lejos de una dist dada
@@ -503,16 +512,16 @@ void testApp::draw(){
 	
     
     // Backgrounds
-//    ofSetColor(255);
-//    float www = 200;
-//    float hhh = backgroundImage.height*www/backgroundImage.width;
+    ofSetColor(255);
+    float www = 200;
+    float hhh = backgroundImage.height*www/backgroundImage.width;
 //    backgroundImage.draw(ofGetWidth()/2-2*www, ofGetHeight()-hhh, www, hhh);
 //    bckCvImg.draw(ofGetWidth()/2-www, ofGetHeight()-hhh, www, hhh);
 ////
 //    thresholded.draw(ofGetWidth()/2-www, ofGetHeight()-2*hhh, www, hhh);
 //    drawMat(background.getBackground(),ofGetWidth()/2, ofGetHeight()-2*hhh, www, hhh);
 //    drawMat(background.getForeground(),ofGetWidth()/2, ofGetHeight()-hhh, www, hhh);
-//    maskImage.draw(ofGetWidth()/2+www, ofGetHeight()-hhh, www, hhh);
+    maskImage.draw(ofGetWidth()/2+www, ofGetHeight()-hhh, www, hhh);
     
     
     
@@ -794,6 +803,7 @@ void testApp::setupGUI() {
     gui1->addSpacer();
 	gui1->addToggle("Aplica Quitar Fondo",&swDistMax);
 	gui1->addSlider("Quitar Zona Fondo", 0.0, 255.0, &distMax);
+    gui1->addToggle("Erodde Mask", &swErodeMask);
 	gui1->addSpacer();
 	
 	gui1->addRangeSlider("rango resta images L/H", 0.0, 20.0, &thresholdLow, &thresholdHigh);
