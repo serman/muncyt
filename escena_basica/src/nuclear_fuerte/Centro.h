@@ -193,14 +193,19 @@ public:
 			float dd = vel.length();
 			vel.normalize();
 			
+			//
+			// ****
+			//
 			// Dispersión, depende del valor de pTot: Si es bajo, más dispersión
 			// vel.rotate....
 			
-			vel*=28+ntipo+ofRandom(1); //-ofMap(dd,ddMax*0.25,ddMax, 10,18);
+			vel*=25+ntipo+ofRandom(3); //-ofMap(dd,ddMax*0.25,ddMax, 10,18);
 			
 			if(bRadial) {
 				// distribuye radialmente
-				vel.rotate((float) 360/nPartics*i);
+				float angulo = (float) 360/nPartics*i;
+				angulo += (0.5*(1-ofRandom(1.0))) * 10.1;
+				vel.rotate(angulo);		// DEGREES
 			}
 			pData.velocity = vel;
 			
@@ -217,10 +222,10 @@ public:
 				pData.q=-pData.q;
 				
 				float angulo = pData.velocity.angle(pTot);
-				pData.velocity.rotate(-2*angulo, ofVec3f(0,0,1));
+//				pData.velocity.rotate(-2*angulo, ofVec3f(0,0,1));
+				pData.velocity.rotate(180.0, ofVec3f(0,0,1));
 				
-				newPartics.push_back(pData);
-				
+				newPartics.push_back(pData);	
 			}
 			
 			
@@ -257,7 +262,10 @@ public:
 //		ofNoFill();
 //		ofSetLineWidth(6);
 //		circulo.draw();
-		
+
+		//
+		// Direccion ---
+		//
 		ofSetColor(0,255,0, 70);
 		ofSetLineWidth(4);
 		float modPTot = pTot.length();
@@ -272,6 +280,28 @@ public:
 		float angPMeanT = atan2(pMeanT.y, pMeanT.x);
 		ofLine(pos.x, pos.y, pos.x+pMeanT.x, pos.y+pMeanT.y);
 		
+		// Animacion con valores modPTot y energy
+		ofPushStyle();
+		ofEnableBlendMode(OF_BLENDMODE_ADD);
+		int nBalls = floor(ofRandom(energy));
+		for(int i=0; i<nBalls; i++) {
+			int nc = floor(ofRandom(3));
+			ofColor cc;
+			if(nc==0) cc = ofColor(255,0,0);
+			else if(nc==1) cc = ofColor(0,255,0);	
+			else if(nc==2) cc = ofColor(0,0,255);
+			ofSetColor(cc);
+			float radTmp = ofRandom(modPMeanT)/2.0;
+			float angTmp = ofRandom(TWO_PI);
+//			ofCircle(pos.x+pMeanT.x, pos.y+pMeanT.y, 3);
+//			ofCircle(pos.x+pMeanT.x+radTmp*cos(angTmp), pos.y+pMeanT.y+radTmp*sin(angTmp), 3);
+			ofCircle(pos.x+radTmp*cos(angTmp), pos.y+radTmp*sin(angTmp), 3);
+		}
+		ofDisableBlendMode();
+		ofPopStyle();
+		
+		
+		
 		
 		ofDrawBitmapString("pTot: " + ofToString(modPTot), pos.x+50, pos.y+50);
 		ofDrawBitmapString("E: " + ofToString(energy), pos.x+50, pos.y+70);
@@ -281,6 +311,8 @@ public:
 		
 		bOcupado = false;
 	}
+	
+	
 	
 	void drawStats(ofRectangle cuad) {
 		ofPushMatrix();

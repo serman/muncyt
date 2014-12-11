@@ -628,9 +628,9 @@ void nuclear_fuerte::sceneWillDisappear( ofxScene * toScreen ){
 void nuclear_fuerte::setupColores() {
 	colores[0] = ofColor::red;
 	colores[1] = ofColor::green;
-	colores[2] = ofColor::blue;
+	colores[2] = ofColor(36,240,245);//ofColor::blue;
 	antiColores[0] = colores[0]; antiColores[0].invert();
-	antiColores[1] = colores[1]; antiColores[1].invert();
+	antiColores[1] = ofColor(246,76,255);//colores[1]; antiColores[1].invert();	// antiVerde : purpple
 	antiColores[2] = colores[2]; antiColores[2].invert();
 	for(int i=0; i<3; i++) {
 		coloresAll[i] = colores[i];
