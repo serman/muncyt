@@ -303,8 +303,8 @@ public:
 		
 		
 		
-		ofDrawBitmapString("pTot: " + ofToString(modPTot), pos.x+50, pos.y+50);
-		ofDrawBitmapString("E: " + ofToString(energy), pos.x+50, pos.y+70);
+//		ofDrawBitmapString("pTot: " + ofToString(modPTot), pos.x+50, pos.y+50);
+//		ofDrawBitmapString("E: " + ofToString(energy), pos.x+50, pos.y+70);
 		
 		ofDisableSmoothing();
 		ofPopStyle();

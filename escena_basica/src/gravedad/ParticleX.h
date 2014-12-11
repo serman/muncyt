@@ -192,7 +192,7 @@ class ParticleX
 		//		esfera.draw();
 		//		matX.end();
         
-        ofDrawBitmapString(ofToString(position.x)+", "+ofToString(position.y), 20,20);
+//        ofDrawBitmapString(ofToString(position.x)+", "+ofToString(position.y), 20,20);
         
 		ofPopMatrix();
 		

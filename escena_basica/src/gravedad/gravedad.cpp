@@ -748,17 +748,17 @@ void gravedad::draw(){
 	
 	
 	
-	if(hands.objectsCol.size()>0) {
-		ofVec2f ptInteract(hands.objectsCol[0]->x,-hands.objectsCol[0]->y);
-		ofDrawBitmapString("TUIO 0: "+ofToString(ptInteract.x), ptInteract.x, ptInteract.y);
-		ofSetColor(255,255,0);
-		ofDrawBitmapString("TUIO 0: "+ofToString(ptInteract.x)+","+ofToString(ptInteract.y), zentro.x+ptInteract.x, zentro.y-ptInteract.y);
-		
-	}
 	
 	
 	
-    if(bshowdebug){
+    if(bshowdebug){	
+		if(hands.objectsCol.size()>0) {
+			ofVec2f ptInteract(hands.objectsCol[0]->x,-hands.objectsCol[0]->y);
+			ofDrawBitmapString("TUIO 0: "+ofToString(ptInteract.x), ptInteract.x, ptInteract.y);
+			ofSetColor(255,255,0);
+			ofDrawBitmapString("TUIO 0: "+ofToString(ptInteract.x)+","+ofToString(ptInteract.y), zentro.x+ptInteract.x, zentro.y-ptInteract.y);
+			
+		}
         ofDrawBitmapString("fr: " + ofToString(ofGetFrameRate()), 10, ofGetHeight()-90);
         ofDrawBitmapString("masa Sol: " + ofToString(sol.masa), 10, ofGetHeight()-70);
         ofDrawBitmapString("num Partics: " + ofToString(particulas.size()), 10, ofGetHeight()-50);
