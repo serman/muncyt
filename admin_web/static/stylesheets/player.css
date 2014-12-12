@@ -1,0 +1,39 @@
+body{
+overflow: hidden
+}
+#canvascontainer{
+  position: absolute;
+  top:40px;
+  left:40px;
+}
+
+div#processing{
+margin:0px;
+border:0;
+background-color:black;
+}
+
+div#previewcontainer{
+background: transparent;
+margin-top:300px;
+} 
+
+div#header{
+  width:50%;
+  margin-left:50%;
+}
+
+.sketch-list-item{
+margin:0.4em;
+padding:0.4em;
+background-color: #444;
+cursor:pointer;
+}
+
+.current{
+background-color:#ff4444;
+}
+
+#loopSketchButton{
+  background-color:#ff6666;
+}
