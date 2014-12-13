@@ -188,7 +188,7 @@ void nuclear_debil::init_Escena() {
     borrar_nucleos();
     timeLastColision=0;
     
-    nCircs = 60 + floor(  ofRandom(20) );
+    nCircs = 60 + floor(  ofRandom(10) );
 	for(int i =0; i<nCircs; i++) {
 		addNucleo(centro.x+ofRandom(-1,1), centro.y+ofRandom(-1,1), rNucleo);
 	}
@@ -349,9 +349,9 @@ void nuclear_debil::update(float dt) {
     /********/
 
 //TUIOS
-    buttonCollide.update_prev(anillo.getParticlePosition());
-    buttonSpeed1.update_prev(anillo.getParticlePosition());
-    buttonSpeed2.update_prev(anillo.getParticlePosition());
+    buttonCollide.update_prev(abs(anillo.wAng/(anillo.wAngMax*0.95)),(float)numNucleosActivos/NUCLEOS_TO_EXPLOSION);
+    buttonSpeed1.update_prev(abs(anillo.wAng/(anillo.wAngMax*0.95)),(float)numNucleosActivos/NUCLEOS_TO_EXPLOSION);
+    buttonSpeed2.update_prev(abs(anillo.wAng/(anillo.wAngMax*0.95)),(float)numNucleosActivos/NUCLEOS_TO_EXPLOSION);
     
 	touchElements.update();
     hands.update();
@@ -363,7 +363,7 @@ void nuclear_debil::update(float dt) {
     
     
     //ANIADIMOS NUCLEOS SOLO SI NO HAY YA DEMASIADOS
-    if(numNucleosActivos<NUCLEOS_TO_EXPLOSION*1.5){
+    if(numNucleosActivos<NUCLEOS_TO_EXPLOSION*1.3){
         for(int i=0; i<hands.objectsCol.size(); i++) {
             handShadow * h = (handShadow *) hands.objectsCol[i];
             // si esta en la parte central del c’rculo
@@ -797,12 +797,11 @@ void nuclear_debil::borrar_neutrones() {
 
 //--------------------------------------------------------------
 void nuclear_debil::resized(int w, int h){
+    
 }
 
 
 // ------------------------- TUIO ----------------------
-
-
 
 
 
