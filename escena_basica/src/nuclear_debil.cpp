@@ -61,7 +61,7 @@ void nuclear_debil::setup() {
 
 	radioInt = radioMuro;
 	radioExt = MIN(W_WIDTH, W_HEIGHT) / 2.0*0.98;
-    cout<< radioInt << " exterior " << radioExt << endl;
+   // cout<< radioInt << " exterior " << radioExt << endl;
 	// Preparo el polyline
 	ofPoint centro = ofPoint(W_WIDTH/2.0, W_HEIGHT/2.0);
 	bordeLine.arc(centro, radioMuro, radioMuro, 0.0, 360.0, true, resol);
@@ -511,10 +511,10 @@ void nuclear_debil::draw(){
 	// TUIOS
 //    tuioClient.drawCursors();	
     hands.draw();
-	
+		ofEnableAlphaBlending();
     // Circulo de info
     
-    ofPushStyle();
+    /*ofPushStyle();
     
         ofSetColor(ofColor::orange, 100);
         ofNoFill();
@@ -526,7 +526,7 @@ void nuclear_debil::draw(){
         ofCircle(W_WIDTH/2,W_HEIGHT/2, rr);
     
     
-    ofPopStyle();
+    ofPopStyle();*/
 
     drawCenterDisplay();
     
@@ -534,7 +534,7 @@ void nuclear_debil::draw(){
 //    if(sprites.size()>0) // if we have sprites
 //MODO EXPLOSION FIN DE LA ESCENA
     if(status==EXPLOSION ){
-        if(init_explosion_time+20000 < ofGetElapsedTimeMillis() ){ //la escena termina si ya ha pasado mucho tiempo desde la explosi—n
+        if(init_explosion_time+15000 < ofGetElapsedTimeMillis() ){      //la escena termina si ya ha pasado mucho tiempo desde la explosi—n
             if(sent_changeScene_message==false){
                 ofSendMessage("changeScene" +ofToString(SCENE_MENU));
                 status==OFF;

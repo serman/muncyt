@@ -121,11 +121,9 @@ void gravedad::setup(){
 void gravedad::init_Escena() {
 	ofLogNotice() << "gravedad::init_Escena: " << 0;
     
-    cheapComm::getInstance()->sendAudio0("/audio/gravity/start_event");
+  //  cheapComm::getInstance()->sendAudio0("/audio/gravity/start_event");
     
 	ofSetBackgroundAuto(true);
-	cout << "initScena gravedad" <<endl;
-	
     ofBackground(34, 34, 34);
 	ofSetVerticalSync(false);
 	
@@ -164,20 +162,15 @@ void gravedad::init_Escena() {
 	
     
 	// FBO's
-	float wFBOs = W_HEIGHT;
-	imgMix.allocate(wFBOs,wFBOs, GL_RGBA);
+
 	imgMix.begin();
 	ofClear(0,0,0, 0);
 	imgMix.end();
 	
-	ofPushStyle();
-	imgDyn.allocate(wFBOs,wFBOs, GL_RGBA);
+	//imgDyn.allocate(wFBOs,wFBOs, GL_RGBA);
 	imgDyn.begin();
     ofClear(0,0,0, 0);
 	imgDyn.end();
-    ofPopStyle();
-    
-    
     
 //    gui1->enable();
 //    initSol(INIT_MASA_SOL);
@@ -196,11 +189,11 @@ void gravedad::init_Escena() {
 	
 	// addListeners
 	bshowdebug=false;
-	ofSetBackgroundAuto(true);
+    hands.reset();
 }
 
 void gravedad::exit_Escena() {
-    cheapComm::getInstance()->sendAudio0("/audio/gravity/end_event");
+    //cheapComm::getInstance()->sendAudio0("/audio/gravity/end_event");
     hands.reset();
 	// borrar objetos
 	particulas.clear();
@@ -214,7 +207,7 @@ void gravedad::setupMeshSuperf() {
 //	ofLogNotice() << "setupMeshSuperf " << 1;
     
 	int skip = 10;// /2;	// Resolucion del mesh
-	
+	superf.clear();
 	superfW = W_WIDTH;
 	superfH = W_HEIGHT;
 	
