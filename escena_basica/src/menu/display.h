@@ -13,7 +13,7 @@
 #include <ofMain.h>
 #include "cheapComm.h"
 #define RADIO 130
-#define LOADINGTIME 4
+#define LOADINGTIME 3.4
 
 /*
  DISPLAY CENTRAL 
@@ -73,8 +73,9 @@ public:
         
         int tim=ofGetElapsedTimeMillis()-init_time;
         int timeleft=LOADINGTIME*1000-tim;
-        if(timeleft<600) {
-            init_time=ofGetElapsedTimeMillis(); a=0; ofSendMessage("changeScene" +ofToString(scene)); status==OFF;
+        if(timeleft<800) {
+            init_time=ofGetElapsedTimeMillis(); a=0;
+            ofSendMessage("changeScene" +ofToString(scene)); status==OFF;
             return;
         }
         int timeleft_sec=ceil(timeleft/1000);

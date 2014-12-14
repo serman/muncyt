@@ -486,12 +486,12 @@ void nuclear_fuerte::draw(){
 	// decoración borde Exterior
 	// hay que animarla un poco
 	ofPushStyle();
-	// linea blanca
+	// linea blanca --> ahora es negra
 	ofSetLineWidth(4);
-	ofSetColor(255);
+	ofSetColor(0);
 	ofNoFill();
 	circExt.draw();
-	
+	ofSetColor(255);
 	ofPushMatrix();
 	ofTranslate(zentro.x,zentro.y,0);
 	for(int i=0; i<6; i++) {

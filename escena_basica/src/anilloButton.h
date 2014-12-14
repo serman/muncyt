@@ -96,9 +96,9 @@ public:
                 else
                     imgPlus.draw(5, 314);
             }else if (y<100 && x<500){ //arriba
-                
-                if(status_handIsOn ==true) imgExpON.draw(302,-3);
-                else imgExp.draw(309,5);
+                //ofRect(x,y,width,height);
+                if(status_handIsOn ==true) imgExpON.draw(302,8);
+                else imgExp.draw(309,13);
             }
             else{ //derecha
                 if(status_handIsOn ==true)

@@ -88,7 +88,7 @@ private:
      ofImage backgroundImg;
     long time_since_init_scene;
     bool end_of_scene_sent;
-
+    long showNoJoyErrorUntil;
 };
 
 

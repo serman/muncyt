@@ -48,7 +48,7 @@ public:
     
     void draw(){
         ofEnableAlphaBlending();
-        ofSetColor (200,0,0);//,alpha);
+        ofSetColor (200,0,0,100);//,alpha);
         ofEllipse( x, y,40, 40);
         ofDisableAlphaBlending();
         //movidillas
