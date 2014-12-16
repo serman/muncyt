@@ -195,7 +195,7 @@ void gravedad::init_Escena() {
 //	ofLogNotice() << "gravedad::init_Escena: " << 3;
 	
 	// addListeners
-	bshowdebug=false;
+	bshowdebug=true;
 	ofSetBackgroundAuto(true);
 }
 
@@ -763,6 +763,8 @@ void gravedad::draw(){
         ofDrawBitmapString("masa Sol: " + ofToString(sol.masa), 10, ofGetHeight()-70);
         ofDrawBitmapString("num Partics: " + ofToString(particulas.size()), 10, ofGetHeight()-50);
     }
+	
+	
 	ofPopStyle();
 //    ofDisableDepthTest();
 }
