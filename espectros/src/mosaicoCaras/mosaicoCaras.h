@@ -129,7 +129,7 @@ public:
 	float escAreaDwn;
 	float escArea;
 	
-	
+	long showNoJoyErrorUntil;
 	
 	//
 	//

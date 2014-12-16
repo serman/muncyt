@@ -37,7 +37,17 @@ void faces::draw(){
     ofRestoreMinMagFilters();
     ofBackground(0);
     backgroundImg.draw(0,0,1280,720);
-
+    
+    if(showNoJoyErrorUntil > ofGetElapsedTimeMillis()){
+        ofPushStyle();
+        ofNoFill();
+        ofSetColor(255,0,0);
+        ofSetLineWidth(7);
+        if(ofGetElapsedTimeMillis()%1000<500)
+            ofRect(974,292,294,232);
+        ofPopStyle();
+    }
+    
     ofPushMatrix();
     ofTranslate(100,100);
         ofFill();
@@ -204,6 +214,7 @@ void faces::init_Escena(){
     time_init_scene=ofGetElapsedTimeMillis();
     status=LOADINGFACE;
     end_of_scene_sent=false;
+    showNoJoyErrorUntil=0;
 
 }
 
@@ -213,8 +224,12 @@ void faces::exit_Escena(){
 
 void faces::keyPressed(int key){
 	if(key=='m') swEnLinea=!swEnLinea;
-	else if(key=='w') swWireframe=!swWireframe;
-	else if(key=='t') swTexture=!swTexture;
+	else if(key=='c') swWireframe=!swWireframe;
+	else if(key=='v') swTexture=!swTexture;
     else if(key=='g')
         bshowDebug=!bshowDebug;
+    else if (key=='a' || key=='s' || key=='d' || key=='w' || key=='e' || key=='r' || key=='t' || key=='y'){
+        showNoJoyErrorUntil=ofGetElapsedTimeMillis()+4000;
+    
+    }
 }

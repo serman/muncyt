@@ -78,7 +78,8 @@ void testApp::setup(){
 
     
 //    sceneManager->goToScene(COMEPANTALLA);
-    timeToEndScene=ofGetElapsedTimeMillis()+ABS_MAX_TIME_SCENE;
+    timeInitScene=ofGetElapsedTimeMillis();
+    timeToEndScene=ofGetElapsedTimeMillis()+DEFAULT_MAX_TIME_SCENE;
     
 	sceneManager->setDrawDebug(false);
 	sceneManager->setCurtainDropTime(0.8);
@@ -101,18 +102,33 @@ void testApp::update(){
     if(timeToEndScene !=-1 && timeToEndScene<ofGetElapsedTimeMillis()){
         ofSendMessage("endOfScene");
     }
+    if(ofGetFrameNum()%25==0){
+        updatetimeToEndScene();
+    }
+}
+
+void testApp::updatetimeToEndScene(){
+    //si se está dentro de un juego
+    if(sceneManager->getCurrentSceneID()==BOLA || sceneManager->getCurrentSceneID()==COMEPANTALLA){
+        if((ofGetElapsedTimef()- j2key.timeLastTouch )<2 && (ofGetElapsedTimeMillis()-timeInitScene)> DEFAULT_MIN_TIME_SCENE) { //Si hace menos de 2 segundoS que he tocado el joystick y ademas la escena ya lleva mas de  DEFAULT_MIN_TIME_SCENE rulando: aumento la duracion del juego.
+            if((timeToEndScene-timeInitScene)< ABS_MAX_TIME_SCENE ) // Si aun no se ha llegado al maximo
+               timeToEndScene= MAX(ofGetElapsedTimeMillis()+ 30*1000,timeToEndScene); // le sumamos 30 segundos de juego
+        }
+    }
 }
 
 
 void testApp::draw(){
     ofPushStyle();
 	sceneManager->draw();
-    	ofPopStyle();
+    ofPopStyle();
 	ofPushStyle();
     ofNoFill();
 	ofSetColor(200,200,200);
     ofRect(-1,-1,1282,722);
-	ofPopStyle();
+    
+    ofDrawBitmapString("tiempo queda para fin escena: " + ofToString(timeToEndScene-ofGetElapsedTimeMillis()) ,10,10);
+    	ofPopStyle();
 }
 
 
@@ -124,17 +140,22 @@ void testApp::mousePressed( int x, int y, int button ){
 void testApp::keyPressed(int key){
     
     if (key == '0') {sceneManager->goToScene(FANTASMAS,false);
-    timeToEndScene=ofGetElapsedTimeMillis()+ABS_MAX_TIME_SCENE;
+    timeToEndScene=ofGetElapsedTimeMillis()+DEFAULT_MAX_TIME_SCENE;
     }
-	if (key == '1'){ sceneManager->goToScene(BOLA,false); timeToEndScene=ofGetElapsedTimeMillis()+ABS_MAX_TIME_SCENE;
+	if (key == '1'){ sceneManager->goToScene(BOLA,false); timeToEndScene=ofGetElapsedTimeMillis()+DEFAULT_MAX_TIME_SCENE;
+        timeInitScene=ofGetElapsedTimeMillis();
     }/* true >> regardless of curtain state (so u can change state while curtain is moving)*/
-    if (key == '2'){ sceneManager->goToScene(COMEPANTALLA,false);timeToEndScene=ofGetElapsedTimeMillis()+ABS_MAX_TIME_SCENE;
+    if (key == '2'){ sceneManager->goToScene(COMEPANTALLA,false);timeToEndScene=ofGetElapsedTimeMillis()+DEFAULT_MAX_TIME_SCENE;
+        timeInitScene=ofGetElapsedTimeMillis();
     }
-    if (key == '3'){ sceneManager->goToScene(JOY_WAVES,false);timeToEndScene=ofGetElapsedTimeMillis()+ABS_MAX_TIME_SCENE;
+    if (key == '3'){ sceneManager->goToScene(JOY_WAVES,false);timeToEndScene=ofGetElapsedTimeMillis()+DEFAULT_MAX_TIME_SCENE;
+        timeInitScene=ofGetElapsedTimeMillis();
     }
-    if (key == '4'){ sceneManager->goToScene(CARAS3D,false);timeToEndScene=ofGetElapsedTimeMillis()+ABS_MAX_TIME_SCENE;
+    if (key == '4'){ sceneManager->goToScene(CARAS3D,false);timeToEndScene=ofGetElapsedTimeMillis()+DEFAULT_MAX_TIME_SCENE;
+        timeInitScene=ofGetElapsedTimeMillis();
     }
-    if (key == '5'){ sceneManager->goToScene(MOSAICOCARAS,false);timeToEndScene=ofGetElapsedTimeMillis()+ABS_MAX_TIME_SCENE;
+    if (key == '5'){ sceneManager->goToScene(MOSAICOCARAS,false);timeToEndScene=ofGetElapsedTimeMillis()+DEFAULT_MAX_TIME_SCENE;
+        timeInitScene=ofGetElapsedTimeMillis();
     }
     
     sceneManager->getCurrentScene()->keyPressed(key);
@@ -172,8 +193,9 @@ void testApp::gotMessage(ofMessage m){
     
     if(m.message=="endOfScene"){
         int nextS=chooseScene();
-        timeToEndScene=ofGetElapsedTimeMillis()+ABS_MAX_TIME_SCENE;
+        timeToEndScene=ofGetElapsedTimeMillis()+DEFAULT_MAX_TIME_SCENE;
         sceneManager->goToScene(nextS, false);
+        timeInitScene=ofGetElapsedTimeMillis();
     }
     
 }

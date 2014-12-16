@@ -474,9 +474,9 @@ void juego2::keyPressed(int key){
     
     else if(key=='f')
         fillthis=true;
-    else if(key=='r'){
+    /*else if(key=='r'){
         reset();
-    }
+    }*/
     else if(key=='p')
         startProcessing=true;
     

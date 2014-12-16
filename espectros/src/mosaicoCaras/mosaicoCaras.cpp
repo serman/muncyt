@@ -155,6 +155,15 @@ void MosaicoCaras::update(float f){
 void MosaicoCaras::draw(){
 	ofBackground(ofColor::black);
     backgroundImg.draw(0,0,1280,720);
+    if(showNoJoyErrorUntil > ofGetElapsedTimeMillis()){
+        ofPushStyle();
+        ofNoFill();
+        ofSetColor(255,0,0);
+        ofSetLineWidth(7);
+        if(ofGetElapsedTimeMillis()%1000<500)
+            ofRect(974,292,294,232);
+        ofPopStyle();
+    }
     
 	ofPushStyle();
 	ofNoFill();
@@ -230,7 +239,11 @@ void MosaicoCaras::keyPressed(int key){
 			mosaicoR.tipo=CASILLAS_4;
 		}
 	}
-}	
+    else if (key=='a' || key=='s' || key=='d' || key=='w' || key=='e' || key=='r' || key=='t' || key=='y'){
+        showNoJoyErrorUntil=ofGetElapsedTimeMillis()+4000;
+    }
+
+}
 
 //scene notifications
 void MosaicoCaras::sceneWillAppear( ofxScene * fromScreen ){  // reset our scene when we appear

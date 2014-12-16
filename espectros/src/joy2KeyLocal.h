@@ -17,7 +17,7 @@ public:
     
     int previousValueButton;
     bool joystickPresent=false;
-    
+    long timeLastTouch; //tiempo desde el ultimo toque en segundos
     void setup(){
        // int serverRecvPort = 12000;
        // myosc.setup(serverRecvPort);
@@ -31,8 +31,10 @@ public:
         else{ joystickPresent=true;
             cout << "PRESENT";
         }
+        timeLastTouch=0;
         
     }
+    
     
     int update(){
         if(joystickPresent==false) return;
@@ -86,7 +88,7 @@ public:
                         ofNotifyEvent(ofEvents().keyReleased,arg);
                         arg.key='w';
                         ofNotifyEvent(ofEvents().keyReleased,arg);
-
+                        timeLastTouch=ofGetElapsedTimef();
                     }
                 }
                 if(value==-1){

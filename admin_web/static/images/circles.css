@@ -1,0 +1,7 @@
+.circles{ background:url("circles.png") top left no-repeat; }
+.down-grey{ width:53px; height:53px; background-position:-10px -10px; }
+.down{ width:53px; height:53px; background-position:-10px -73px; }
+.up-grey{ width:53px; height:53px; background-position:-10px -136px; }
+.up{ width:53px; height:53px; background-position:-10px -199px; }
+.empty-grey{ width:53px; height:53px; background-position:-10px -262px; }
+.empty{ width:53px; height:53px; background-position:-10px -325px; }

@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% block head %}
+<head>
+
+   <title> Trans Europe Slow </title>
+
+  <meta charset="utf-8" />
+
+  <script src="/static/javascripts/jquery.imagesloaded.min.js"></script>
+  <script src="http://vjs.zencdn.net/c/video.js"></script>
+  <script src="http://a.vimeocdn.com/js/froogaloop2.min.js"></script>
+  <!--<script src="https://raw.github.com/vimeo/player-api/master/javascript/froogaloop.js"></script>-->
+  <!-- Included CSS-->
+  
+  {% if environment == 'production' %}
+    <link rel="stylesheet" href="/static/stylesheets/main.css" type="text/css" charset="utf-8">
+  {% else %}
+    <link rel="stylesheet/less" href="/static/stylesheets/main.less" type="text/css" charset="utf-8">
+      <script src="/static/javascripts/less.min.js"></script>
+  {% endif %}
+
+<script type="text/javascript">
+      estado={}  
+      estado.videourl=""
+      myCode=Math.random().toString(36).substr(2, 7)
+$(document).ready(function() {
+ 
+      
+      //detectPlatform
+      var system={}
+      var p= navigator.platform
+      system.win = p.indexOf("Win")==0;
+      system.mac = p.indexOf("Mac")==0;
+      prev_url=""
+          $('.reset_link').click(function(){
+                remoteReset($(this).attr('id'));
+          })
+
+})// fin ready
+
+
+lastSeconds=1;
+function onPlayProgress(data, id) {
+   
+   return
+}
+
+function remoteReset(computer_id){
+  console.log(computer_id)
+  $.ajax({
+    dataType: "json",
+      data: {
+        'computer_id':computer_id
+      },
+      url: "/reset",
+   // traditional:true,
+      success: function(data ){
+             console.log("bien")
+             //data=JSON.parse( data.video )
+             
+              return;
+        },
+
+        error:  function(data ){
+             console.log("error")
+             //data=JSON.parse( data.video )
+             
+              return;
+        },
+
+  });
+
+
+}
+
+
+</script>
+
+{% endblock %}
+
+{% block main %}
+<div id="logo">
+    <span>=F-LAB: Admin Panel=</span>
+    <div id="menu">
+      <ul>
+        <li><a href="#" id="show-description"> </a> </li>
+        <li><a href="#" id="show-installation"></a> </li>
+        <li><a href="#" id="show-about"></a> </li>
+
+      </ul>
+    </div>
+    <br/>
+   
+
+  </div>
+<div id="main">
+    
+  <div id="page1">
+    
+      <div id="no-video">
+         Reiniciar ordenadores:
+         <br>
+         <a href="#" id= "espejo_1" class ="reset_link" > Espejo 1 </a>
+         <br>
+         <a href="#" id= "espejo_2" class ="reset_link" > Espejo 2 </a>
+         <br>
+         <a href="#" id= "espejo_3" class ="reset_link" > Espejo 3 </a>
+         <br>
+         <a href="#" id= "mesa" class ="reset_link" > Mesa </a>
+         <br>
+         <a href="#" id= "techo" class ="reset_link"> Techo </a>
+      </div>
+
+
+  </div> <!-- page1 -->
+</div>
+
+{% endblock %}

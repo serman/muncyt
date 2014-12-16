@@ -1,0 +1,274 @@
+{% extends "base.html" %}
+{% block head %}
+<head>
+
+   <title> #ProgramaLaPlaza #CodeTheSquare </title>
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  
+
+  <link   rel="stylesheet" href="/static/javascripts/jquery.mobile-1.3.1.min.css" />
+  <script src="/static/javascripts/jquery-1.9.1.min.js"></script>
+  <script src="/static/javascripts/jquery.mobile-1.3.1.min.js"></script>
+  <script src="/static/javascripts/jquery.scrollTo.js"></script>
+  <!--<script src="https://raw.github.com/vimeo/player-api/master/javascript/froogaloop.js"></script>-->
+  <!-- Included CSS-->
+  
+  {% if environment == 'production' %}
+    <link rel="stylesheet" href="/static/stylesheets/mobile.css" type="text/css" charset="utf-8">
+  {% else %}
+    <link rel="stylesheet/less" href="/static/stylesheets/mobile.less" type="text/css" charset="utf-8">
+      <script src="/static/javascripts/less.min.js"></script>
+  {% endif %}
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+ thingstoStart()
+ getServer();
+ 
+    $('#next').click(function(){
+      var aa=  getScrollNext()
+      console.log(aa)
+      $('.ui-grid-a').animate({
+         scrollTop: sizes.element * aa 
+     }, 2000);
+   })
+
+    $('#prev').click(function(){   
+      console.log("subiendo")  
+      $('.ui-grid-a').animate({
+         scrollTop: sizes.element * getScrollPrev() 
+     }, 2000);
+   })
+
+    initialize();
+     //ws.send("%(username)s entered the room");
+
+     $('#header-p1').click(function(){
+      $('.pagina').hide();
+      $('#info').hide();
+
+     })
+});
+
+function getScrollNext(){
+  if(state.currentItem>=itemsIdByOrder.length-1)
+    return state.currentItem
+  else{
+    state.currentItem+=1
+    return state.currentItem
+  }
+}
+
+function getScrollPrev(){
+  if(state.currensItem<=0)
+    return state.currentItem
+  else{
+    state.currentItem-=1
+    return state.currentItem
+  }
+
+
+
+  
+}
+  function getServer(){
+    $.ajax({
+          type: 'GET',
+          url: "/getCurrentVideoInfo",
+          success: function(data){
+                  var datos=JSON.parse(data);             
+             
+                  console.log(datos) 
+                  insertNewItem(datos)            
+          }                
+      })  
+ }
+
+/************** VIMEO ********/
+    
+
+  
+  intervalID = setInterval( getServer, 10000);              
+  
+  $(window).resize(function(){
+     thingstoStart()
+  })
+
+  /*websocket = 'ws://tes.fact.co.uk/ws';
+        noWebsocket=false;
+          if (window.WebSocket) {
+            ws = new WebSocket(websocket);
+          }
+          
+          else if (window.MozWebSocket) {
+            ws = MozWebSocket(websocket);
+          }
+          
+          else {
+            alert('WebSocket Not Supported');
+            noWebsocket=true
+            return;
+          }
+
+  ws.onmessage = function (evt) {
+        
+             var datos=JSON.parse( evt.data );             
+             if (datos['name']!=undefined)
+                return
+             console.log(datos) 
+             insertNewItem(datos)
+          };
+
+  ws.onopen = function() {
+             //ws.send("%(username)s entered the room");
+          };
+
+  ws.onclose = function(evt) {
+             //searchResults=JSON.parse( data );
+             //data.city; data.place; data.coords data.div
+
+          };
+*/
+
+
+sizes={}; 
+  function thingstoStart(){
+    $('#cabecera').css('height',Math.round($(window).height()*0.3) +'px');
+    $('.ui-grid-a').css('height',Math.round($(window).height()*0.8) +'px');
+    //$('.ui-block-a').css('padding-top',Math.round($(window).height()*0.8) +'px');
+    $('#map_canvas').css('height',Math.round($(window).height()*0.3-40) +'px');
+    sizes.header= Math.round($(window).height()*0.3)
+    sizes.element = Math.round($('#ct1').outerHeight())
+    //$('#logo').css('height',Math.round($(window).height()*0.05) +'px');
+  }
+
+
+
+lastSeconds=1;
+
+
+function updateMap(mlat, mlon,name, subname){
+  var newLatLng = new google.maps.LatLng( mlat,mlon );
+  map.setCenter(newLatLng);
+  if(typeof(name)!='undefined')
+    $('#cabecera-texto').empty().append(name)
+  if(typeof(name)!='subname')
+    $('#subcabecera-texto').empty().append(subname)
+}
+
+items=[]
+itemsIdByOrder = [ 'ct1','ct2' ]
+allItems= [ ] 
+state={
+ 'currentItem':0 
+}
+
+function searchStringInArray (str, strArray) {
+    //for (var j=0; j<strArray.length; j++) {
+      if(strArray.length==0) return -1;
+        if (strArray[strArray.length-1].match(str)) return 1;
+    //}
+    return -1;
+}
+
+function insertNewItem(data){
+  //data.city; data.place; data.coords data.div
+  updateMap(data.coords.lat, data.coords.lon, data.city, data.place)
+  newid = itemsIdByOrder.length+1
+ // if( searchStringInArray(data.id,allItems)!= -1 ) return;
+  var newElement=$('<div class="item1" id="ct'+newid+'" >').append( '<div class="item-content"> ' + data.div + '</div>')
+  itemsIdByOrder.unshift('ct'+newid)
+  allItems.push( data.id );
+  $('.ui-block-b').prepend(newElement)
+  items.push( data )
+  $('.ui-grid-a').animate({
+         scrollTop: newElement.offset().top-sizes.header
+     }, 2000);
+}
+
+
+
+</script>
+    <script type="text/javascript"
+      src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAtBHtZM7VI_OP45G21NkTxx0XvF57143M&sensor=false">
+    </script>
+    <script type="text/javascript">
+      function initialize() {
+        var mapOptions = {
+          center: new google.maps.LatLng(-34.397, 150.644),
+          zoom: 13,
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          zoomControl: false,
+          streetViewControl:false,
+          overviewMapControl:false
+        };
+        map = new google.maps.Map(document.getElementById("map_canvas"),
+            mapOptions);
+      }
+    </script>
+{% endblock %}
+
+{% block main %}
+<div data-role="page" id="home" class="pagina" >  
+  <div data-role="header" data-theme='b' id="cabecera" class="top-header"> 
+      <div class="logo" style="text-align:right">   <!--       <a href="#" data-role="button" id ="header-p1" data-inline="true" data-corners="false" style="height:22px;">Info</a>  --></div>
+
+       <div id="map_canvas">
+
+       </div>
+
+       <div id="cabecera-texto" style="font-size:50px; position:absolute; top:40px; color:rgba(255,255,255,0.9); text-shadow:none"> MADRID    </div>
+       <div id="subcabecera-texto" style="font-size:30px; position:absolute; top:120px; right:120px; max-width:110px; color:rgba(255,255,255,0.9); text-shadow:none"> VillaverdeAlto    </div>
+</div>
+
+  <div data-role="content" id="contenido" role="main">
+    <div id="options-menu" style="position:fixed; right:50px;"></div>
+    <div class="ui-grid-a" >
+      <div class="ui-block-a" style="width:15%">  <!--
+          <a href="#" id="prev" class="circles up">     </a> 
+          <a href="#" id="current" class="circles empty">  </a> 
+          <a href="#" id="next" class="circles down-grey">       </a> -->
+    </div> 
+        <div class="ui-block-b" style="width:85%">
+          <div class="item1" id="ct1"> 
+            <div class="item-content" > <!-- esto es lo que llega -->
+              <h1> titulo del link 1 </h1>
+              <p> 
+                  Descripcion Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vulputate ultrices nibh in volutpat. Vestibulum ac erat sapien. Cras sit amet felis eu justo consectetur adipiscing ut in dolor. on:  
+              <p>
+              <a href="#" > Visitar</a>
+            </div>
+          </div>  
+        <div class="item1 " id="ct2">  
+          <div class="item-content" > <!-- esto es lo que llega -->
+              <h1> t 2 </h1>
+              <p> 
+                  Descripcion tiriri tiriri 
+                  asdfasd
+                  asfa
+              <p>
+              <a href="#" > Visitar</a>
+            </div>
+          </div>  
+        </div>
+        
+    </div><!-- /grid-a -->
+    </div>  
+</div>
+
+<div data-role="page" id="info" class="pagina" >  
+  <div data-role="header" data-theme='b' id="cabecera" class="top-header"> 
+      <div class="logo" style="text-align:right">          <a href="#" data-role="button" id ="header-p2" data-inline="true" data-corners="false" style="height:22px;">Info</a>             </div>
+
+        <div data-role="content" id="contenido" role="main">
+
+              This is the second page with more info.
+        </div>
+</div>
+
+
+
+{% endblock %}

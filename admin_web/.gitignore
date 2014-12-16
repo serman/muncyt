@@ -1,0 +1,8 @@
+.DS_Store
+*.DS_Store
+*/.DS_Store
+*.pyc
+passwd.py
+fiveminutesoffame.conf
+access.log
+site.log

@@ -61,7 +61,7 @@ void nuclear_debil::setup() {
 
 	radioInt = radioMuro;
 	radioExt = MIN(W_WIDTH, W_HEIGHT) / 2.0*0.98;
-    cout<< radioInt << " exterior " << radioExt << endl;
+   // cout<< radioInt << " exterior " << radioExt << endl;
 	// Preparo el polyline
 	ofPoint centro = ofPoint(W_WIDTH/2.0, W_HEIGHT/2.0);
 	bordeLine.arc(centro, radioMuro, radioMuro, 0.0, 360.0, true, resol);
@@ -188,7 +188,7 @@ void nuclear_debil::init_Escena() {
     borrar_nucleos();
     timeLastColision=0;
     
-    nCircs = 60 + floor(  ofRandom(20) );
+    nCircs = 60 + floor(  ofRandom(10) );
 	for(int i =0; i<nCircs; i++) {
 		addNucleo(centro.x+ofRandom(-1,1), centro.y+ofRandom(-1,1), rNucleo);
 	}
@@ -349,9 +349,9 @@ void nuclear_debil::update(float dt) {
     /********/
 
 //TUIOS
-    buttonCollide.update_prev(anillo.getParticlePosition());
-    buttonSpeed1.update_prev(anillo.getParticlePosition());
-    buttonSpeed2.update_prev(anillo.getParticlePosition());
+    buttonCollide.update_prev(abs(anillo.wAng/(anillo.wAngMax*0.95)),(float)numNucleosActivos/NUCLEOS_TO_EXPLOSION);
+    buttonSpeed1.update_prev(abs(anillo.wAng/(anillo.wAngMax*0.95)),(float)numNucleosActivos/NUCLEOS_TO_EXPLOSION);
+    buttonSpeed2.update_prev(abs(anillo.wAng/(anillo.wAngMax*0.95)),(float)numNucleosActivos/NUCLEOS_TO_EXPLOSION);
     
 	touchElements.update();
     hands.update();
@@ -363,7 +363,7 @@ void nuclear_debil::update(float dt) {
     
     
     //ANIADIMOS NUCLEOS SOLO SI NO HAY YA DEMASIADOS
-    if(numNucleosActivos<NUCLEOS_TO_EXPLOSION*1.5){
+    if(numNucleosActivos<NUCLEOS_TO_EXPLOSION*1.3){
         for(int i=0; i<hands.objectsCol.size(); i++) {
             handShadow * h = (handShadow *) hands.objectsCol[i];
             // si esta en la parte central del c’rculo
@@ -511,10 +511,10 @@ void nuclear_debil::draw(){
 	// TUIOS
 //    tuioClient.drawCursors();	
     hands.draw();
-	
+		ofEnableAlphaBlending();
     // Circulo de info
     
-    ofPushStyle();
+    /*ofPushStyle();
     
         ofSetColor(ofColor::orange, 100);
         ofNoFill();
@@ -526,7 +526,7 @@ void nuclear_debil::draw(){
         ofCircle(W_WIDTH/2,W_HEIGHT/2, rr);
     
     
-    ofPopStyle();
+    ofPopStyle();*/
 
     drawCenterDisplay();
     
@@ -534,7 +534,7 @@ void nuclear_debil::draw(){
 //    if(sprites.size()>0) // if we have sprites
 //MODO EXPLOSION FIN DE LA ESCENA
     if(status==EXPLOSION ){
-        if(init_explosion_time+20000 < ofGetElapsedTimeMillis() ){ //la escena termina si ya ha pasado mucho tiempo desde la explosi—n
+        if(init_explosion_time+15000 < ofGetElapsedTimeMillis() ){      //la escena termina si ya ha pasado mucho tiempo desde la explosi—n
             if(sent_changeScene_message==false){
                 ofSendMessage("changeScene" +ofToString(SCENE_MENU));
                 status==OFF;
@@ -797,12 +797,11 @@ void nuclear_debil::borrar_neutrones() {
 
 //--------------------------------------------------------------
 void nuclear_debil::resized(int w, int h){
+    
 }
 
 
 // ------------------------- TUIO ----------------------
-
-
 
 
 

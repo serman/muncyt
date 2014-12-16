@@ -26,7 +26,7 @@
 //const int tipoNeutron = 1;
 
 #define N_SOUNDS 8
-#define NUCLEOS_TO_EXPLOSION 90
+#define NUCLEOS_TO_EXPLOSION 80
 
 // 
 
@@ -83,6 +83,7 @@ public:
     int NORMAL;
 	int EXPLOSION;
 	enum displays{NINGUNO, MAS_ACE, MAS_PART};
+
 	void setup();
 	void update(float dt);
 	void draw();
@@ -226,6 +227,7 @@ public:
 	vector<basicSprite * > sprites;				// our vector of sprites
     void addSprite(int, int);
     int status;
+
     long init_explosion_time;
     bool sent_changeScene_message;
     
@@ -238,6 +240,7 @@ public:
     ofImage mas_acel_img;
     long show_info_img_until;
     int display_to_show;
+    int helpStatus;
     
 };
 

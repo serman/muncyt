@@ -356,6 +356,7 @@ void juego1::init_Escena(){
     cheapComm::getInstance()->showVideoCeil();
     reset();
     circles.clear();
+    throwDirection.set(100,-100);
 }
 
 void juego1::exit_Escena(){
@@ -482,17 +483,17 @@ void juego1::drawControls(){
 void juego1::keyPressed(int key){
     if(key=='o')
         addObstacle();
-    else if(key=='e')
+    else if(key=='e' || key=='r' || key=='t' || key=='y')
         appStatuses["hold_key"]=true;
-    else if(key=='w'){
+    else if(key=='w' || key=='a'){
         throwDirection.rotate(-1);
     }
-    else if(key=='s'){
+    else if(key=='s' || key=='d'){
         throwDirection.rotate(1);
     }
-    else if(key=='t'){
+  /*  else if(key=='t'){
         moveGoal();
-    }    
+    }*/
     else if(key=='g'){
         if(gui2->isEnabled())
             gui2->disable();
@@ -506,7 +507,7 @@ void juego1::keyPressed(int key){
 }
 
 void juego1::keyReleased(int key){
-    if(key=='e'){
+    if(key=='e' || key=='r' || key=='t' || key=='y'){
         if(appStatuses["game_sub_status"]==THROW)
             throwBall();
         appStatuses["hold_key"]=false;

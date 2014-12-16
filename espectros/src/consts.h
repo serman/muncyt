@@ -14,7 +14,9 @@
 #define SCREEN_H 384
 #define VIDEO_W 720
 #define VIDEO_H 576
-#define ABS_MAX_TIME_SCENE 60*2*1000
+#define DEFAULT_MAX_TIME_SCENE 60*2*1000
+#define DEFAULT_MIN_TIME_SCENE 60*1*1000
+#define ABS_MAX_TIME_SCENE 60*4*1000
 //En el caso de bloqueo 5 minutos
 
 extern ofTrueTypeFont courierFont;
