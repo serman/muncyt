@@ -55,6 +55,7 @@ public:
     joy2key j2key;
     void gotMessage(ofMessage m);
     long timeToEndScene;
+    long timeInitScene;
     int chooseScene();
-    
+    void updatetimeToEndScene();
 };
