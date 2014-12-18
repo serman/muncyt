@@ -192,6 +192,7 @@ void gravedad::init_Escena() {
 //	ofSetBackgroundAuto(true);
 	bshowdebug=false;
     hands.reset();
+    ofFill();
 }
 
 void gravedad::exit_Escena() {
