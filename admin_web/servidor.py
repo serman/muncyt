@@ -85,7 +85,7 @@ class Server(object):
   @cherrypy.tools.json_out()
   def reset(self,computer_id):
 
-    subprocess.check_call(['ssh', self.hosts[computer_id], 'open -a safari'])
+    subprocess.check_call(['ssh', "instalaciones@"+self.hosts[computer_id], 'sudo shutdown -r now'])
     print computer_id
     return {'ok':True } 
 #------------------- main -- 
