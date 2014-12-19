@@ -127,7 +127,7 @@ void testApp::draw(){
 	ofSetColor(200,200,200);
     ofRect(-1,-1,1282,722);
     
-    ofDrawBitmapString("tiempo queda para fin escena: " + ofToString(timeToEndScene-ofGetElapsedTimeMillis()) ,10,10);
+    
     	ofPopStyle();
 }
 

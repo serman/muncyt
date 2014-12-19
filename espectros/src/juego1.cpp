@@ -264,6 +264,7 @@ void juego1::showDebug(){
     ofDrawBitmapString("Lifes " + ofToString(appStatuses["vidas"]), 20, 70);
     if(appStatuses["game_sub_status"]==THROW)
     ofDrawBitmapString("THROW STATUS " , 20, 90);
+    
 }
 
 

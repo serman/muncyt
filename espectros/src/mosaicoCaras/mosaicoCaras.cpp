@@ -87,13 +87,13 @@ void MosaicoCaras::cargarFiles() {
 			
 			if(bGray) {
 				// Convierto a BN
-				Mat imgMat, bnMat;
+				cv::Mat imgMat, bnMat;
 				//			ofLogNotice() << "cargar";
 				//			loadMat(imgMat, fileNames[i]);
 				// wrappers.h: convertColor(S& src, D& dst, int code)
 				//			ofLogNotice() << "convertir";
 				//			convertColor(imgTmp, bnMat, CV_RGB2GRAY);
-				convertColor(imgTmp, bnTmp, CV_RGB2GRAY);
+				ofxCv::convertColor(imgTmp, bnTmp, CV_RGB2GRAY);
 				
 				//			images.push_back(imgTmp);
 				//			images.push_back(toOf(bnMat));
