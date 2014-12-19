@@ -10,7 +10,7 @@
 
 #include "Marco.h"
 
-#define SYPHON_CAM
+//#define SYPHON_CAM
 #ifdef SYPHON_CAM
 #include "ofxSyphon.h"
 #endif

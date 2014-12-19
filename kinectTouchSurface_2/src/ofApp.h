@@ -77,7 +77,8 @@ public:
 	
     bool    swDistMax;
 	float	distMax;	// a partir de esta distancia se pone la imagen en negro
-	
+	bool    swErodeMask;
+    
 	ofShader				maskShader;
 	ofxCvGrayscaleImage		maskImage;
 	ofFbo					maskFbo;

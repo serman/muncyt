@@ -180,15 +180,15 @@ class ParticleS
 		}
 		else if(tipo==1) {
 			m = 1.5;
-			q = 0;
+			q = 0.1;
 			amortV = 2.0;
 			tLife = 4.0;
 		}
 		else if(tipo==2) {
 			m = 1.5;
 			q = -1.0;
-			amortV = 3.0;
-			tLife = 3.0;
+			amortV = 5.0;
+			tLife = 1.2;
 		}
 		else if(tipo==3) {
 			m = 2.0;
@@ -198,7 +198,7 @@ class ParticleS
 		}
 		else if(tipo==4) {
 			m = 2.2;
-			q = 2.0;
+			q = 1.6;
 			amortV = 3.0;
 			tLife = 2.0;
 		}

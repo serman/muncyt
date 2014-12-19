@@ -180,7 +180,10 @@ class ParticleX
 	void draw3D() {
 		
 		ofPushMatrix();
-		ofTranslate(position.x, ofGetHeight()-position.y, zMalla);
+//		ofTranslate(position.x, ofGetHeight()-position.y, zMalla);
+//		ofTranslate(position.x, -(W_HEIGHT/2-position.y), zMalla);
+		ofTranslate(-W_WIDTH/2, -W_HEIGHT/2,0);	// Esto centra las partículas alrededor del Sol
+		ofTranslate(position.x, position.y, zMalla);
 		//		matX.setEmissiveColor(ofColor(255.0));
 		
 		//		matX.begin();
@@ -189,7 +192,7 @@ class ParticleX
 		//		esfera.draw();
 		//		matX.end();
         
-        ofDrawBitmapString(ofToString(position.x)+", "+ofToString(position.y), 20,20);
+//        ofDrawBitmapString(ofToString(position.x)+", "+ofToString(position.y), 20,20);
         
 		ofPopMatrix();
 		

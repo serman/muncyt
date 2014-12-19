@@ -18,7 +18,7 @@
 <Widget>
     <Kind>4</Kind>
     <Name>Magnetic Force</Name>
-    <Value>-0.258103907</Value>
+    <Value>0.927967429</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -58,10 +58,10 @@
 <Widget>
     <Kind>4</Kind>
     <Name>Alpha background</Name>
-    <Value>6.280787945</Value>
+    <Value>25.123151779</Value>
 </Widget>
 <Widget>
     <Kind>42</Kind>
     <Name>(q/a)_Rate_partics</Name>
-    <Value>5</Value>
+    <Value>11</Value>
 </Widget>
