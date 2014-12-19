@@ -84,6 +84,7 @@ public:
 	vector<string>		fileNames;
 	vector<ofImage>		images;
 	void cargarFiles();
+	void cargarNameFiles();
 	
 	// indica si las caras ya llegan recortadas
 	// si es true, directamente se pasan al vector de caras a mezclar
@@ -128,6 +129,10 @@ public:
 	float escAreaUp;
 	float escAreaDwn;
 	float escArea;
+
+	//	float * alturas_fijas;
+	vector<float> alturas;
+	
 	
 	long showNoJoyErrorUntil;
 	

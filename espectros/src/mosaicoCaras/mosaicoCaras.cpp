@@ -21,6 +21,7 @@ void MosaicoCaras::setup(){
 	rectMosaicoL = ofRectangle(rectPantalla.x, rectPantalla.y, LADO_CARA, LADO_CARA);
 	rectMosaicoR = ofRectangle(rectPantalla.x+LADO_CARA, rectPantalla.y, LADO_CARA, LADO_CARA);
 	
+	cargarNameFiles();
 	cargarFiles();
 	
 	setupFinders();
@@ -34,32 +35,78 @@ void MosaicoCaras::setup(){
     
 }
 
-void MosaicoCaras::cargarFiles() {
-
+void MosaicoCaras::cargarNameFiles() {
+	
     if(ofToString(getenv("USER"))=="instalaciones" || ofToString(getenv("USER"))=="panel" ){
         ofLogToFile( ofToString (getenv("HOME") ) + "/machine_v_espejo_log.txt", true);
     }
-    
+	
+//	string path = "./images/imgs_faces/";
 	string path = ofToString (getenv("HOME")) + "/fotosCarasMosaico/1x1/";
-//    string path = "./images/imgs_faces/";
 	ofDirectory dir;
 	//only show jpg files
 	//	dir.allowExt("jpg");
 	//populate the directory object
 	int nFiles = dir.listDir(path);
 	
+	ofLogNotice() << "Num imagenes en dir: " << nFiles;
+	
+	fileNames.clear();
+	
 	ofLogVerbose("Listar directorio - "+dir.path());
-	if(nFiles) {
+	if(nFiles>0) {
+		// Cargar los nombres en un array
 		for(int i = 0; i < dir.numFiles(); i++){
 			string fn = dir.getPath(i);
-			ofLogNotice(ofToString(i)+": "+ fn);
 			fileNames.push_back(fn);
-			ofImage imgTmp;
-			imgTmp.loadImage(fn);
-			images.push_back(imgTmp);
+		}
+	}
+}
+
+
+
+void MosaicoCaras::cargarFiles() {
+
+	
+	// vaciar imagenes cargadas
+	images.clear();
+	images_faces.clear();
+	
+	int nFiles = fileNames.size();
+	if(nFiles>0) {
+		// Desordenar el array
+		random_shuffle(fileNames.begin(), fileNames.end());
+		
+		// Cargar 30 imágenes
+		bool bGray = false;
+		int limiteCaras = 30;
+		int nImgsCarga = (nFiles<limiteCaras)? nFiles : limiteCaras;
+		for(int i = 0; i < nImgsCarga; i++){		
+			ofImage imgTmp, bnTmp;
+			imgTmp.loadImage(fileNames[i]);
+			
+			if(bGray) {
+				// Convierto a BN
+				Mat imgMat, bnMat;
+				//			ofLogNotice() << "cargar";
+				//			loadMat(imgMat, fileNames[i]);
+				// wrappers.h: convertColor(S& src, D& dst, int code)
+				//			ofLogNotice() << "convertir";
+				//			convertColor(imgTmp, bnMat, CV_RGB2GRAY);
+				convertColor(imgTmp, bnTmp, CV_RGB2GRAY);
+				
+				//			images.push_back(imgTmp);
+				//			images.push_back(toOf(bnMat));
+				images.push_back(bnTmp	);
+			}
+			else {
+				// En color
+				images.push_back(imgTmp);
+			}
 		}
 	}
 	ofLogVerbose("Listar directorio - FIN");
+		
 	
 	// Suponemos que solo llegan imágenes procesadas y cortadas LxL
 	// Por si acaso se hace un resize a LADO_CARA
@@ -78,6 +125,9 @@ void MosaicoCaras::cargarFiles() {
 	}
 	else {
 		// analizar images, recortaralas y meterlas en images_faces
+		
+		// Llegan ya bien, así que no hago nadas
+		
 	}
 }
 
@@ -112,17 +162,33 @@ void MosaicoCaras::setupBandas() {
 	
 	// Lineas de corte de las bandas
 	// medidas para análisis con FT y escAreaDwn=2.2
-	float props[4] = {0.18, 0.27, 0.12, 0.43};
+//	float props[4] = {0.18, 0.27, 0.12, 0.43};
+	//	float alturas_fijas[4] = {0.18, 0.27, 0.12, 0.43};	// ORIG OK
+	//	float alturas_fijas[4] = {0.18, 0.27, 0.17, 0.38};	// OK
+	//	float alturas_fijas[4] = {0.18, 0.28, 0.16, 0.38};	// 
+	//	float alturas_fijas[4] = {0.18, 0.28, 0.18, 0.36};	// OK
+//	float alturas_fijas[4] = {0.21, 0.26, 0.17, 0.36};	// OK	
 	
-	vector<float> alturas;
+	// Cargar de xml
+	ofxXmlSettings settings;
+	settings.loadFile("mosaico_settings.xml");	
+	float hb1 = settings.getValue("settings:alturas_fijas:banda1", 0.21);
+	float hb2 = settings.getValue("settings:alturas_fijas:banda2", 0.26);
+	float hb3 = settings.getValue("settings:alturas_fijas:banda3", 0.17);
+	float hb4 = settings.getValue("settings:alturas_fijas:banda4", 0.36);
+	float alturas_fijas[4] = {hb1, hb2, hb3, hb4};	// OK
+	
+	
+	
+//	vector<float> alturas;
 	for(int i=0; i<4; i++) {
-		alturas.push_back(props[i]);
+		alturas.push_back(alturas_fijas[i]);
 	}
 	// setupMosaicos();
 	mosaicoL.setup(CASILLAS_4, LADO_CARA);
 	mosaicoL.setAlturas(alturas);
 	
-	mosaicoR.setup(CASILLAS_4, LADO_CARA);
+	mosaicoR.setup(CASILLAS_4, LADO_CARA, LADO_CARA);
 	mosaicoR.setAlturas(alturas);
 	
 	
@@ -257,6 +323,10 @@ void MosaicoCaras::sceneWillDisappear( ofxScene * toScreen ){
 };
 
 void MosaicoCaras::init_Escena(){
+	
+	cargarNameFiles();
+	cargarFiles();
+	
     
    }
 
