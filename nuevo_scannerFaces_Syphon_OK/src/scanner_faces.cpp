@@ -852,7 +852,8 @@ void scanner_faces::hacerFoto() {
 
 void scanner_faces::saveScanImg(ofImage &imgScan, int nPers, int nImg) {
 	
-	string nmImgScan = "images/scan/";
+	string nmImgScan = ofToString( getenv("HOME") ) + "/fotosCarasMosaico/1x1/";
+//	string nmImgScan = "images/scan/";
 	nmImgScan += ofToString(ofGetYear())+ofToString(ofGetMonth(),2,'0')+ofToString(ofGetDay(),2,'0')+
 	ofToString(ofGetHours(),2,'0')+ofToString(ofGetMinutes(),2,'0');
 	nmImgScan += "_cara_"+ofToString(nPers,3,'0')+"_"+ofToString(nImg,2,'0')+".png";
@@ -871,16 +872,19 @@ void scanner_faces::hacerFoto_CamMesh() {
 	if(bFTDetected) {
 		string nmImgScan, nmMeshImg, nmMeshObj, nmMeshMObj;
 		
-		nmImgScan = "images/cam/";
+//		string directImgs = "images/cam/";
+		string directImgs = ofToString( getenv("HOME") ) + "/fotosCarasMosaico/mesh/";
+		
+		nmImgScan = directImgs;
 		string chorraco = ofToString(ofGetYear())+ofToString(ofGetMonth(),2,'0')+ofToString(ofGetDay(),2,'0')+
 		ofToString(ofGetHours(),2,'0')+ofToString(ofGetMinutes(),2,'0');
 		nmImgScan += chorraco + "_cam_"+ofToString(nPersonaAct,3,'0')+".png";
 		
 		camImage.saveImage(nmImgScan);
 		
-		nmMeshImg = "images/cam/" + chorraco + "_imgMesh_"+ofToString(nPersonaAct,3,'0')+".ply";
-		nmMeshObj = "images/cam/" + chorraco + "_imgObj_"+ofToString(nPersonaAct,3,'0')+".ply";
-		nmMeshMObj = "images/cam/" + chorraco + "_imgMObj_"+ofToString(nPersonaAct,3,'0')+".ply";
+		nmMeshImg = directImgs + chorraco + "_imgMesh_"+ofToString(nPersonaAct,3,'0')+".ply";
+		nmMeshObj = directImgs + chorraco + "_imgObj_"+ofToString(nPersonaAct,3,'0')+".ply";
+		nmMeshMObj = directImgs + chorraco + "_imgMObj_"+ofToString(nPersonaAct,3,'0')+".ply";
 		// guardar mesh
 		tracker.getImageMesh().save(nmMeshImg);
 		tracker.getObjectMesh().save(nmMeshObj);

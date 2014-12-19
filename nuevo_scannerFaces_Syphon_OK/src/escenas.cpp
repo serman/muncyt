@@ -105,7 +105,7 @@ void scanner_faces::setupMensajes() {
 	mensajes.push_back(" ");	// Tiempo para mostar análisis
 	mensajes_1.push_back(" ");
 	imagesNames.push_back("media/mensaje_06.png");
-	tiempos.push_back(7000);
+	tiempos.push_back(4500);
 
 	// Esto pasa a escena de escaneo:
 //	mensajes.push_back("ESCANEO");	// Luego quitare el texto
