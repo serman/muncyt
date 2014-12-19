@@ -99,7 +99,7 @@ void gravedad::updateParticlesX() {
 			// eliminar particula
 			particulas.erase(particulas.begin()+i);
 			
-			cheapComm::getInstance()->sendAudio0("/audio/gravity/sun_collision_event");
+			//cheapComm::getInstance()->sendAudio0("/audio/gravity/sun_collision_event");
 			cheapComm::getInstance()->sendSync0("/sync/gravity/sun_collision_event");
 			
 		}

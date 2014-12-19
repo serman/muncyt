@@ -115,7 +115,7 @@ void gravedad::setup(){
 //	ofLogNotice() << "YA Shader";
     blackHoleShader.load("", "shaders/blackHole.frag");
 //	ofLogNotice() << "YA Fin Shader";
-  
+    init_Escena();
 }
 
 void gravedad::init_Escena() {
@@ -188,8 +188,11 @@ void gravedad::init_Escena() {
 //	ofLogNotice() << "gravedad::init_Escena: " << 3;
 	
 	// addListeners
+//	bshowdebug=true;
+//	ofSetBackgroundAuto(true);
 	bshowdebug=false;
     hands.reset();
+    ofFill();
 }
 
 void gravedad::exit_Escena() {
@@ -624,7 +627,9 @@ void gravedad::draw(){
 //	float euler3 = ofMap(ofGetMouseX(),0,ofGetWidth(), 0,720);
 //	ofLogNotice() << euler3;
 	light.setOrientation(ofVec3f(euler1, euler2, euler3));
-	
+    if(swLight) {
+		light.enable();
+	}
 	ofPushMatrix();
 	if(swOrtho) {
 		ofTranslate(zentro.x, zentro.y,0);
@@ -644,9 +649,7 @@ void gravedad::draw(){
 		imgMix.getTextureReference().bind();
 	}
     
-	if(swLight) {
-		light.enable();
-	}
+
 	if(swWireFrame) {
 		superf.drawWireframe();
 	}
@@ -680,17 +683,19 @@ void gravedad::draw(){
 		}
 		ofEnableDepthTest();
 		ofPopMatrix();
-	ofPopStyle();	
-
+	ofPopStyle();
 	
 	mat1.end();
+    
+  	ofPopMatrix();
+    
 	if(swLight) {
 		light.disable(); 
 		ofDisableLighting();
 	}
 	ofDisableAlphaBlending();
 	
-	ofPopMatrix();
+
 	
 //	cam.end();
 	camera.end();
@@ -727,9 +732,7 @@ void gravedad::draw(){
             ofSetColor(255);
             imgMix.draw(0,0,ofGetWidth(), ofGetHeight());
             blackHoleShader.end();
-            
         }
-        
     }
 	
 	ofDisableDepthTest();
@@ -738,11 +741,6 @@ void gravedad::draw(){
 	
 	ofPushStyle();
 	ofSetColor(255,0,0);
-	
-	
-	
-	
-	
 	
     if(bshowdebug){	
 		if(hands.objectsCol.size()>0) {
@@ -756,6 +754,8 @@ void gravedad::draw(){
         ofDrawBitmapString("masa Sol: " + ofToString(sol.masa), 10, ofGetHeight()-70);
         ofDrawBitmapString("num Partics: " + ofToString(particulas.size()), 10, ofGetHeight()-50);
     }
+	
+	
 	ofPopStyle();
 //    ofDisableDepthTest();
 }
