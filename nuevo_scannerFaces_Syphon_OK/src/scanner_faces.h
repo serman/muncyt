@@ -8,9 +8,17 @@
 #include "ofxUI.h"
 
 
+
 #include "Marco.h"
 
 //#define SYPHON_CAM
+#define EYETOY 1
+#ifdef EYETOY
+#include "ofxPS3EyeGrabber.h"
+#endif
+
+
+
 #ifdef SYPHON_CAM
 #include "ofxSyphon.h"
 #endif

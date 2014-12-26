@@ -68,6 +68,10 @@ void scanner_faces::setup() {
 	
 	// start
 #ifndef SYPHON_CAM
+    #ifdef EYETOY
+        cam.setGrabber(ofPtr<ofxPS3EyeGrabber>(new ofxPS3EyeGrabber()));
+        cam.setPixelFormat(OF_PIXELS_MONO);
+    #endif
 	wCam = 640.0;
 	hCam = 480.0;
     cam.listDevices();
@@ -244,7 +248,12 @@ void scanner_faces::update() {
 		// http://forum.openframeworks.cc/t/reversing-mirroring-video-input-to-ofxfacetracker/8701/3
 		//
         //		if(bFlipH || bFlipV) {
-		camImage.setFromPixels(cam.getPixelsRef());
+        #ifdef EYETOY
+                camImage.setFromPixels(cam.getPixelsRef());
+
+        #else
+                camImage.setFromPixels(cam.getPixelsRef());
+        #endif
 		camImage.mirror(bFlipV, bFlipH);
         //		}
     }
@@ -709,7 +718,7 @@ void scanner_faces::draw() {
 		ofRect(ofGetWidth()-60,0,30,30);
 		ofPopStyle();
 	}
-	
+	camImage.draw(rectCamera);
 	
 }
 
