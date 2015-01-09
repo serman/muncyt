@@ -84,10 +84,25 @@ class Server(object):
   @cherrypy.expose 
   @cherrypy.tools.json_out()
   def reset(self,computer_id):
-
-    subprocess.check_call(['ssh', "instalaciones@"+self.hosts[computer_id], 'sudo shutdown -r now'])
+    if (computer_id=="mesa"):
+        print "reset mesa"
+        subprocess.check_call(['/Users/escaner/quitrestart.sh'])
+    else:
+        subprocess.check_call(['ssh', "instalaciones@"+self.hosts[computer_id], '/quitrestart.sh'])
     print computer_id
     return {'ok':True } 
+
+  @cherrypy.expose 
+  @cherrypy.tools.json_out()
+  def restartMesa(self):
+    subprocess.check_call(['/Users/escaner/restartmesa.sh'])
+    return {'ok':True }     
+
+  @cherrypy.expose
+  @cherrypy.tools.json_out()
+  def resetEspejoApp(self,copmuter_id):
+    subprocess.check_call(['ssh', "instalaciones@"+self.hosts[computer_id], 'killall -9 kinectTouchSurface_2Debug'])
+    return {'ok':True }
 #------------------- main -- 
 
 import os.path

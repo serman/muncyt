@@ -12,12 +12,10 @@
   <!--<script src="https://raw.github.com/vimeo/player-api/master/javascript/froogaloop.js"></script>-->
   <!-- Included CSS-->
   
-  {% if environment == 'production' %}
-    <link rel="stylesheet" href="/static/stylesheets/main.css" type="text/css" charset="utf-8">
-  {% else %}
+ 
     <link rel="stylesheet/less" href="/static/stylesheets/main.less" type="text/css" charset="utf-8">
       <script src="/static/javascripts/less.min.js"></script>
-  {% endif %}
+
 
 <script type="text/javascript">
       estado={}  
@@ -35,7 +33,9 @@ $(document).ready(function() {
           $('.reset_link').click(function(){
                 remoteReset($(this).attr('id'));
           })
-
+          $('#reiniciarMesa').click(function(){
+                restartMesa();
+          })
 })// fin ready
 
 
@@ -53,6 +53,28 @@ function remoteReset(computer_id){
         'computer_id':computer_id
       },
       url: "/reset",
+   // traditional:true,
+      success: function(data ){
+             console.log("bien")
+             //data=JSON.parse( data.video )
+             
+              return;
+        },
+
+        error:  function(data ){
+             console.log("error")
+             //data=JSON.parse( data.video )
+             
+              return;
+        },
+
+  });
+}
+
+  function restartMesa(){
+  $.ajax({
+    dataType: "json",
+      url: "/restartMesa",
    // traditional:true,
       success: function(data ){
              console.log("bien")
@@ -100,15 +122,22 @@ function remoteReset(computer_id){
       <div id="no-video">
          Reiniciar ordenadores:
          <br>
-         <a href="#" id= "espejo_1" class ="reset_link" > Espejo 1 </a>
+         <a href="#" id= "espejo1" class ="reset_link" > Espejo 1 </a>
          <br>
-         <a href="#" id= "espejo_2" class ="reset_link" > Espejo 2 </a>
+         <a href="#" id= "espejo2" class ="reset_link" > Espejo 2 </a>
          <br>
-         <a href="#" id= "espejo_3" class ="reset_link" > Espejo 3 </a>
+         <a href="#" id= "espejo3" class ="reset_link" > Espejo 3 </a>
          <br>
          <a href="#" id= "mesa" class ="reset_link" > Mesa </a>
          <br>
          <a href="#" id= "techo" class ="reset_link"> Techo </a>
+
+         <a href="#" id= "reiniciarMesa"  > Reiniciar Solo Programa Mesa: </a>
+      </div>
+
+      
+         
+         
       </div>
 
 
