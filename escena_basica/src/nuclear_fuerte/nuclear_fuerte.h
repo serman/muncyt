@@ -40,6 +40,7 @@ public:
     void exchangeColors(int );
     	void                sendExchangeColors();
     float sendexchangeAt;
+    float timeEndExplosion, timeEndBeam;
     int colorp1; //red
     int colorp2; //blue
     int colorp3;//green
