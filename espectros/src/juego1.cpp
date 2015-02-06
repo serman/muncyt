@@ -41,12 +41,12 @@ void juego1::setup(){
     isGoal=false;
     myfont.loadFont("visitor1.ttf", 16, false,false,false);
 
-    fbo.allocate(SCREEN_W, SCREEN_H, GL_RGBA);
+    fbo.allocate(SCALED_VIDEO_W, SCALED_VIDEO_H, GL_RGBA);
     
     reset();
     
     ofBackground(0,0,0);
-    filter=new SobelEdgeDetectionFilter(VIDEO_W, VIDEO_H);
+    filter=new SobelEdgeDetectionFilter(SCALED_VIDEO_W, SCALED_VIDEO_H);
     addObstacle(ofPoint(ofGetMouseX(), ofGetMouseY()), -100,0.05,0.05);;
     
 
@@ -65,7 +65,8 @@ void juego1::draw(){
     fbo.begin();
         ofClear(0, 0, 0, 0);
         //  IMPORTANTE ESTOY DIBUJANDO SOBRE UN FBO DE TAMAÑO DEFINIDO CON LO QUE AL PINTAR FUERA NO SE VE
-        mSyphonClient2->drawSubsection(0,0,SCREEN_W,SCREEN_H,0,VIDEO_offset,VIDEO_W,SCREEN_H);
+        //mSyphonClient2->drawSubsection(0,0,SCREEN_W,SCREEN_H,0,VIDEO_offset,VIDEO_W,SCREEN_H);
+        mSyphonClient2->draw(0, 0, SCALED_VIDEO_W, SCALED_VIDEO_H);
     fbo.end();
     /*convertColor(cam, gray, CV_RGB2GRAY);
     Canny(gray, edge, mouseX, mouseY, 3);
@@ -90,13 +91,20 @@ void juego1::draw(){
     ofPushMatrix();
     backgroundImg.draw(0,0,1280,720);
     ofTranslate(100,100); //PINTO EN LA ZONA D ELA PANTALLA QUE QUIERO
-   
+    
+    ofFill();
+    ofSetColor(0,0,0,255);
+    ofRect(0,0,SCREEN_W,SCREEN_H);
     //ofRect(-2,-2,SCREEN_W+5,SCREEN_H+5);
     ofSetColor(255);
     //  edge.draw(0,0);
-    filter->begin() ;
-        fbo.draw(0, 0);    
-    filter->end() ;
+    ofPushMatrix();
+        ofTranslate(SCREEN_W-550, 0); //POSICION EN EL CENTRO DE L APANTALLA
+        filter->begin() ;
+            fbo.draw(0, 0);
+            //mSyphonClient2->draw(0, 0, 450, 384);
+        filter->end() ;
+    ofPopMatrix();
     if(appStatuses["game_status"]==PLAYING){
             drawControls();
             eff.draw();
@@ -156,7 +164,8 @@ void juego1::update(float f){
     if(    appStatuses["game_status"]==PLAYING) {
     	box2d.update();
         ofRemove(circles, ofxBox2dBaseShape::shouldRemoveOffScreen);
-        if(appStatuses["hold_key"]==true){
+        
+        if(appStatuses["hold_key"]==true && appStatuses["game_sub_status"]==THROW){
             if(forceDecrease==true){
                 amountForce-=4;
             }
@@ -398,6 +407,7 @@ void juego1::drawControls(){
    // ofLine(0,0,throwDirection.x,throwDirection.y);
    // ofSetColor(0,136,136);
     ofSetColor(124, 124, 124);
+    ofNoFill();
 
     //float ang= atan(throwDirection.x/throwDirection.y);
     ofTranslate(5,SCREEN_H-18);
@@ -422,12 +432,16 @@ void juego1::drawControls(){
     ofPopMatrix();
 
 //marcador
-       // ofDrawBitmapString("Fuerza:",20,20);
-    ofRect(20,20,200,20);
-    ofFill();
+    if(appStatuses["game_sub_status"]==THROW){
+        ofSetColor(33,148,18);
+        ofNoFill();
+        ofRect(20,20,200,20);
+        ofFill();
+        ofSetColor(33,148,18);
+        myfont.drawString("fuerza" ,50,35);
+        ofRect(20,20,amountForce,20);
+    }
     ofSetColor(33,148,18);
-    myfont.drawString("fuerza" ,50,35);
-    ofRect(20,20,amountForce,20);
     myfont.drawString("LEVEL: " +ofToString(appStatuses["level"]),230,35);
     myfont.drawString("VIDAS: " +ofToString(appStatuses["vidas"]) ,640,35);
     
@@ -484,8 +498,14 @@ void juego1::drawControls(){
 void juego1::keyPressed(int key){
     if(key=='o')
         addObstacle();
-    else if(key=='e' || key=='r' || key=='t' || key=='y')
-        appStatuses["hold_key"]=true;
+    else if(key=='e' || key=='r' || key=='t' || key=='y'){
+        if(appStatuses["game_sub_status"]==THROW){
+            appStatuses["hold_key"]=!appStatuses["hold_key"];
+            if( appStatuses["hold_key"]==false)
+                throwBall();
+        }
+        
+    }
     else if(key=='w' || key=='a'){
         throwDirection.rotate(-1);
     }
@@ -508,10 +528,10 @@ void juego1::keyPressed(int key){
 }
 
 void juego1::keyReleased(int key){
-    if(key=='e' || key=='r' || key=='t' || key=='y'){
+  /*  if(key=='e' || key=='r' || key=='t' || key=='y'){
         if(appStatuses["game_sub_status"]==THROW)
             throwBall();
         appStatuses["hold_key"]=false;
-    }
+    }*/
 
 }

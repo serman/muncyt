@@ -45,6 +45,7 @@ static ofPoint convertPoint(float x1, float y1){
     else return ofPoint(-1,-1);
 }
 
+
 static ofPoint convertPoint(float x1, float y1,int w, int h){
     //punto central
     x1=x1+(w-x1)/2;
