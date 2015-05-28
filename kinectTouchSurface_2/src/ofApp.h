@@ -40,6 +40,7 @@ public:
     	
 	void updateModo1();
 	void updateModo2(); /// dic-GGG
+    bool    bModoAdapt;
     
 	void	drawMarco(ofRectangle rect);
 	void	drawMarco(float xx, float yy, float ww, float hh);
