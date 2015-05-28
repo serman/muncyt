@@ -256,6 +256,7 @@ void nuclear_fuerte::update(float d1){
             
             cheapComm::getInstance()->sendSync0("/sync/strong_nuclear/explosion");
             ofLogNotice()  << "explosion: " <<    "  potencia: " << centroLab.energyMeanT<< "("<< ofMap(energia,300,800,0,1) <<")"<< endl ;
+            timeEndExplosion=ofGetElapsedTimeMillis()+4000;
         }
         else{
 //            float angulo1= centroLab.pMean.angleRad(zentro);
@@ -271,8 +272,10 @@ void nuclear_fuerte::update(float d1){
             sendexchangeAt=ofGetElapsedTimeMillis()+2000;
             cheapComm::getInstance()->sendAudio2("/audio/strong_nuclear/beam",
                                                  ofMap(angulo1,0,2*PI,0,1) ,
-                                                 ofMap(energia,0,500,0,1)
+                                                 ofMap(energia,
+                                                       0,500,0,1)
                                                  );
+            timeEndBeam=ofGetElapsedTimeMillis()+500;
            // ofLogNotice()  << "beam: " << " angulo" << atan2(centroLab.pMeanT.y, centroLab.pMeanT.x) << "(" <<  ofMap(angulo1,0,2*PI,0,1) << ")"<<
            //  "  potencia: " << centroLab.energyMeanT<< "("<< ofMap(energia,0,500,0,1) <<")"<< endl ;
             angulo1= atan2(centroLab.pMeanT.y, centroLab.pMeanT.x);
@@ -290,7 +293,19 @@ void nuclear_fuerte::update(float d1){
         
         //hay explosion entre energyMeanT 300
         //    VAlor de explosion: energyMeanT maximo 500
-	}
+	}// Si no hay particulas en el centro no hay explosion ni beam lo mandamos con energía 0
+    
+        if(timeEndExplosion!=-1 && timeEndExplosion<ofGetElapsedTimeMillis()){
+            cheapComm::getInstance()->sendAudio1("/audio/strong_nuclear/explosion",0    );
+            timeEndExplosion=-1;
+        }
+        if(timeEndBeam !=-1 && timeEndBeam<ofGetElapsedTimeMillis()){
+            cheapComm::getInstance()->sendAudio2("/audio/strong_nuclear/beam", 0 ,0  );
+            timeEndBeam=-1;
+        }
+        
+    
+    
     if(sendexchangeAt<ofGetElapsedTimeMillis() && ofGetFrameNum()%80==0){
         sendExchangeColors();
     }
@@ -486,12 +501,12 @@ void nuclear_fuerte::draw(){
 	// decoración borde Exterior
 	// hay que animarla un poco
 	ofPushStyle();
-	// linea blanca
+	// linea blanca --> ahora es negra
 	ofSetLineWidth(4);
-	ofSetColor(255);
+	ofSetColor(0);
 	ofNoFill();
 	circExt.draw();
-	
+	ofSetColor(255);
 	ofPushMatrix();
 	ofTranslate(zentro.x,zentro.y,0);
 	for(int i=0; i<6; i++) {
@@ -597,6 +612,8 @@ void nuclear_fuerte::sceneWillAppear( ofxScene * fromScreen ){  // reset our sce
         emitters.clear();
     cheapComm::getInstance()->sendAudio0("/audio/strong_nuclear/start_event");
     cheapComm::getInstance()->sendSync0("/sync/strong_nuclear/start_event");
+    timeEndExplosion=-1;
+    timeEndBeam=-1;
 };
 
 
@@ -628,9 +645,9 @@ void nuclear_fuerte::sceneWillDisappear( ofxScene * toScreen ){
 void nuclear_fuerte::setupColores() {
 	colores[0] = ofColor::red;
 	colores[1] = ofColor::green;
-	colores[2] = ofColor::blue;
+	colores[2] = ofColor(36,240,245);//ofColor::blue;
 	antiColores[0] = colores[0]; antiColores[0].invert();
-	antiColores[1] = colores[1]; antiColores[1].invert();
+	antiColores[1] = ofColor(246,76,255);//colores[1]; antiColores[1].invert();	// antiVerde : purpple
 	antiColores[2] = colores[2]; antiColores[2].invert();
 	for(int i=0; i<3; i++) {
 		coloresAll[i] = colores[i];

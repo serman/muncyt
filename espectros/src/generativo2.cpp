@@ -26,10 +26,16 @@ void generativo2::setup(){
     backgroundImg.loadImage("fondos/joyDivision.png");
 }
 
-void generativo2::keyPressed(int k){
-    if(k=='t'){
+void generativo2::keyPressed(int key){
+    if(key=='g'){
         rotateAng+=2;
     }
+    else if (key=='a' || key=='s' || key=='d' || key=='w' || key=='e' || key=='r' || key=='t' || key=='y'){
+        showNoJoyErrorUntil=ofGetElapsedTimeMillis()+4000;
+        
+    }
+    
+    
 }
 
 void generativo2::update(float f){
@@ -38,7 +44,7 @@ void generativo2::update(float f){
     list<ofxTuioCursor*> objectList = tuioclient->getTuioCursors();
     for (tobj=objectList.begin(); tobj != objectList.end(); tobj++) {
         ofxTuioCursor *blob = (*tobj);
-        ofPoint p1 = convertPoint(blob->getX(), blob->getY());
+        ofPoint p1 = convertPoint(blob->getXSpeed(), blob->getYSpeed());
         if(p1.x != -1 && p1.y!=-1){
             p1.x=ofClamp(p1.x, 0, SCREEN_W);
             p1.y=ofClamp(p1.y, 0, SCREEN_H);
@@ -66,6 +72,15 @@ void generativo2::draw(){
     
     ofPushMatrix();
     backgroundImg.draw(0,0,1280,720);
+    if(showNoJoyErrorUntil > ofGetElapsedTimeMillis()){
+        ofPushStyle();
+        ofNoFill();
+        ofSetColor(255,0,0);
+        ofSetLineWidth(7);
+        if(ofGetElapsedTimeMillis()%1000<500)
+            ofRect(974,292,294,232);
+        ofPopStyle();
+    }
     ofTranslate(100,100); //PINTO EN LA ZONA D ELA PANTALLA QUE QUIERO
     //ofRect(-2,-2,SCREEN_W+5,SCREEN_H+5);
     ofFill();

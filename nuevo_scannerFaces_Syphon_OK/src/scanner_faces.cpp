@@ -68,6 +68,10 @@ void scanner_faces::setup() {
 	
 	// start
 #ifndef SYPHON_CAM
+    #ifdef EYETOY
+        cam.setGrabber(ofPtr<ofxPS3EyeGrabber>(new ofxPS3EyeGrabber()));
+        cam.setPixelFormat(OF_PIXELS_MONO);
+    #endif
 	wCam = 640.0;
 	hCam = 480.0;
     cam.listDevices();
@@ -244,7 +248,12 @@ void scanner_faces::update() {
 		// http://forum.openframeworks.cc/t/reversing-mirroring-video-input-to-ofxfacetracker/8701/3
 		//
         //		if(bFlipH || bFlipV) {
-		camImage.setFromPixels(cam.getPixelsRef());
+        #ifdef EYETOY
+                camImage.setFromPixels(cam.getPixelsRef());
+
+        #else
+                camImage.setFromPixels(cam.getPixelsRef());
+        #endif
 		camImage.mirror(bFlipV, bFlipH);
         //		}
     }
@@ -709,7 +718,7 @@ void scanner_faces::draw() {
 		ofRect(ofGetWidth()-60,0,30,30);
 		ofPopStyle();
 	}
-	
+	camImage.draw(rectCamera);
 	
 }
 
@@ -852,7 +861,8 @@ void scanner_faces::hacerFoto() {
 
 void scanner_faces::saveScanImg(ofImage &imgScan, int nPers, int nImg) {
 	
-	string nmImgScan = "images/scan/";
+	string nmImgScan = ofToString( getenv("HOME") ) + "/fotosCarasMosaico/1x1/";
+//	string nmImgScan = "images/scan/";
 	nmImgScan += ofToString(ofGetYear())+ofToString(ofGetMonth(),2,'0')+ofToString(ofGetDay(),2,'0')+
 	ofToString(ofGetHours(),2,'0')+ofToString(ofGetMinutes(),2,'0');
 	nmImgScan += "_cara_"+ofToString(nPers,3,'0')+"_"+ofToString(nImg,2,'0')+".png";
@@ -871,16 +881,19 @@ void scanner_faces::hacerFoto_CamMesh() {
 	if(bFTDetected) {
 		string nmImgScan, nmMeshImg, nmMeshObj, nmMeshMObj;
 		
-		nmImgScan = "images/cam/";
+//		string directImgs = "images/cam/";
+		string directImgs = ofToString( getenv("HOME") ) + "/fotosCarasMosaico/mesh/";
+		
+		nmImgScan = directImgs;
 		string chorraco = ofToString(ofGetYear())+ofToString(ofGetMonth(),2,'0')+ofToString(ofGetDay(),2,'0')+
 		ofToString(ofGetHours(),2,'0')+ofToString(ofGetMinutes(),2,'0');
 		nmImgScan += chorraco + "_cam_"+ofToString(nPersonaAct,3,'0')+".png";
 		
 		camImage.saveImage(nmImgScan);
 		
-		nmMeshImg = "images/cam/" + chorraco + "_imgMesh_"+ofToString(nPersonaAct,3,'0')+".ply";
-		nmMeshObj = "images/cam/" + chorraco + "_imgObj_"+ofToString(nPersonaAct,3,'0')+".ply";
-		nmMeshMObj = "images/cam/" + chorraco + "_imgMObj_"+ofToString(nPersonaAct,3,'0')+".ply";
+		nmMeshImg = directImgs + chorraco + "_imgMesh_"+ofToString(nPersonaAct,3,'0')+".ply";
+		nmMeshObj = directImgs + chorraco + "_imgObj_"+ofToString(nPersonaAct,3,'0')+".ply";
+		nmMeshMObj = directImgs + chorraco + "_imgMObj_"+ofToString(nPersonaAct,3,'0')+".ply";
 		// guardar mesh
 		tracker.getImageMesh().save(nmMeshImg);
 		tracker.getObjectMesh().save(nmMeshObj);

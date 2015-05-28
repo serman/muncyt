@@ -16,14 +16,18 @@ public:
     int previousval1;
     
     int previousValueButton;
+    int previousValueButton1,previousValueButton2,previousValueButton3;
     bool joystickPresent=false;
-    
+    long timeLastTouch; //tiempo desde el ultimo toque en segundos
     void setup(){
        // int serverRecvPort = 12000;
        // myosc.setup(serverRecvPort);
         previousval0=0;
         previousval1=0;
         previousValueButton=0;
+        previousValueButton1=0;
+        previousValueButton2=0;
+        previousValueButton3=0;
         if(glfwJoystickPresent(0)==false){
             joystickPresent=false;
             cout << "NOT PRESENT";
@@ -31,8 +35,10 @@ public:
         else{ joystickPresent=true;
             cout << "PRESENT";
         }
+        timeLastTouch=0;
         
     }
+    
     
     int update(){
         if(joystickPresent==false) return;
@@ -86,7 +92,7 @@ public:
                         ofNotifyEvent(ofEvents().keyReleased,arg);
                         arg.key='w';
                         ofNotifyEvent(ofEvents().keyReleased,arg);
-
+                        timeLastTouch=ofGetElapsedTimef();
                     }
                 }
                 if(value==-1){
@@ -112,6 +118,50 @@ public:
                     ofNotifyEvent(ofEvents().keyPressed,arg);
                     previousValueButton=1;
                 }
+        
+                value = (int)botones[1];
+                if(value==0 && previousValueButton1==1){
+                    ofKeyEventArgs arg;
+                    arg.key='r';
+                    ofNotifyEvent(ofEvents().keyReleased,arg);
+                    previousValueButton1=0;
+                }
+                else if(value==1 && previousValueButton1==0){
+                    ofKeyEventArgs arg;
+                    arg.key='r';
+                    ofNotifyEvent(ofEvents().keyPressed,arg);
+                    previousValueButton1=1;
+                }
+        value = (int)botones[2];
+
+        if(value==0 && previousValueButton2==1){
+            ofKeyEventArgs arg;
+            arg.key='t';
+            ofNotifyEvent(ofEvents().keyReleased,arg);
+            previousValueButton2=0;
+        }
+        else if(value==1 && previousValueButton2==0){
+            ofKeyEventArgs arg;
+            arg.key='t';
+            ofNotifyEvent(ofEvents().keyPressed,arg);
+            previousValueButton2=1;
+        }
+        
+        value = (int)botones[3];
+        if(value==0 && previousValueButton3==1){
+            ofKeyEventArgs arg;
+            arg.key='y';
+            ofNotifyEvent(ofEvents().keyReleased,arg);
+            previousValueButton3=0;
+        }
+        else if(value==1 && previousValueButton3==0){
+            ofKeyEventArgs arg;
+            arg.key='y';
+            ofNotifyEvent(ofEvents().keyPressed,arg);
+            previousValueButton3=1;
+        }
+        
+        
                         //}
         return positionReponse;
     }

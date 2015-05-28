@@ -8,31 +8,43 @@
 
 #include "juego1.h"
 void juego1::tuioAdded(ofxTuioCursor &tuioCursor){
-    ofPoint p= convertPoint(tuioCursor.getX(), tuioCursor.getY());
+    ofPoint p= convertPointJuegoBola(tuioCursor.getX(), tuioCursor.getY());
     if(p.x == -1 && p.y == -1){
         return;
     }else{
-        addObstacle(p , tuioCursor.getSessionId(),tuioCursor.width,
-                    tuioCursor.height );
+        addObstacle(p , tuioCursor.getSessionId(),tuioCursor.width/SCALE_JUEGO1,
+                    tuioCursor.height/SCALE_JUEGO1 );
     }
     //cout << ofToString(tuioCursor.height*VIDEO_H*VIDEO_scale) <<endl;
    // if (tuioCursor.getSessionId()%3==0)
     //    cout << tuioCursor.getSessionId() << " : " << tuioCursor.height*480  <<endl;
 }
 
+
+
 void juego1::tuioUpdated(ofxTuioCursor &tuioCursor){
-    ofPoint p= convertPoint(tuioCursor.getX(), tuioCursor.getY());
+    ofPoint p= convertPointJuegoBola(tuioCursor.getX(), tuioCursor.getY());
     if(p.x == -1 && p.y == -1){
         hideObstacle(tuioCursor.getSessionId() );
     }else{
-        updateObstacle( p , tuioCursor.getSessionId(),tuioCursor.width,
-                       tuioCursor.height );
+        updateObstacle( p , tuioCursor.getSessionId(),tuioCursor.width/SCALE_JUEGO1,
+                       tuioCursor.height/SCALE_JUEGO1 );
     }
    // if (tuioCursor.getSessionId() %3==0)
    //  cout << tuioCursor.getSessionId() << " : " << tuioCursor.height*480  <<endl;
     //cout << ofToString(tuioCursor.height*VIDEO_H*VIDEO_scale) <<endl;;
 	
 }
+
+ofPoint juego1::convertPointJuegoBola(float x1, float y1){
+    float y1px= (SCALED_VIDEO_H *y1);
+    float x1px= (SCREEN_W-550) +(SCALED_VIDEO_W *x1);
+    
+    ofPoint p1=ofPoint((float)x1px, (float)y1px);
+    return p1;
+    
+}
+
 
 void juego1::tuioRemoved(ofxTuioCursor &tuioCursor){
 	removeObstacle(tuioCursor.getSessionId());
@@ -60,14 +72,13 @@ void juego1::addObstacle(){
     obstacle = new datoObjeto;
     obstacle->tipo=BALL;
     obstacle->id=1;
-    
     circles.back().get()->setData(obstacle);
 }
 
 void juego1::addObstacle(ofPoint p1, int m_id,float w, float h){
     float r = ofRandom(5, 6);		// a random radius 4px - 20px
-    h=h*VIDEO_H*VIDEO_scale;
-    w=w*VIDEO_W*VIDEO_scale;
+    h=h*VIDEO_H;
+    w=w*VIDEO_W;
     circles.push_back(ofPtr<ofxBox2dRect>(new ofxBox2dRect));
     circles.back().get()->setPhysics(enemyDensity, enemyBounce, enemyFriction);
     circles.back().get()->setup(box2d.getWorld(), p1.x+w/2, p1.y+h/2, w, h);

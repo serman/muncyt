@@ -29,7 +29,9 @@
 #define SCREEN_W 768
 #define SCREEN_H 384
 
-
+#define SCALED_VIDEO_W 450
+#define SCALED_VIDEO_H 384
+#define SCALE_JUEGO1 1.5
 class juego1 : public ofxScene{
     
 public:
@@ -135,6 +137,7 @@ private:
     ofImage goalImg;
     ofImage backgroundImg;
     ofTrueTypeFont myfont;
+    ofPoint convertPointJuegoBola(float x1, float y1);
 
     
 };

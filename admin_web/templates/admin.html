@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+
+{% block head %}
+
+   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+   <title> ProgramaLaPlaza </title>
+
+  <meta charset="utf-8" />
+  <!-- Set the viewport width to device width for mobile -->
+  <script src="/static/javascripts/jquery-1.7.2.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/static/javascripts/jquery-ui-1.8.18.custom/js/jquery-ui-1.8.18.custom.min.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/static/javascripts/jquery-ui-1.8.22.custom.min.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/static/javascripts/modernizr-2.5.3.min.js" type="text/javascript" charset="utf-8"></script>
+ 
+
+
+  
+    <link rel="stylesheet/less" href="/static/stylesheets/main.less" type="text/css" charset="utf-8">
+
+    <link rel="stylesheet/less" href="/static/stylesheets/admin.less" type="text/css" charset="utf-8">
+
+<script type="text/javascript">
+
+       
+$(document).ready(function() {
+  
+  $("#enciendeMotor").click(function(){
+    $.ajax({
+          type: 'POST',
+          url: "/enciendeMotor",
+          success: function(data){
+                  return;
+            }                
+      });
+
+  });
+
+  $("#apagaMotor").click(function(){
+    $.ajax({
+          type: 'POST',
+          url: "/apagaMotor",
+          success: function(data){
+                  return;
+            }                
+      });
+
+       })    
+       var intervalID = setInterval( update, 4000); 
+});
+
+function update(){
+  $.ajax({
+        type: 'POST',
+        url: "/getStatus",
+        success: function(data){
+          mdata=JSON.parse(data);
+                console.log( JSON.parse(data));
+                $("#arduino").empty().append( data.arduino)
+                $("#speed").empty().append(" v: " + mdata.speed )
+                $("#users").empty().append(" Personas: " + mdata.users )
+                $("#movie").empty().append(" " + mdata.movie )
+                $("#hsk").empty().append(" " + mdata.helsinkiSpeed )
+                $("#hsk2").empty().append(" " + mdata.helsinkiMovie )
+        }                
+    });
+}
+</script>
+
+
+
+{% endblock %}
+
+{% block main %}
+  admin:
+  <div>
+<a href="#" class="button"  id="apagaMotor"> 
+  Apaga Motor: </a>
+</div>
+<a href="#" class="button"  id="enciendeMotor"> 
+  Enciende Motor:
+
+</a>
+
+
+<h1> Estados </h1>
+ <div>
+  Velocidad de Pedaleo : <span id="speed"> -  </span>
+ </div>
+
+<div>
+  Arduino Conectado. <span id="arduino">  - </span>
+</div>
+
+<div>
+  Viendo el video en internet. <span id="users">   </span>
+</div>
+
+<div>
+  cortoActual <span id="movie">   </span>
+</div>
+
+<div>
+  Helsinki <span id="hsk">   </span>
+</div>
+
+<div>
+  Helsinki MOVIE <span id="hsk2">   </span>
+</div>
+{% endblock %}
+
+
+
+

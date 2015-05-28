@@ -23,6 +23,7 @@ void cheapComm::setup(){
         cout <<"dst audio"  << dstAudio;
         cout <<"dst SYNC"  << dstSync;
     }
+  //  dstAudio="127.0.0.1";
     int serverRecvPortData = 9000;
     int serverRecvPortAudio = 7777;
     

@@ -137,6 +137,18 @@ void juego2::draw(){
         drawControls();
         //dibujo enemigos
         drawEnemies();
+    
+  /*  list<ofxTuioCursor*> cursorList=tuioclient->getTuioCursors();
+    
+    list<ofxTuioCursor*>::iterator tit;
+    for (tit=cursorList.begin(); tit != cursorList.end(); tit++) {
+        ofxTuioCursor *blob = (*tit);
+            ofPoint p= convertPoint(blob->getXSpeed(), blob->getYSpeed());
+        glColor3f(1.0,1.0,1.0);
+        ofEllipse(p, 10.0, 10.0);
+        string str = "SessionId: "+ofToString((int)(blob->getSessionId()));
+        //ofDrawBitmapString(str, blob->getXSpeed()*720-10.0, blob->getYSpeed()*576+25.0);
+    }*/
 
         if(appStatuses["game_status"]==WIN){
             ofSetColor(100, 100, 130);
@@ -279,6 +291,10 @@ void juego2::showDebug(){
     if(appStatuses["game_status"]==WIN){
       ofDrawBitmapString("status win. Time to change" + ofToString( time_status_change ), 1000,210);
     }
+    ofDrawBitmapString("Enemigos " + ofToString( circles.size() ) , 800,290);
+    
+    
+    
 }
 
 void juego2::drawDisplay(){
@@ -322,8 +338,8 @@ void juego2::updateObstacle(ofPoint p1, int m_id){
    	for(int i=0; i<circles.size(); i++) {
         if( ( (enemy *)circles[i].get()->getData())->id  == m_id){
             circles[i].get()->setPosition(p1.x+15, p1.y+50);
-            //datoObjeto *mdata=(datoObjeto *)circles[i]->getData();
-            //mdata->isHidden=false;
+            datoObjeto *mdata=(datoObjeto *)circles[i]->getData();
+            mdata->isHidden=false;
         }
     }
 }
@@ -448,19 +464,19 @@ void juego2::keyPressed(int key){
     else if(key=='w'){
         previousKey=currentKey;
         currentKey=UP;
-        cout << 'w' <<endl;
+      //  cout << 'w' <<endl;
     }
     else if(key=='s'){
         previousKey=currentKey;
         currentKey=DOWN;;
-        cout << 's' <<endl;
+      //  cout << 's' <<endl;
     }
     
     else if(key=='f')
         fillthis=true;
-    else if(key=='r'){
+    /*else if(key=='r'){
         reset();
-    }
+    }*/
     else if(key=='p')
         startProcessing=true;
     

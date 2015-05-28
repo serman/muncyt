@@ -50,15 +50,18 @@ void testApp::setup(){
  //   grave->setComm(&myComm);
     sceneManager->addScene( grave, SCENE_GRAVEDAD);
 	sceneManager->setDrawDebug(false);
-	sceneManager->setCurtainDropTime(1);
-	sceneManager->setCurtainStayTime(0.6);
-	sceneManager->setCurtainRiseTime(1);
+	sceneManager->setCurtainDropTime(0.3);
+	sceneManager->setCurtainStayTime(0.1);
+	sceneManager->setCurtainRiseTime(0.3);
 	sceneManager->setOverlapUpdate(true);
     
-    sceneManager->goToScene(SCENE_MENU);
+   // sceneManager->goToScene(SCENE_MENU);
     timeToEndScene=-1;
 	// OSC
 	//ofAddListener(eventoOSC, this, &testApp::eventoOSC_Recibido  );
+    if(ofToString(getenv("USER"))=="instalaciones" || ofToString(getenv("USER"))=="escaner" ){
+        ofLogToFile( ofToString (getenv("HOME") ) + "/machine_v_espejo_log.txt", true);
+    }
 }
 
 
