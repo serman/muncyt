@@ -24,9 +24,13 @@ void scanner_faces::setup() {
     hMonitor = 1080;	
 	esc_HD2Mon = 1;
 #else 
-    wMonitor = 1200;	// Mi equipo
-    hMonitor = 675; //720;	
-	esc_HD2Mon = wMonitor/1920.0;
+    //wMonitor = 1200;	// Mi equipo
+    //hMonitor = 675; //720;
+    
+	//esc_HD2Mon = wMonitor/1920.0;
+    wMonitor = 1920;	// pantalla full HD
+    hMonitor = 1080;
+    esc_HD2Mon = 1;
 #endif
     
 	//	***************
@@ -72,10 +76,26 @@ void scanner_faces::setup() {
         cam.setGrabber(ofPtr<ofxPS3EyeGrabber>(new ofxPS3EyeGrabber()));
         cam.setPixelFormat(OF_PIXELS_MONO);
     #endif
-	wCam = 640.0;
-	hCam = 480.0;
-    cam.listDevices();
-	cam.initGrabber(wCam, hCam);
+	//wCam = 640.0;
+	//hCam = 480.0;
+    wCamReal = 1280.0;
+    hCamReal = 720.0;
+    wCam = 720.0;
+    hCam = 720.0;
+    cout << " listing devices";
+    vector<ofVideoDevice> devices =   cam.listDevices();
+    for(int i = 0; i < devices.size(); i++){
+        cout << devices[i].id << ": " << devices[i].deviceName;
+        if( devices[i].bAvailable ){
+            cout << endl;
+        }else{
+            cout << " - unavailable " << endl;
+        }
+    }
+    
+    cam.setDeviceID(0);
+    //cam.setDesiredFrameRate(30);
+	cam.initGrabber(wCamReal, hCamReal);
     
 #else
 	wCam = 1024.0;
@@ -121,6 +141,7 @@ void scanner_faces::setup() {
 	fboScan.end();
 	
 	// imagen para flip camara
+    camImageReal.allocate(wCamReal, hCamReal, OF_IMAGE_COLOR);
 	camImage.allocate(wCam,hCam, OF_IMAGE_COLOR);
 	bFlipH = false;
 	bFlipV = false;
@@ -252,7 +273,11 @@ void scanner_faces::update() {
                 camImage.setFromPixels(cam.getPixelsRef());
 
         #else
-                camImage.setFromPixels(cam.getPixelsRef());
+                camImageReal.setFromPixels(cam.getPixelsRef());
+        //consideramos wCamReal > wCam
+        camImageReal.crop((wCamReal-wCam)/2, 0, wCam, hCam); //cortamos imagen a la mitad
+        //camImageReal.resize(wCam,hCam);
+        camImage.clone(camImageReal);
         #endif
 		camImage.mirror(bFlipV, bFlipH);
         //		}
@@ -541,8 +566,8 @@ void scanner_faces::draw() {
     }
     else {
 		// Imagen de la cámara (color)
+        //camImage.draw(rectCamera.x-(1280-786)/2,rectCamera.y,1280*(786/720),786);
         camImage.draw(rectCamera);
-        
 //        ofEnableAlphaBlending();
 		ofEnableSmoothing();
 		
@@ -718,7 +743,7 @@ void scanner_faces::draw() {
 		ofRect(ofGetWidth()-60,0,30,30);
 		ofPopStyle();
 	}
-	camImage.draw(rectCamera);
+	//camImageReal.draw(0,0,wCam ,hCam);
 	
 }
 

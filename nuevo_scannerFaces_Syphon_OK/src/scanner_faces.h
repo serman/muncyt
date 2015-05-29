@@ -12,7 +12,7 @@
 #include "Marco.h"
 
 //#define SYPHON_CAM
-#define EYETOY 1
+//#define EYETOY 1
 #ifdef EYETOY
 #include "ofxPS3EyeGrabber.h"
 #endif
@@ -118,7 +118,7 @@ public:
 	float esc_HD2Mon;
 	
 	// Dimensiones de la imagen de caámra a tratar
-    float wCam, hCam;
+    float wCam, hCam, wCamReal, hCamReal;
     
 	ofxCv::ObjectFinder finder;
 	ofxCv::ObjectFinder finderEyes;
@@ -159,6 +159,7 @@ public:
 	
 	// ofImage para pasar a FT
 	ofImage	camImage;
+    ofImage camImageReal;
 	
 	void			update_faceTracker();	
 	ofMesh			LEyeRect, REyeRect, mouthRect;
