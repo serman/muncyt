@@ -70,9 +70,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E4B69B5A0A3A1756003C02F2"
-            BuildableName = "kinectTouchSurface_1.app"
+            BuildableName = "kinectTouchSurface_2.app"
             BlueprintName = "kinectTouchSurface_1"
-            ReferencedContainer = "container:kinectTouchSurface_1.xcodeproj">
+            ReferencedContainer = "container:kinectTouchSurface_2.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

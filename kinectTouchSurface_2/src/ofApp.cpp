@@ -118,6 +118,9 @@ void testApp::setup() {
 	
 	bWarp = true;
 
+    // angulo tilt
+    angle = 0;
+    
 	setupGUI();
 	
 	gui1->loadSettings("gui1Settings.xml");
@@ -689,6 +692,16 @@ void testApp::keyPressed(int key){
         ofLogNotice("smoothRate: " + ofToString(contourFinderX.getTracker().getSmoothingRate() ) );
         
     }
+    else if(key=='e') {
+        angle++;
+        if(angle>30) angle=30;
+        kinect.setCameraTiltAngle(angle);
+    }
+    else if(key=='d') {
+        angle--;
+        if(angle<-30) angle=-30;
+        kinect.setCameraTiltAngle(angle);
+    }
 
 }
 
@@ -831,6 +844,8 @@ void testApp::setupGUI() {
 	gui1->addToggle("Activa Calibracion", &bCalibActiva2);	
 	gui1->addSpacer();
 	gui1->addToggle("Send TUIOs", &bTUIO);
+    gui1->addSpacer();
+	gui1->addIntSlider("Tilt", -30,30,&angle);
 	
     gui1->autoSizeToFitWidgets();
 	ofAddListener(gui1->newGUIEvent,this,&testApp::guiEvent);	
@@ -862,6 +877,11 @@ void testApp::guiEvent(ofxUIEventArgs &e) {
         lr = lrUI/1000.0;
 		background.setLearningRate(lr);
 	}
+	else if(name == "Tilt") {
+        //		ofxUISlider *slider = (ofxUISlider *) e.widget;
+        //        angle = slider->getScaledValue();
+		kinect.setCameraTiltAngle(angle);
+    }
 	
 	//	contourFinderX.setMinArea(min_blob_size);
 	//	contourFinderX.setFindHoles(bFindHoles);
