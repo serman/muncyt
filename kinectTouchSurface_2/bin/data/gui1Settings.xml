@@ -101,3 +101,8 @@
     <Name>Send TUIOs</Name>
     <Value>1</Value>
 </Widget>
+<Widget>
+    <Kind>42</Kind>
+    <Name>Tilt</Name>
+    <Value>0</Value>
+</Widget>

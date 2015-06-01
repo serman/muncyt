@@ -28,7 +28,7 @@ void testApp::setup() {
 	
 	// zero the tilt on startup (modelos  <= 1414)
 	float angle = 0;
-	kinect.setCameraTiltAngle(angle);
+//	kinect.setCameraTiltAngle(angle);
 	
 	// dims de las im‡genes
 	wk = kinect.getWidth();
@@ -118,9 +118,6 @@ void testApp::setup() {
 	
 	bWarp = true;
 
-    // angulo tilt
-    angle = 0;
-    
 	setupGUI();
 	
 	gui1->loadSettings("gui1Settings.xml");
