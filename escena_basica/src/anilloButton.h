@@ -92,9 +92,9 @@ public:
             //ñapa para tres botones CAMBIAR!!
             if(x<100 && y>100){//izquierda
                 if(status_handIsOn ==true)
-                    imgPlusON.draw(-5, 305);
+                    imgPlusON.draw(5, 305);
                 else
-                    imgPlus.draw(5, 314);
+                    imgPlus.draw(10, 314);
             }else if (y<100 && x<500){ //arriba
                 //ofRect(x,y,width,height);
                 if(status_handIsOn ==true) imgExpON.draw(302,8);
@@ -102,9 +102,9 @@ public:
             }
             else{ //derecha
                 if(status_handIsOn ==true)
-                    imgPlusON.draw(693,305);
+                    imgPlusON.draw(670,305);
                 else
-                    imgPlus.draw(702,314);
+                    imgPlus.draw(683,314);
             }
         ofPopStyle();
         //
