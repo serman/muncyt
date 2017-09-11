@@ -10,8 +10,7 @@
 #include "particulas.h"
 
 Particula::Particula() {
-	//ofxBox2dCircle::ofxBox2dCircle();
-shared_ptr <ofxBox2dCircle> c = shared_ptr <ofxBox2dCircle>(new ofxBox2dCircle);
+	ofxBox2dCircle::ofxBox2dCircle();
 	color = ofColor(93,202,49);
 	colorExcitado = ofColor(193,242,149);
 	escale = 3.0;
