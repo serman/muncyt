@@ -16,7 +16,11 @@ void testApp::setup(){
 	ofAddListener(tuioClient.cursorUpdated,this,&testApp::tuioUpdated);
 	///////////////////////////////////////
 	_defaultRenderer = ofGetCurrentRenderer();
-   
+    _shivaVGRenderer = ofPtr<ofxShivaVGRenderer>(new ofxShivaVGRenderer);
+   // ofSetCurrentRenderer(_shivaVGRenderer);
+    
+    _shivaVGRenderer->setLineJoinStyle(VG_JOIN_ROUND);
+    _shivaVGRenderer->setLineCapStyle(VG_CAP_ROUND);
 
     
     

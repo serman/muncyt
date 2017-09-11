@@ -12,13 +12,18 @@
 </Widget>
 <Widget>
     <Kind>2</Kind>
+    <Name>modo adaptativo</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
     <Name>(b) Set Bckgrnd</Name>
     <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>learningRate*1000</Name>
-    <Value>0.100000001</Value>
+    <Value>0.010000000</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -33,7 +38,7 @@
 <Widget>
     <Kind>2</Kind>
     <Name>Erodde Mask</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>6</Kind>
@@ -95,4 +100,9 @@
     <Kind>2</Kind>
     <Name>Send TUIOs</Name>
     <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>42</Kind>
+    <Name>Tilt</Name>
+    <Value>0</Value>
 </Widget>

@@ -28,7 +28,7 @@ void testApp::setup() {
 	
 	// zero the tilt on startup (modelos  <= 1414)
 	float angle = 0;
-	kinect.setCameraTiltAngle(angle);
+//	kinect.setCameraTiltAngle(angle);
 	
 	// dims de las im‡genes
 	wk = kinect.getWidth();
@@ -37,6 +37,7 @@ void testApp::setup() {
 	
 	modo = 1;
     
+    bModoAdapt = true;
 	
 	//
 	// MODO 1
@@ -166,7 +167,10 @@ void testApp::update(){
 	
 	// there is a new frame and we are connected
 	if(kinect.isFrameNew()) {
-		updateModo2();
+        if(bModoAdapt) {
+            updateModo2();
+        }
+        else updateModo1();
 	}
 }
 
@@ -685,6 +689,16 @@ void testApp::keyPressed(int key){
         ofLogNotice("smoothRate: " + ofToString(contourFinderX.getTracker().getSmoothingRate() ) );
         
     }
+    else if(key=='e') {
+        angle++;
+        if(angle>30) angle=30;
+        kinect.setCameraTiltAngle(angle);
+    }
+    else if(key=='d') {
+        angle--;
+        if(angle<-30) angle=-30;
+        kinect.setCameraTiltAngle(angle);
+    }
 
 }
 
@@ -797,9 +811,10 @@ void testApp::setupGUI() {
 	gui1->addSpacer();
 	
 	gui1->addLabel("MODO 1 - Backgr Substr");
+    gui1->addToggle("modo adaptativo", &bModoAdapt);
 	gui1->addToggle("(b) Set Bckgrnd", &bLearnBakground);
 	gui1->addSpacer();
-    gui1->addSlider("learningRate*1000", 0.1, 100.0, &lrUI);
+    gui1->addSlider("learningRate*1000", 0.01, 10.0, &lrUI);
     gui1->addSpacer();
 	gui1->addToggle("Aplica Quitar Fondo",&swDistMax);
 	gui1->addSlider("Quitar Zona Fondo", 0.0, 255.0, &distMax);
@@ -826,6 +841,8 @@ void testApp::setupGUI() {
 	gui1->addToggle("Activa Calibracion", &bCalibActiva2);	
 	gui1->addSpacer();
 	gui1->addToggle("Send TUIOs", &bTUIO);
+    gui1->addSpacer();
+	gui1->addIntSlider("Tilt", -30,30,&angle);
 	
     gui1->autoSizeToFitWidgets();
 	ofAddListener(gui1->newGUIEvent,this,&testApp::guiEvent);	
@@ -857,6 +874,11 @@ void testApp::guiEvent(ofxUIEventArgs &e) {
         lr = lrUI/1000.0;
 		background.setLearningRate(lr);
 	}
+	else if(name == "Tilt") {
+        //		ofxUISlider *slider = (ofxUISlider *) e.widget;
+        //        angle = slider->getScaledValue();
+		kinect.setCameraTiltAngle(angle);
+    }
 	
 	//	contourFinderX.setMinArea(min_blob_size);
 	//	contourFinderX.setFindHoles(bFindHoles);

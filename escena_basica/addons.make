@@ -1,1 +1,11 @@
 ofxBox2d
+ofxSpriteSheetRenderer
+ofxPostProcessing
+ofxSvg
+ofxAnimatable
+ofxUI
+ofxScreenCurtain
+ofxTuio
+ofxOsc
+ofxXmlSettings
+ofxBox2d

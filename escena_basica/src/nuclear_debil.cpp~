@@ -96,7 +96,7 @@ void nuclear_debil::setup() {
 	velocNeutronLanz = 120;
 
 	
-	//cargaSounds();
+	cargaSounds();
 	mas_particulas_img.loadImage("mas_particulas.png");
     mas_acel_img.loadImage("mas_aceleracion.png");
 	

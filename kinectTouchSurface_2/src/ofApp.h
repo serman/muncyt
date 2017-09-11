@@ -40,12 +40,15 @@ public:
     	
 	void updateModo1();
 	void updateModo2(); /// dic-GGG
+    bool    bModoAdapt;
     
 	void	drawMarco(ofRectangle rect);
 	void	drawMarco(float xx, float yy, float ww, float hh);
 	
 	ofxKinect kinect;
-	
+
+    int angle;  // angulo tilt
+
 	int wk, hk;		// Dimensiones de las imagenes de trabajo y de kinect	
 	int wk1, hk1;	// Dimensiones para la presentaci—n en pantalla
 	
